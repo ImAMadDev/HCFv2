@@ -21,8 +21,6 @@ class Switcher extends Throwable {
     public int|float $width = 0.5;
     public int|float $height = 0.5;
 
-    protected float $drag = 0.01;
-    protected float $gravity = 0.03;
 
     public function __construct(Location $location, ?Entity $entity, ?CompoundTag $nbt = null){
 		parent::__construct($location, $entity, $nbt);
