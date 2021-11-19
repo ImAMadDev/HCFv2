@@ -1,0 +1,79 @@
+name: HCF
+author: ImAMadDev
+version: 2.0
+main: ImAMadDev\HCF
+api: [4.0.0]
+permissions:
+  rank.command:
+    default: op
+    description: Rank command
+  ability.command:
+    default: op
+    description: Ability command
+  opclaim.command:
+    default: op
+    description: Claim OP sites command
+  eotw.manager:
+    default: op
+    description: Manage End Of The World
+  fixhand.command:
+    default: op
+    description: Fix your item in hand
+  fixhand.other.command:
+    default: op
+    description: Fix other hand item
+  fixall.command:
+    default: op
+    description: Fix all your inventory
+  fixall.other.command:
+    default: op
+    description: Fix other's player inventory
+  lff.command:
+    default: op
+    description: Locking for faction command
+  near.command:
+    default: op
+    description: Nearby players command
+  particle.command:
+    default: op
+    description: Enable your particles command
+  rename.command:
+    default: op
+    description: Rename your item in hand command
+  rollback.command:
+    default: op
+    description: return player inventory command
+  balance.manager:
+    default: op
+    description: Manage the balance of a player command
+  sotw.manager:
+    default: op
+    description: Manage the start of the worldcommand
+  crate.command:
+    default: op
+    description: Crate manager command
+  event.command:
+    default: op
+    description: Manage or create server events command
+  faction.manager:
+    default: op
+    description: Manage a faction
+  kit.command:
+    default: op
+    description: Kits manager command
+  npc.command:
+    default: op
+    description: Manage NPCs command
+  tag.command:
+    default: op
+    description: Manage tags command
+  texts.command:
+    default: op
+    description: Manage floating texts command
+  redeem.command:
+    default: op
+    description: Add a youtuber redeem rewards command
+  resetkit.command:
+    default: op
+    description: Reset player kit countdown command
+...

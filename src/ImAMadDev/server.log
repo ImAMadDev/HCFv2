@@ -1,0 +1,1801 @@
+2021-11-18 [11:18:11.882] [Server thread/INFO]: Loading server configuration
+2021-11-18 [11:18:11.967] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [11:18:11.967] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:18:11.967] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [11:18:11.968] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [11:18:11.968] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [11:18:11.968] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:18:11.972] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [11:18:11.986] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [11:18:12.027] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [11:18:12.033] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [11:18:12.710] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [11:18:12.794] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [11:18:12.798] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:18:12.802] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [11:18:12.807] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [11:18:12.810] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [11:18:12.812] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:18:12.814] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [11:18:12.815] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [11:18:12.816] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [11:18:12.816] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [11:18:12.816] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [11:18:12.820] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [11:18:12.824] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [11:18:12.835] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [11:18:12.849] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [11:18:12.849] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [11:18:12.849] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [11:18:12.852] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [11:18:12.853] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [11:18:12.898] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [11:18:12.917] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [11:18:13.110] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [11:18:13.112] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [11:18:13.255] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [11:18:13.285] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [11:18:13.291] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [11:18:13.302] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [11:18:13.422] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [11:18:13.644] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [11:18:13.728] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [11:18:13.742] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [11:18:13.810] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [11:18:13.864] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [11:18:13.868] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [11:18:13.871] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [11:18:13.871] [Server thread/INFO]: Done (1.99s)! For help, type "help" or "?"
+2021-11-18 [11:18:13.926] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [11:18:20.691] [Server thread/INFO]: [NetworkSession: 186.4.166.105 56302] Session opened
+2021-11-18 [11:18:20.818] [Server thread/INFO]: [NetworkSession: 186.4.166.105 56302] Player: ImAMadDev
+2021-11-18 [11:18:21.736] [Server thread/INFO]: ImAMadDev[/186.4.166.105:56302] logged in with entity id 1 at (world, 266.2023, 77, 270.6297)
+2021-11-18 [11:18:29.474] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [11:19:26.043] [Server thread/CRITICAL]: Error: "Call to undefined method ImAMadDev\npc\types\BlackMarket::onActivate()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 110
+--- Stack trace ---
+  #0 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onDataPacketReceiveEvent(object pocketmine\event\server\DataPacketReceiveEvent#94567)
+  #1 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\server\DataPacketReceiveEvent#94567)
+  #2 pmsrc/src/network/mcpe/NetworkSession(394): pocketmine\event\Event->call()
+  #3 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#94839, string[236] .........................OriginalDisplayTag...Name....5Anubis Sword....display..)
+  #4 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[187] {.(.....?X.........\..\B..E...y.9....9..!...,.~........:..&e.+.....0p.3.@TA...+.)
+  #5 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[196] .A,4?../].......#..I7O%..Y...B....... ........2B3M...Z......aE.9...........2....)
+  #6 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24220)
+  #7 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #8 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #9 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637234366.0739)
+  #10 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #11 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #12 pmsrc/src/PocketMine(324): pocketmine\server()
+  #13 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [11:19:26.047] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [11:19:26.055] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-06.19.26--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [11:19:26.056] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [11:19:26.056] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:19:26.056] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [11:19:26.057] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [11:19:26.057] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [11:19:26.095] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [11:19:26.106] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [11:19:26.107] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [11:19:26.113] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [11:19:26.113] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [11:19:26.130] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [11:42:36.179] [Server thread/INFO]: Loading server configuration
+2021-11-18 [11:42:36.214] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [11:42:36.215] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:42:36.215] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [11:42:36.218] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [11:42:36.218] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [11:42:36.218] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:42:36.222] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [11:42:36.227] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [11:42:36.249] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [11:42:36.249] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [11:42:36.588] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [11:42:36.641] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [11:42:36.672] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [11:42:36.673] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [11:42:36.676] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [11:42:36.677] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:42:36.679] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [11:42:36.682] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [11:42:36.684] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [11:42:36.684] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [11:42:36.684] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [11:42:36.684] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [11:42:36.686] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [11:42:36.692] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [11:42:36.696] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [11:42:36.701] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [11:42:36.701] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [11:42:36.701] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [11:42:36.729] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [11:42:36.741] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [11:42:36.843] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [11:42:36.846] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [11:42:36.894] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [11:42:36.904] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:42:36.971] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [11:42:36.977] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [11:42:36.988] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [11:42:37.075] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [11:42:37.076] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [11:42:37.136] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [11:42:37.159] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [11:42:37.177] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [11:42:37.356] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [11:42:37.371] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [11:42:37.371] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [11:42:37.371] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [11:42:37.371] [Server thread/INFO]: Done (1.194s)! For help, type "help" or "?"
+2021-11-18 [11:42:37.376] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [11:44:14.462] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Session opened
+2021-11-18 [11:44:14.708] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Player: ImAMadDev
+2021-11-18 [11:44:15.662] [Server thread/INFO]: ImAMadDev[/186.4.166.105:58037] logged in with entity id 2 at (world, 264.2353, 77, 270.7657)
+2021-11-18 [11:44:22.658] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [11:44:31.931] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 222 items]
+2021-11-18 [11:46:37.376] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [11:50:07.376] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [11:50:27.376] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [11:50:32.376] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [11:50:37.376] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [11:50:37.376] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [11:53:45.392] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [11:53:45.397] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [11:54:40.400] [Server thread/INFO]: [?] Did you know that by voting for our server you get rewards? Vote using your name at: https://bit.ly/3z1Jrbl
+2021-11-18 [11:54:58.929] [Server thread/INFO]: Unknown command: STOP. Use /help for a list of available commands.
+2021-11-18 [11:55:03.976] [Server thread/INFO]: Unknown command: atop. Use /help for a list of available commands.
+2021-11-18 [11:55:06.003] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [11:55:06.053] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [11:55:06.055] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [11:55:06.055] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [11:55:06.130] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [11:55:06.133] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:55:06.133] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [11:55:06.133] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [11:55:06.148] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [11:55:06.156] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [11:55:06.214] [Server thread/INFO]: Stopping other threads
+2021-11-18 [11:55:11.257] [Server thread/INFO]: Loading server configuration
+2021-11-18 [11:55:11.288] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [11:55:11.289] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:55:11.289] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [11:55:11.289] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [11:55:11.289] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [11:55:11.289] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:55:11.303] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [11:55:11.310] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [11:55:11.346] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [11:55:11.346] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [11:55:11.828] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [11:55:11.877] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [11:55:11.895] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [11:55:11.909] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [11:55:11.918] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [11:55:11.922] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:55:11.924] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [11:55:11.924] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [11:55:11.925] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [11:55:11.925] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [11:55:11.925] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [11:55:11.925] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [11:55:11.926] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [11:55:11.945] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [11:55:11.970] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [11:55:11.970] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [11:55:11.971] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [11:55:11.971] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [11:55:11.971] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [11:55:12.147] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [11:55:12.159] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [11:55:12.253] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [11:55:12.256] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [11:55:12.299] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:55:12.424] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [11:55:12.432] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [11:55:12.447] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [11:55:12.457] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [11:55:12.541] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [11:55:12.708] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [11:55:12.788] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [11:55:12.807] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [11:55:12.957] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [11:55:13.031] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [11:55:13.037] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [11:55:13.037] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [11:55:13.045] [Server thread/INFO]: Done (1.789s)! For help, type "help" or "?"
+2021-11-18 [11:55:13.052] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [11:55:17.081] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Session opened
+2021-11-18 [11:55:17.275] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Player: ImAMadDev
+2021-11-18 [11:55:18.075] [Server thread/INFO]: ImAMadDev[/186.4.166.105:58037] logged in with entity id 2 at (world, 262.7353, 77, 268.6458)
+2021-11-18 [11:55:25.055] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [11:55:29.057] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 4 items]
+2021-11-18 [11:57:14.395] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [11:57:14.402] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [11:57:20.054] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [11:57:20.104] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [11:57:20.105] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [11:57:20.106] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [11:57:20.106] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [11:57:20.141] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:57:20.141] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [11:57:20.160] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [11:57:20.161] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [11:57:20.191] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [11:57:20.278] [Server thread/INFO]: Stopping other threads
+2021-11-18 [11:57:25.207] [Server thread/INFO]: Loading server configuration
+2021-11-18 [11:57:25.232] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [11:57:25.232] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:57:25.232] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [11:57:25.232] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [11:57:25.232] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [11:57:25.232] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [11:57:25.236] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [11:57:25.240] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [11:57:25.259] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [11:57:25.259] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [11:57:25.489] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [11:57:25.509] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [11:57:25.513] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [11:57:25.515] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [11:57:25.520] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:57:25.522] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [11:57:25.525] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [11:57:25.528] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [11:57:25.528] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [11:57:25.528] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [11:57:25.529] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [11:57:25.529] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [11:57:25.529] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [11:57:25.529] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [11:57:25.534] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [11:57:25.537] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [11:57:25.538] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [11:57:25.538] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [11:57:25.538] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [11:57:25.538] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [11:57:25.550] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [11:57:25.558] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [11:57:25.603] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [11:57:25.607] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [11:57:25.672] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [11:57:25.677] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [11:57:25.679] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [11:57:25.687] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [11:57:25.720] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [11:57:25.829] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [11:57:25.876] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [11:57:25.883] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [11:57:25.935] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [11:57:25.953] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [11:57:25.953] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [11:57:25.953] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [11:57:25.954] [Server thread/INFO]: Done (0.747s)! For help, type "help" or "?"
+2021-11-18 [11:57:25.959] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [11:57:31.285] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Session opened
+2021-11-18 [11:57:31.473] [Server thread/INFO]: [NetworkSession: 186.4.166.105 58037] Player: ImAMadDev
+2021-11-18 [11:57:32.588] [Server thread/INFO]: ImAMadDev[/186.4.166.105:58037] logged in with entity id 2 at (world, 266.6033, 77, 269.8763)
+2021-11-18 [11:57:40.622] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [11:57:46.379] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 3 items]
+2021-11-18 [11:57:55.445] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [11:57:55.450] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [12:01:25.961] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [12:04:55.960] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:05:15.959] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:05:20.959] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:05:25.960] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:05:25.962] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [12:09:25.959] [Server thread/INFO]: [?] Did you know that by voting for our server you get rewards? Vote using your name at: https://bit.ly/3z1Jrbl
+2021-11-18 [12:12:56.959] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:13:16.958] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:13:21.959] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:13:25.958] [Server thread/INFO]: [?] Highest Roll Players Online: 
+2021-11-18 [12:13:26.958] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:17:25.958] [Server thread/INFO]: l[!] This is a BETA 2.0 version of MineStalia, if you find any problem like a bug or glitch, please contact us at https://discord.gg/r483mW5z
+2021-11-18 [12:20:57.958] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:21:17.958] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:21:22.958] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:21:25.958] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [12:21:27.958] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:25:25.958] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [12:29:00.494] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:29:20.495] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:29:25.494] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:29:27.494] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [12:29:30.494] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:33:27.494] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [12:37:01.494] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:37:21.494] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:37:26.494] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:37:27.496] [Server thread/INFO]: [?] Did you know that by voting for our server you get rewards? Vote using your name at: https://bit.ly/3z1Jrbl
+2021-11-18 [12:37:31.494] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:41:27.494] [Server thread/INFO]: [?] Highest Roll Players Online: 
+2021-11-18 [12:45:02.494] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:45:22.494] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:45:27.493] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:45:27.494] [Server thread/INFO]: l[!] This is a BETA 2.0 version of MineStalia, if you find any problem like a bug or glitch, please contact us at https://discord.gg/r483mW5z
+2021-11-18 [12:45:32.494] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:49:27.493] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [12:53:03.493] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [12:53:23.493] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [12:53:27.493] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [12:53:28.493] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [12:53:33.493] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [12:57:27.867] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [13:01:04.493] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [13:01:24.493] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [13:01:27.496] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [13:01:29.492] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [13:01:34.493] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [13:05:27.492] [Server thread/INFO]: [?] Did you know that by voting for our server you get rewards? Vote using your name at: https://bit.ly/3z1Jrbl
+2021-11-18 [13:09:05.492] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [13:09:25.492] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [13:09:27.492] [Server thread/INFO]: [?] Highest Roll Players Online: 
+2021-11-18 [13:09:30.492] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [13:09:35.492] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [13:13:27.492] [Server thread/INFO]: l[!] This is a BETA 2.0 version of MineStalia, if you find any problem like a bug or glitch, please contact us at https://discord.gg/r483mW5z
+2021-11-18 [13:17:06.492] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [13:17:26.492] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [13:17:27.492] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:17:31.492] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [13:17:36.492] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [13:21:01.779] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [13:21:01.909] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:21:01.947] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:21:01.950] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:21:02.285] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:21:02.285] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:21:02.286] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:21:02.353] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:21:02.358] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:21:02.450] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:21:02.730] [Server thread/INFO]: Stopping other threads
+2021-11-18 [13:21:20.884] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:21:21.059] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:21:21.059] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:21:21.059] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:21:21.060] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:21:21.061] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:21:21.061] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:21:21.067] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:21:21.075] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:21:21.153] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:21:21.153] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:21:22.092] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:21:22.165] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:21:22.184] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:21:22.186] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:21:22.197] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:21:22.203] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:21:22.212] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:21:22.215] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:21:22.216] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:21:22.217] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:21:22.217] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:21:22.217] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:21:22.217] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:21:22.221] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:21:22.260] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:21:22.290] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:21:22.291] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:21:22.292] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:21:22.292] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:21:22.293] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:21:22.383] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:21:22.464] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:21:22.841] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:21:22.857] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:21:23.033] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:21:23.038] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:21:23.146] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:21:23.147] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:21:23.168] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:21:23.376] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:21:23.484] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:21:23.492] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:21:23.634] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:21:23.695] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:21:23.698] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:21:23.698] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:21:23.699] [Server thread/INFO]: Done (2.841s)! For help, type "help" or "?"
+2021-11-18 [13:21:23.717] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:22:52.462] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57233] Session opened
+2021-11-18 [13:22:52.553] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57233] Player: ImAMadDev
+2021-11-18 [13:22:53.623] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57233] logged in with entity id 1 at (world, 265.622, 76, 272.6158)
+2021-11-18 [13:23:03.000] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:23:19.643] [Server thread/CRITICAL]: Error: "Call to undefined method ImAMadDev\npc\types\BlackMarket::onActivate()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 110
+--- Stack trace ---
+  #0 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onDataPacketReceiveEvent(object pocketmine\event\server\DataPacketReceiveEvent#95574)
+  #1 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\server\DataPacketReceiveEvent#95574)
+  #2 pmsrc/src/network/mcpe/NetworkSession(394): pocketmine\event\Event->call()
+  #3 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#94371, string[32] ...........Cr=.BC1.CIw.C...BA..C)
+  #4 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[36] S.c`f`b``......v...a..gy....s....9..)
+  #5 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[45] .M.S....ePK......bF.........O.......W.m......)
+  #6 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24217)
+  #7 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #8 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #9 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637241799.6717)
+  #10 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #11 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #12 pmsrc/src/PocketMine(324): pocketmine\server()
+  #13 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:23:19.646] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:23:19.663] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.23.19--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:23:19.664] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:23:19.742] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:23:19.742] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:23:19.742] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:23:19.742] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:23:19.742] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:23:19.749] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:23:19.751] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [13:23:19.755] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [13:23:19.755] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:23:19.764] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:23:34.052] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:23:34.096] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:23:34.100] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:23:34.100] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:23:34.101] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:23:34.101] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:23:34.101] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:23:34.109] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:23:34.117] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:23:34.141] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:23:34.141] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:23:34.434] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:23:34.500] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:23:34.511] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:23:34.548] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:23:34.568] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:23:34.571] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:23:34.576] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:23:34.585] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:23:34.587] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:23:34.587] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:23:34.587] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:23:34.588] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:23:34.588] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:23:34.594] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:23:34.603] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:23:34.624] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:23:34.625] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:23:34.625] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:23:34.625] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:23:34.625] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:23:34.642] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:23:34.659] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:23:34.713] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:23:34.716] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:23:34.829] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:23:34.841] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:23:34.897] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:23:34.905] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:23:34.918] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:23:35.083] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:23:35.147] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:23:35.163] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:23:35.209] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:23:35.226] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:23:35.226] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:23:35.226] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:23:35.226] [Server thread/INFO]: Done (1.175s)! For help, type "help" or "?"
+2021-11-18 [13:23:35.230] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:23:38.750] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57233] Session opened
+2021-11-18 [13:23:38.948] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57233] Player: ImAMadDev
+2021-11-18 [13:23:39.974] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57233] logged in with entity id 2 at (world, 263.9384, 77, 270.3879)
+2021-11-18 [13:23:48.336] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:24:20.474] [Server thread/CRITICAL]: Error: "Call to undefined method pocketmine\Server::getPlayer()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/rank/command/subCommands/RemoveSubCommand" at line 22
+--- Stack trace ---
+  #0 plugins/HCFv2/src/ImAMadDev/rank/command/RankCommand(37): ImAMadDev\rank\command\subCommands\RemoveSubCommand->execute(object ImAMadDev\player\HCFPlayer#25741, string[4] rank, array[3])
+  #1 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\rank\command\RankCommand->execute(object ImAMadDev\player\HCFPlayer#25741, string[4] rank, array[3])
+  #2 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#25741, string[22] rank remove ima Anubis)
+  #3 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#25741, string[22] rank remove ima Anubis)
+  #4 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[23] /rank remove ima Anubis)
+  #5 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#95202)
+  #6 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#95796)
+  #7 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#95202, string[44] M./rank remove ima Anubis..@.#.......[......)
+  #8 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[48] ..../J..V(J../KU..MTp.+M.,fX.p^.e....r......10..)
+  #9 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[57] ......%........<|.n.e.8zZ.....-...9. ...b..i.U..4. ..7.X.)
+  #10 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24217)
+  #11 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #13 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637241860.4807)
+  #14 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #15 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #16 pmsrc/src/PocketMine(324): pocketmine\server()
+  #17 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:24:20.476] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:24:20.492] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.24.20--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:24:20.511] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:24:20.552] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:24:20.552] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:24:20.553] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:24:20.553] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:24:20.553] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:24:20.561] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:24:20.562] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [13:24:20.570] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [13:24:20.580] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:24:20.590] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:30:00.168] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:30:00.242] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:30:00.242] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:30:00.242] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:30:00.242] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:30:00.242] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:30:00.242] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:30:00.247] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:30:00.255] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:30:00.295] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:30:00.296] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:30:00.699] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:30:00.743] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:30:00.754] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:30:00.756] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:30:00.760] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:30:00.762] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:30:00.764] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:30:00.766] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:30:00.766] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:30:00.766] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:30:00.767] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:30:00.767] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:30:00.767] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:30:00.776] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:30:00.776] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:30:00.776] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:30:00.777] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:30:00.777] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:30:00.801] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:30:00.819] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:30:00.883] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:30:00.885] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:30:00.939] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:30:00.953] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:30:00.983] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:30:00.992] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:30:01.006] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:30:01.008] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:30:01.092] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:30:01.158] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:30:01.166] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:30:01.181] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:30:01.472] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:30:01.491] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:30:01.491] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:30:01.492] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:30:01.492] [Server thread/INFO]: Done (1.326s)! For help, type "help" or "?"
+2021-11-18 [13:30:01.511] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:30:10.637] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57243] Session opened
+2021-11-18 [13:30:10.829] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57243] Player: ImAMadDev
+2021-11-18 [13:30:11.752] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57243] logged in with entity id 2 at (world, 264.4848, 77, 271.5451)
+2021-11-18 [13:30:19.911] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:31:17.243] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 3 items]
+2021-11-18 [13:31:45.849] [Server thread/CRITICAL]: Error: "Call to undefined method pocketmine\item\enchantment\EnchantmentInstance::getWorld()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 523
+--- Stack trace ---
+  #0 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onTransaction(object pocketmine\event\inventory\InventoryTransactionEvent#95578)
+  #1 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\inventory\InventoryTransactionEvent#95578)
+  #2 pmsrc/src/inventory/transaction/InventoryTransaction(294): pocketmine\event\Event->call()
+  #3 pmsrc/src/inventory/transaction/InventoryTransaction(312): pocketmine\inventory\transaction\InventoryTransaction->callExecuteEvent()
+  #4 pmsrc/src/network/mcpe/handler/InGamePacketHandler(320): pocketmine\inventory\transaction\InventoryTransaction->execute()
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(217): pocketmine\network\mcpe\handler\InGamePacketHandler->handleNormalTransaction(object pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData#95702)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/InventoryTransactionPacket(116): pocketmine\network\mcpe\handler\InGamePacketHandler->handleInventoryTransaction(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#116183)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\InventoryTransactionPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#95772)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#116183, string[451] ...............n.........custom_enchantment....display...Lore.........r..4Unrepa)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[168] ;.,.......a..#..........%..\Z\.........W...W......Y\..X....._...#.phy...&.yE....)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[177] ...%..X.?z{.k..ne...8..v#....v+....?Vm.:x.......S..wX.}..q.......w.'...`m4....]:)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24179)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637242305.8605)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:31:45.851] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:31:45.865] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.31.45--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:31:45.869] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:31:45.872] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:31:45.872] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:31:45.872] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:31:45.872] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:31:45.923] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:31:45.923] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:31:45.938] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [13:31:45.948] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [13:31:45.948] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:31:45.967] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:34:44.325] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:34:44.356] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:34:44.356] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:34:44.356] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:34:44.356] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:34:44.356] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:34:44.356] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:34:44.360] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:34:44.364] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:34:44.391] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:34:44.391] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:34:44.659] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:34:44.685] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:34:44.691] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:34:44.696] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:34:44.698] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:34:44.699] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:34:44.700] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:34:44.701] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:34:44.701] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:34:44.701] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:34:44.702] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:34:44.702] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:34:44.702] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:34:44.706] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:34:44.706] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:34:44.706] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:34:44.707] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:34:44.707] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:34:44.720] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:34:44.728] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:34:44.770] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:34:44.772] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:34:44.812] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:34:44.821] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:34:44.866] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:34:44.874] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:34:44.922] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:34:44.922] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:34:44.930] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:34:44.975] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:34:44.982] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:34:44.987] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:34:45.184] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:34:45.227] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:34:45.227] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:34:45.227] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:34:45.227] [Server thread/INFO]: Done (0.903s)! For help, type "help" or "?"
+2021-11-18 [13:34:45.241] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:34:53.572] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57250] Session opened
+2021-11-18 [13:34:53.691] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57250] Player: ImAMadDev
+2021-11-18 [13:34:54.561] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57250] logged in with entity id 2 at (world, 266.9111, 77, 269.4368)
+2021-11-18 [13:35:03.672] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:35:10.792] [Server thread/CRITICAL]: Error: "Call to undefined method pocketmine\item\enchantment\EnchantmentInstance::getId()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 524
+--- Stack trace ---
+  #0 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onTransaction(object pocketmine\event\inventory\InventoryTransactionEvent#95981)
+  #1 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\inventory\InventoryTransactionEvent#95981)
+  #2 pmsrc/src/inventory/transaction/InventoryTransaction(294): pocketmine\event\Event->call()
+  #3 pmsrc/src/inventory/transaction/InventoryTransaction(312): pocketmine\inventory\transaction\InventoryTransaction->callExecuteEvent()
+  #4 pmsrc/src/network/mcpe/handler/InGamePacketHandler(320): pocketmine\inventory\transaction\InventoryTransaction->execute()
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(217): pocketmine\network\mcpe\handler\InGamePacketHandler->handleNormalTransaction(object pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData#95877)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/InventoryTransactionPacket(116): pocketmine\network\mcpe\handler\InGamePacketHandler->handleInventoryTransaction(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#95881)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\InventoryTransactionPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#96635)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#95881, string[451] ...............n.........custom_enchantment....display...Lore.........r..4Unrepa)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[168] ;.,.......a..#..........%..\Z\.........W...W......Y\..X....._...#.phy...&.yE....)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[177] .....l.^.DF.\,.$Y.a.p.c.Q........2.;y........o....} %..w..Dy....3...N....<^.,.h,)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24179)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637242510.7912)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:35:10.793] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:35:10.836] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.35.10--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:35:10.843] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:35:11.050] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:35:11.056] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:35:11.060] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:35:11.060] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:35:11.060] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:35:11.061] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:35:11.094] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [13:35:11.115] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [13:35:11.116] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:35:11.137] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:37:20.381] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:37:20.453] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:37:20.453] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:37:20.453] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:37:20.453] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:37:20.453] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:37:20.453] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:37:20.457] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:37:20.464] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:37:20.491] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:37:20.491] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:37:20.755] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:37:20.788] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:37:20.793] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:37:20.796] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:37:20.799] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:37:20.800] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:37:20.802] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:37:20.802] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:37:20.804] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:37:20.804] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:37:20.805] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:37:20.805] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:37:20.805] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:37:20.809] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:37:20.809] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:37:20.809] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:37:20.810] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:37:20.810] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:37:20.822] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:37:20.828] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:37:20.870] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:37:20.872] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:37:20.912] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:37:20.928] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:37:20.986] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:37:20.992] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:37:21.001] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:37:21.035] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:37:21.036] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:37:21.107] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:37:21.117] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:37:21.121] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:37:21.239] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:37:21.251] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:37:21.251] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:37:21.251] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:37:21.251] [Server thread/INFO]: Done (0.872s)! For help, type "help" or "?"
+2021-11-18 [13:37:21.257] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:37:28.061] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57253] Session opened
+2021-11-18 [13:37:28.213] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57253] Player: ImAMadDev
+2021-11-18 [13:37:29.255] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57253] logged in with entity id 2 at (world, 266.9111, 77, 269.4368)
+2021-11-18 [13:37:37.998] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:37:57.909] [Server thread/CRITICAL]: Error: "Call to undefined method pocketmine\item\enchantment\EnchantmentInstance::setLevel()" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 566
+--- Stack trace ---
+  #0 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onTransaction(object pocketmine\event\inventory\InventoryTransactionEvent#96292)
+  #1 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\inventory\InventoryTransactionEvent#96292)
+  #2 pmsrc/src/inventory/transaction/InventoryTransaction(294): pocketmine\event\Event->call()
+  #3 pmsrc/src/inventory/transaction/InventoryTransaction(312): pocketmine\inventory\transaction\InventoryTransaction->callExecuteEvent()
+  #4 pmsrc/src/network/mcpe/handler/InGamePacketHandler(320): pocketmine\inventory\transaction\InventoryTransaction->execute()
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(217): pocketmine\network\mcpe\handler\InGamePacketHandler->handleNormalTransaction(object pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData#96051)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/InventoryTransactionPacket(116): pocketmine\network\mcpe\handler\InGamePacketHandler->handleInventoryTransaction(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#96249)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\InventoryTransactionPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#96635)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#96249, string[451] ...............n.........custom_enchantment....display...Lore.........r..4Unrepa)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[168] ;.,.......a..#..........%..\Z\.........W...W......Y\..X....._...#.phy...&.yE....)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[177] .e|..w0.B.)..-...Y.....i)..."...\K...R.....9.?..>..</..4...~5.7....#..n..d......)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24179)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637242677.9071)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:37:57.910] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:37:57.927] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.37.57--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:37:57.932] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:37:57.935] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:37:57.979] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:37:57.979] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:37:57.979] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:37:57.979] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:37:57.979] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:37:57.988] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [13:37:57.995] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [13:37:57.996] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:37:58.008] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:48:16.425] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:48:16.514] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:48:16.514] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:48:16.514] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:48:16.514] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:48:16.515] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:48:16.515] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:48:16.522] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:48:16.533] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:48:16.572] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:48:16.572] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:48:17.197] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:48:17.266] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:48:17.275] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:48:17.280] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:48:17.283] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:48:17.289] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:48:17.291] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:48:17.293] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:48:17.294] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:48:17.294] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:48:17.295] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:48:17.295] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:48:17.295] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:48:17.296] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:48:17.302] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:48:17.302] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:48:17.302] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:48:17.303] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:48:17.303] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:48:17.329] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:48:17.341] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:48:17.467] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:48:17.484] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:48:17.579] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:48:17.709] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:48:17.740] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:48:17.743] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:48:17.755] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:48:17.937] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:48:18.000] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:48:18.008] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:48:18.017] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:48:18.188] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:48:18.208] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:48:18.208] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:48:18.209] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:48:18.209] [Server thread/INFO]: Done (1.788s)! For help, type "help" or "?"
+2021-11-18 [13:48:18.224] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:48:29.623] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57265] Session opened
+2021-11-18 [13:48:29.741] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57265] Player: ImAMadDev
+2021-11-18 [13:48:30.708] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57265] logged in with entity id 2 at (world, 266.9908, 77, 269.8526)
+2021-11-18 [13:48:39.716] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:49:59.184] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [13:49:59.214] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [13:50:27.562] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [13:50:27.578] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:50:27.579] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:50:27.579] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:50:27.579] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:50:27.579] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:50:27.654] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:50:27.654] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [13:50:27.663] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:50:27.693] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [13:50:27.978] [Server thread/INFO]: Stopping other threads
+2021-11-18 [13:50:32.291] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:50:32.325] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:50:32.325] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:50:32.325] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:50:32.325] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:50:32.325] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:50:32.325] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:50:32.329] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:50:32.333] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:50:32.362] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:50:32.362] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:50:32.654] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:50:32.688] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:50:32.694] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:50:32.698] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:50:32.701] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:50:32.705] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:50:32.706] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:50:32.708] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:50:32.709] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:50:32.709] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:50:32.710] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:50:32.710] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:50:32.710] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:50:32.711] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:50:32.715] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:50:32.715] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:50:32.715] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:50:32.716] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:50:32.716] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:50:32.731] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:50:32.738] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:50:32.784] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:50:32.787] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:50:32.835] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:50:32.861] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:50:32.866] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:50:32.900] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:50:32.906] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:50:32.906] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:50:32.909] [Server thread/CRITICAL]: ParseError: "syntax error, unexpected token "continue"" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 604
+--- Stack trace ---
+  #0 pmsrc/vendor/pocketmine/classloader/src/BaseClassLoader(83): BaseClassLoader->loadClass(string[30] ImAMadDev\listener\HCFListener)
+  #1 plugins/HCFv2/src/ImAMadDev/HCF(90): BaseClassLoader->{closure}(string[30] ImAMadDev\listener\HCFListener)
+  #2 pmsrc/src/plugin/PluginBase(137): ImAMadDev\HCF->onEnable()
+  #3 pmsrc/src/plugin/PluginManager(438): pocketmine\plugin\PluginBase->onEnableStateChange(true)
+  #4 pmsrc/src/Server(1365): pocketmine\plugin\PluginManager->enablePlugin(object ImAMadDev\HCF#23030)
+  #5 pmsrc/src/Server(993): pocketmine\Server->enablePlugins(object pocketmine\plugin\PluginEnableOrder#22892)
+  #6 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #7 pmsrc/src/PocketMine(324): pocketmine\server()
+  #8 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [13:50:32.909] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [13:50:32.914] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-08.50.32--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [13:50:32.915] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:50:32.915] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [13:50:32.934] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [13:50:32.934] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [13:50:32.934] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [13:50:32.934] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [13:50:32.934] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [13:50:59.354] [Server thread/INFO]: Loading server configuration
+2021-11-18 [13:50:59.389] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [13:50:59.393] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:50:59.393] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [13:50:59.393] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [13:50:59.393] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [13:50:59.393] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [13:50:59.401] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [13:50:59.405] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [13:50:59.431] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [13:50:59.437] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [13:50:59.780] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [13:50:59.841] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [13:50:59.850] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [13:50:59.853] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:50:59.855] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [13:50:59.871] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [13:50:59.872] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [13:50:59.873] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [13:50:59.873] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [13:50:59.873] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [13:50:59.873] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [13:50:59.874] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [13:50:59.874] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [13:50:59.879] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [13:50:59.880] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [13:50:59.880] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [13:50:59.880] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [13:50:59.880] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [13:50:59.894] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [13:50:59.901] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [13:50:59.941] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [13:50:59.944] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [13:50:59.979] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [13:50:59.995] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [13:51:00.012] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [13:51:00.019] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [13:51:00.076] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [13:51:00.085] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [13:51:00.085] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [13:51:00.142] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [13:51:00.165] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [13:51:00.175] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [13:51:00.320] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [13:51:00.338] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [13:51:00.339] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [13:51:00.339] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [13:51:00.340] [Server thread/INFO]: Done (0.987s)! For help, type "help" or "?"
+2021-11-18 [13:51:00.352] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [13:51:10.154] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57269] Session opened
+2021-11-18 [13:51:10.324] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57269] Player: ImAMadDev
+2021-11-18 [13:51:11.165] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57269] logged in with entity id 2 at (world, 265.9562, 77, 269.7958)
+2021-11-18 [13:51:19.851] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [13:52:04.773] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 241 items]
+2021-11-18 [13:53:29.970] [Server thread/INFO]: ImAMadDev: a
+2021-11-18 [13:55:00.352] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [13:55:46.434] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [13:55:46.439] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [13:58:30.352] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [13:58:50.352] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [13:58:55.351] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [13:59:00.352] [Server thread/INFO]: A total of [ 1 ] Dropped items were removed.
+2021-11-18 [13:59:00.352] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [14:03:00.352] [Server thread/INFO]: [?] Did you know that by voting for our server you get rewards? Vote using your name at: https://bit.ly/3z1Jrbl
+2021-11-18 [14:03:46.659] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [14:03:46.711] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [14:03:46.714] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [14:03:46.961] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:03:46.961] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [14:03:46.962] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [14:03:46.962] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [14:03:46.962] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [14:03:47.015] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [14:03:47.031] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [14:03:47.368] [Server thread/INFO]: Stopping other threads
+2021-11-18 [14:03:53.698] [Server thread/INFO]: Loading server configuration
+2021-11-18 [14:03:53.755] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [14:03:53.755] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [14:03:53.755] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [14:03:53.755] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [14:03:53.755] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [14:03:53.756] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [14:03:53.762] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [14:03:53.768] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [14:03:53.811] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [14:03:53.816] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [14:03:54.309] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [14:03:54.355] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [14:03:54.360] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:03:54.362] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [14:03:54.367] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [14:03:54.376] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [14:03:54.379] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:03:54.380] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [14:03:54.381] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [14:03:54.381] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [14:03:54.381] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [14:03:54.382] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [14:03:54.382] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [14:03:54.383] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [14:03:54.391] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [14:03:54.399] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [14:03:54.399] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [14:03:54.400] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [14:03:54.400] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [14:03:54.400] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [14:03:54.420] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [14:03:54.440] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [14:03:54.524] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [14:03:54.527] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [14:03:54.628] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [14:03:54.637] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [14:03:54.648] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [14:03:54.650] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [14:03:54.709] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [14:03:54.821] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [14:03:54.879] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [14:03:54.885] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [14:03:54.922] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [14:03:54.948] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [14:03:54.948] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [14:03:54.948] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [14:03:54.948] [Server thread/INFO]: Done (1.252s)! For help, type "help" or "?"
+2021-11-18 [14:03:54.956] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [14:07:54.957] [Server thread/INFO]: [?] You can enter our discord through this link: https://discord.gg/r483mW5z
+2021-11-18 [14:08:53.421] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57107] Session opened
+2021-11-18 [14:08:53.590] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57107] Player: ImAMadDev
+2021-11-18 [14:08:54.521] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57107] logged in with entity id 2 at (world, 267.5512, 77, 268.8729)
+2021-11-18 [14:09:02.341] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [14:11:24.956] [Server thread/INFO]: All entities will be cleared from the ground in: 30 second(s)
+2021-11-18 [14:11:44.956] [Server thread/INFO]: All entities will be cleared from the ground in: 10 second(s)
+2021-11-18 [14:11:46.053] [Server thread/INFO]: [-] ImAMadDev
+2021-11-18 [14:11:46.068] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to client disconnect
+2021-11-18 [14:11:49.956] [Server thread/INFO]: All entities will be cleared from the ground in: 5 second(s)
+2021-11-18 [14:11:54.956] [Server thread/INFO]: A total of [ 0 ] Dropped items were removed.
+2021-11-18 [14:11:54.956] [Server thread/INFO]: [?] You can see all the faction commands with /f help
+2021-11-18 [14:12:01.216] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57107] Session opened
+2021-11-18 [14:12:01.463] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57107] Player: ImAMadDev
+2021-11-18 [14:12:02.288] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57107] logged in with entity id 12 at (world, 266.6969, 77, 269.2236)
+2021-11-18 [14:12:10.223] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [14:13:26.241] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 187 items]
+2021-11-18 [14:13:39.400] [Server thread/INFO]: [ImAMadDev: Cleared the inventory of ImAMadDev, removing 222 items]
+2021-11-18 [14:14:17.527] [Server thread/CRITICAL]: LogicException: "Unsupported inventory type" (EXCEPTION) in "pmsrc/src/network/mcpe/InventoryManager" at line 162
+--- Stack trace ---
+  #0 pmsrc/src/player/Player(2395): pocketmine\network\mcpe\InventoryManager->onCurrentWindowChange(object pocketmine\inventory\PlayerEnderInventory#25756)
+  #1 plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand(37): pocketmine\player\Player->setCurrentWindow(object pocketmine\inventory\PlayerEnderInventory#25756)
+  #2 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\command\defaults\EnderChestCommand->execute(object ImAMadDev\player\HCFPlayer#26412, string[2] ec, array[0])
+  #3 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#26412, string[2] ec)
+  #4 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#26412, string[2] ec)
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[3] /ec)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#94203)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#95616)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#94203, string[24] M./ec.sNO.p.............)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[28] ..e.OMf(..o,8z..p....s.Nd`..)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[37] ..Z!"Ne..\....6%.p].I.`..5etn.....X..)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24214)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637244857.5061)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [14:14:17.546] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [14:14:17.591] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-09.14.17--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [14:14:17.596] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [14:14:17.600] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:14:17.602] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [14:14:17.603] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [14:14:17.604] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [14:14:17.861] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [14:14:17.899] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [14:14:17.900] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [14:14:17.908] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [14:14:17.908] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [14:14:17.961] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [14:51:06.439] [Server thread/INFO]: Loading server configuration
+2021-11-18 [14:51:06.606] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [14:51:06.607] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [14:51:06.607] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [14:51:06.607] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [14:51:06.608] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [14:51:06.608] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [14:51:06.617] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [14:51:06.635] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [14:51:06.751] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [14:51:06.751] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [14:51:07.842] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [14:51:08.003] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [14:51:08.020] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [14:51:08.023] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [14:51:08.033] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:51:08.036] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [14:51:08.057] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [14:51:08.058] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [14:51:08.058] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [14:51:08.058] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [14:51:08.058] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [14:51:08.059] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [14:51:08.061] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [14:51:08.113] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [14:51:08.119] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [14:51:08.124] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [14:51:08.125] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [14:51:08.126] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [14:51:08.185] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [14:51:08.234] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [14:51:08.561] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [14:51:08.571] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [14:51:08.698] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [14:51:08.739] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:51:08.864] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [14:51:08.901] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [14:51:08.906] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [14:51:08.936] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [14:51:09.202] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [14:51:09.350] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [14:51:09.358] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [14:51:09.375] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [14:51:09.701] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [14:51:09.775] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [14:51:09.775] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [14:51:09.775] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [14:51:09.777] [Server thread/INFO]: Done (3.35s)! For help, type "help" or "?"
+2021-11-18 [14:51:09.802] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [14:51:36.743] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57298] Session opened
+2021-11-18 [14:51:36.781] [Server thread/INFO]: [NetworkSession: 157.100.173.104 57298] Player: ImAMadDev
+2021-11-18 [14:51:49.921] [Server thread/INFO]: ImAMadDev[/157.100.173.104:57298] logged in with entity id 1 at (world, 251.3, 74, 272.4728)
+2021-11-18 [14:52:52.213] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [14:53:14.154] [Server thread/CRITICAL]: Error: "Typed property ImAMadDev\inventory\EnderChestInvMenuType::$player must not be accessed before initialization" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/inventory/EnderChestInvMenuType" at line 36
+--- Stack trace ---
+  #0 plugins/HCFv2/src/muqsit/invmenu/InvMenu(62): ImAMadDev\inventory\EnderChestInvMenuType->createInventory()
+  #1 plugins/HCFv2/src/muqsit/invmenu/InvMenu(31): muqsit\invmenu\InvMenu->__construct(object ImAMadDev\inventory\EnderChestInvMenuType#23828, object pocketmine\inventory\PlayerEnderInventory#26145)
+  #2 plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand(41): muqsit\invmenu\InvMenu::create(string[14] hcf:enderchest, object pocketmine\inventory\PlayerEnderInventory#26145)
+  #3 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\command\defaults\EnderChestCommand->execute(object ImAMadDev\player\HCFPlayer#25884, string[2] ec, array[0])
+  #4 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#25884, string[2] ec)
+  #5 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#25884, string[2] ec)
+  #6 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[3] /ec)
+  #7 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#114584)
+  #8 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112581)
+  #9 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#114584, string[24] M./ec..L."....... XJ....)
+  #10 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[28] ..e.OMf......m......".X&20..)
+  #11 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[37] .j....,y......Hl"c.c.Hr.z"...X2..]..U)
+  #12 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24184)
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #14 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #15 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637247194.1665)
+  #16 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #17 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #18 pmsrc/src/PocketMine(324): pocketmine\server()
+  #19 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [14:53:14.161] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [14:53:14.184] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-09.53.14--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [14:53:14.189] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [14:53:14.198] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [14:53:14.198] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [14:53:14.198] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [14:53:14.198] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [14:53:14.273] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [14:53:14.273] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [14:53:14.288] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [14:53:14.293] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [14:53:14.294] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [14:53:14.309] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:03:07.007] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:03:07.100] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:03:07.101] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:03:07.101] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:03:07.101] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:03:07.119] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:03:07.119] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:03:07.130] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:03:07.142] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:03:07.194] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:03:07.198] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:03:08.088] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:03:08.191] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:03:08.201] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:03:08.205] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:03:08.215] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:03:08.220] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:03:08.223] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:03:08.224] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:03:08.224] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:03:08.224] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:03:08.224] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:03:08.225] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:03:08.228] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:03:08.247] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:03:08.248] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:03:08.249] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:03:08.250] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:03:08.251] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:03:08.295] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:03:08.323] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:03:08.507] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:03:08.516] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:03:08.629] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:03:08.668] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:03:08.749] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:03:08.775] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:03:08.779] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:03:08.796] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:03:08.921] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:03:09.049] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:03:09.061] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:03:09.084] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:03:09.470] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:03:09.552] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:03:09.553] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:03:09.553] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:03:09.553] [Server thread/INFO]: Done (2.548s)! For help, type "help" or "?"
+2021-11-18 [21:03:09.652] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:03:21.315] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [21:03:21.323] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:03:21.324] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:03:21.324] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:03:21.324] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:03:21.422] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:03:21.422] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:03:21.422] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:03:21.453] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:03:21.841] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:03:21.923] [Server thread/INFO]: Stopping other threads
+2021-11-18 [21:04:40.163] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:04:40.193] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:04:40.193] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:04:40.193] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:04:40.203] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:04:40.204] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:04:40.204] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:04:40.208] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:04:40.212] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:04:40.241] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:04:40.243] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:04:40.473] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:04:40.496] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:04:40.504] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:04:40.505] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:04:40.507] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:04:40.508] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:04:40.510] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:04:40.510] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:04:40.510] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:04:40.511] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:04:40.511] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:04:40.511] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:04:40.511] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:04:40.515] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:04:40.515] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:04:40.516] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:04:40.516] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:04:40.516] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:04:40.530] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:04:40.538] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:04:40.585] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:04:40.587] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:04:40.634] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:04:40.644] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:04:40.686] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:04:40.691] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:04:40.729] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:04:40.729] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:04:40.735] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:04:40.778] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:04:40.782] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:04:40.788] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:04:40.923] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:04:40.943] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:04:40.944] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:04:40.944] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:04:40.944] [Server thread/INFO]: Done (0.782s)! For help, type "help" or "?"
+2021-11-18 [21:04:40.949] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:07:18.480] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1830] Session opened
+2021-11-18 [21:07:19.176] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1830] Player: ImAMadDev
+2021-11-18 [21:07:20.547] [Server thread/INFO]: ImAMadDev[/157.100.173.104:1830] logged in with entity id 2 at (world, 259.5196, 76, 271.266)
+2021-11-18 [21:07:31.005] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [21:07:36.023] [Server thread/CRITICAL]: ErrorException: "Undefined property: pocketmine\world\Position::$Z" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand" at line 46
+--- Stack trace ---
+  #0 plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand(46): pocketmine\errorhandler\ErrorToExceptionHandler::handle(integer 2, string[49] Undefined property: pocketmine\world\Position::$Z, string[76] /home/mad/plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand.php, integer 46)
+  #1 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\command\defaults\EnderChestCommand->execute(object ImAMadDev\player\HCFPlayer#25914, string[2] ec, array[0])
+  #2 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #3 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #4 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[3] /ec)
+  #5 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113497)
+  #6 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112552)
+  #7 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113497, string[24] M./ec..O...u.......sO...)
+  #8 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[28] ..e.OMf...f........8.Y..'...)
+  #9 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[37] .EAX.z~.....B..+ z....A...!pU..Q..J@P)
+  #10 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24184)
+  #11 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #13 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637269656.0502)
+  #14 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #15 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #16 pmsrc/src/PocketMine(324): pocketmine\server()
+  #17 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [21:07:36.025] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [21:07:36.049] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-16.07.36--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [21:07:36.050] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:07:36.050] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:07:36.051] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:07:36.165] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:07:36.165] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:07:36.165] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:07:36.166] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:07:36.197] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [21:07:36.209] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [21:07:36.212] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:07:36.223] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:09:15.695] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:09:15.730] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:09:15.730] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:09:15.730] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:09:15.730] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:09:15.730] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:09:15.730] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:09:15.737] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:09:15.757] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:09:15.783] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:09:15.783] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:09:16.156] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:09:16.189] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:09:16.197] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:09:16.199] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:09:16.202] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:09:16.203] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:09:16.205] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:09:16.206] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:09:16.206] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:09:16.206] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:09:16.206] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:09:16.206] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:09:16.207] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:09:16.217] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:09:16.221] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:09:16.221] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:09:16.221] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:09:16.221] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:09:16.247] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:09:16.262] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:09:16.332] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:09:16.342] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:09:16.389] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:09:16.395] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:09:16.415] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:09:16.423] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:09:16.435] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:09:16.437] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:09:16.489] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:09:16.531] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:09:16.537] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:09:16.546] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:09:16.703] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:09:16.720] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:09:16.720] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:09:16.720] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:09:16.721] [Server thread/INFO]: Done (1.027s)! For help, type "help" or "?"
+2021-11-18 [21:09:16.727] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:09:26.884] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1838] Session opened
+2021-11-18 [21:09:27.114] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1838] Player: ImAMadDev
+2021-11-18 [21:09:28.299] [Server thread/INFO]: ImAMadDev[/157.100.173.104:1838] logged in with entity id 2 at (world, 259.5196, 76, 271.266)
+2021-11-18 [21:09:35.786] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [21:09:39.839] [Server thread/CRITICAL]: LogicException: "Unsupported inventory type" (EXCEPTION) in "pmsrc/src/network/mcpe/InventoryManager" at line 162
+--- Stack trace ---
+  #0 pmsrc/src/player/Player(2395): pocketmine\network\mcpe\InventoryManager->onCurrentWindowChange(object pocketmine\inventory\PlayerEnderInventory#26202)
+  #1 plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand(47): pocketmine\player\Player->setCurrentWindow(object pocketmine\inventory\PlayerEnderInventory#26202)
+  #2 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\command\defaults\EnderChestCommand->execute(object ImAMadDev\player\HCFPlayer#25914, string[2] ec, array[0])
+  #3 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #4 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[3] /ec)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113638)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112684)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113638, string[24] M./ec..Jy..>*...!a;.....)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[27] ..e.OMf......N.o..b....V...)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[36] ..Vr......kAR.......dj.H?.........j.)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24184)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637269779.8773)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [21:09:39.840] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [21:09:39.856] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-16.09.39--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [21:09:39.856] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:09:39.857] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:09:39.858] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:09:39.858] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:09:39.858] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:09:39.913] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:09:39.913] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:09:39.928] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [21:09:39.932] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [21:09:39.932] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:09:39.942] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:11:30.466] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:11:30.982] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:11:30.984] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:11:30.984] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:11:30.987] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:11:30.987] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:11:30.987] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:11:31.022] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:11:31.148] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:11:31.447] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:11:31.448] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:11:33.063] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:11:33.174] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:11:33.197] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:11:33.240] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:11:33.262] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:11:33.286] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:11:33.343] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:11:33.378] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:11:33.379] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:11:33.382] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:11:33.383] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:11:33.383] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:11:33.383] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:11:33.389] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:11:33.428] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:11:33.456] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:11:33.458] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:11:33.459] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:11:33.460] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:11:33.461] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:11:33.513] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:11:33.548] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:11:33.783] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:11:33.789] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:11:33.870] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:11:33.887] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:11:33.939] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:11:33.947] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:11:33.947] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:11:34.076] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:11:34.214] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:11:34.231] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:11:34.287] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:11:34.312] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:11:34.315] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:11:34.315] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:11:34.315] [Server thread/INFO]: Done (3.85s)! For help, type "help" or "?"
+2021-11-18 [21:11:34.331] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:12:35.234] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [21:12:35.237] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:12:35.267] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:12:35.267] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:12:35.267] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:12:35.267] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:12:35.267] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:12:35.277] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:12:35.277] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:12:35.305] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:12:35.471] [Server thread/INFO]: Stopping other threads
+2021-11-18 [21:12:41.890] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:12:41.914] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:12:41.914] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:12:41.914] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:12:41.914] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:12:41.914] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:12:41.914] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:12:41.917] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:12:41.920] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:12:41.941] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:12:41.941] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:12:42.199] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:12:42.224] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:12:42.228] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:12:42.232] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:12:42.233] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:12:42.235] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:12:42.237] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:12:42.238] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:12:42.238] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:12:42.238] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:12:42.238] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:12:42.238] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:12:42.240] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:12:42.250] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:12:42.255] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:12:42.255] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:12:42.255] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:12:42.256] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:12:42.256] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:12:42.271] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:12:42.278] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:12:42.316] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:12:42.318] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:12:42.359] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:12:42.381] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:12:42.385] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:12:42.386] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:12:42.393] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:12:42.431] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:12:42.536] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:12:42.592] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:12:42.601] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:12:42.636] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:12:42.650] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:12:42.651] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:12:42.651] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:12:42.651] [Server thread/INFO]: Done (0.762s)! For help, type "help" or "?"
+2021-11-18 [21:12:42.662] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:12:50.223] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1846] Session opened
+2021-11-18 [21:12:50.653] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1846] Player: ImAMadDev
+2021-11-18 [21:12:51.892] [Server thread/INFO]: ImAMadDev[/157.100.173.104:1846] logged in with entity id 2 at (world, 259.5196, 76, 271.266)
+2021-11-18 [21:12:59.231] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [21:13:06.342] [Server thread/CRITICAL]: LogicException: "Unsupported inventory type" (EXCEPTION) in "pmsrc/src/network/mcpe/InventoryManager" at line 162
+--- Stack trace ---
+  #0 pmsrc/src/player/Player(2395): pocketmine\network\mcpe\InventoryManager->onCurrentWindowChange(object pocketmine\inventory\PlayerEnderInventory#26202)
+  #1 plugins/HCFv2/src/ImAMadDev/command/defaults/EnderChestCommand(47): pocketmine\player\Player->setCurrentWindow(object pocketmine\inventory\PlayerEnderInventory#26202)
+  #2 pmsrc/src/command/SimpleCommandMap(220): ImAMadDev\command\defaults\EnderChestCommand->execute(object ImAMadDev\player\HCFPlayer#25914, string[2] ec, array[0])
+  #3 pmsrc/src/Server(1388): pocketmine\command\SimpleCommandMap->dispatch(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #4 pmsrc/src/player/Player(1337): pocketmine\Server->dispatchCommand(object ImAMadDev\player\HCFPlayer#25914, string[2] ec)
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(688): pocketmine\player\Player->chat(string[3] /ec)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/CommandRequestPacket(62): pocketmine\network\mcpe\handler\InGamePacketHandler->handleCommandRequest(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113586)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\CommandRequestPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112643)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\CommandRequestPacket#113586, string[24] M./ec.TFo.4..M.b |E.....)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[27] ..e.OMf.q._g......P..i.4...)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[36] ....4..0..S.. |i;;.N:.+&../.&.".8f..)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24219)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637269986.3622)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [21:13:06.344] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [21:13:06.351] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-16.13.06--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [21:13:06.352] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:13:06.352] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:13:06.352] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:13:06.353] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:13:06.403] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:13:06.404] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:13:06.412] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:13:06.413] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [21:13:06.418] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [21:13:06.419] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:13:06.429] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:20:54.251] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:20:54.302] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:20:54.308] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:20:54.308] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:20:54.308] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:20:54.308] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:20:54.308] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:20:54.312] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:20:54.322] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:20:54.347] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:20:54.352] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:20:54.693] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:20:54.720] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:20:54.729] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:20:54.730] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:20:54.736] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:20:54.750] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:20:54.757] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:20:54.759] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:20:54.760] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:20:54.760] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:20:54.760] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:20:54.760] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:20:54.761] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:20:54.761] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:20:54.768] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:20:54.776] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:20:54.788] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:20:54.788] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:20:54.791] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:20:54.791] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:20:54.822] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:20:54.855] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:20:54.901] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:20:54.904] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:20:54.963] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:20:54.968] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:20:55.009] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:20:55.010] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:20:55.018] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:20:55.122] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:20:55.170] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:20:55.175] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:20:55.214] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:20:55.227] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:20:55.227] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:20:55.227] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:20:55.227] [Server thread/INFO]: Done (0.977s)! For help, type "help" or "?"
+2021-11-18 [21:20:55.232] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:21:03.971] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1987] Session opened
+2021-11-18 [21:21:04.219] [Server thread/INFO]: [NetworkSession: 157.100.173.104 1987] Player: ImAMadDev
+2021-11-18 [21:21:05.116] [Server thread/INFO]: ImAMadDev[/157.100.173.104:1987] logged in with entity id 2 at (world, 259.5196, 76, 271.266)
+2021-11-18 [21:21:14.910] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [21:21:22.666] [Server thread/CRITICAL]: ArgumentCountError: "Too few arguments to function pocketmine\block\BlockFactory::get(), 1 passed in /home/mad/plugins/HCFv2/src/ImAMadDev/listener/HCFListener.php on line 795 and exactly 2 expected" (EXCEPTION) in "pmsrc/src/block/BlockFactory" at line 954
+--- Stack trace ---
+  #0 plugins/HCFv2/src/ImAMadDev/listener/HCFListener(795): pocketmine\block\BlockFactory->get(integer 7)
+  #1 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onInventoryCloseEvent(object pocketmine\event\inventory\InventoryCloseEvent#26071)
+  #2 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\inventory\InventoryCloseEvent#26071)
+  #3 pmsrc/src/player/Player(2404): pocketmine\event\Event->call()
+  #4 pmsrc/src/network/mcpe/InventoryManager(224): pocketmine\player\Player->removeCurrentWindow()
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(573): pocketmine\network\mcpe\InventoryManager->onClientRemoveWindow(integer 2)
+  #6 pmsrc/vendor/pocketmine/bedrock-protocol/src/ContainerClosePacket(57): pocketmine\network\mcpe\handler\InGamePacketHandler->handleContainerClose(object pocketmine\network\mcpe\protocol\ContainerClosePacket#113679)
+  #7 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\ContainerClosePacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112614)
+  #8 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\ContainerClosePacket#113679, string[3] /..)
+  #9 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[6] c.gb..)
+  #10 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[15] ...4;Q...:..]f.)
+  #11 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24219)
+  #12 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #14 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637270482.6822)
+  #15 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #16 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #17 pmsrc/src/PocketMine(324): pocketmine\server()
+  #18 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [21:21:22.666] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [21:21:22.679] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-16.21.22--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [21:21:22.680] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:21:22.709] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:21:22.710] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:21:22.710] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:21:22.710] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:21:22.710] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:21:22.718] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:21:22.719] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [21:21:22.723] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [21:21:22.723] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:21:22.734] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:25:50.292] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:25:50.350] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:25:50.350] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:25:50.350] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:25:50.350] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:25:50.351] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:25:50.351] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:25:50.356] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:25:50.363] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:25:50.389] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:25:50.389] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:25:50.820] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:25:50.858] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:25:50.864] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:25:50.871] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:25:50.874] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:25:50.879] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:25:50.882] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:25:50.883] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:25:50.883] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:25:50.883] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:25:50.883] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:25:50.883] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:25:50.884] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:25:50.891] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:25:50.891] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:25:50.892] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:25:50.892] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:25:50.892] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:25:50.912] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:25:50.926] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:25:50.981] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:25:50.983] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:25:51.024] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:25:51.031] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:25:51.078] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:25:51.082] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:25:51.084] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:25:51.120] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:25:51.126] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:25:51.170] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:25:51.175] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:25:51.179] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:25:51.308] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:25:51.322] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:25:51.322] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:25:51.322] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:25:51.322] [Server thread/INFO]: Done (1.032s)! For help, type "help" or "?"
+2021-11-18 [21:25:51.327] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:25:53.921] [Server thread/INFO]: [CONSOLE: Stopping the server]
+2021-11-18 [21:25:53.929] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:25:53.930] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:25:53.951] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:25:53.952] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:25:53.952] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:25:53.952] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:25:53.952] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:25:53.962] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:25:53.982] [Server thread/INFO]: Unloading world "Nether"
+2021-11-18 [21:25:54.141] [Server thread/INFO]: Stopping other threads
+2021-11-18 [21:26:19.953] [Server thread/INFO]: Loading server configuration
+2021-11-18 [21:26:20.000] [Server thread/INFO]: Selected English (eng) as the base language
+2021-11-18 [21:26:20.002] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:26:20.002] [Server thread/WARNING]: You are running a PocketMine-MP DEVELOPMENT build.
+2021-11-18 [21:26:20.002] [Server thread/WARNING]: The API for this version may not be finalized. Plugins which run on this build may not work on other builds with the same API version.
+2021-11-18 [21:26:20.002] [Server thread/WARNING]: The build may have bugs, crash, corrupt your data, or break your plugins.
+2021-11-18 [21:26:20.002] [Server thread/WARNING]: ----------------------------------------
+2021-11-18 [21:26:20.011] [Server thread/INFO]: Starting Minecraft: Bedrock Edition server version v1.17.40
+2021-11-18 [21:26:20.015] [Server thread/INFO]: Online mode is enabled. The server will verify that players are authenticated to Xbox Live.
+2021-11-18 [21:26:20.043] [Server thread/INFO]: This server is running PocketMine-MP version 4.0.0-BETA13+dev
+2021-11-18 [21:26:20.044] [Server thread/INFO]: PocketMine-MP is distributed under the LGPL License
+2021-11-18 [21:26:20.362] [Server thread/INFO]: Loading resource packs...
+2021-11-18 [21:26:20.413] [Server thread/INFO]: Loading FormImagesFix v0.0.1
+2021-11-18 [21:26:20.417] [Server thread/INFO]: Loading DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:26:20.419] [Server thread/INFO]: Loading DeathInventoryLog v0.0.1
+2021-11-18 [21:26:20.421] [Server thread/INFO]: Loading DevTools v1.15.0+dev
+2021-11-18 [21:26:20.424] [Server thread/INFO]: Loading AggressiveOptz v0.0.1
+2021-11-18 [21:26:20.426] [Server thread/INFO]: Enabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:26:20.427] [Server thread/INFO]: Enabling DevTools v1.15.0+dev
+2021-11-18 [21:26:20.428] [Server thread/ERROR]: Could not load plugin 'DeathInventoryLog': plugin exists
+2021-11-18 [21:26:20.428] [Server thread/ERROR]: Could not load plugin 'DEVirion': plugin exists
+2021-11-18 [21:26:20.428] [Server thread/ERROR]: Could not load plugin 'AggressiveOptz': plugin exists
+2021-11-18 [21:26:20.428] [Server thread/ERROR]: Could not load plugin 'FormImagesFix': plugin exists
+2021-11-18 [21:26:20.428] [Server thread/ERROR]: Could not load plugin 'DevTools': plugin exists
+2021-11-18 [21:26:20.429] [Server thread/INFO]: Loading BedcoreProtect v1.0.0
+2021-11-18 [21:26:20.433] [Server thread/INFO]: Loading HCF v2
+2021-11-18 [21:26:20.449] [Server thread/INFO]: [HCF] Rank ? Anubis was loaded successfully!
+2021-11-18 [21:26:20.449] [Server thread/INFO]: [HCF] Rank ? Cthulhu was loaded successfully!
+2021-11-18 [21:26:20.450] [Server thread/INFO]: [HCF] Rank ? Eternal was loaded successfully!
+2021-11-18 [21:26:20.450] [Server thread/INFO]: [HCF] Rank ? Owner was loaded successfully!
+2021-11-18 [21:26:20.450] [Server thread/INFO]: [HCF] Rank ? Sapphire was loaded successfully!
+2021-11-18 [21:26:20.462] [Server thread/INFO]: [HCF] The kits have been loaded! Number of kits: 12
+2021-11-18 [21:26:20.469] [Server thread/INFO]: [HCF] The crate have been loaded! Number of crates: 7
+2021-11-18 [21:26:20.531] [Server thread/INFO]: [HCF] The abilities have been loaded! Number of abilities: 19
+2021-11-18 [21:26:20.536] [Server thread/INFO]: [HCF] Tags have been loaded! Number of tags: 14
+2021-11-18 [21:26:20.680] [Server thread/INFO]: Preparing world "world"
+2021-11-18 [21:26:20.696] [Server thread/INFO]: Enabling FormImagesFix v0.0.1
+2021-11-18 [21:26:20.703] [Server thread/INFO]: Enabling DeathInventoryLog v0.0.1
+2021-11-18 [21:26:20.757] [Server thread/INFO]: Enabling AggressiveOptz v0.0.1
+2021-11-18 [21:26:20.765] [Server thread/INFO]: Enabling BedcoreProtect v1.0.0
+2021-11-18 [21:26:20.875] [Server thread/INFO]: Enabling HCF v2
+2021-11-18 [21:26:20.940] [Server thread/INFO]: [HCF] The Custom enchantments have been loaded! Number of enchants: 15
+2021-11-18 [21:26:20.966] [Server thread/INFO]: Preparing world "Nether"
+2021-11-18 [21:26:21.021] [Server thread/INFO]: Minecraft network interface running on 0.0.0.0:19132
+2021-11-18 [21:26:21.042] [Server thread/INFO]: Minecraft network interface running on [::]:19133
+2021-11-18 [21:26:21.042] [Server thread/INFO]: Default game type: Survival Mode
+2021-11-18 [21:26:21.042] [Server thread/INFO]: If you find this project useful, please consider donating to support development: https://patreon.com/pocketminemp
+2021-11-18 [21:26:21.043] [Server thread/INFO]: Done (1.091s)! For help, type "help" or "?"
+2021-11-18 [21:26:21.047] [Server thread/INFO]: [?] Do you want to buy a rank? Visit our store: https://pacmanlife.buycraft.net/
+2021-11-18 [21:26:26.881] [Server thread/INFO]: [NetworkSession: 157.100.173.104 2000] Session opened
+2021-11-18 [21:26:27.263] [Server thread/INFO]: [NetworkSession: 157.100.173.104 2000] Player: ImAMadDev
+2021-11-18 [21:26:28.547] [Server thread/INFO]: ImAMadDev[/157.100.173.104:2000] logged in with entity id 2 at (world, 259.5196, 76, 271.266)
+2021-11-18 [21:26:35.800] [Server thread/INFO]: [+] ImAMadDev
+2021-11-18 [21:27:03.740] [Server thread/CRITICAL]: ErrorException: "Undefined variable $newLevel" (EXCEPTION) in "plugins/HCFv2/src/ImAMadDev/listener/HCFListener" at line 606
+--- Stack trace ---
+  #0 plugins/HCFv2/src/ImAMadDev/listener/HCFListener(606): pocketmine\errorhandler\ErrorToExceptionHandler::handle(integer 2, string[28] Undefined variable $newLevel, string[62] /home/mad/plugins/HCFv2/src/ImAMadDev/listener/HCFListener.php, integer 606)
+  #1 pmsrc/src/event/RegisteredListener(75): ImAMadDev\listener\HCFListener->onTransaction(object pocketmine\event\inventory\InventoryTransactionEvent#113269)
+  #2 pmsrc/src/event/Event(62): pocketmine\event\RegisteredListener->callEvent(object pocketmine\event\inventory\InventoryTransactionEvent#113269)
+  #3 pmsrc/src/inventory/transaction/InventoryTransaction(294): pocketmine\event\Event->call()
+  #4 pmsrc/src/inventory/transaction/InventoryTransaction(312): pocketmine\inventory\transaction\InventoryTransaction->callExecuteEvent()
+  #5 pmsrc/src/network/mcpe/handler/InGamePacketHandler(320): pocketmine\inventory\transaction\InventoryTransaction->execute()
+  #6 pmsrc/src/network/mcpe/handler/InGamePacketHandler(217): pocketmine\network\mcpe\handler\InGamePacketHandler->handleNormalTransaction(object pocketmine\network\mcpe\protocol\types\inventory\NormalTransactionData#113352)
+  #7 pmsrc/vendor/pocketmine/bedrock-protocol/src/InventoryTransactionPacket(116): pocketmine\network\mcpe\handler\InGamePacketHandler->handleInventoryTransaction(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#113345)
+  #8 pmsrc/src/network/mcpe/NetworkSession(395): pocketmine\network\mcpe\protocol\InventoryTransactionPacket->handle(object pocketmine\network\mcpe\handler\InGamePacketHandler#112752)
+  #9 pmsrc/src/network/mcpe/NetworkSession(358): pocketmine\network\mcpe\NetworkSession->handleDataPacket(object pocketmine\network\mcpe\protocol\InventoryTransactionPacket#113345, string[449] ...............n.........custom_enchantment....display...Lore.........r..4Unrepa)
+  #10 pmsrc/src/network/mcpe/raklib/RakLibInterface(192): pocketmine\network\mcpe\NetworkSession->handleEncoded(string[174] ..=..@.......6.X.......F,E.d..f#.5.5...0.......{}.........O.[O..)...5BpI]....'2.)
+  #11 pmsrc/vendor/pocketmine/raklib-ipc/src/RakLibToUserThreadMessageReceiver(42): pocketmine\network\mcpe\raklib\RakLibInterface->onPacketReceive(integer 0, string[183] ..Q..............h;m:......TU..M...=..j..5g....Wk.<|a78.m.........v.x(.g1.5..a./)
+  #12 pmsrc/src/network/mcpe/raklib/RakLibInterface(122): raklib\server\ipc\RakLibToUserThreadMessageReceiver->handle(object pocketmine\network\mcpe\raklib\RakLibInterface#24219)
+  #13 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(123): pocketmine\network\mcpe\raklib\RakLibInterface->pocketmine\network\mcpe\raklib\{closure}()
+  #14 pmsrc/vendor/pocketmine/snooze/src/SleeperHandler(82): pocketmine\snooze\SleeperHandler->processNotifications()
+  #15 pmsrc/src/Server(1615): pocketmine\snooze\SleeperHandler->sleepUntil(double 1637270823.7474)
+  #16 pmsrc/src/Server(1028): pocketmine\Server->tickProcessor()
+  #17 pmsrc/src/PocketMine(301): pocketmine\Server->__construct(object BaseClassLoader#3, object pocketmine\utils\MainLogger#2, string[10] /home/mad/, string[18] /home/mad/plugins/)
+  #18 pmsrc/src/PocketMine(324): pocketmine\server()
+  #19 pmsrc(11): require(string[54] phar:///home/mad/PocketMine-MP.phar/src/PocketMine.php)
+--- End of exception information ---
+2021-11-18 [21:27:03.742] [Server thread/EMERGENCY]: An unrecoverable error has occurred and the server has crashed. Creating a crash dump
+2021-11-18 [21:27:03.763] [Server thread/EMERGENCY]: Please upload the "/home/mad/crashdumps/Thu_Nov_18-16.27.03--05_2021.log" file to the Crash Archive and submit the link to the Bug Reporting page. Give as much info as you can.
+2021-11-18 [21:27:03.764] [Server thread/INFO]: Disabling FormImagesFix v0.0.1
+2021-11-18 [21:27:03.766] [Server thread/INFO]: Disabling DEVirion v1.2.5-ALPHA12
+2021-11-18 [21:27:03.766] [Server thread/INFO]: Disabling DeathInventoryLog v0.0.1
+2021-11-18 [21:27:03.821] [Server thread/INFO]: Disabling DevTools v1.15.0+dev
+2021-11-18 [21:27:03.821] [Server thread/INFO]: Disabling AggressiveOptz v0.0.1
+2021-11-18 [21:27:03.821] [Server thread/INFO]: Disabling BedcoreProtect v1.0.0
+2021-11-18 [21:27:03.850] [Server thread/INFO]: Disabling HCF v2
+2021-11-18 [21:27:03.853] [Server thread/INFO]: ImAMadDev left the game
+2021-11-18 [21:27:03.872] [Server thread/INFO]: [NetworkSession: ImAMadDev] Session closed due to Server closed
+2021-11-18 [21:27:03.873] [Server thread/INFO]: Unloading world "world"
+2021-11-18 [21:27:03.915] [Server thread/INFO]: Unloading world "Nether"
