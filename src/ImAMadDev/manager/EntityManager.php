@@ -67,6 +67,9 @@ class EntityManager {
         $factory->register(BlockMarket::class, function(World $world, CompoundTag $nbt) use($skin): BlockMarket{
             return new BlockMarket(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
         }, ['BlockMarket', 'minecraft:block_market'], EntityLegacyIds::NPC);
+        $factory->register(Switcher::class, function (World $world, CompoundTag $nbt) : Switcher {
+            return new Switcher(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ['Switcher', 'minecraft:switcher']);
        /*$factory->register(FireworksRocket::class, function(World $world, CompoundTag $nbt) : FireworksRocket{
             return new FireworksRocket(EntityDataHelper::parseLocation($nbt, $world), ItemFactory::getInstance()->get(ItemIds::FIREWORKS, 0));
         }, ['FireworksRocket', EntityIds::FIREWORKS_ROCKET], EntityLegacyIds::FIREWORKS_ROCKET);
