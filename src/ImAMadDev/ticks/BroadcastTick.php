@@ -13,12 +13,12 @@ class BroadcastTick extends Task {
 	
 	private int $currentId = 0; 
 	
-	private array $messages = ["&6&l[?]&r Do you want to buy a rank? Visit our store: &6https://pacmanlife.buycraft.net/",
-		"&6&l[?]&r You can enter our discord through this link: &9https://discord.gg/r483mW5z",
+	private array $messages = ["&6&l[?]&r Do you want to buy a rank? Visit our store: &6www.minestalia.com/shop",
+		"&6&l[?]&r You can enter our discord through this link: &9www.minestalia.com/discord",
 		"&6&l[?]&r You can see all the faction commands with &e/f help",
-		"&6&l[?]&r Did you know that by voting for our server you get &arewards&r? Vote using your name at: &6https://bit.ly/3z1Jrbl",
+		"&6&l[?]&r Did you know that by voting for our server you get &arewards&r? Vote using your name at: &6www.minestalia.com/vote",
 		"&6&l[?]&r Highest Roll Players Online: &6{roll}",
-		"&4&ll[!]&r This is a BETA 2.0 version of &dMine&fStalia&r, if you find any problem like a bug or glitch, please contact us at &9https://discord.gg/r483mW5z"
+		"&4&ll[!]&r This is a BETA 2.0 version of &dMine&fStalia&r, if you find any problem like a bug or glitch, please contact us at &9www.minestalia.com/discord"
 	];
 
 	public function __construct(HCF $main) {

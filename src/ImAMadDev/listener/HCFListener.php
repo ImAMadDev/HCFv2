@@ -38,6 +38,8 @@ use pocketmine\utils\TextFormat;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\player\{PlayerJoinEvent,
+    PlayerKickEvent,
+    PlayerPreLoginEvent,
     PlayerRespawnEvent,
     PlayerQuitEvent,
     PlayerCreationEvent,
@@ -622,6 +624,15 @@ class HCFListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    public function onKick(PlayerKickEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        $reason  = $event->getReason();
+        if ($reason == PlayerPreLoginEvent::KICK_REASON_SERVER_WHITELISTED){
+            $event->setQuitMessage(TextFormat::DARK_PURPLE . "Now we are closed, try to join again later!");
         }
     }
     
