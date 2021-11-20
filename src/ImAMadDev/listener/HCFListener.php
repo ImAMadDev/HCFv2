@@ -7,12 +7,11 @@ use ImAMadDev\customenchants\types\Gappler;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\player\{HCFPlayer, PlayerUtils, PlayerData};
-use ImAMadDev\npc\NPCEntity;
 use ImAMadDev\ticks\player\Scoreboard;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, SOTWManager};
 use ImAMadDev\entity\CombatLogger;
 use ImAMadDev\faction\Faction;
-use ImAMadDev\utils\{InventoryUtils, HCFUtils};
+use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\customenchants\CustomEnchantment;
 
 use pocketmine\block\Block;
@@ -21,7 +20,6 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\utils\SignText;
-use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -38,8 +36,6 @@ use pocketmine\utils\TextFormat;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\player\{PlayerJoinEvent,
-    PlayerKickEvent,
-    PlayerPreLoginEvent,
     PlayerRespawnEvent,
     PlayerQuitEvent,
     PlayerCreationEvent,
@@ -61,11 +57,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\{InventoryContentPacket,
-    InventorySlotPacket,
-    InventoryTransactionPacket,
     types\BlockPosition,
-    types\inventory\ItemStackWrapper,
-    types\inventory\UseItemOnEntityTransactionData,
     UpdateBlockPacket,
     LoginPacket};
 use pocketmine\world\sound\ExplodeSound;
@@ -624,15 +616,6 @@ class HCFListener implements Listener {
                     }
                 }
             }
-        }
-    }
-
-    public function onKick(PlayerKickEvent $event) : void
-    {
-        $player = $event->getPlayer();
-        $reason  = $event->getReason();
-        if ($reason == PlayerPreLoginEvent::KICK_REASON_SERVER_WHITELISTED){
-            $event->setQuitMessage(TextFormat::DARK_PURPLE . "Now we are closed, try to join again later!");
         }
     }
     

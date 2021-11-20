@@ -30,7 +30,7 @@ class SplashPotion extends Throwable {
     public function __construct(Location $location, ?Entity $shootingEntity, PotionType $potionType, ?CompoundTag $nbt = null){
         $this->potionType = $potionType;
         $this->gravity = 0.08;
-        $this->drag = 0.5;
+        $this->drag = 0.3;
 		parent::__construct($location, $shootingEntity, $nbt);
 	}
 

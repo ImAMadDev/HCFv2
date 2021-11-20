@@ -4,6 +4,7 @@ namespace ImAMadDev\manager;
 
 use ImAMadDev\HCF;
 use ImAMadDev\tags\Tag;
+use function Sodium\add;
 
 class TagManager
 {
@@ -59,6 +60,7 @@ class TagManager
         $this->addTag(new Tag("ESP", "&7[&4&lE&eS&4P&7]"));
         $this->addTag(new Tag("CRC", "&7[&1&lC&4R&fC&7]"));
         $this->addTag(new Tag("PAN", "&7[&1&lP&fA&4N&r&7]"));
+        $this->addTag(new Tag("SDLG", "&7[&8&lSD&4LG&r&7]"));
         $this->getMain()->getLogger()->info("§aTags have been loaded! Number of tags: " . count($this->getTags()));
     }
 

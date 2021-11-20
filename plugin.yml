@@ -76,4 +76,7 @@ permissions:
   resetkit.command:
     default: op
     description: Reset player kit countdown command
+  configurate.shop:
+    default: op
+    description: Permission to create a shop Sign
 ...

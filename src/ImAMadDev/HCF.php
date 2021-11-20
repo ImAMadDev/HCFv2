@@ -107,7 +107,7 @@ class HCF extends PluginBase {
 		}
         InvMenuHandler::getTypeRegistry()->register(self::INV_MENU_TYPE_ENDER_CHEST, new EnderChestInvMenuType());
         CustomEnchantments::init();
-		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&6HCF"));
+		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&5&l&oMine&fStalia &r&7»"));
         if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::NETHER_MAP)){
             $g = WorldCreationOptions::create();
             $g->setGeneratorClass(Nether::class);
