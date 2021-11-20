@@ -415,7 +415,6 @@ class HCFListener implements Listener {
 					$player->setFirstClaimingPosition();
 					$player->setSecondClaimingPosition();
 					$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
-					return;
 				} else {
 					$player->sendMessage(TextFormat::GRAY . "Sneak and tap anywhere to confirm purchase of claim.");
 				}
@@ -596,7 +595,7 @@ class HCFListener implements Listener {
                             $currentLevel = $existingEnchant->getLevel() === $currentLevel ? $currentLevel + 1 : $currentLevel;
                         }
                         if($enchantmentType instanceof CustomEnchantment) {
-                            if (!$enchantmentType->canEnchant($itemClicked) and ($itemClickedWith->getId() !== ItemIds::ENCHANTED_BOOK)) continue;
+                            if (!$enchantmentType->canEnchant($itemClicked) or ($itemClickedWith->getId() !== ItemIds::ENCHANTED_BOOK)) continue;
                         }
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $currentLevel));
                         CustomEnchantments::displayEnchantsOld($itemClicked);
@@ -647,19 +646,18 @@ class HCFListener implements Listener {
 	}
 	
 	public function onSignChange(SignChangeEvent $event) : void {
-        if(strtolower($event->getNewText()->getLine(0)) != "[elevator]"){
-            return;
+        if(strtolower($event->getNewText()->getLine(0)) == "[elevator]") {
+            if (strtolower($event->getNewText()->getLine(1)) == "up" || strtolower($event->getNewText()->getLine(1)) == "down") {
+                $event->setNewText(new SignText([
+                    0 => TextFormat::RED . "[Elevator]" . TextFormat::RESET,
+                    1 => strtolower($event->getNewText()->getLine(1)),
+                    2 => "",
+                    3 => ""
+                ]));
+                $event->getPlayer()->sendMessage(TextFormat::GRAY . "You have created an elevator and remember that there must be 2 non-solid blocks for the elevator to work.!");
+            }
         }
-        if(strtolower($event->getNewText()->getLine(1)) == "up" || strtolower($event->getNewText()->getLine(1)) == "down"){
-            $event->getSign()->setText(new SignText([
-                0 => TextFormat::RED . "[Elevator]" . TextFormat::RESET,
-                1 => strtolower($event->getNewText()->getLine(1)),
-                2 => "",
-                3 => ""
-            ]));
-            $event->getPlayer()->sendMessage(TextFormat::GRAY . "You have created an elevator and remember that there must be 2 non-solid blocks for the elevator to work.!");
- 	   }
-	}
+    }
 	
 	public function onSignElevator(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
@@ -667,7 +665,7 @@ class HCFListener implements Listener {
 		$vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
 		$tile = $player->getWorld()->getTile($vec);
 		if($tile instanceof Sign){
-			$line = $tile->getText();
+			$line = $tile->getText()->getLines();
 			if($line[0] === TextFormat::RED . "[Elevator]" . TextFormat::RESET){
 				if(!$player->isSneaking()){
 					$event->cancel();
@@ -701,7 +699,7 @@ class HCFListener implements Listener {
 					if($items[2] >= 1){ 
 						$item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
 						$name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
-                        $event->getSign()->setText(new SignText([
+                        $event->setNewText(new SignText([
                             0 => TextFormat::GREEN . "~" . strtoupper($event->getNewText()->getLine(1)) . "~" . TextFormat::RESET,
                             1 => str_replace(["Lazuli ", "Stained "], "", $name),
                             2 => $item->getId() . ":" .$item->getMeta().":".$item->getCount(),

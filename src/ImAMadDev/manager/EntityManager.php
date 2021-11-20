@@ -70,11 +70,10 @@ class EntityManager {
         $factory->register(Switcher::class, function (World $world, CompoundTag $nbt) : Switcher {
             return new Switcher(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
         }, ['Switcher', 'minecraft:switcher']);
-       /*$factory->register(FireworksRocket::class, function(World $world, CompoundTag $nbt) : FireworksRocket{
+       $factory->register(FireworksRocket::class, function(World $world, CompoundTag $nbt) : FireworksRocket{
             return new FireworksRocket(EntityDataHelper::parseLocation($nbt, $world), ItemFactory::getInstance()->get(ItemIds::FIREWORKS, 0));
         }, ['FireworksRocket', EntityIds::FIREWORKS_ROCKET], EntityLegacyIds::FIREWORKS_ROCKET);
-		Entity::registerEntity(Switcher::class, true, ['Switcher']);
-		Entity::registerEntity(Enderman::class, true, ['Enderman']);
+		/*Entity::registerEntity(Enderman::class, true, ['Enderman']);
 		Entity::registerEntity(Cow::class, true, ['Cow']);
 		Entity::registerEntity(Creeper::class, true, ['Creeper']);
 		Entity::registerEntity(Blaze::class, true, ['Blaze']);*/

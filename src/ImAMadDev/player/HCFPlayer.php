@@ -512,7 +512,7 @@ class HCFPlayer extends Player {
 		foreach($item->getEnchantments() as $enchantment){
 			if($enchantment->getType() instanceof CustomEnchantment){
 				if($enchantment->getType()->canBeActivate()) {
-					$enchantment->getType()->activate($item, 0, $this, $enchantment->getWorld(), $event);
+					$enchantment->getType()->activate($item, 0, $this, $enchantment->getLevel(), $event);
 				}
 			}
 		}
@@ -731,7 +731,10 @@ class HCFPlayer extends Player {
 	
 	public function getNearbyPlayers(int $dictance, int $up) : array {
 		$players = [];
-		foreach($this->getWorld()->getNearbyEntities(new AxisAlignedBB($this->getPosition()->getFloorX() - $dictance, $this->getPosition()->getFloorY() - $up, $this->getPosition()->getFloorZ() - $dictance, $this->getPosition()->getFloorX() + $dictance, $this->getPosition()->getFloorY() + $up, $this->getPosition()->getFloorZ() + $dictance), $this) as $e){
+		foreach($this->getWorld()->getNearbyEntities(new AxisAlignedBB($this->getPosition()->getFloorX() - $dictance, $this->getPosition()->getFloorY() - $up, $this->getPosition()->getFloorZ() - $dictance, $this->getPosition()->getFloorX() + $dictance, $this->getPosition()->getFloorY() + $up, $this->getPosition()->getFloorZ() + $dictance)) as $e){
+            if(!$e instanceof Player){
+                continue;
+            }
             if($e->getName() === $this->getName()) {
                 continue;
             }

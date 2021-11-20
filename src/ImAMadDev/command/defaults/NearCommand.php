@@ -3,6 +3,7 @@
 namespace ImAMadDev\command\defaults;
 
 use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\AxisAlignedBB;
 
@@ -30,7 +31,10 @@ class NearCommand extends Command {
 	
 	public function getNearbyPlayers(HCFPlayer $sender) : array {
 		$players = [];
-        foreach($sender->getWorld()->getNearbyEntities(new AxisAlignedBB($sender->getPosition()->getFloorX() - 200, $sender->getPosition()->getFloorY() - 200, $sender->getPosition()->getFloorZ() - 200, $sender->getPosition()->getFloorX() + 200, $sender->getPosition()->getFloorY() + 200, $sender->getPosition()->getFloorZ() + 200), $sender) as $e){
+        foreach($sender->getWorld()->getNearbyEntities(new AxisAlignedBB($sender->getPosition()->getFloorX() - 200, $sender->getPosition()->getFloorY() - 200, $sender->getPosition()->getFloorZ() - 200, $sender->getPosition()->getFloorX() + 200, $sender->getPosition()->getFloorY() + 200, $sender->getPosition()->getFloorZ() + 200)) as $e){
+            if (!$e instanceof Player){
+                continue;
+            }
             if($e->getName() == $sender->getName()) {
                 continue;
             }

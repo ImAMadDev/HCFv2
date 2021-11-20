@@ -15,7 +15,6 @@ use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
 use pocketmine\world\Position;
-use pocketmine\math\Vector3;
 use pocketmine\block\tile\Chest;
 use pocketmine\utils\TextFormat;
 
@@ -41,12 +40,19 @@ class AirDropTick extends Task {
     public function onRun() : void {
 		$position = $this->pos;
 		if($this->time-- <= 0) {
-            $chest = new Chest($position->getWorld(), $position->asVector3());
-			$chest->setName(TextFormat::colorize("&5&k!!&r&l&3Air Drops&5&k!!&r"));
-			$position->getWorld()->setBlock(new Vector3($chest->getPosition()->getFloorX(), $chest->getPosition()->getFloorY(), $chest->getPosition()->getFloorZ()), BlockFactory::getInstance()->get(BlockLegacyIds::CHEST));
-			foreach($this->getContents() as $item) {
-				$chest->getInventory()->addItem($item);
-			}
+            $block = BlockFactory::getInstance()->get(BlockLegacyIds::CHEST, 0);
+            $position->getWorld()->setBlock($position->add(0, 1, 0), $block);
+            $chest = $position->getWorld()->getTile($position->add(0, 1, 0));
+            if ($chest instanceof Chest) {
+                $chest->setName(TextFormat::colorize("&5&k!!&r&l&3Air Drops&5&k!!&r"));
+            } else {
+                $chest = new Chest($position->getWorld(), $position->add(0, 1, 0));
+                $chest->setName(TextFormat::colorize("&5&k!!&r&l&3Air Drops&5&k!!&r"));
+                $position->getWorld()->addTile($chest);
+            }
+            foreach ($this->getContents() as $item) {
+                $chest->getInventory()->addItem($item);
+            }
             $this->getHandler()->cancel();
 		} else {
 			$this->spawnFirework($this->pos);
@@ -88,7 +94,7 @@ class AirDropTick extends Task {
     public function spawnFirework(Position $pos) {
 		$data = new Fireworks(new ItemIdentifier(ItemIds::FIREWORKS, 0));
 		$data->addExplosion($data->getRandomType(), $data->getRandomColor(), "", 1, 1);
-        $entity = new FireworksRocket(Location::fromObject($pos->add(0.5, 0, 0.5), $pos->getWorld(), lcg_value() * 360, 90), $data);
+        $entity = new FireworksRocket(Location::fromObject($pos->add(0.5, 1, 0.5), $pos->getWorld(), lcg_value() * 360, 90), $data);
         $entity->spawnToAll();
 		$entity->setLifeTime(1);
 	}

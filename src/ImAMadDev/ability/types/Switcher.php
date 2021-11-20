@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\utils\NBT;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -46,9 +47,9 @@ class Switcher extends Ability {
 			return;
 		}
 		$player->getCooldown()->add($this->name, $this->cooldown);
-        $entity = new SwitcherEntity(Location::fromObject($player->getPosition()->add(0.5, 0, 0.5), $player->getWorld(), $player->getLocation()->getYaw(), $player->getLocation()->getPitch()), $player);
+        $entity = new SwitcherEntity(NBT::createWith($player), $player);
+        $entity->setMotion($player->getDirectionVector()->multiply(2.0));
         $entity->spawnToAll();
-		$entity->setMotion($entity->getMotion()->multiply(2.0));
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);
