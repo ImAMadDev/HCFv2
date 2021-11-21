@@ -637,7 +637,7 @@ class HCFListener implements Listener {
 				return;
 			}
 			$countdown = 30;
-            $enchant = $player->getArmorInventory()->getChestplate()->getEnchantment(new Gappler());
+            $enchant = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantments::getEnchantmentByName(CustomEnchantment::GAPPLER));
 			if($enchant !== null){
 			    $countdown = $enchant->getType()->calculateTime($enchant->getLevel());
             }
