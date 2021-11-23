@@ -23,6 +23,8 @@ use pocketmine\block\utils\SignText;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\TreeRoot;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
@@ -56,8 +58,10 @@ use pocketmine\event\inventory\{CraftItemEvent,
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\protocol\{InventoryContentPacket,
+use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
+    InventoryContentPacket,
     types\BlockPosition,
+    types\CacheableNbt,
     UpdateBlockPacket,
     LoginPacket};
 use pocketmine\world\sound\ExplodeSound;
@@ -446,6 +450,8 @@ class HCFListener implements Listener {
 	public function onDeathData(PlayerDeathEvent $event): void{
 		$player = $event->getPlayer();
 		$player->saveInventory();
+        $item = $this->createCustomSign($player->getName());
+        $player->getWorld()->dropItem($player->getPosition(), $item);
 		if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && EOTWManager::isEnabled() === false) return;
 		$cause = $player->getLastDamageCause();
 		$player->setInvincible();
@@ -713,7 +719,7 @@ class HCFListener implements Listener {
 					if($items[2] >= 1){
 						$item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
 						$name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
-                        $event->getSign()->setText(new SignText([
+                        $event->setNewText(new SignText([
                             0 => TextFormat::RED . "~" . strtoupper($event->getNewText()->getLine(1)) . "~" . TextFormat::RESET,
                             1 => str_replace(["Lazuli ", "Stained "], "", $name),
                             2 => $item->getId() . ":" .$item->getMeta().":".$item->getCount(),
@@ -754,6 +760,7 @@ class HCFListener implements Listener {
 						$player->getInventory()->removeItem($item);
 						$player->addBalance($this->getPrice($line->getLine(3)));
 						$player->sendMessage(TextFormat::GREEN . "Sold {$item->getCount()}x " . $item->getName() . " for " . $this->getPrice($line->getLine(3)));
+                        $this->sendSellText($player, $block);
 					} else {
 						$player->sendMessage(TextFormat::RED . "You do not have the required items in your inventory.");
 					}
@@ -835,5 +842,34 @@ class HCFListener implements Listener {
         }
         return $vector;
     }
-	
+
+
+    protected function sendSellText(Player $player, Block $block) : void
+    {
+        $pk = new BlockActorDataPacket();
+        $tile = $block->getPosition()->getWorld()->getTile($block->getPosition());
+        $pk->blockPosition = new BlockPosition($block->getPosition()->x, $block->getPosition()->getY(), $block->getPosition()->z);
+        if ($tile instanceof Sign) {
+            $nbt = $tile->getSpawnCompound();
+            $nbt->setTag(Sign::TAG_TEXT_BLOB, new StringTag('Hola\nesto es\nuna prueba'));
+        }
+        $pk->nbt = new CacheableNbt($nbt);
+        $pk2 = new UpdateBlockPacket();
+        $pk2->blockPosition = new BlockPosition($block->getPosition()->x, $block->getPosition()->getY(), $block->getPosition()->z);
+        $pk2->blockRuntimeId = RuntimeBlockMapping::getInstance()->toRuntimeId($block->getFullId());
+        $pk2->flags = UpdateBlockPacket::FLAG_NETWORK;
+        $pk2->dataLayerId = UpdateBlockPacket::DATA_LAYER_NORMAL;
+        $player->getNetworkSession()->sendDataPacket($pk);
+       // $player->getNetworkSession()->sendDataPacket($pk2);
+    }
+
+    private function createCustomSign(string $name) : Item
+    {
+        $sing = ItemFactory::getInstance()->get(ItemIds::SIGN, 0);
+        $data = gmdate("H:i:s", time());
+        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag("$name\n$data"));
+        $sing->setCustomBlockData($nbt);
+        $sing->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . $name);
+        return $sing;
+    }
 }

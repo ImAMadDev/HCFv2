@@ -4,6 +4,7 @@ namespace ImAMadDev;
 
 use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\inventory\EnderChestInvMenuType;
+use ImAMadDev\player\PlayerCache;
 use ImAMadDev\youtubers\redeem\RedeemManager;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\math\Vector3;
@@ -48,6 +49,8 @@ use scoreboard\Scoreboard;
 use muqsit\invmenu\InvMenuHandler;
 
 class HCF extends PluginBase {
+
+    private static array $player_cache = [];
 	
 	public static HCF $instance;
 	
@@ -137,6 +140,7 @@ class HCF extends PluginBase {
 		new EntityManager($this);
 		new BlockManager($this);
 		new ItemManager($this);
+        $this->loadUsers();
 	}
 	
 	public static function getInstance() : self {
@@ -199,6 +203,7 @@ class HCF extends PluginBase {
         return self::$redeemManager;
     }
 
+    /*
 	public function  getTopKills() : array {
 	    $kills = [];
         foreach (glob($this->getDataFolder() . "players/" . "*.js") as $file) {
@@ -213,5 +218,60 @@ class HCF extends PluginBase {
 	        $killers[] = ["name" => $name, "kills" => $count];
 	    }
 	    return $killers;
+    }*/
+
+    public function  getTopKills() : array {
+        $kills = [];
+        foreach ($this->getPlayerCache() as $player_cache) {
+            $kills[$player_cache->getName()] = $player_cache->getInCache('kills');
+        }
+        arsort($kills);
+        $top = 0;
+        $killers = [];
+        foreach($kills as $name => $count){
+            if($count <= 0 || $top === 10) break;
+            $top++;
+            $killers[] = ["name" => $name, "kills" => $count];
+        }
+        return $killers;
     }
+
+    public function loadUsers() : void
+    {
+        foreach (glob($this->getDataFolder() . "players/" . "*.js") as $file) {
+            self::$player_cache[basename($file, ".js")] = new PlayerCache(basename($file, ".js"), json_decode(file_get_contents($file), true));
+            var_dump(self::$player_cache[basename($file, ".js")]);
+        }
+        $this->getLogger()->info("§aThe Users have been loaded! Number of Users: " . count(self::$player_cache));
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getPlayerCache(): array
+    {
+        return self::$player_cache;
+    }
+
+    #[Pure] public function getCache(string $name) : ? PlayerCache
+    {
+        $found = null;
+        $name = strtolower($name);
+        $delta = PHP_INT_MAX;
+        foreach(array_keys($this->getPlayerCache()) as $player_cache){
+            if(stripos($player_cache, $name) === 0){
+                $curDelta = strlen($player_cache) - strlen($name);
+                if($curDelta < $delta){
+                    $found = $player_cache;
+                    $delta = $curDelta;
+                }
+                if($curDelta === 0){
+                    break;
+                }
+            }
+        }
+        return self::$player_cache[$found];
+    }
+
 }
