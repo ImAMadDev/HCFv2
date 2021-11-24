@@ -47,9 +47,9 @@ class FactionManager {
 			@mkdir(self::$main->getDataFolder() . "factions/");
 		}
 		foreach(glob(self::$main->getDataFolder() . "factions/" . "*.yml") as $file) {
-			$config = new Config($file, Config::YAML);
-			self::$factions[basename($file, ".yml")] = new Faction(self::$main, $config);
-			$data = ["name" => basename($file, ".yml"), "x1" => $config->get("x1"), "z1" => $config->get("z1"), "x2" => $config->get("x2"), "z2" => $config->get("z2"), "level" => $config->get("level")];
+            $content = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
+			self::$factions[basename($file, ".yml")] = new Faction(self::$main, $content);
+			$data = ["name" => basename($file, ".yml"), "x1" => $content['x1'], "z1" => $content["z1"], "x2" => $content["x2"], "z2" => $content["z2"], "level" => $content["level"]];
 			$claim = new Claim(HCF::getInstance(), $data);
 			if($data['x1'] && $data['x2'] !== null) {
 			    ClaimManager::getInstance()->addClaim($claim);
@@ -65,7 +65,7 @@ class FactionManager {
 				$config->set($key, $value);
 			}
 			$config->save();
-			self::$factions[$data['name']] = new Faction(self::$main, $config);
+			self::$factions[$data['name']] = new Faction(self::$main, $config->getAll());
 
             $player->getCache()->setInData('faction', $data['name']);
 			$player->setFaction(self::$factions[$data['name']]);
@@ -80,7 +80,7 @@ class FactionManager {
 		$needs = ["name", "leader", "coleaders", "members", "allys", "points", "kills", "dtr", "level", "home", "x1", "z1", "x2", "z2"];
 		$errors = 0;
 		foreach($needs as $need){
-			if(!in_array($need, array_keys($contents))){ //!isset($contents[$need])) {
+			if(!in_array($need, array_keys($contents))){
 				$errors++;
 			}
 		}
@@ -88,8 +88,8 @@ class FactionManager {
 	}
 	
 	public function disband(string $name) : void {
-		if(is_file(self::$main->getDataFolder() . "factions/" . $name . ".js")) {
-			@unlink(self::$main->getDataFolder() . "factions/" . $name . ".js");
+		if(is_file(self::$main->getDataFolder() . "factions/" . $name . ".yml")) {
+			@unlink(self::$main->getDataFolder() . "factions/" . $name . ".yml");
 		}
 		unset(self::$factions[$name]);
 	}

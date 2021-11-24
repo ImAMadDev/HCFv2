@@ -3,7 +3,7 @@
 namespace ImAMadDev\faction;
 
 use JetBrains\PhpStorm\Pure;
-use pocketmine\utils\{TextFormat, Config};
+use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 use pocketmine\Server;
 
@@ -13,18 +13,11 @@ use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\faction\ticks\{FactionTick, InviteTask, UpdateDataAsyncTask};
 
+define("FACTION_DIRECTORY", HCF::getInstance()->getDataFolder() . "factions" . DIRECTORY_SEPARATOR);
 class Faction {
-	
-	public ?HCF $main = null;
-	
-	public ?array $data = null;
-	
-	public ?Config $config = null;
-	
-	public ?FactionTick $task = null;
-	
-	public int $freezeTime = 0;
-	
+
+	public FactionTick $task;
+
 	public int $regenerationTime = FactionUtils::REGENERATION_TIME;
 	
 	public array $invites = [];
@@ -35,15 +28,16 @@ class Faction {
      * @var FactionRally|null
      */
 	public FactionRally | null $rally = null;
-	
-	public function __construct(HCF $main, Config $config) {
-		$this->main = $main;
-		$this->data = $config->getAll();
-		$this->config = $config;
+
+    public int $freezeTime = 0;
+
+    public function __construct(
+        public HCF $main,
+        public array $data) {
 		$this->main->getLogger()->info(TextFormat::GREEN."Faction » {$this->getName()} was loaded successfully!");
 		if($this->getDTR() < $this->getMaxDTR()) {
 			if(!$this->task instanceof FactionTick) {
-				$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this, $this->main), 20);
+				$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this), 20);
 				$this->main->getLogger()->info(TextFormat::GREEN."Faction » Task loaded!");
 			}
 		}
@@ -143,7 +137,7 @@ class Faction {
 	public function addAlly(Faction $ally) : void {
 		if(!$this->isAlly($ally->getName())) {
 			$this->data['allys'][] = $ally->getName();
-            $this->updateData('allys', $this->data['allys']);
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
@@ -156,25 +150,25 @@ class Faction {
 		}
 		if(!$this->isLeader($player->getName())) {
 			$this->data['leader'] = $player->getName();
-			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("leader", $this->getLeader(), $this->getName(), false));
+			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
 	public function addMember(HCFPlayer $player) : void {
 		if($this->isLeader($player->getName())) {
 			$this->data['leader'] = array_rand($this->data['coleaders'], array_rand($this->data['coleaders']));
-			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("leader", $this->getLeader(), $this->getName(), false));
+			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 		if($this->isColeader($player->getName())) {
 			$this->removeMember($player->getName());
 		}
 		if(!$this->isMember($player->getName())) {
 			$this->data['members'][] = $player->getName();
-			$this->updateData('members', $this->data['members']);
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 		if($this->getDTR() < $this->getMaxDTR()) {
 			if(!$this->task instanceof FactionTick) {
-				$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this, $this->main), 20);
+				$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this), 20);
 			}
 		}
 	}
@@ -200,7 +194,7 @@ class Faction {
 		if($this->isLeader($player->getName())) {
 			if($newLeader === null) {
 				$this->data['leader'] = array_rand($this->data['coleaders'], array_rand($this->data['coleaders']));
-				$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("leader", $this->getLeader(), $this->getName(), false));
+                $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 			} else {
 				$this->setLeader($newLeader);
 			}
@@ -210,8 +204,7 @@ class Faction {
 		}
 		if(!$this->isColeader($player->getName())) {
 			$this->data['coleaders'][] = $player->getName();
-			$this->updateData('coleaders', $this->data['coleaders']);
-			//$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("coleaders", array_values($this->getColeaders()), $this->getName(), false));
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
@@ -240,7 +233,7 @@ class Faction {
 		} else {
 			$this->data['home'] = null;
 		}
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("home", $this->getHomeString(true), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function changeName(string $newName) {
@@ -265,61 +258,61 @@ class Faction {
 	
 	public function getDTRColored() : string {
 		if($this->getDTR() >= $this->getMaxDTR()) {
-			return TextFormat::GREEN . $this->getDTR() . TextFormat::BOLD . " ? DTR" . TextFormat::RESET;
+			return TextFormat::GREEN . $this->getDTR() . TextFormat::BOLD . " DTR" . TextFormat::RESET;
 		} elseif($this->getDTR() > 0 && $this->getDTR() < $this->getMaxDTR()) {
-			return TextFormat::YELLOW . $this->getDTR() . TextFormat::BOLD . " ? DTR" . TextFormat::RESET;
+			return TextFormat::YELLOW . $this->getDTR() . TextFormat::BOLD . " DTR" . TextFormat::RESET;
 		} else {
-			return TextFormat::DARK_RED . "- " . $this->getDTR() . TextFormat::BOLD . " ? DTR" . TextFormat::RESET;
+			return TextFormat::DARK_RED . "- " . $this->getDTR() . TextFormat::BOLD . " DTR" . TextFormat::RESET;
 		}
 	}
 	
 	public function addDTR(float $dtr) : void {
 		$this->data['dtr'] += $dtr;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("dtr", $this->getDTR(), $this->getName(), false));
+		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		$this->message("+ " . FactionUtils::DTR_TO_ADD . " DTR");
 	}
 	
 	public function removeDTR(float $dtr) : void {
 		$this->data['dtr'] -= $dtr;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("dtr", $this->getDTR(), $this->getName(), false));
+		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		if(!$this->task instanceof FactionTick) {
-			$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this, $this->main), 20);
+			$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this), 20);
 		}
-		$this->frezeeTime = FactionUtils::FREEZE_TIME;
+		$this->freezeTime = FactionUtils::FREEZE_TIME;
 		$this->message(TextFormat::RED . "- 1 DTR");
-		if($this->getDTR() === 0) {
+		if($this->getDTR() == 0) {
 			$this->message(TextFormat::RED . "YOUR FACTION IS NOW RAIDEABLE!");
 		}
 	}
 	
 	public function addPoints(float $points) : void {
 		$this->data['points'] += $points;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("points", $this->getPoints(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function removePoints(float $points) : void {
 		$this->data['points'] -= $points;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("points", $this->getPoints(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function addKill(int $kills) : void {
 		$this->data['kills'] += $kills;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("kills", $this->getKills(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function removeKills(int $kills) : void {
 		$this->data['kills'] -= $kills;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("kills", $this->getKills(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function addBalance(float $balance) : void {
 		$this->data['balance'] += $balance;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("balance", $this->getBalance(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function removeBalance(float $balance) : void {
 		$this->data['balance'] -= $balance;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("balance", $this->getBalance(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function removeAlly(string $ally) : void {
@@ -332,14 +325,14 @@ class Faction {
 				$new[] = $allies;
 			}
 			$this->data['allys'] = $new;
-			$this->updateData('allys', $this->data['allys']);
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
 	public function unClaim() : void {
 		foreach(['x1', 'z1', 'x2', 'z2'] as $index) {
 			$this->data[$index] = null;
-			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($index, $this->data[$index], $this->getName(), false));
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 		$claim = ClaimManager::getInstance()->getClaim($this->getName());
 		if($claim instanceof Claim) {
@@ -350,7 +343,7 @@ class Faction {
 	public function claim(Claim $claim) : void {
 		foreach($claim->data as $key => $value) {
 			$this->data[$key] = $value;
-			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($key, $value, $this->getName(), false));
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
@@ -364,15 +357,10 @@ class Faction {
 		return $errors == 0;
 	}
 	
-	public function updateData($key, $value, $nested = false): void {
-		if($nested) {
-			$this->config->setNested($key, $value);
-			$this->config->save();
-		} else {
-			$this->config->set($key, $value);
-			$this->config->save();
-		}
-	}
+	public function updateData(): void {
+        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+    }
 	
 	public function getAllMembers() : array {
 		$newArray = array_merge($this->getMembers(), $this->getColeaders());
@@ -430,7 +418,7 @@ class Faction {
 				$new[] = $co;
 			}
 			$this->data['coleaders'] = $new;
-			$this->updateData('coleaders', $this->data['coleaders']);
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 		if($this->isMember($player)) {
 			$new = [];
@@ -441,7 +429,7 @@ class Faction {
 				$new[] = $co;
 			}
 			$this->data['members'] = $new;
-			$this->updateData('members', $this->data['members']);
+            $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 	}
 	
@@ -469,5 +457,11 @@ class Faction {
         $this->task?->getHandler()->cancel();
 		$this->main->getFactionManager()->disband($this->getName());
 	}
+
+    public function __destruct()
+    {
+        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+    }
 
 }

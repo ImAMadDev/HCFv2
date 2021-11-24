@@ -3,7 +3,6 @@
 namespace ImAMadDev\player;
 
 use ImAMadDev\HCF;
-use ImAMadDev\rank\RankClass;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
