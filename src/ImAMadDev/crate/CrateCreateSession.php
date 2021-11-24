@@ -47,13 +47,13 @@ class CrateCreateSession
     public function setKey() : void
     {
         $item = $this->getPlayer()->getInventory()->getItemInHand();
-        $this->data["key"] = implode(":", [$item->getId(), $item->getDamage(), 1]);
+        $this->data["key"] = implode(":", [$item->getId(), $item->getMeta(), 1]);
     }
 
     public function setDown() : void
     {
         $item = $this->getPlayer()->getInventory()->getItemInHand();
-        $this->data["down_block"] = implode(":", [$item->getId(), $item->getDamage(), 1]);
+        $this->data["down_block"] = implode(":", [$item->getId(), $item->getMeta(), 1]);
     }
 
     public function sendChest() : void

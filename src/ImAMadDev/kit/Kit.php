@@ -2,31 +2,10 @@
 
 namespace ImAMadDev\kit;
 
-use pocketmine\entity\effect\EffectInstance;
 use pocketmine\item\Item;
 use ImAMadDev\player\HCFPlayer;
 
-use function count;
-
 abstract class Kit {
-
-	/** @var string */
-	private string $name;
-
-	/** @var Item */
-	private Item $icon;
-
-	/** @var Item[] */
-	private array $armor = [];
-
-	/** @var Item[] */
-	private array $items = [];
-	
-	/** @var string */
-	private string $permission;
-	
-	/** @var string */
-	private string $description = "";
 
 	/**
 	 * @return string

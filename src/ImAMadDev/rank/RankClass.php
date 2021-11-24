@@ -9,31 +9,17 @@ use ImAMadDev\faction\Faction;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\rank\ticks\UpdateDataAsyncTask;
 
+define("RANKS_DIRECTORY", HCF::getInstance()->getDataFolder() . 'rank' . DIRECTORY_SEPARATOR);
 class RankClass {
 
-    /**
-     * @var HCF|null
-     */
-	public ?HCF $main = null;
-
-    /**
-     * @var array|null
-     */
-	public ?array $data = null;
-
-    /**
-     * @var Config|null
-     */
-	public ?Config $config = null;
 
     /**
      * @param HCF $main
      * @param array $data
      */
-	public function __construct(HCF $main, array $data) {
-		$this->main = $main;
-		$this->data = $data;
-		$this->config = new Config($main->getDataFolder() . "ranks/" . $data['name'] . ".yml");
+	public function __construct(
+        public HCF $main,
+        public array $data) {
 		$this->main->getLogger()->info(TextFormat::GREEN."Rank » {$data['name']} was loaded successfully!");
 	}
 
@@ -52,13 +38,13 @@ class RankClass {
 		return $this->data['tag'];
 	}
 	
-	public function getFormatForPlayer(? Faction $faction = null, string $name, string $message = "") : string {
+	public function getFormatForPlayer(?Faction $faction, string $name, string $message = "") : string {
 		$factionName = $faction === null ? "" : $faction->getName();
 		$replaced = str_replace(["{faction}", "{name}", "{message}"], [$factionName, $name, $message], $this->data['format']);
 		return TextFormat::colorize($replaced);
 	}
 	
-	public function getTagForPlayer(? Faction $faction = null, string $name) : string {
+	public function getTagForPlayer(?Faction $faction, string $name) : string {
 		$factionName = $faction === null ? "" : $faction->getName();
 		$replaced = str_replace(["{faction}", "{name}"], [$factionName, $name], $this->data['tag']);
 		return TextFormat::colorize($replaced);
@@ -82,26 +68,22 @@ class RankClass {
 			$new[] = $perms;
 		}
 		$this->data['permissions'] = $new;
-		$this->updateData('permissions', $this->data['permissions']);
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function setFormat(string $format) : void {
 		$this->data['format'] = $format;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("format", $this->getFormat(), $this->getName(), false));
+		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
 	public function setTag(string $tag) : void {
 		$this->data['tag'] = $tag;
-		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask("tag", $this->getTag(), $this->getName(), false));
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
 	
-	public function updateData($key, $value, $nested = false): void {
-		if($nested) {
-			$this->config->setNested($key, $value);
-        } else {
-			$this->config->set($key, $value);
-        }
-        $this->config->save();
+	public function updateData(): void {
+        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
     }
 	
 	public function giveTo(HCFPlayer $player) : void {
@@ -119,5 +101,11 @@ class RankClass {
 		unset($given);
 		//$player->recalculatePermissions();
 	}
+
+    public function __destruct()
+    {
+        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+    }
 
 }

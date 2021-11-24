@@ -10,9 +10,9 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Entity;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\world\{Position, World};
-use pocketmine\item\{Item, ItemFactory, ItemIds};
-use pocketmine\block\{BlockLegacyIds, FenceGate, Slab};
+use pocketmine\world\Position;
+use pocketmine\item\{ItemFactory, ItemIds};
+use pocketmine\block\{FenceGate, Slab};
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\world\sound\EndermanTeleportSound;
 
@@ -54,47 +54,67 @@ class EnderPearl extends Throwable {
      * @return void
      */
     protected function teleportAt() : void {
-        if(!$this->getOwningEntity() instanceof HCFPlayer||!$this->getOwningEntity()->isOnline()){
-            $this->kill();
-            return;
-        }
-        if($this->getOwningEntity() instanceof HCFPlayer && $this->isFence()){
-			$this->kill();
-			if($this->getOwningEntity()->getCooldown()->has('enderpearl')) {
-				$this->getOwningEntity()->getCooldown()->remove('enderpearl');
-			}
-			$this->getOwningEntity()->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
-			$this->getOwningEntity()->sendTip(TextFormat::YELLOW."Your EnderPearl was returned, to avoid glitching");
-			return;
-		}
-		$claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($this->getPosition())->getName();
-		if($this->getOwningEntity() instanceof HCFPlayer && $this->getOwningEntity()->getCooldown()->has('combattag') && stripos($claim, "Spawn") !== false){
-			$this->kill();
-			if($this->getOwningEntity()->getCooldown()->has('enderpearl')) {
-				$this->getOwningEntity()->getCooldown()->remove('enderpearl');
-			}
-			$this->getOwningEntity()->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
-			$this->getOwningEntity()->sendTip(TextFormat::YELLOW."Your EnderPearl was returned, to avoid glitching");
-			return;
-		}
-		if($this->getPosition()->y > 0){
-			$this->getWorld()->addSound($this->getOwningEntity()?->getPosition(), new EndermanTeleportSound());
-			
-			$this->getOwningEntity()->teleport($this->getPositionPlayer());
-			$this->getOwningEntity()->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
-			
-			$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
-            if($this->isPearling()){
-				$direction = $this->getOwningEntity()->getDirectionVector()->multiply(3);
-				$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
-				
-                $this->getOwningEntity()->teleport(Position::fromObject($this->getOwningEntity()->getPosition()->add($direction->x, (int)$direction->y + 1, $direction->z), $this->getOwningEntity()->getWorld()));
-                $this->getOwningEntity()->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
-                
-                $this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
+        $owning = $this->getOwningEntity();
+        if($owning instanceof HCFPlayer) {
+            if (!$owning->isOnline()) {
+                $this->kill();
+                return;
             }
-		}
-		$this->kill();
+            if ($this->isInHitbox($this->position->x, $this->position->y, $this->position->z)){
+                $this->kill();
+                if ($owning->getCooldown()->has('enderpearl')) {
+                    $owning->getCooldown()->remove('enderpearl');
+                }
+                $owning->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
+                $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
+                return;
+            }
+            if ($this->isFence()) {
+                $this->kill();
+                if ($owning->getCooldown()->has('enderpearl')) {
+                    $owning->getCooldown()->remove('enderpearl');
+                }
+                $owning->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
+                $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
+                return;
+            }
+            $claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($this->getPosition())->getName();
+            if ($owning->getCooldown()->has('combattag') && stripos($claim, "Spawn") !== false) {
+                $this->kill();
+                if ($owning->getCooldown()->has('enderpearl')) {
+                    $owning->getCooldown()->remove('enderpearl');
+                }
+                $owning->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
+                $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
+            }
+            if ($this->getPosition()->y > 0) {
+                $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+
+                $owning->teleport($this->getPositionPlayer());
+                $owning->attack(new EntityDamageEvent($owning, EntityDamageEvent::CAUSE_FALL, 2));
+
+                $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                if ($this->isPearling()) {
+                    $direction = $owning->getDirectionVector()->multiply(3);
+                    if ($this->isInHitbox($direction->x, $direction->y + 1, $direction->z)){
+                        $this->kill();
+                        if ($owning->getCooldown()->has('enderpearl')) {
+                            $owning->getCooldown()->remove('enderpearl');
+                        }
+                        $owning->getInventory()->addItem(ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 1));
+                        $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
+                        return;
+                    }
+                    $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+
+                    $owning->teleport(Position::fromObject($owning->getPosition()->add($direction->x, (int)$direction->y + 1, $direction->z), $owning->getWorld()));
+                    $owning->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
+
+                    $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                }
+            }
+            $this->kill();
+        }
 	}
 
     /**
@@ -155,6 +175,23 @@ class EnderPearl extends Throwable {
 		return false;
 	}
 
+    /**
+     * @param float $x
+     * @param float $y
+     * @param float $z
+     * @return bool
+     */
+    public function isInHitbox(float $x, float $y, float $z): bool
+    {
+        if(!isset($this->getPosition()->getWorld()->getBlockAt((int)$x, (int)$y, (int)$z)->getCollisionBoxes()[0])) return False;
+        foreach ($this->getPosition()->getWorld()->getBlockAt((int)$x, (int)$y, (int)$z)->getCollisionBoxes() as $blockHitBox) {
+           if($x < 0) $x = $x + 1;
+           if($z < 0) $z = $z + 1;
+            if (($blockHitBox->minX < $x) AND ($x < $blockHitBox->maxX) AND ($blockHitBox->minY < $y) AND ($y < $blockHitBox->maxY) AND ($blockHitBox->minZ < $z) AND ($z < $blockHitBox->maxZ)) return True;
+        }
+      return False;
+    }
+
     /** 
 	 * @param Int $currentTick
 	 * @return bool
@@ -176,7 +213,7 @@ class EnderPearl extends Throwable {
 		return $hasUpdate;
     }
 
-    protected function getInitialSizeInfo(): EntitySizeInfo
+    #[Pure] protected function getInitialSizeInfo(): EntitySizeInfo
     {
         return new EntitySizeInfo($this->height, $this->width);
     }
