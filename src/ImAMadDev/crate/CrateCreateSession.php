@@ -6,9 +6,7 @@ use ImAMadDev\manager\CrateManager;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\InventoryUtils;
 use muqsit\invmenu\InvMenu;
-use muqsit\invmenu\MenuIds;
-use muqsit\invmenu\transaction\InvMenuTransaction;
-use muqsit\invmenu\transaction\InvMenuTransactionResult;
+use muqsit\invmenu\type\InvMenuTypeIds;
 use pocketmine\utils\TextFormat;
 
 class CrateCreateSession
@@ -59,7 +57,7 @@ class CrateCreateSession
     public function sendChest() : void
     {
         $session = $this;
-        $menu = InvMenu::create(MenuIds::TYPE_CHEST);
+        $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
         $menu->setName(TextFormat::colorize($this->data["customName"] ?? "Sin Name") . " " . TextFormat::GREEN . "Crate Creation");
         $menu->setInventoryCloseListener(function (HCFPlayer $player) use($session, $menu): void{
             $session->data["Inventory"] = InventoryUtils::encode($menu->getInventory());
