@@ -3,8 +3,9 @@
 namespace ImAMadDev\faction\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
+use ImAMadDev\HCF;
 use JetBrains\PhpStorm\Pure;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -40,13 +41,14 @@ class KickSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do this!");
 			return;
 		}
-		if($this->getServer()->getPlayerByPrefix($name) instanceof HCFPlayer) {
+        $player = $this->getServer()->getPlayerByPrefix($name);
+		if($player instanceof HCFPlayer) {
 			if($sender->getFaction()->isInFaction($name)) {
-				$this->getServer()->getPlayerByPrefix($name)->setFaction(null);
+				$player->setFaction(null);
 			}
 		} 
 		if($sender->getFaction()->isInFaction($name)) {
-			PlayerData::setData($name, 'faction', null);
+            HCF::getInstance()->getCache($name)->setInData('faction', null);
 		}
 		$sender->getFaction()->message(TextFormat::GREEN . $name . " has left the faction.");
 		$sender->getFaction()->removeMember($name);

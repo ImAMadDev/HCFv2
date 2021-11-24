@@ -28,7 +28,7 @@ class RedeemCommand extends Command
             if($subCommand !== null) {
                 $subCommand->execute($sender, $commandLabel, $args);
             } else {
-                if (PlayerData::getData($sender->getName())->get('redeem', false)){
+                if ($sender->getCache()->getInData('redeem', true, false)){
                     $sender->sendMessage(TextFormat::RED . "You have already supported a partner!");
                     return;
                 }
@@ -37,7 +37,7 @@ class RedeemCommand extends Command
                     if (($partner = HCF::$abilityManager->getAbilityByName("PartnerPackages")) instanceof  Ability){
                         $partner->obtain($sender, 1);
                     }
-                    PlayerData::setData($sender->getName(), 'redeem', true);
+                    $sender->getCache()->setInData('redeem', false);
                     Server::getInstance()->broadcastMessage(TextFormat::colorize("&6{$sender->getName()} &7used &6(/{$commandLabel} {$args[0]}) &7and got a partner package"));
                     return;
                 } else {

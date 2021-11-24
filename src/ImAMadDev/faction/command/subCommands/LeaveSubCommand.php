@@ -4,7 +4,7 @@ namespace ImAMadDev\faction\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
 use JetBrains\PhpStorm\Pure;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -32,6 +32,6 @@ class LeaveSubCommand extends SubCommand {
 		$sender->getFaction()->message(TextFormat::GREEN . $sender->getName() . TextFormat::RED . " has left the faction!");
 		$sender->getFaction()->removeMember($sender->getName());
 		$sender->setFaction(null);
-		PlayerData::setData($sender->getName(), 'faction', null);
+        $sender->getCache()->setInData('faction', null);
     }
 }

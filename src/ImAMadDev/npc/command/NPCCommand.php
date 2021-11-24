@@ -5,7 +5,6 @@ namespace ImAMadDev\npc\command;
 use ImAMadDev\command\Command;
 use ImAMadDev\npc\command\subCommands\SpawnSubCommand;
 use ImAMadDev\npc\command\subCommands\DespawnSubCommand;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
 
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -33,7 +32,5 @@ class NPCCommand extends Command {
 			return;
 		}
 		$sender->sendMessage($this->getUsage());
-		return;
 	}
 }
-?>

@@ -3,8 +3,8 @@
 namespace ImAMadDev\rank\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
-use ImAMadDev\rank\RankClass;
-use ImAMadDev\player\{HCFPlayer, PlayerData};
+use ImAMadDev\HCF;
+use ImAMadDev\player\{HCFPlayer, PlayerCache};
 use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -21,35 +21,36 @@ class RemoveSubCommand extends SubCommand {
 			return;
 		}
 		$player = $this->getServer()->getPlayerByPrefix($args[1]);
-		if($player === null) {
-			if(PlayerData::hasData($args[1], "ranks")) {
-				if(!$this->getMain()->getRankManager()->isRank($args[2])) {
-					$sender->sendMessage(TextFormat::RED . "This rank doesn't exist!");
-					return;
-				}
-				$rank = $this->getMain()->getRankManager()->getRank($args[2]);
-				if(!PlayerData::hasRank($args[1], $rank->getName())) {
-					$sender->sendMessage(TextFormat::RED . "This player no have this rank!");
-					return;
-				}
-				PlayerData::removeRank($args[1], $rank->getName());
-				$sender->sendMessage(TextFormat::GREEN . "You've removed the rank {$args[2]} to the player {$args[1]}!");
-            } else {
-				$sender->sendMessage(TextFormat::RED . "This player doesn't exist!");
+		if($player instanceof HCFPlayer) {
+            if (!$this->getMain()->getRankManager()->isRank($args[2])) {
+                $sender->sendMessage(TextFormat::RED . "This rank doesn't exist!");
+                return;
             }
+            $rank = $this->getMain()->getRankManager()->getRank($args[2]);
+            if (!$player->getCache()->hasDataInArray('ranks', $rank->getName())) {
+                $sender->sendMessage(TextFormat::RED . "This player no have this rank!");
+                return;
+            }
+            $player->removeRank($rank->getName());
+            $player->getCache()->removeInArray('ranks', $rank->getName());
+            $sender->sendMessage(TextFormat::GREEN . "You've removed the rank {$rank->getName()} to the player {$player->getName()}!");
         } else {
-			if(!$this->getMain()->getRankManager()->isRank($args[2])) {
-				$sender->sendMessage(TextFormat::RED . "This rank doesn't exist!");
-				return;
-			}
-			$rank = $this->getMain()->getRankManager()->getRank($args[2]);
-			if(!PlayerData::hasRank($player->getName(), $rank->getName())) {
-				$sender->sendMessage(TextFormat::RED . "This player no have this rank!");
-				return;
-			}
-			$player->removeRank($rank->getName());
-			PlayerData::removeRank($player->getName(), $rank->getName());
-			$sender->sendMessage(TextFormat::GREEN . "You've removed the rank {$rank->getName()} to the player {$player->getName()}!");
-		}
+            $player = HCF::getInstance()->getCache($args[1]);
+            if ($player instanceof PlayerCache) {
+                if (!$this->getMain()->getRankManager()->isRank($args[2])) {
+                    $sender->sendMessage(TextFormat::RED . "This rank doesn't exist!");
+                    return;
+                }
+                $rank = $this->getMain()->getRankManager()->getRank($args[2]);
+                if (!$player->hasDataInArray($rank->getName())) {
+                    $sender->sendMessage(TextFormat::RED . "This player no have this rank!");
+                    return;
+                }
+                $player->removeInArray('ranks', $rank->getName());
+                $sender->sendMessage(TextFormat::GREEN . "You've removed the rank {$args[2]} to the player {$player->getName()}!");
+            } else {
+                $sender->sendMessage(TextFormat::RED . "This player doesn't exist!");
+            }
+        }
 	}
 }

@@ -240,9 +240,14 @@ class HCF extends PluginBase {
     {
         foreach (glob($this->getDataFolder() . "players/" . "*.js") as $file) {
             self::$player_cache[basename($file, ".js")] = new PlayerCache(basename($file, ".js"), json_decode(file_get_contents($file), true));
-            var_dump(self::$player_cache[basename($file, ".js")]);
         }
         $this->getLogger()->info("§aThe Users have been loaded! Number of Users: " . count(self::$player_cache));
+    }
+
+    public function createCache(string $name, array $data) : void
+    {
+        if (isset(self::$player_cache[$name])) return;
+        self::$player_cache[$name] = new PlayerCache($name, $data);
     }
 
 

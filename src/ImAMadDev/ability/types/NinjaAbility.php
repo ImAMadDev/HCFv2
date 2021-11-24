@@ -14,9 +14,8 @@ use pocketmine\math\Vector3;
 use pocketmine\entity\effect\EffectInstance;
 
 use ImAMadDev\HCF;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
-use ImAMadDev\ability\ticks\NinjaAbilityTick;
 
 class NinjaAbility extends Ability {
 
@@ -43,7 +42,7 @@ class NinjaAbility extends Ability {
 	}
 	
 	public function consume(HCFPlayer $player) : void {
-		$time = (120 - (time() - PlayerData::getCountdown($player->getName(), $this->name)));
+		$time = (120 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
@@ -57,7 +56,7 @@ class NinjaAbility extends Ability {
 			if(round($taggerPlayer->getPosition()->distance($player->getDirectionVector())) > 30) {
 				$player->sendMessage(TextFormat::RED . "You're too far from the player who hits you last!");
 			} else {
-				PlayerData::setCountdown($player->getName(), $this->name, (time() + 120));
+                $player->getCache()->setCountdown($this->getName(), 120);
 				$player->teleport($taggerPlayer->getPosition());
 				$player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), (20 * 4), 1, true));
 				$item = $player->getInventory()->getItemInHand();

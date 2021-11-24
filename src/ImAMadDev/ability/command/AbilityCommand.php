@@ -5,8 +5,9 @@ namespace ImAMadDev\ability\command;
 use ImAMadDev\command\Command;
 use ImAMadDev\ability\command\subCommands\AllSubCommand;
 use ImAMadDev\ability\command\subCommands\ListSubCommand;
+use ImAMadDev\HCF;
 use ImAMadDev\manager\AbilityManager;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\{PlayerCache, PlayerData, HCFPlayer};
 use ImAMadDev\ability\Ability;
 
 use pocketmine\command\CommandSender;
@@ -46,7 +47,7 @@ class AbilityCommand extends Command {
 					$sender->sendMessage(TextFormat::RED . "This ability doesn't exists!");
 				}
 				return;
-			} elseif(PlayerData::hasData($args[0], "ranks") === true) {
+			} elseif(HCF::getInstance()->getCache($args[0]) instanceof PlayerCache) {
 				if(($ability = AbilityManager::getInstance()->getAbilityByName($args[1])) instanceof Ability) {
 					PlayerData::saveItem($args[0], $ability->getName(), $args[2]);
 					$sender->sendMessage(TextFormat::GREEN . "You've gave x $args[2] {$ability->getName()} to $args[0]!");

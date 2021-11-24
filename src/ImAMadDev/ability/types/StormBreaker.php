@@ -12,7 +12,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 
 use ImAMadDev\HCF;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\StormBreakerTick;
 
@@ -41,12 +41,12 @@ class StormBreaker extends Ability {
 	}
 	
 	public function consume(HCFPlayer $player, HCFPlayer $entity) : void {
-		$time = (90 - (time() - PlayerData::getCountdown($player->getName(), $this->name)));
+		$time = (90 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
 		}
-		PlayerData::setCountdown($player->getName(), $this->name, (time() + 90));
+        $player->getCache()->setCountdown($this->getName(), 90);
 		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new StormBreakerTick($entity), 20);
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));

@@ -11,7 +11,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 
 class AntiBuild extends Ability {
@@ -39,12 +39,12 @@ class AntiBuild extends Ability {
 	}
 	
 	public function consume(HCFPlayer $player, HCFPlayer $entity) : void {
-		$time = (150 - (time() - PlayerData::getCountdown($player->getName(), $this->name)));
+		$time = (150 - (time() - $player->getCache()->getCountdown($this->name)));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
 		}
-		PlayerData::setCountdown($player->getName(), $this->name, (time() + 150));
+        $player->getCache()->setCountdown($this->name, 150);
 		$entity->getCooldown()->add('deleteblock', 20);
 		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);

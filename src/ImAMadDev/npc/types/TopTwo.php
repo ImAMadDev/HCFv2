@@ -4,9 +4,8 @@ namespace ImAMadDev\npc\types;
 
 use ImAMadDev\HCF;
 use ImAMadDev\npc\NPCEntity;
-use ImAMadDev\player\PlayerData;
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\HCFUtils;
-use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -36,7 +35,9 @@ class TopTwo extends NPCEntity
 
     public function onInteract(Player $player, Vector3 $clickPos): bool
     {
-        $player->sendMessage(TextFormat::GRAY . "Your kills: " . PlayerData::getKills($player->getName()));
+        if ($player instanceof HCFPlayer) {
+            $player->sendMessage(TextFormat::GRAY . "Your kills: " . $player->getCache()->getInData('kills', true, 0));
+        }
         return parent::onInteract($player, $clickPos);
     }
 }

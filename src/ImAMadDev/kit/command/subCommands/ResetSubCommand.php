@@ -2,12 +2,13 @@
 
 namespace ImAMadDev\kit\command\subCommands;
 
+use ImAMadDev\HCF;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 use ImAMadDev\command\SubCommand;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\{PlayerCache, HCFPlayer};
 use ImAMadDev\manager\KitManager;
 use ImAMadDev\kit\Kit;
 
@@ -27,12 +28,19 @@ class ResetSubCommand extends SubCommand {
 			return;
 		}
 		if(($kit = KitManager::getInstance()->getKitByName($args[2])) instanceof Kit) {
-			if(($player = $this->getServer()->getPlayerByPrefix($args[1])) instanceof HCFPlayer) {
-				PlayerData::setCountdown($player->getName(), $kit->getName(), 0);
+            $player = $this->getServer()->getPlayerByPrefix($args[1]);
+			if($player instanceof HCFPlayer) {
+                $player->getCache()->setInData($kit->getName() . COUNTDOWN, 0, true);
 				$sender->sendMessage(TextFormat::GREEN . "You've reset the kit {$kit->getName()}'s countdowns from the player {$player->getName()}!");
 				$player->sendMessage(TextFormat::GREEN . "Your kit {$kit->getName()}'s countdowns has been reloaded by {$sender->getName()}!");
             } else {
-				$sender->sendMessage(TextFormat::RED . "Error this player doesn't exist!");
+                $player = HCF::getInstance()->getCache($args[1]);
+                if ($player instanceof PlayerCache){
+                    $player->setInData($kit->getName() . COUNTDOWN, 0, true);
+                    $sender->sendMessage(TextFormat::GREEN . "You've reset the kit {$kit->getName()}'s countdowns from the player {$player->getName()}!");
+                } else {
+                    $sender->sendMessage(TextFormat::RED . "Error this player doesn't exist!");
+                }
             }
         } else {
 			$sender->sendMessage(TextFormat::RED . "Error this kit doesn't exist!");

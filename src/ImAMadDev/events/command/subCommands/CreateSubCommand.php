@@ -2,17 +2,18 @@
 
 namespace ImAMadDev\events\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 use ImAMadDev\command\SubCommand;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\HCF;
-use ImAMadDev\manager\EventManager;
 
 class CreateSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("create", "/event create (string: name)");
 	}
 	
@@ -21,7 +22,7 @@ class CreateSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You must be a player to do this!");
 			return;
 		}
-		if($sender->isOp() === false) {
+        if (!Server::getInstance()->isOp($sender->getName())) {
 			$sender->sendMessage(TextFormat::RED . "You don't have permission!");
 			return;
 		}

@@ -5,6 +5,7 @@ namespace ImAMadDev\tags\command\subCommands;
 use ImAMadDev\command\SubCommand;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\player\PlayerCache;
 use ImAMadDev\player\PlayerData;
 use ImAMadDev\tags\Tag;
 use JetBrains\PhpStorm\Pure;
@@ -27,35 +28,37 @@ class GiveSubCommand extends SubCommand
             return;
         }
         if (!empty($args[1])){
-            if (($player = Server::getInstance()->getPlayerByPrefix($args[1])) instanceof HCFPlayer) {
+            $player = Server::getInstance()->getPlayerByPrefix($args[1]);
+            if ($player instanceof HCFPlayer) {
                 if (empty($args[2])){
                     $sender->sendMessage(TextFormat::RED . $this->getUsage());
                     return;
                 }
                 if (($tag = HCF::getTagManager()->getTag($args[2])) instanceof Tag) {
-                    if (PlayerData::hasTag($player->getName(), $tag->getName())){
+                    if ($player->getCache()->hasDataInArray($tag->getName(), 'tags')){
                         $sender->sendMessage(TextFormat::RED . "This player already have this tag.");
                         return;
                     }
-                    PlayerData::addTag($player->getName(), $tag->getName());
+                    $player->getCache()->addInArray('tags', $tag->getName());
                     $sender->sendMessage(TextFormat::GRAY . "You have given the {$tag->getFormat()} " . TextFormat::GRAY . "tag to " . TextFormat::GOLD . $player->getName());
                     $player->sendMessage(TextFormat::GRAY . "You have received the " . $tag->getFormat() . TextFormat::GREEN . " Tag");
                 } else {
                     $sender->sendMessage(TextFormat::RED . "This tag doesnt exist.");
                 }
             } else {
-                if (PlayerData::hasData($args[1], "tags")){
+                $player = HCF::getInstance()->getCache($args[1]);
+                if ($player instanceof PlayerCache){
                     if (empty($args[2])){
                         $sender->sendMessage(TextFormat::RED . $this->getUsage());
                         return;
                     }
                     if (($tag = HCF::getTagManager()->getTag($args[2])) instanceof Tag) {
-                        if (PlayerData::hasTag($args[1], $tag->getName())){
+                        if ($player->hasDataInArray($tag->getName(), 'tags')){
                             $sender->sendMessage(TextFormat::RED . "This player already have this tag.");
                             return;
                         }
-                        PlayerData::addTag($args[1], $tag->getName());
-                        $sender->sendMessage(TextFormat::GRAY . "You have given the {$tag->getFormat()} " . TextFormat::GRAY . "tag to " . TextFormat::GOLD . $args[1]);
+                        $player->addInArray('tags', $tag->getName());
+                        $sender->sendMessage(TextFormat::GRAY . "You have given the {$tag->getFormat()} " . TextFormat::GRAY . "tag to " . TextFormat::GOLD . $player->getName());
                     } else {
                         $sender->sendMessage(TextFormat::RED . "This tag doesnt exist.");
                     }

@@ -175,18 +175,16 @@ class HCFPlayer extends Player {
 	public function checkRank() : void {
 		foreach($this->getRanks() as $rank) {
 			if($rank->getName() === "User") {
-				continue;
-			}
-			if(PlayerData::hasTag($this->getName(), strtolower($rank->getName()) . '_countdown')) {
-				if(PlayerData::getCountdown($this->getName(), $rank->getName()) === 0) {
-					continue;
-				}
-				if((PlayerData::getCountdown($this->getName(), $rank->getName()) - time()) <= 0) {
-					$this->removeRank($rank->getName());
-					PlayerData::removeRank($this->getName(), $rank->getName());
-					PlayerData::removeData($this->getName(), $rank->getName() . '_countdown');
-					$this->sendMessage(TextFormat::GOLD . "Your rank {$rank->getName()} has expired!");
-				}
+                continue;
+            }
+            if ($this->getCache()->getCountdown($rank->getName()) == 0) {
+                continue;
+            }
+            if(($this->getCache()->getCountdown($rank->getName()) - time()) <= 0) {
+                $this->removeRank($rank->getName());
+                $this->getCache()->removeInArray('ranks', $rank->getName());
+                $this->getCache()->removeInData($rank->getName() . '_countdown', true);
+                $this->sendMessage(TextFormat::GOLD . "Your rank {$rank->getName()} has expired!");
 			}
 		}
 	}
@@ -382,7 +380,7 @@ class HCFPlayer extends Player {
 	
 	public function setInvincible(?int $time = null): void {
 		$this->invincibilityTime = $time !== null ? $time : 3600;
-		PlayerData::setData($this->getName(), "invincibilityTime", $this->invincibilityTime);
+        $this->getCache()->setInData('invincibility_time', $this->invincibilityTime);
 	}
 	
 	public function isInvincible(): bool {
@@ -449,8 +447,8 @@ class HCFPlayer extends Player {
 	}
 	
 	public function obtainKill(string $name) : void {
-		$actualKills = PlayerData::getKills($this->getName());
-		PlayerData::setData($this->getName(), "kills", ($actualKills + 1));
+		$actualKills = $this->getCache()->getInData('kills', true, 0);
+        $this->getCache()->setInData('kills', ($actualKills + 1));
 		$this->addBalance(PlayerUtils::KILL_PRICE);
 		if($this->getInventory()->getItemInHand()->getId() !== 0) {
 			$item = $this->getInventory()->getItemInHand();
@@ -708,15 +706,11 @@ class HCFPlayer extends Player {
 	}
 	
 	public function getBalance() : int {
-		if(PlayerData::hasData($this->getName(), 'balance')) {
-			return PlayerData::getData($this->getName())->get('balance');
-		} else {
-			return 1000;
-		}
+        return $this->getCache()->getInData('balance', 1000);
 	}
 	
 	public function setBalance(int $balance) : void {
-		PlayerData::setData($this->getName(), 'balance', $balance);
+        $this->getCache()->setInData('balance', $balance);
 	}
 	
 	public function addBalance(int $balance) : void {
@@ -858,5 +852,10 @@ class HCFPlayer extends Player {
     public function setJoined(bool $joined): void
     {
         $this->joined = $joined;
+    }
+
+    #[Pure] public function getCache() : PlayerCache
+    {
+        return HCF::getInstance()->getCache($this->getName());
     }
 }

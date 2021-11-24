@@ -10,7 +10,7 @@ use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 
 class AntiTrapper extends Ability {
@@ -39,12 +39,12 @@ class AntiTrapper extends Ability {
 
     public function consume(HCFPlayer $player) : void {
         $currentTime = time();
-        $time = (90 - ($currentTime - PlayerData::getCountdown($player->getName(), $this->name)));
+        $time = (90 - ($currentTime - $player->getCache()->getCountdown($this->getName())));
         if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
 		}
-		PlayerData::setCountdown($player->getName(), $this->name, ($currentTime + 90));
+        $player->getCache()->setCountdown($this->getName(), 90);
 		foreach($player->getNearbyPlayers(10, 10) as $players) {
 			if($player->getFaction() !== null) {
 				if($player->getFaction()->isInFaction($players->getName())) {

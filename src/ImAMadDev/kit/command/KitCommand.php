@@ -8,10 +8,8 @@ use ImAMadDev\kit\command\subCommands\RemoveSubCommand;
 use ImAMadDev\kit\command\subCommands\SeeSubCommand;
 use ImAMadDev\kit\command\subCommands\ResetSubCommand;
 use ImAMadDev\manager\{EOTWManager, KitManager};
-use muqsit\invmenu\transaction\DeterministicInvMenuTransaction;
-use muqsit\invmenu\transaction\SimpleInvMenuTransaction;
 use muqsit\invmenu\type\InvMenuTypeIds;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\kit\Kit;
 use ImAMadDev\utils\HCFUtils;
 
@@ -21,7 +19,6 @@ use muqsit\invmenu\transaction\InvMenuTransaction;
 use formapi\SimpleForm;
 
 use pocketmine\command\CommandSender;
-use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -69,11 +66,11 @@ class KitCommand extends Command {
 				if(!$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
-					$time = ($kit->getCooldown() - (time() - PlayerData::getCountdown($player->getName(), $kit->getName())));
+					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));
 					if($time > 0) {
-                        $player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString(PlayerData::getCountdown($player->getName(), $kit->getName())));
+                        $player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName())));
                     } else {
-                        PlayerData::setCountdown($player->getName(), $kit->getName(), (time() + $kit->getCooldown()));
+                        $player->getCache()->setCountdown($kit->getName(), $kit->getCooldown());
                         $kit->giveKit($player);
                     }
 				}
@@ -81,11 +78,11 @@ class KitCommand extends Command {
 				if(!$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
-					$time = ($kit->getCooldown() - (time() - PlayerData::getCountdown($player->getName(), $kit->getName())));
+					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));
 					if($time > 0) {
-                        $player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString(PlayerData::getCountdown($player->getName(), $kit->getName())));
+                        $player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName())));
                     } else {
-                        PlayerData::setCountdown($player->getName(), $kit->getName(), (time() + $kit->getCooldown()));
+                        $player->getCache()->setCountdown($kit->getName(), $kit->getCooldown());
                         $kit->giveKit($player);
                     }
 				}
@@ -96,7 +93,7 @@ class KitCommand extends Command {
 		});
 		$menu->send($player);
 		foreach(KitManager::getInstance()->getKits() as $kit) {
-			$item = $kit->getIcon()->setLore([$kit->getDescription(), "Kit Countdown: " . HCFUtils::getTimeString(PlayerData::getCountdown($player->getName(), $kit->getName()))]);
+			$item = $kit->getIcon()->setLore([$kit->getDescription(), "Kit Countdown: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName()))]);
 			$menu->getInventory()->setItem($kit->getSlot(), $item);
 		}
 	}
@@ -110,12 +107,12 @@ class KitCommand extends Command {
 				if(!$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
-					$time = ($kit->getCooldown() - (time() - PlayerData::getCountdown($player->getName(), $kit->getName())));
+					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));
 					if($time <= 0) {
-						PlayerData::setCountdown($player->getName(), $kit->getName(), (time() + $kit->getCooldown()));
+                        $player->getCache()->setCountdown($kit->getName(), $kit->getCooldown());
 						$kit->giveKit($player);
 					} else {
-						$player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString(PlayerData::getCountdown($player->getName(), $kit->getName())));
+						$player->sendMessage(TextFormat::RED . "You can't use this kit because you have a countdown of: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName())));
 					}
 				}
 			}

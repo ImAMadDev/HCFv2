@@ -17,7 +17,7 @@ class PlayerData {
 		if(!file_exists(HCF::getInstance()->getDataFolder()."players/{$playerName}.js")){
 			$config = new Config(HCF::getInstance()->getDataFolder()."players/{$playerName}.js", Config::JSON);
 			$config->setAll(["kills" => 0,
-                "Invincibilitytime" => 3600,
+                "invincibility_time" => 3600,
                 "lives" => 5,
                 "lives_claimed" => false,
                 "reclaim" => null,
@@ -31,6 +31,7 @@ class PlayerData {
 			$ranks = $config->get("ranks", ["User"]);
 			$factionName = $config->get("faction", null);
             $tag = $config->get("currentTag", null);
+            HCF::getInstance()->createCache($playerName, $config->getAll());
 		} else {
 			$config = new Config(HCF::getInstance()->getDataFolder()."players/{$playerName}.js", Config::JSON);
 			$ranks = $config->get("ranks", ["User"]);
@@ -182,7 +183,7 @@ class PlayerData {
 	}
 	
 	public static function getInvincibilityTime(string $playerName) : int {
-		return self::getData($playerName)->get("invincibilitytime", 3600) === null ? 3600 : self::getData($playerName)->get("invincibilitytime");
+		return self::getData($playerName)->get("invincibility_time", 3600) === null ? 3600 : self::getData($playerName)->get("invincibility_time");
 	}
 	
 	public static function getLives(string $playerName) : int {

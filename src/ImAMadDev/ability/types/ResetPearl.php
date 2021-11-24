@@ -12,7 +12,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 
 class ResetPearl extends Ability {
@@ -40,7 +40,7 @@ class ResetPearl extends Ability {
 	}
 	
 	public function consume(HCFPlayer $player) : void {
-		$time = (90 - (time() - PlayerData::getCountdown($player->getName(), $this->name)));
+		$time = (90 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
@@ -49,7 +49,7 @@ class ResetPearl extends Ability {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because don't have Ender Pearl cooldown");
 			return;
 		}
-		PlayerData::setCountdown($player->getName(), $this->name, (time() + 80));
+        $player->getCache()->setCountdown($this->getName(), 80);
 		$item = $player->getInventory()->getItemInHand();
 		$player->getCooldown()->remove('enderpearl');
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));

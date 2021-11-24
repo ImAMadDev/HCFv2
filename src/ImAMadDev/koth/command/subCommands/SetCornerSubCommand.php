@@ -2,19 +2,17 @@
 
 namespace ImAMadDev\koth\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 use ImAMadDev\command\SubCommand;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
-use ImAMadDev\koth\FactionUtils;
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\HCF;
-use ImAMadDev\utils\HCFUtils;
-use ImAMadDev\manager\ClaimManager;
 
 class SetCornerSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("setcorner", "/koth setcorner (int: corner)");
 	}
 	
@@ -41,7 +39,6 @@ class SetCornerSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::GREEN . HCF::$KOTHManager->setCorner(2, $sender));
 		} else {
 			$sender->sendMessage($this->getUsage());
-			return;
 		}
     }
 }

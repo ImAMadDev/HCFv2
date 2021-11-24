@@ -13,7 +13,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\entity\effect\EffectInstance;
 
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 
 class PortableRogue extends Ability {
@@ -41,12 +41,12 @@ class PortableRogue extends Ability {
 	}
 	
 	public function consume(HCFPlayer $player, HCFPlayer $entity) : void {
-		$time = (150 - (time() - PlayerData::getCountdown($player->getName(), $this->name)));
+		$time = (150 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
 		}
-		PlayerData::setCountdown($player->getName(), $this->name, (time() + 150));
+        $player->getCache()->setCountdown($this->getName(), 150);
 		$entity->setHealth($entity->getHealth() / 2);
 		$player->getInventory()->setItemInHand(ItemFactory::air());
 		$player->getEffects()->add(new EffectInstance(VanillaEffects::SLOWNESS(), 5 * 20, 3));

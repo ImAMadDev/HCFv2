@@ -25,8 +25,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\item\Item;
-use pocketmine\item\enchantment\{EnchantmentInstance,
-    Enchantment};
+use pocketmine\item\enchantment\{EnchantmentInstance, Enchantment, StringToEnchantmentParser};
 use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStack;
 use pocketmine\utils\TextFormat;
@@ -67,6 +66,7 @@ class CustomEnchantments {
     {
         EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchantments[$enchant->getName()] = $enchant;
+        StringToEnchantmentParser::getInstance()->register($enchant->getName(), fn() => $enchant);
         HCF::getInstance()->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
     
@@ -118,7 +118,8 @@ class CustomEnchantments {
 
 
     public static function getEnchantmentByName(string $name) : ? Enchantment {
-    	return self::$enchantments[$name] ?? null;
+        return StringToEnchantmentParser::getInstance()->parse($name);
+    	//return self::$enchantments[$name] ?? null;
     }
     
     public static function getEnchantments() : array {

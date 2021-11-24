@@ -11,9 +11,8 @@ use pocketmine\nbt\tag\{CompoundTag, ListTag, DoubleTag, StringTag};
 use pocketmine\nbt\NBT;
 use pocketmine\item\Item;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\faction\{FactionUtils, Faction};
 use ImAMadDev\HCF;
 use ImAMadDev\utils\HCFUtils;
@@ -109,7 +108,7 @@ class CombatLogger extends Villager{
 		}
 		if($this->lastDamager instanceof HCFPlayer) {
 			$this->lastDamager->obtainKill($this->getPlayerName());
-			Server::getInstance()->broadcastMessage(TextFormat::colorize("&c " . $this->getPlayerName() . " &7(Combat-Logger) &ewas slain by &c" . $this->lastDamager->getName() . "&7[&4" . PlayerData::getKills($this->lastDamager->getName()) . "&7]&e using " . $this->lastDamager->getHandName()));
+			Server::getInstance()->broadcastMessage(TextFormat::colorize("&c " . $this->getPlayerName() . " &7(Combat-Logger) &ewas slain by &c" . $this->lastDamager->getName() . "&7[&4" . $this->lastDamager->getCache()->getInData('kills', true, 0) . "&7]&e using " . $this->lastDamager->getHandName()));
 		} else {
 			Server::getInstance()->broadcastMessage(TextFormat::colorize("&c " . $this->getPlayerName() . " &7(Combat-Logger) &esome how die!"));
 		}

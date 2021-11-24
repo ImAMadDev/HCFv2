@@ -10,7 +10,7 @@ use pocketmine\Server;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\manager\ClaimManager;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\faction\ticks\{FactionTick, InviteTask, UpdateDataAsyncTask};
 
 class Faction {
@@ -397,15 +397,14 @@ class Faction {
 	}
 	
 	public function getInformationString() : string {
-		$message = "";
-		$message .= TextFormat::DARK_RED . TextFormat::BOLD . $this->getName() . TextFormat::RESET . TextFormat::DARK_GRAY . " [" . TextFormat::GRAY . count($this->getAllMembers()) . "/" . FactionUtils::MAXIMUM_MEMBERS . TextFormat::DARK_GRAY . "] " . TextFormat::GRAY . $this->getHomeString(false) . PHP_EOL;
+        $message = TextFormat::DARK_RED . TextFormat::BOLD . $this->getName() . TextFormat::RESET . TextFormat::DARK_GRAY . " [" . TextFormat::GRAY . count($this->getAllMembers()) . "/" . FactionUtils::MAXIMUM_MEMBERS . TextFormat::DARK_GRAY . "] " . TextFormat::GRAY . $this->getHomeString() . PHP_EOL;
 		$members = [];
 		foreach($this->getAllMembers() as $member) {
 			if(($player = $this->main->getServer()->getPlayerByPrefix($member)) instanceof HCFPlayer) {
-				$members[] = TextFormat::GREEN . $player->getName() . TextFormat::DARK_GRAY . "[" . TextFormat::DARK_RED . TextFormat::BOLD . PlayerData::getKills($player->getName()) . TextFormat::RESET . TextFormat::DARK_GRAY . "]";
+				$members[] = TextFormat::GREEN . $player->getName() . TextFormat::DARK_GRAY . "[" . TextFormat::DARK_RED . TextFormat::BOLD . $player->getCache()->getInData('kills', true, 0) . TextFormat::RESET . TextFormat::DARK_GRAY . "]";
 				continue;
 			}
-			$members[] = TextFormat::RED . $member . TextFormat::DARK_GRAY . "[" . TextFormat::DARK_RED . TextFormat::BOLD . PlayerData::getKills($member) . TextFormat::RESET . TextFormat::DARK_GRAY . "]";
+			$members[] = TextFormat::RED . $member . TextFormat::DARK_GRAY . "[" . TextFormat::DARK_RED . TextFormat::BOLD . HCF::getInstance()->getCache($member)?->getInData('kills', true, 0) . TextFormat::RESET . TextFormat::DARK_GRAY . "]";
 		}
 		$raidable = "";
 		if($this->getDTR() <= 0) {
@@ -456,8 +455,8 @@ class Faction {
 			}
 		}
 		foreach($this->getAllMembers() as $name){
-			if(PlayerData::getData($name)->get('faction', null) == $this->getName()) {
-				PlayerData::setData($name, 'faction', null);
+			if(HCF::getInstance()->getCache($name)?->getInData('faction') == $this->getName()) {
+                HCF::getInstance()->getCache($name)?->setInData('faction', null);
 			}
 		}
 		if(count($this->getAllies()) > 0) {

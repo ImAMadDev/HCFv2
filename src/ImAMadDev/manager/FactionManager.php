@@ -7,7 +7,7 @@ use pocketmine\utils\{Config, SingletonTrait, TextFormat};
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\faction\Faction;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 
 class FactionManager {
     use SingletonTrait;
@@ -66,7 +66,8 @@ class FactionManager {
 			}
 			$config->save();
 			self::$factions[$data['name']] = new Faction(self::$main, $config);
-			PlayerData::setData($player->getName(), 'faction', $data['name']);
+
+            $player->getCache()->setInData('faction', $data['name']);
 			$player->setFaction(self::$factions[$data['name']]);
 			return true;
 		} else {

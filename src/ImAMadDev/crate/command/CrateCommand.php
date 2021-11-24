@@ -6,8 +6,9 @@ use ImAMadDev\command\Command;
 use ImAMadDev\crate\command\subCommands\AllSubCommand;
 use ImAMadDev\crate\command\subCommands\CreateSubCommand;
 use ImAMadDev\crate\command\subCommands\ListSubCommand;
+use ImAMadDev\HCF;
 use ImAMadDev\manager\CrateManager;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\{PlayerCache, PlayerData, HCFPlayer};
 use ImAMadDev\crate\Crate;
 
 use pocketmine\command\CommandSender;
@@ -51,10 +52,10 @@ class CrateCommand extends Command {
 					$sender->sendMessage(TextFormat::RED . "This crate doesn't exists!");
 				}
 				return;
-			} elseif(PlayerData::hasData($args[0], "ranks") === true) {
+			} elseif(($player = HCF::getInstance()->getCache($args[0])) instanceof PlayerCache) {
 				if(($crate = CrateManager::getInstance()->getCrateByName($args[1])) instanceof Crate) {
-					PlayerData::saveItem($args[0], $crate->getName(), $args[2]);
-					$sender->sendMessage(TextFormat::GREEN . "You've gave x $args[2] {$crate->getName()} to $args[0]!");
+					PlayerData::saveItem($player->getName(), $crate->getName(), $args[2]);
+					$sender->sendMessage(TextFormat::GREEN . "You've gave x $args[2] {$crate->getName()} to {$player->getName()}!");
 				} else {
 					$sender->sendMessage(TextFormat::RED . "This crate doesn't exists!");
 				} 

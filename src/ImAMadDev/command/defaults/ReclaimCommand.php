@@ -8,7 +8,7 @@ use pocketmine\math\Vector3;
 
 use ImAMadDev\command\Command;
 use ImAMadDev\manager\ReclaimManager;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 
 class ReclaimCommand extends Command {
 	
@@ -25,7 +25,7 @@ class ReclaimCommand extends Command {
 			$sender->sendMessage(TextFormat::RED . "It appears there is no reclaim found for your rank!");
 			return;
 		}
-		$time = (86400 - (time() - PlayerData::getCountdown($sender->getName(), 'reclaim')));
+		$time = (86400 - (time() - $sender->getCache()->getCountdown('reclaim')));
 		if($time > 0) {
 			$sender->sendMessage(TextFormat::RED . "You can't do /reclaim because you have a cooldown of " . gmdate('H:i:s', $time));
 			return;
@@ -38,7 +38,7 @@ class ReclaimCommand extends Command {
 			}
 			$sender->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::DARK_RED . TextFormat::BOLD . $key->getCustomName());
 		}
-		PlayerData::setCountdown($sender->getName(), 'reclaim', (time() + 86400));
+        $sender->getCache()->setCountdown('reclaim', 86400);
 		$this->getServer()->broadcastMessage(TextFormat::colorize("&c{$sender->getName()} &7has reclaimed his keys from the &e/reclaim"));
 	}
 }

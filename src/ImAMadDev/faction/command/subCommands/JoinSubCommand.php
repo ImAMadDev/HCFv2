@@ -5,7 +5,7 @@ namespace ImAMadDev\faction\command\subCommands;
 use ImAMadDev\command\SubCommand;
 use ImAMadDev\faction\FactionUtils;
 use JetBrains\PhpStorm\Pure;
-use ImAMadDev\player\{PlayerData, HCFPlayer};
+use ImAMadDev\player\HCFPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -42,7 +42,7 @@ class JoinSubCommand extends SubCommand {
 			return;
 		}
 		$sender->setFaction($faction);
-		PlayerData::setData($sender->getName(), 'faction', $faction->getName());
+        $sender->getCache()->setInData('faction', $faction->getName());
 		$faction->addMember($sender);
 		$faction->message(TextFormat::GREEN . $sender->getName() . " has joined the faction.");
 	}

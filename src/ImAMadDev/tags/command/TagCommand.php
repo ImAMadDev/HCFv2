@@ -6,7 +6,6 @@ use formapi\SimpleForm;
 use ImAMadDev\command\Command;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\player\PlayerData;
 use ImAMadDev\tags\command\subCommands\GiveSubCommand;
 use ImAMadDev\tags\Tag;
 use pocketmine\command\CommandSender;
@@ -40,31 +39,37 @@ class TagCommand extends Command
         }
     }
 
-    private function getTagsMenu(Player $player){
+    private function getTagsMenu(Player $player)
+    {
         $form = new SimpleForm(function (Player $player, $data) {
-            if($data === null){
+            if ($data === null) {
                 return;
             }
-            if(($tag = HCF::getTagManager()->getTag($data)) instanceof Tag) {
-                if(PlayerData::hasTag($player->getName(), $data)){
-                    $player->setCurrentTag($tag->getName());
-                    PlayerData::selectTag($player->getName(), $tag->getName());
-                    $player->sendMessage(TextFormat::colorize("&aYou have selected the tag: ") . $tag->getFormat());
+            if ($player instanceof HCFPlayer) {
+                if (($tag = HCF::getTagManager()->getTag($data)) instanceof Tag) {
+                    if ($player->getCache()->hasDataInArray($data, 'tags')) {
+                        $player->setCurrentTag($tag->getName());
+                        $player->getCache()->setInData('currentTag', $tag->getName());
+                        $player->sendMessage(TextFormat::colorize("&aYou have selected the tag: ") . $tag->getFormat());
+                    } else {
+                        $player->sendMessage(TextFormat::RED . "You dont have this tag: {$tag->getFormat()}");
+                    }
                 } else {
-                    $player->sendMessage(TextFormat::RED . "You dont have this tag: {$tag->getFormat()}");
+                    $player->sendMessage(TextFormat::RED . "An unknown error occurred while trying to execute this action.");
                 }
-            } else {
-                $player->sendMessage(TextFormat::RED . "An unknown error occurred while trying to execute this action.");
             }
         });
-        $form->setTitle(TextFormat::GREEN . "Your tags");
-        foreach(PlayerData::getData($player->getName())->get("tags", []) as $tag) {
-            if (($tagClass = HCF::getTagManager()->getTag($tag)) instanceof Tag) {
-                $form->addButton($tagClass->getFormat(), -1, "", $tagClass->getName());
-            } else {
-                PlayerData::removeTag($player->getName(), $tag);
+        if ($player instanceof HCFPlayer) {
+            $form->setTitle(TextFormat::GREEN . "Your tags");
+            $tags = $player->getCache()->getInData('tags') ?? [];
+            foreach ($tags as $tag) {
+                if (($tagClass = HCF::getTagManager()->getTag($tag)) instanceof Tag) {
+                    $form->addButton($tagClass->getFormat(), -1, "", $tagClass->getName());
+                } else {
+                    $player->getCache()->removeInArray('tags', $tag);
+                }
             }
+            $form->sendToPlayer($player);
         }
-        $form->sendToPlayer($player);
     }
 }

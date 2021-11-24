@@ -3,7 +3,6 @@
 namespace ImAMadDev\listener;
 
 use ImAMadDev\customenchants\CustomEnchantments;
-use ImAMadDev\customenchants\types\Gappler;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\player\{HCFPlayer, PlayerUtils, PlayerData};
@@ -59,7 +58,6 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
-    InventoryContentPacket,
     types\BlockPosition,
     types\CacheableNbt,
     UpdateBlockPacket,
@@ -203,7 +201,7 @@ class HCFListener implements Listener {
 			$player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
 		}
-		$player->setInvincible(PlayerData::getInvincibilityTime($player->getName()));
+		$player->setInvincible($player->getCache()->getInData('invincibility_time', true, 3600));
         $player->getFaction()?->message(TextFormat::GREEN . "+ Member online: " . TextFormat::RED . $player->getName());
 		HCFUtils::saveSkin($player->getSkin(), $player->getName());
 		$player->setJoined(true);
@@ -471,7 +469,7 @@ class HCFListener implements Listener {
                         $faction->addPoints(3);
                     }
 				}
-				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . PlayerData::getKills($player->getName()) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . PlayerData::getKills($killer->getName()) . "&7]&e using &c" . $killer->getHandName()));
+				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
 			}
 		} else {
 			if($cause instanceof EntityDamageByEntityEvent) {
@@ -485,10 +483,10 @@ class HCFListener implements Listener {
                             $faction->addPoints(3);
                         }
 					}
-					$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . PlayerData::getKills($player->getName()) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . PlayerData::getKills($killer->getName()) . "&7]&e using &c" . $killer->getHandName()));
+					$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
 				}
 			} else {
-				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . PlayerData::getKills($player->getName()) . "&7] &esome how die!"));
+				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &esome how die!"));
 			}
 		}
 		$player->getWorld()->addParticle($player->getPosition(), new HugeExplodeSeedParticle());
@@ -628,12 +626,12 @@ class HCFListener implements Listener {
 		$player = $event->getPlayer();
 		$item = $event->getItem();
 		if($item->getId() === ItemIds::APPLEENCHANTED){
-			$time = (900 - (time() - PlayerData::getCountdown($player->getName(), "appleenchanted")));
+			$time = (900 - (time() - $player->getCache()->getCountdown('appleenchanted')));
 			if($time > 0){
-				$player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "NOTCH " . TextFormat::RED . "for " . TextFormat::GOLD . HCFUtils::getTimeString(PlayerData::getCountdown($player->getName(), "appleenchanted")));
+				$player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "NOTCH " . TextFormat::RED . "for " . TextFormat::GOLD . HCFUtils::getTimeString($player->getCache()->getCountdown('appleenchanted')));
 				$event->cancel();
 			}else{
-				PlayerData::setCountdown($player->getName(), 'appleenchanted', (time() + 900));
+                $player->getCache()->setCountdown('appleenchanted', 900);
 			}
 		}
 		if($item->getId() === ItemIds::GOLDEN_APPLE){
