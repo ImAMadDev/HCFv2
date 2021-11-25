@@ -82,8 +82,8 @@ class RankClass {
 	}
 	
 	public function updateData(): void {
-        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
-        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+        if (!file_exists(RANKS_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(RANKS_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
     }
 	
 	public function giveTo(HCFPlayer $player) : void {
@@ -104,8 +104,8 @@ class RankClass {
 
     public function __destruct()
     {
-        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
-        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+        if (!file_exists(RANKS_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(RANKS_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
     }
 
 }
