@@ -31,6 +31,7 @@ class TopThree extends NPCEntity
                 $this->setSkin(HCFUtils::getSkin(HCF::getInstance()->getTopKills()[2]["name"]));
             }
             $this->setNameTag($this->getName());
+            $this->setNameTagAlwaysVisible(true);
         }
         return parent::entityBaseTick($tickDiff);
     }

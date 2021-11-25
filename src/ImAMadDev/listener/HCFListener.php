@@ -19,6 +19,7 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\utils\SignText;
+use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -126,9 +127,14 @@ class HCFListener implements Listener {
         }
     }*/
 
+    public function handleLeaves(LeavesDecayEvent $event) : void
+    {
+        $event->cancel();
+    }
 
     public function onPickup(EntityItemPickupEvent $event) : void {
-		if(($player = $event->getOrigin()) instanceof HCFPlayer){
+        $player = $event->getOrigin();
+		if($player instanceof HCFPlayer){
 			if($player->isInvincible() or !$player->isAlive()){
 				$event->cancel();
 			}

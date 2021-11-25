@@ -46,7 +46,7 @@ class SplashPotion extends ProjectileItem {
 	 * @return float
 	 */
 	public function getThrowForce() : float {
-        return 0.7;
+        return 1.9;
 	}
 
     /**

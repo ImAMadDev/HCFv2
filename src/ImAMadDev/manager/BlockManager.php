@@ -2,19 +2,19 @@
 
 namespace ImAMadDev\manager;
 
-use pocketmine\block\{
-    BlockBreakInfo,
+use pocketmine\block\{BlockBreakInfo,
     BlockIdentifier as BID,
     BlockLegacyIds as Ids,
     BlockLegacyMetadata as Meta,
     BlockToolType,
     BlockFactory};
 
+use pocketmine\item\ToolTier;
 use ImAMadDev\block\{Portal, IronDoor, Flower, DoublePlant, MonsterSpawner, PotionGenerator, Observer, Dirt, Grass, TNT, Obsidian, PressurePlate};
 use ImAMadDev\HCF;
 
 class BlockManager {
-	
+
 	public static HCF $main;
 	
 	public function __construct(HCF $main) {
@@ -46,15 +46,15 @@ class BlockManager {
         $bf->register(new IronDoor(), true);
         $bf->register(new Portal(), true);
         $bf->register(new Obsidian(), true);
-        /*
-        BlockFactory::registerBlock(new Observer(), true);
-        BlockFactory::registerBlock(new Water(), true);
-        BlockFactory::registerBlock(new PotionGenerator(), true);
-        BlockFactory::registerBlock(new MonsterSpawner(), true);
-        BlockFactory::registerBlock(new PressurePlate(Block::STONE_PRESSURE_PLATE, 0, "Stone Pressure Plate"), true);
-		BlockFactory::registerBlock(new PressurePlate(Block::HEAVY_WEIGHTED_PRESSURE_PLATE, 0, "Heavy Weighted Pressure Plate"), true);
-		BlockFactory::registerBlock(new PressurePlate(Block::LIGHT_WEIGHTED_PRESSURE_PLATE, 0, "Light Weighted Pressure Plate"), true);
-		BlockFactory::registerBlock(new PressurePlate(Block::WOODEN_PRESSURE_PLATE, 0, "Wooden Pressure Plate"), true);*/
+        $bf->register(new PotionGenerator(), true);
+        $bf->register(new MonsterSpawner(), true);
+        $weightedPressurePlateBreakInfo = new BlockBreakInfo(0.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel());
+        $bf->register(new PressurePlate(new BID(Ids::STONE_PRESSURE_PLATE, 0), "Stone Pressure Plate", $weightedPressurePlateBreakInfo), true);
+        $bf->register(new PressurePlate(new BID(Ids::WOODEN_PRESSURE_PLATE, 0), "Wooden Pressure Plate", $weightedPressurePlateBreakInfo), true);
+        $bf->register(new PressurePlate(new BID(Ids::HEAVY_WEIGHTED_PRESSURE_PLATE, 0), "Heavy Weighted Pressure Plate", $weightedPressurePlateBreakInfo), true);
+        $bf->register(new PressurePlate(new BID(Ids::LIGHT_WEIGHTED_PRESSURE_PLATE, 0), "Light Weighted Pressure Plate", $weightedPressurePlateBreakInfo), true);
+        /*BlockFactory::registerBlock(new Observer(), true);
+        BlockFactory::registerBlock(new Water(), true);*/
 	}
 
 }

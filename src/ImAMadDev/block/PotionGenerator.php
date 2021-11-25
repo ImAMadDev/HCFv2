@@ -2,16 +2,31 @@
 
 namespace ImAMadDev\block;
 
+use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\tile\PotionGenerator as PotionGeneratorClass;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\block\Block;
+use pocketmine\block\BlockBreakInfo;
+use pocketmine\block\BlockIdentifier as BID;
+use pocketmine\block\BlockLegacyIds as Ids;
+use pocketmine\block\BlockToolType;
 use pocketmine\block\BrewingStand;
+use pocketmine\block\tile\Chest;
+use pocketmine\block\tile\Container;
+use pocketmine\block\tile\Hopper;
+use pocketmine\block\tile\Tile;
 use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
+use pocketmine\item\ToolTier;
+use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\block\tile\Tile;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use ImAMadDev\manager\{ClaimManager, FormManager};
+use pocketmine\world\BlockTransaction;
 
 class PotionGenerator extends BrewingStand {
     /** @var int */
@@ -26,105 +41,47 @@ class PotionGenerator extends BrewingStand {
     public const NIGHT_VISION = 5;
     
     public const POTION_TAG = "Potion";
-    /**
-     * Generator constructor.
-     *
-     * @param int $id
-     * @param Item $generatedItem
-     * @param int $type
-     */
-    public function __construct(int $meta = 0){
-		parent::__construct($meta);
+
+    public function __construct(){
+        parent::__construct(new BID(Ids::BREWING_STAND_BLOCK, 0, ItemIds::BREWING_STAND, PotionGeneratorClass::class), "Brewing Stand", new BlockBreakInfo(0.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel()));
 		$this->potionType = self::REGENERATION;
 	}
 
-    /**
-     * @param Item $item
-     * @param Player|null $player
-     *
-     * @return bool
-     */
-    public function onActivate(Item $item, Player $player = null): bool {
-        $tile = $this->getWorld()->getTile($this);
-        if(!$tile instanceof \ImAMadDev\tile\PotionGenerator) {
-        	if($tile !== null) {
-         	   $this->getWorld()->removeTile($tile);
-  	      }
-            /** @var CompoundTag $nbt */
-            $nbt = new CompoundTag(
-                "", [
-                new StringTag(Tile::TAG_ID, "Generator"),
-                new IntTag(Tile::TAG_X, (int)$this->x),
-                new IntTag(Tile::TAG_Y, (int)$this->y),
-                new IntTag(Tile::TAG_Z, (int)$this->z),
-                new IntTag(self::POTION_TAG, (int)$this->getPotionType())
-            ]);
-            $tile = new \ImAMadDev\tile\PotionGenerator($this->getWorld(), $nbt);
-            $this->getWorld()->addTile($tile);
-        }
-        if($item->isNull() && $player !== null) {
-        	$claim = ClaimManager::getInstance()->getClaimByPosition($this->asPosition());
-        	if($claim !== null) {
-				if($claim->canEdit($player->getFaction())) {
-					FormManager::getGeneratorForm($player, $this);
-				}
-			} else {
-				FormManager::getGeneratorForm($player, $this);
-			}
-       }
-        return parent::onActivate($item, $player);
+    public function onNearbyBlockChange() : void{
+        parent::onNearbyBlockChange();
+        $this->updateBlock();
     }
 
-    /**
-     * @param Item $item
-     * @param Block $blockReplace
-     * @param Block $blockClicked
-     * @param int $face
-     * @param Vector3 $clickVector
-     * @param Player|null $player
-     *
-     * @return bool
-     */
-    public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, ?Player $player = null): bool {
-        $this->getWorld()->setBlock($this, $this, true, false);
-        $tile = $this->getWorld()->getTile($this);
-        $potion = $item->getNamedTag()->getInt(self::POTION_TAG, 22);
-        if(!$tile instanceof \ImAMadDev\tile\PotionGenerator) {
-        	if($tile !== null) {
-         	   $this->getWorld()->removeTile($tile);
-  	      }
-            /** @var CompoundTag $nbt */
-            $nbt = new CompoundTag("", [
-                new StringTag(Tile::TAG_ID, "Generator"),
-                new IntTag(Tile::TAG_X, (int)$this->x),
-                new IntTag(Tile::TAG_Y, (int)$this->y),
-                new IntTag(Tile::TAG_Z, (int)$this->z),
-                new IntTag(self::POTION_TAG, (int)$potion)
-            ]);
-            $tile = new \ImAMadDev\tile\PotionGenerator($this->getWorld(), $nbt);
-            $this->getWorld()->addTile($tile);
-            $this->setPotionType($potion);
-        }
-        if($player !== null) {
-       	 $item = $player->getInventory()->getItemInHand();
-			$item->setCount($item->getCount() - 1);
-			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-		}
-        return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+    public function getContainerDown() : ?Container{
+        $above = $this->position->getWorld()->getTileAt($this->position->x, $this->position->y - 1, $this->position->z);
+        return $above instanceof Container ? $above : null;
     }
 
-    /**
-     * @param Item $item
-     * @param Player|null $player
-     *
-     * @return bool
-     */
-    public function onBreak(Item $item, Player $player = null): bool {
-        $tile = $this->getWorld()->getTile($this);
-        if($tile !== null) {
-            $this->getWorld()->removeTile($tile);
+    protected function canRescheduleTransferCooldown() : bool{
+        return $this->getContainerDown() !== null;
+    }
+
+    public function updateBlock()
+    {
+        if ($this->canRescheduleTransferCooldown()){
+            $this->position->getWorld()->scheduleDelayedBlockUpdate($this->position, 25);
         }
-        return parent::onBreak($item, $player);
+    }
+
+    public function onInteract(Item $item, int $face, Vector3 $clickVector, ?Player $player = null): bool
+    {
+        if($item->isNull() && $player instanceof HCFPlayer) {
+            $claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition());
+            if($claim !== null) {
+                if($claim->canEdit($player->getFaction())) {
+                    FormManager::getGeneratorForm($player, $this);
+                }
+            } else {
+                FormManager::getGeneratorForm($player, $this);
+            }
+            $this->updateBlock();
+        }
+        return true;
     }
 
     /**
@@ -140,71 +97,42 @@ class PotionGenerator extends BrewingStand {
      * @return Item[]
      */
     public function getDrops(Item $item): array {
-        $tile = $this->getWorld()->getTile($this);
-        $drop = Item::get(0);
-        if($tile instanceof \ImAMadDev\tile\PotionGenerator) {
-    	    $drop = Item::get($this->getItemId(), 0, 1);
-      	  $drop->setCustomName(TextFormat::RESET . TextFormat::GOLD . $tile->getPotionName() . " Generator");
-      	  $drop->setLore([TextFormat::LIGHT_PURPLE . "Put a chest on top of the generator to collect positions."]);
-      	  $drop->setNamedTagEntry(new IntTag(self::POTION_TAG, $tile->getPotion()));
-     	}
+        $drop = ItemFactory::getInstance()->get($this->getIdInfo()->getItemId(), 0, 1);
+        $drop->setCustomName(TextFormat::RESET . TextFormat::GOLD . $this->getPotionName() . " Generator");
+        $drop->setLore([TextFormat::LIGHT_PURPLE . "Put a chest on top of the generator to collect positions."]);
+        $nbt = CompoundTag::create();
+        $nbt->setInt(self::POTION_TAG, $this->getPotionType());
+        $drop->setCustomBlockData($nbt);
         return [$drop];
     }
     
-    private function getPotionName(): string {
-    	switch($this->getPotionType()){
-    		case self::REGENERATION:
-    			return "Regeneration";
-    		break;
-    		case self::LONG_SWIFTNESS:
-        		return "Long Swiftness";
-    		break;
-    		case self::STRONG_SWIFTNESS:
-        		return "Strong Swiftness";
-    		break;
-    		case self::LONG_INVISIBILITY:
-        		return "Long Invisibility";
-    		break;
-    		case self::STRONG_POISON:
-        		return "Poison";
-    		break;
-    		case self::LONG_FIRE_RESISTANCE:
-        		return "Long Fire Resistance";
-    		break;
-    		case self::NIGHT_VISION:
-        		return "Night Vision";
-    		break;
-    	}
+    #[Pure] private function getPotionName(): string {
+        return match ($this->getPotionType()) {
+            self::REGENERATION => "Regeneration",
+            self::LONG_SWIFTNESS => "Long Swiftness",
+            self::STRONG_SWIFTNESS => "Strong Swiftness",
+            self::LONG_INVISIBILITY => "Long Invisibility",
+            self::STRONG_POISON => "Poison",
+            self::LONG_FIRE_RESISTANCE => "Long Fire Resistance",
+            self::NIGHT_VISION => "Night Vision",
+            default => 'Regeneration',
+        };
     }
     
     public function getPotionByName(string $name): int {
-    	switch($name){
-    		case "Regeneration":
-    			return self::REGENERATION;
-    		break;
-    		case "Long Swiftness":
-        		return self::LONG_SWIFTNESS;
-    		break;
-    		case "Strong Swiftness":
-        		return self::STRONG_SWIFTNESS;
-    		break;
-    		case "Long Invisibility":
-        		return self::LONG_INVISIBILITY;
-    		break;
-    		case "Poison":
-        		return self::STRONG_POISON;
-    		break;
- 		   case "Long Fire Resistance":
-        		return self::LONG_FIRE_RESISTANCE;
-    		break;
-    		case "Night Vision":
-        		return self::NIGHT_VISION;
-    		break;
-    	}
+        return match ($name) {
+            "Long Swiftness" => self::LONG_SWIFTNESS,
+            "Strong Swiftness" => self::STRONG_SWIFTNESS,
+            "Long Invisibility" => self::LONG_INVISIBILITY,
+            "Poison" => self::STRONG_POISON,
+            "Long Fire Resistance" => self::LONG_FIRE_RESISTANCE,
+            "Night Vision" => self::NIGHT_VISION,
+            default => self::REGENERATION,
+        };
     }
 
     /**
-     * @return Item
+     * @return int
      */
     public function getPotionType(): int {
         return $this->potionType;
@@ -212,5 +140,23 @@ class PotionGenerator extends BrewingStand {
     
     public function setPotionType(int $id): void{
         $this->potionType = $id;
+    }
+
+    public function readStateFromWorld() : void{
+        parent::readStateFromWorld();
+        $this->updateBlock();
+    }
+
+    public function getTile() : ?Tile
+    {
+        return $this->getPosition()->getWorld()->getTile($this->getPosition());
+    }
+
+    public function onScheduledUpdate(): void
+    {
+        $tile = $this->position->getWorld()->getTile($this->position);
+        if($tile instanceof PotionGeneratorClass and $tile->onUpdate()){
+            $this->updateBlock();
+        }
     }
 }

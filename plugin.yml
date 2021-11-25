@@ -3,6 +3,7 @@ author: ImAMadDev
 version: 2.0
 main: ImAMadDev\HCF
 api: [4.0.0]
+php: "8.0"
 permissions:
   rank.command:
     default: op

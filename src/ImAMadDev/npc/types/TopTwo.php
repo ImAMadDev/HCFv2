@@ -29,6 +29,7 @@ class TopTwo extends NPCEntity
                 $this->setSkin(HCFUtils::getSkin(HCF::getInstance()->getTopKills()[1]["name"]));
             }
             $this->setNameTag($this->getName());
+            $this->setNameTagAlwaysVisible(true);
         }
         return parent::entityBaseTick($tickDiff);
     }

@@ -2,27 +2,25 @@
 
 namespace ImAMadDev\block;
 
+use ImAMadDev\manager\ClaimManager;
+use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\tile\MonsterSpawner as MonsterSpawnerClass;
 use JetBrains\PhpStorm\Pure;
-use pocketmine\block\Block;
 use pocketmine\block\BlockBreakInfo;
 use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\BlockToolType;
 use pocketmine\block\MonsterSpawner as VanillaMonsterSpawner;
-use pocketmine\block\tile\Tile;
-use pocketmine\block\VanillaBlocks;
+use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\ToolTier;
-use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\StringTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use pocketmine\world\BlockTransaction;
 
 class MonsterSpawner extends VanillaMonsterSpawner {
     /** @var int */
@@ -30,61 +28,13 @@ class MonsterSpawner extends VanillaMonsterSpawner {
     
     public const TAG_MOB_TYPE = "MobType";
     
-    public const ENDERMAN = 38;
-    public const CREEPER = 33;
-    public const BLAZE = 43;
-    public const COW = 11;
+    public const ENDERMAN = EntityLegacyIds::ENDERMAN;
+    public const CREEPER = EntityLegacyIds::CREEPER;
+    public const BLAZE = EntityLegacyIds::BLAZE;
+    public const COW = EntityLegacyIds::COW;
 
-    /**
-     * Generator constructor.
-     *
-     * @param int $meta
-     */
-    public function __construct(int $meta = 0){
-        parent::__construct(new BlockIdentifier(BlockLegacyIds::MOB_SPAWNER, 0, ItemIds::MONSTER_SPAWNER, \ImAMadDev\tile\MonsterSpawner::class), "Monster Spawner", new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel()));
-        $this->mobType = $meta;
-    }
-
-    /**
-     * @param Item $item
-     * @param int $face
-     * @param Vector3 $clickVector
-     * @param Player|null $player
-     *
-     * @return bool
-     */
-    public function onInteract(Item $item, int $face, Vector3 $clickVector, ?Player $player = null): bool
-    {
-        return parent::onInteract($item, $face, $clickVector, $player);
-    }
-
-    /**
-     * @param BlockTransaction $tx
-     * @param Item $item
-     * @param Block $blockReplace
-     * @param Block $blockClicked
-     * @param int $face
-     * @param Vector3 $clickVector
-     * @param Player|null $player
-     *
-     * @return bool
-     */
-    public function place(BlockTransaction $tx, Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, ?Player $player = null): bool
-    {
-        $this->getPosition()->getWorld()->setBlock($this->getPosition(), $this, true);
-        $tile = $this->getPosition()->getWorld()->getTile($this->getPosition());
-        $mobType = $item->getNamedTag()->getInt(self::TAG_MOB_TYPE, 11);
-        if(!$tile instanceof \ImAMadDev\tile\MonsterSpawner) {
-            $tile = new \ImAMadDev\tile\MonsterSpawner($this->getPosition()->getWorld(), $this->getPosition()->asVector3());
-            $this->getPosition()->getWorld()->addTile($tile);
-            $this->setMobType($mobType);
-        }
-        if($player !== null) {
-       	 $item = $player->getInventory()->getItemInHand();
-			$item->setCount($item->getCount() - 1);
-			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-		}
-        return parent::place($tx, $item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+    public function __construct(){
+        parent::__construct(new BlockIdentifier(BlockLegacyIds::MOB_SPAWNER, 0, ItemIds::MONSTER_SPAWNER, MonsterSpawnerClass::class), "Monster Spawner", new BlockBreakInfo(5.0, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel()));
     }
 
     /**
@@ -110,15 +60,12 @@ class MonsterSpawner extends VanillaMonsterSpawner {
      * @return Item[]
      */
     public function getDrops(Item $item): array {
-        $tile = $this->getPosition()->getWorld()->getTile($this->getPosition());
-        $drop = ItemFactory::air();
-        if($tile instanceof \ImAMadDev\tile\MonsterSpawner) {
-            $drop = ItemFactory::getInstance()->get(VanillaBlocks::MONSTER_SPAWNER()->getId(), 0, 1);
-            $drop->setCustomName(TextFormat::RESET . TextFormat::GREEN . $tile->getMobName() . " Spawner");
-            $nbt = new CompoundTag();
-            $nbt->setTag(self::TAG_MOB_TYPE, new IntTag($tile->getMob()));
-            $drop->setCustomBlockData($nbt);
-   	}
+        $drop = ItemFactory::getInstance()->get($this->getIdInfo()->getItemId(), 0, 1);
+        $drop->setCustomName(TextFormat::RESET . TextFormat::GREEN . $this->getMobName() . " Spawner");
+        $drop->setLore([TextFormat::LIGHT_PURPLE . "Put a chest on top of the generator to collect positions."]);
+        $nbt = new CompoundTag();
+        $nbt->setTag(self::TAG_MOB_TYPE, new IntTag($this->getMobType()));
+        $drop->setCustomBlockData($nbt);
         return [$drop];
     }
     
@@ -126,31 +73,22 @@ class MonsterSpawner extends VanillaMonsterSpawner {
         return match ($this->getMobType()) {
             self::ENDERMAN => "Enderman",
             self::CREEPER => "Creeper",
-            self::COW => "Cow",
             self::BLAZE => "Blaze",
             default => "Cow",
         };
     }
     
     public function getMobByName(string $name): int {
-    	switch($name){
-    		case "Enderman":
-    			return self::ENDERMAN;
-    		break;
-    		case "Creeper":
-        		return self::CREEPER;
-    		break;
-    		case "Cow":
-        		return self::COW;
-    		break;
-    		case "Blaze":
-        		return self::BLAZE;
-    		break;
-    	}
+        return match ($name) {
+            "Enderman" => self::ENDERMAN,
+            "Creeper" => self::CREEPER,
+            "Blaze" => self::BLAZE,
+            default => self::COW,
+        };
     }
 
     /**
-     * @return Item
+     * @return int
      */
     public function getMobType(): int {
         return $this->mobType;
@@ -162,6 +100,64 @@ class MonsterSpawner extends VanillaMonsterSpawner {
 
     public function onScheduledUpdate(): void
     {
-        parent::onScheduledUpdate(); // TODO: Change the autogenerated stub
+        $tile = $this->position->getWorld()->getTile($this->position);
+        if($tile instanceof MonsterSpawnerClass and $tile->onUpdate()){
+            $this->updateBlock();
+        }
+    }
+
+    protected function canRescheduleTransferCooldown() : bool{
+        return true;
+    }
+
+    public function updateBlock()
+    {
+        if ($this->canRescheduleTransferCooldown()){
+            $this->position->getWorld()->scheduleDelayedBlockUpdate($this->position, 20);
+        }
+    }
+
+    public function onNearbyBlockChange() : void{
+        parent::onNearbyBlockChange();
+        $this->updateBlock();
+    }
+
+    public function readStateFromWorld() : void{
+        parent::readStateFromWorld();
+        $this->updateBlock();
+    }
+
+    public function onInteract(Item $item, int $face, Vector3 $clickVector, ?Player $player = null): bool
+    {
+        if(!$item->isNull() && $player instanceof HCFPlayer) {
+            $mob = $this->selectMob($item);
+            $claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition());
+            if($claim !== null) {
+                if($claim->canEdit($player->getFaction())) {
+                    if ($mob !== 0) {
+                        $this->setMobType($mob);
+                        $player->getInventory()->removeItem(ItemFactory::getInstance()->get(ItemIds::SPAWN_EGG, $mob, 1));
+                    }
+                }
+            } else {
+                $this->setMobType($mob);
+                $player->getInventory()->removeItem(ItemFactory::getInstance()->get(ItemIds::SPAWN_EGG, $mob, 1));
+            }
+        }
+        return parent::onInteract($item, $face, $clickVector, $player);
+    }
+
+    public function selectMob(Item $item) : int
+    {
+        if ($item->getId() === ItemIds::SPAWN_EGG){
+            match ($item->getMeta()){
+              self::ENDERMAN => EntityLegacyIds::ENDERMAN,
+              self::CREEPER => EntityLegacyIds::CREEPER,
+              self::BLAZE => EntityLegacyIds::BLAZE,
+              self::COW => EntityLegacyIds::COW,
+              default => 0
+            };
+        }
+        return 0;
     }
 }

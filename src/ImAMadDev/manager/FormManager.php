@@ -2,10 +2,9 @@
 
 namespace ImAMadDev\manager;
 
-use ImAMadDev\HCF;
-
 use formapi\SimpleForm;
 
+use ImAMadDev\block\PotionGenerator;
 use pocketmine\item\Item;
 use pocketmine\block\Block;
 use pocketmine\item\ItemFactory;
@@ -19,19 +18,14 @@ class FormManager {
 	
 	public static function getGeneratorForm(Player $player, Block $block){
 		$form = new SimpleForm(function (Player $player, $data) use($block) {
-			if($data === null){
-				return;
-			}
+			if($data === null) return;
 			if(in_array($data, self::$pots)){
-				$vector = $block->getPosition()->asVector3();
-				$tile = $block->getPosition()->getWorld()->getTile($vector);
-				if($tile instanceof \ImAMadDev\tile\PotionGenerator) {
-					$tile->setPotion($block->getPotionByName($data));
+				if($block instanceof PotionGenerator) {
+					$block->setPotionType($block->getPotionByName($data));
 					$player->sendMessage(TextFormat::GRAY . "Potion generator changed to: " . TextFormat::GOLD . $data);
 				}
-			} else {
 			}
-		});
+        });
 		$form->setTitle(TextFormat::GOLD . "Potions");
 		foreach(self::$pots as $pot){
 			$form->addButton(TextFormat::GRAY . $pot,-1, "", $pot);

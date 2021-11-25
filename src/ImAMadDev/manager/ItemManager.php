@@ -2,7 +2,13 @@
 
 namespace ImAMadDev\manager;
 
+use ImAMadDev\entity\mobs\Blaze;
+use ImAMadDev\entity\mobs\Cow;
+use ImAMadDev\entity\mobs\Creeper;
+use ImAMadDev\entity\mobs\Enderman;
+use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\bedrock\PotionTypeIdMap;
+use pocketmine\entity\Location;
 use pocketmine\item\ItemFactory;
 
 use ImAMadDev\item\{EnderPearl, FishingRod, EnchantedBook, GoldenApple, GoldenAppleEnchanted, Fireworks, SplashPotion, EnderEye};
@@ -11,6 +17,9 @@ use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\item\Potion;
 use pocketmine\item\PotionType;
+use pocketmine\item\SpawnEgg;
+use pocketmine\math\Vector3;
+use pocketmine\world\World;
 
 class ItemManager {
 	
@@ -35,5 +44,25 @@ class ItemManager {
         $if->register(new EnderEye(), true);
         $if->register(new EnchantedBook(), true);
         $if->register(new Fireworks(new ItemIdentifier(ItemIds::FIREWORKS, 0), "Fireworks"), true);
+        $if->register(new class(new ItemIdentifier(ItemIds::SPAWN_EGG, EntityLegacyIds::COW), "Cow Spawn Egg") extends SpawnEgg{
+            protected function createEntity(World $world, Vector3 $pos, float $yaw, float $pitch) : Cow{
+                return new Cow(Location::fromObject($pos, $world, $yaw, $pitch));
+            }
+        });
+        $if->register(new class(new ItemIdentifier(ItemIds::SPAWN_EGG, EntityLegacyIds::ENDERMAN), "Enderman Spawn Egg") extends SpawnEgg{
+            public function createEntity(World $world, Vector3 $pos, float $yaw, float $pitch) : Enderman{
+                return new Enderman(Location::fromObject($pos, $world, $yaw, $pitch));
+            }
+        });
+        $if->register(new class(new ItemIdentifier(ItemIds::SPAWN_EGG, EntityLegacyIds::CREEPER), "Creeper Spawn Egg") extends SpawnEgg{
+            public function createEntity(World $world, Vector3 $pos, float $yaw, float $pitch) : Creeper{
+                return new Creeper(Location::fromObject($pos, $world, $yaw, $pitch));
+            }
+        });
+        $if->register(new class(new ItemIdentifier(ItemIds::SPAWN_EGG, EntityLegacyIds::BLAZE), "Blaze Spawn Egg") extends SpawnEgg{
+            public function createEntity(World $world, Vector3 $pos, float $yaw, float $pitch) : Blaze{
+                return new Blaze(Location::fromObject($pos, $world, $yaw, $pitch));
+            }
+        });
     }
 }

@@ -89,7 +89,7 @@ class HCF extends PluginBase {
 	
 	public function onEnable(): void{
 		date_default_timezone_set('America/Guayaquil'); 
-		//Tile::init();
+		Tile::init();
 		if (!is_dir($this->getDataFolder() . "copied_skins/")) @mkdir($this->getDataFolder() . "copied_skins/");
 		if(!is_dir($this->getDataFolder() . "players/")) @mkdir($this->getDataFolder() . "players/");
 		$this->getServer()->getPluginManager()->registerEvents(new EOTWManager($this), $this);
@@ -223,7 +223,7 @@ class HCF extends PluginBase {
     public function  getTopKills() : array {
         $kills = [];
         foreach ($this->getPlayerCache() as $player_cache) {
-            $kills[$player_cache->getName()] = $player_cache->getInCache('kills');
+            $kills[$player_cache->getName()] = $player_cache->getInData('kills');
         }
         arsort($kills);
         $top = 0;

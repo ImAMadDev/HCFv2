@@ -2,21 +2,23 @@
 
 namespace ImAMadDev\block;
 
-use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\ClaimManager;
 
-use pocketmine\Player;
+use pocketmine\math\Facing;
 
-use pocketmine\block\{Block, BlockFactory, Glass, Transparent, FenceGate, Door, BlockToolType};
-use pocketmine\item\{Item, TieredTool};
+use pocketmine\block\{Block,
+    Glass,
+    Door,
+    SimplePressurePlate};
+use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\entity\Entity;
-use pocketmine\level\Position;
-use pocketmine\level\sound\DoorSound;
+use pocketmine\player\Player;
+use pocketmine\world\BlockTransaction;
 
-class PressurePlate extends Transparent {
+class PressurePlate extends SimplePressurePlate {
 
     /**
      * @return bool
@@ -32,91 +34,48 @@ class PressurePlate extends Transparent {
         return true;
     }
 
-	/**
+    /**
+     * @param BlockTransaction $tx
+     * @param Item $item
+     * @param Block $blockReplace
+     * @param Block $blockClicked
+     * @param Int $face
+     * @param Vector3 $clickVector
+     * @param Player|null $player
      * @return bool
      */
-    public function canPassThrough() : bool {
-        return true;
-    }
-
-    /**
-     * @return float
-     */
-    public function getHardness() : float {
-        return 0.5;
-    }
-
-    /**
-     * @return Int
-     */
-    public function getVariantBitmask() : int {
-        return 0;
-    }
-
-    /**
-     * @return Int
-     */
-    public function getToolType() : int {
-        return BlockToolType::TYPE_PICKAXE;
-    }
-
-    /**
-     * @return Int
-     */
-    public function getToolHarvestLevel() : int {
-        return TieredTool::TIER_WOODEN;
-    }
-
-    /**
-	 * @param Item $item
-	 * @param Block $blockReplace
-	 * @param Block $blockClicked
-	 * @param Int $face
-	 * @param Vector3 $clickVector
-	 * @param Player $player
-	 * @return bool
-	 */
-    public function place(Item $item, Block $blockReplace, Block $blockClicked, Int $face, Vector3 $clickVector,Player $player = null) : bool {
+    public function place(BlockTransaction $tx, Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool {
 		if(!$blockClicked->isSolid()||$blockClicked instanceof Glass){
 			return false;
         }
-        $this->getWorld()->setBlock($blockReplace, $this, true, true);
-		return true;
+		return parent::place($tx, $item, $blockReplace, $blockClicked, $face, $clickVector, $player);
     }
 
     /**
      * @param Entity $entity
-     * @return void
+     * @return bool
      */
-    public function onEntityCollide(Entity $entity) : void {
-        if(!$entity instanceof HCFPlayer) return;
-        $claim = ClaimManager::getInstance()->getClaimByPosition($this->asPosition());
+    public function onEntityInside(Entity $entity) : bool {
+        if(!$entity instanceof HCFPlayer) {
+            return false;
+        }
+        $claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition());
 		if($claim !== null) {
 			if(!$claim->canEdit($entity->getFaction())) {
-				return;
+				return false;
 			}
 		}
         $damage = $this->nearbyEntities();
-        if($this->getDamage() !== $damage){
+        if($this->getMeta() !== $damage){
             foreach($this->getSidesHCF(2) as $block){
-                if($block instanceof Door){
-                	if(($block->getDamage() & 0x08) === 0x08){
-                		$down = $block->getSide(Vector3::SIDE_DOWN);
-						if($down->getId() === $block->getId()){
-							$meta = $down->getDamage() ^ 0x04;
-							$this->getWorld()->setBlock($block, $block, true, true);
-						}
-					}else{
-						$block->meta ^= 0x04;
-						$this->getWorld()->setBlock($block, $block, true, true);
-                    }
-                    $this->getWorld()->addSound(new DoorSound($block));
+                if($block instanceof Door) {
+                    $block->setOpen(!$block->isOpen());
                 }
             }
-            $this->setDamage($damage);
-            $this->getWorld()->setBlock($this, $this, true, true);
+            $this->setPressed($this->isActivated());
         }
-        $this->getWorld()->scheduleDelayedBlockUpdate($this, 20);
+        $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), 20);
+        return true;
     }
 
     /**
@@ -124,35 +83,22 @@ class PressurePlate extends Transparent {
      */
     public function onScheduledUpdate() : void {
         $damage = $this->nearbyEntities();
-        if($this->getDamage() !== $damage){
+        if($this->getMeta() !== $damage){
             foreach($this->getSidesHCF(2) as $block){
-                if($block instanceof Door){
-                	if(($block->getDamage() & 0x08) === 0x08){
-                		$down = $block->getSide(Vector3::SIDE_DOWN);
-						if($down->getId() === $block->getId()){
-							$meta = $down->getDamage() ^ 0x04;
-							$this->getWorld()->setBlock($block, $block, true, true);
-						}
-					}else{
-						$block->meta ^= 0x04;
-						$this->getWorld()->setBlock($block, $block, true, true);
-                    }
-                    $this->getWorld()->addSound(new DoorSound($block));
-                }
+                if($block instanceof Door) $block->setOpen(!$block->isOpen());
             }
-            $this->setDamage($damage);
-            $this->getWorld()->setBlock($this, $this, true, true);
+            $this->setPressed($this->isActivated());
         }
         if($damage > 0){
-            $this->getWorld()->scheduleDelayedBlockUpdate($this, 20);
+            $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), 20);
         }
     }
 
     /**
-     * @return Int
+     * @return int
      */
-    protected function nearbyEntities() : Int {
-        $value = count($this->getWorld()->getNearbyEntities($this->box()));
+    protected function nearbyEntities() : int {
+        $value = count($this->getPosition()->getWorld()->getNearbyEntities($this->box()));
         return $value > 0 ? 1 : 0;
     }
 
@@ -161,44 +107,53 @@ class PressurePlate extends Transparent {
      */
     protected function box() : AxisAlignedBB {
         return new AxisAlignedBB(
-            $this->x + 0.0625,
-            $this->y,
-            $this->z + 0.0625,
-            $this->x + 0.9375,
-            $this->y + 0.0625,
-            $this->z + 0.9375,
+            $this->getPosition()->x + 0.0625,
+            $this->getPosition()->y,
+            $this->getPosition()->z + 0.0625,
+            $this->getPosition()->x + 0.9375,
+            $this->getPosition()->y + 0.0625,
+            $this->getPosition()->z + 0.9375,
         );
     }
-    
+
+    public function isActivated(): bool
+    {
+        return !(($this->nearbyEntities() == 0));
+    }
+
+
+    public function collidesWithBB(AxisAlignedBB $bb): bool
+    {
+        return parent::collidesWithBB($bb); // TODO: Change the autogenerated stub
+    }
+
     /**
      * @return void
      */
     public function onNearbyBlockChange() : void {
-        $under = $this->getSide(Vector3::SIDE_DOWN);
+        $under = $this->getSide(Facing::DOWN);
         if ($under->isSolid() && !$under->isTransparent()) {
             return;
         }
-        $this->getWorld()->useBreakOn($this);
+        $this->getPosition()->getWorld()->useBreakOn($this->getPosition());
     }
 	
 	public function getHorizontalSidesHCF(int $step) : array{
 		return [
-			$this->getSide(Vector3::SIDE_NORTH, $step),
-			$this->getSide(Vector3::SIDE_SOUTH, $step),
-			$this->getSide(Vector3::SIDE_WEST, $step),
-			$this->getSide(Vector3::SIDE_EAST, $step)
+			$this->getSide(Facing::NORTH, $step),
+			$this->getSide(Facing::SOUTH, $step),
+			$this->getSide(Facing::WEST, $step),
+			$this->getSide(Facing::EAST, $step)
 		];
 	}
     
     public function getSidesHCF(int $step) : array{
 		return array_merge(
 			[
-				$this->getSide(Vector3::SIDE_DOWN, $step),
-				$this->getSide(Vector3::SIDE_UP, $step)
+				$this->getSide(Facing::DOWN, $step),
+				$this->getSide(Facing::UP, $step)
 			],
 			$this->getHorizontalSidesHCF($step)
 		);
 	}
 }
-
-?>

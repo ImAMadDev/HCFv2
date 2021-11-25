@@ -5,8 +5,10 @@ namespace ImAMadDev\entity\mobs;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Living;
+use pocketmine\entity\Location;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 
 class Enderman extends Living {
@@ -14,7 +16,6 @@ class Enderman extends Living {
 	/** @var float */
 	public float $height = 3.5;
     public float $width = 0.6;
-
 
     /**
 	 * @return String
