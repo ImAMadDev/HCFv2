@@ -16,7 +16,7 @@ use pocketmine\utils\TextFormat;
 
 final class HCFUtils {
 	
-	public const DEFAULT_MAP = 'world';
+	public const DEFAULT_MAP = 'MS';
 	
 	public const NETHER_MAP = 'Nether';
 	

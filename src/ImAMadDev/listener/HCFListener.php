@@ -19,6 +19,9 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\utils\SignText;
+use pocketmine\event\block\BlockBurnEvent;
+use pocketmine\event\block\BlockGrowEvent;
+use pocketmine\event\block\BlockSpreadEvent;
 use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
@@ -130,6 +133,30 @@ class HCFListener implements Listener {
     public function handleLeaves(LeavesDecayEvent $event) : void
     {
         $event->cancel();
+    }
+
+    public function handleGrow(BlockGrowEvent $event) : void
+    {
+        $block = $event->getBlock();
+        if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($block->getPosition()), "Spawn") != false){
+            $event->cancel();
+        }
+    }
+
+    public function handleBurn(BlockBurnEvent $event) : void
+    {
+        $block = $event->getBlock();
+        if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($block->getPosition()), "Spawn") != false){
+            $event->cancel();
+        }
+    }
+
+    public function handleSpread(BlockSpreadEvent $event) : void
+    {
+        $block = $event->getBlock();
+        if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($block->getPosition()), "Spawn") != false){
+            $event->cancel();
+        }
     }
 
     public function onPickup(EntityItemPickupEvent $event) : void {

@@ -34,9 +34,9 @@ class Events{
 		HCF::getInstance()->getScheduler()->scheduleRepeatingTask($this->task = new EventCooldownTick($this), 20);
 		$time = date('l jS \of F Y h:i:s A', (time() + $this->time));
 		$fields = ["   " . strtoupper($this->name), "The event will take place on $time  :clock3:", "IP: play.minestalia.com", "SHOP: minestalia.com", "━━━━━━━━ ⇜ ━━━━━━━━"];
-		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&869250299087421491>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
+		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 	}
-	
+
 	public function getScoreboard(): string{
 		return TextFormat::colorize($this->scoreboard);
 	}
@@ -59,7 +59,7 @@ class Events{
 	
 	public function initialize(): void{
 		$fields = ["_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  EVENT {$this->getName()}", "_ _ _ _ _ _ _ _ _ _ _ _ _ _ Event has been triggered :clock3:", "━━━━━━━━ ⇜ ━━━━━━━━", "IP: play.minestalia.com", "PORT: 19132", "SHOP: minestalia.com"];
-		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&869250299087421491>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
+		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 		$this->getServer()->broadcastMessage(TextFormat::GREEN . "A new event has been triggered: " . TextFormat::RED . $this->getName());
 		foreach($this->getCommands() as $command) {
 			$this->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), str_replace("/", "", $command));

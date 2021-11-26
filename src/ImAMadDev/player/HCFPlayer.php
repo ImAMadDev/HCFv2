@@ -183,7 +183,7 @@ class HCFPlayer extends Player {
             if(($this->getCache()->getCountdown($rank->getName()) - time()) <= 0) {
                 $this->removeRank($rank->getName());
                 $this->getCache()->removeInArray('ranks', $rank->getName());
-                $this->getCache()->removeInData($rank->getName() . '_countdown', true);
+                $this->getCache()->removeInData('rank_'. $rank->getName() . '_countdown', true);
                 $this->sendMessage(TextFormat::GOLD . "Your rank {$rank->getName()} has expired!");
 			}
 		}
@@ -337,10 +337,10 @@ class HCFPlayer extends Player {
 	}
 	
 	public function sendFakeBlock(?Position $position = null): void {
-		$blocks = [BlockLegacyIds::GLASS, BlockLegacyIds::DIAMOND_BLOCK];
+		$blocks = [BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0), BlockFactory::getInstance()->get(BlockLegacyIds::DIAMOND_BLOCK, 0)];
 		for($i = $position->getFloorY(); $i < $position->getFloorY() + 40; $i++){
             $pos = new BlockPosition($position->getFloorX(), $i, $position->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->fromRuntimeId(BlockFactory::getInstance()->get($blocks[array_rand($blocks)])->getFullId());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
 			$pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
 			$this->getNetworkSession()->sendDataPacket($pk);
 		}

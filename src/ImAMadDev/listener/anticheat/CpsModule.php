@@ -8,6 +8,7 @@ use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\DiscordIntegration;
 
 use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -34,11 +35,11 @@ class CpsModule implements Listener {
 		return self::$instance;
 	}
 	
-	public function initPlayerClickData(HCFPlayer $player) : void {
+	public function initPlayerClickData(Player $player) : void {
 		$this->clicksData[$player->getName()] = [time(), 0];
 	}
 	
-	 public function getCPS(HCFPlayer $player) : int {
+	 public function getCPS(Player $player) : int {
 		if(!isset($this->clicksData[$player->getName()])) {
 			return 0;
 		}
@@ -52,7 +53,7 @@ class CpsModule implements Listener {
 	}
 	
 	
-	public function addClick(HCFPlayer $player) : void {
+	public function addClick(Player $player) : void {
 		if (!isset($this->clicksData[$player->getName()])) {
 			$this->clicksData[$player->getName()] = [time(), 0];
 		}
@@ -66,7 +67,7 @@ class CpsModule implements Listener {
 		$this->clicksData[$player->getName()] = [$time, $clicks];
 	}
 	
-	public function removePlayerClickData(HCFPlayer $player) : void {
+	public function removePlayerClickData(Player $player) : void {
 		unset($this->clicksData[$player->getName()]);
 	}
 	
@@ -101,7 +102,7 @@ class CpsModule implements Listener {
 		}
     }
     
-    public function sendAlertToStaff(HCFPlayer $cheater) : void {
+    public function sendAlertToStaff(Player $cheater) : void {
     	foreach(self::$main->getServer()->getOnlinePlayers() as $player) {
     		if($player->hasPermission('staff.alert') === true) {
     			$player->sendMessage(TextFormat::RED . "AntiCheat > " . TextFormat::GRAY . $cheater->getName() . TextFormat::BLUE . " Suspect using AutoClick, CPS: " . TextFormat::RED . $this->getCps($cheater));

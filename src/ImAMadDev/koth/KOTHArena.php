@@ -107,7 +107,7 @@ class KOTHArena{
 	public function enable(): void{
 		$this->enable = true;
 		$fields = ["_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ KOTH {$this->getName()}", "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Event has been triggered :clock3:", "The player who claims the KOTH gets $this->keys Keys", "To see the coordinates use /koth info {$this->getName()}", "━━━━━━━━ ⇜ ━━━━━━━━", "IP: play.minestalia.com", "SHOP: minestalia.com"];
-		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&869246176560558080>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
+		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 		$this->getServer()->broadcastMessage("§aA new KOTH event has been triggered: §9".$this->getName());
 	}
 	
@@ -191,7 +191,7 @@ class KOTHArena{
 		$this->disable();
 		$time = date('l jS \of F Y h:i:s A', (time() + HCFUtils::KOTH_COOLDOWN));
 		$fields = ["━━━━━━━━ ⇜ ━━━━━━━━", " KOTH", "The event will take place on $time  :clock3:", "The player who captures it will receive 3 KOTH keys.", "To see the coordinates use /koth info <NAME>", "IP: play.minestalia.com", "SHOP: minestalia.com", "━━━━━━━━ ⇜ ━━━━━━━━"];
-		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&869246176560558080>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
+		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 		new AutomaticKOTHTick(HCF::getInstance(), (20* HCFUtils::KOTH_COOLDOWN));
 	}
 	
@@ -220,7 +220,7 @@ class KOTHArena{
 				if($this->time <= 0){
 					$this->giveKeys();
 					$fields = ["━━━━━━━━ ⇜ ━━━━━━━━", "   KOTH", "The player {$this->king->getName()} ", "has captured KOTH {$this->getName()}", "During {$this->getDefaultTime()} seconds and obtained 3 Keys KOTH", "IP: play.minestalia.com", "SHOP: minestalia.com", "━━━━━━━━ ⇜ ━━━━━━━━"];
-					DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&869246176560558080>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
+					DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 					$this->getServer()->broadcastMessage(TextFormat::GOLD . $this->king->getName() . TextFormat::GRAY . " has captured the " . TextFormat::BOLD . TextFormat::DARK_RED . "KOTH ".$this->getName() . TextFormat::RESET . TextFormat::GRAY . " during " . TextFormat::GOLD . gmdate("i:s", $this->getDefaultTime()));
 					$this->finish();
 				}

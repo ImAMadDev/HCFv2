@@ -15,6 +15,7 @@ use ImAMadDev\entity\mobs\{Enderman, Cow, Creeper, Blaze};
 use ImAMadDev\HCF;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\entity\Location;
 use pocketmine\entity\Skin;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -42,10 +43,10 @@ class EntityManager {
                 throw new \UnexpectedValueException("No such potion type");
             }
             return new SplashPotion(EntityDataHelper::parseLocation($nbt, $world), null, $potionType, $nbt);
-        }, ['ThrownPotion', 'minecraft:potion', 'thrownpotion'], EntityLegacyIds::SPLASH_POTION);
+        }, ['ThrownPotion', EntityIds::SPLASH_POTION, 'thrownpotion'], EntityLegacyIds::SPLASH_POTION);
         $factory->register(EnderPearl::class, function(World $world, CompoundTag $nbt) : EnderPearl{
             return new EnderPearl(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
-        }, ['ThrownEnderpearl', 'minecraft:ender_pearl'], EntityLegacyIds::ENDER_PEARL);
+        }, ['ThrownEnderpearl', EntityIds::ENDER_PEARL], EntityLegacyIds::ENDER_PEARL);
         $factory->register(CombatLogger::class, function(World $world, CompoundTag $nbt) use($skin): CombatLogger{
             return new CombatLogger(EntityDataHelper::parseLocation($nbt, $world), $nbt);
         }, ['CombatLogger', 'minecraft:combat_logger'], EntityLegacyIds::VILLAGER);
@@ -69,14 +70,22 @@ class EntityManager {
         }, ['BlockMarket', 'minecraft:block_market'], EntityLegacyIds::NPC);
         $factory->register(Switcher::class, function (World $world, CompoundTag $nbt) : Switcher {
             return new Switcher(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
-        }, ['Switcher', 'minecraft:switcher']);
+        }, ['Switcher', 'minecraft:switcher'], EntityLegacyIds::SNOWBALL);
        $factory->register(FireworksRocket::class, function(World $world, CompoundTag $nbt) : FireworksRocket{
             return new FireworksRocket(EntityDataHelper::parseLocation($nbt, $world), ItemFactory::getInstance()->get(ItemIds::FIREWORKS, 0));
         }, ['FireworksRocket', EntityIds::FIREWORKS_ROCKET], EntityLegacyIds::FIREWORKS_ROCKET);
-		/*Entity::registerEntity(Enderman::class, true, ['Enderman']);
-		Entity::registerEntity(Cow::class, true, ['Cow']);
-		Entity::registerEntity(Creeper::class, true, ['Creeper']);
-		Entity::registerEntity(Blaze::class, true, ['Blaze']);*/
+       $factory->register(Enderman::class, function (World $world, CompoundTag $nbt) : Enderman {
+           return new Enderman(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+       }, ['Enderman', EntityIds::ENDERMAN], EntityLegacyIds::ENDERMAN);
+        $factory->register(Blaze::class, function (World $world, CompoundTag $nbt) : Blaze {
+            return new Blaze(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['Blaze', EntityIds::BLAZE], EntityLegacyIds::BLAZE);
+        $factory->register(Cow::class, function (World $world, CompoundTag $nbt) : Cow {
+            return new Cow(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['Cow', EntityIds::COW], EntityLegacyIds::COW);
+        $factory->register(Creeper::class, function (World $world, CompoundTag $nbt) : Creeper {
+            return new Creeper(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['Creeper', EntityIds::CREEPER]);
 	}
 	
 	public static function spawn(HCFPlayer $player, string $name) : void {

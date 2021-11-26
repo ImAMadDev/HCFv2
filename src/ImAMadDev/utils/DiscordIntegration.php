@@ -8,7 +8,7 @@ use CortexPE\DiscordWebhookAPI\Embed;
 
 final class DiscordIntegration {
 	
-	public const KOTH_WEBHOOK = "https://discord.com/api/webhooks/870162115963543572/T1Gae_j1Rels4wz7J9QbBvGh4EqRmboHxgwgOW4cb_e5sU6BkJZI8RbB7yzxwYT0Qy4A";
+	public const KOTH_WEBHOOK = "https://discord.com/api/webhooks/913379535750299658/OSxyQYoQzdFswS3YakR87BiUkGcv-20Jpwy9z9j7fqEOpy3XrX6ocmYfID6eO49Af7JU";
 	
 	public const ALERT_WEBHOOK = "https://discord.com/api/webhooks/870715467319369749/C6VHD3WGT_G6-nULLbUpColU9RvRfLH-4FfeUJbM31f2Zk-Sw3j6j1HIawlPdm08b29Q";
 	

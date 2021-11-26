@@ -7,10 +7,12 @@ use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\DiscordIntegration;
 
-use pocketmine\item\{Item, ProjectileItem};
+use pocketmine\item\{Item, ItemIds, ProjectileItem};
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Listener;
-use pocketmine\entity\Effect;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 
 class ReachModule implements Listener {
@@ -33,8 +35,8 @@ class ReachModule implements Listener {
 		if($event instanceof EntityDamageByEntityEvent) {
 			$damager = $event->getDamager();
 			if($player instanceof HCFPlayer && $damager instanceof HCFPlayer) {
-				$reach = round($damager->distance($player));
-				if($reach > 6 && $damager->getInventory()->getItemInHand()->getId() !== Item::BOW && !$damager->getInventory()->getItemInHand() instanceof ProjectileItem && $damager->getGamemode() === 0 && !$damager->hasEffect(Effect::SPEED)) {
+				$reach = round($damager->getPosition()->distance($player->getPosition()));
+				if($reach > 6 && $damager->getInventory()->getItemInHand()->getId() !== ItemIds::BOW && !$damager->getInventory()->getItemInHand() instanceof ProjectileItem && $damager->getGamemode() === 0 && !$damager->getEffects()->has(VanillaEffects::SPEED())) {
 					DiscordIntegration::sendToDiscord("AntiCheat", $damager->getName() . " Suspect using Reach, Reach: " . $reach, DiscordIntegration::ALERT_WEBHOOK, "StaliaBot");
 					$this->sendAlertToStaff($damager, $reach);
 				}
