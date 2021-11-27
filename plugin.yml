@@ -80,4 +80,22 @@ permissions:
   configurate.shop:
     default: op
     description: Permission to create a shop Sign
+  rank.setreclaim.command:
+    default: op
+    description: Set the rank reclaim
+  edit.lobby:
+    default: op
+    description: Permission to edit protected zones
+  enderchest.edit:
+    default: op
+    description: Edit player enderchest
+  enderchest.command:
+    default: op
+    description: open player ender chest
+  staff.inventory.command:
+    default: op
+    description: Open player inventory
+  staff.inventory.edit:
+    default: op
+    description: Edit player inventory
 ...

@@ -2,6 +2,9 @@
 
 namespace ImAMadDev\rank;
 
+use ImAMadDev\utils\InventoryUtils;
+use pocketmine\form\FormValidationException;
+use pocketmine\plugin\PluginException;
 use pocketmine\utils\{TextFormat, Config};
 
 use ImAMadDev\HCF;
@@ -9,7 +12,7 @@ use ImAMadDev\faction\Faction;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\rank\ticks\UpdateDataAsyncTask;
 
-define("RANKS_DIRECTORY", HCF::getInstance()->getDataFolder() . 'rank' . DIRECTORY_SEPARATOR);
+define("RANKS_DIRECTORY", HCF::getInstance()->getDataFolder() . 'ranks' . DIRECTORY_SEPARATOR);
 class RankClass {
 
 
@@ -80,7 +83,19 @@ class RankClass {
 		$this->data['tag'] = $tag;
         $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 	}
-	
+
+    public function setReclaim(string $reclaim) : void
+    {
+        $this->data['reclaim'] = $reclaim;
+        $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
+    }
+
+    public function getReclaim() : array
+    {
+        $reclaim = $this->data['reclaim'] ?? "";
+        return InventoryUtils::decodeItems($reclaim);
+    }
+
 	public function updateData(): void {
         if (!file_exists(RANKS_DIRECTORY . $this->getName()  . '.yml')) return;
         file_put_contents(RANKS_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
@@ -106,6 +121,7 @@ class RankClass {
     {
         if (!file_exists(RANKS_DIRECTORY . $this->getName()  . '.yml')) return;
         file_put_contents(RANKS_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+
     }
 
 }

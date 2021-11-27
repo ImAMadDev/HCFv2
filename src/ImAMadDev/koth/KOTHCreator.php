@@ -18,7 +18,7 @@ class KOTHCreator{
 	
 	public int $keys = 3;
 
-    private string $level;
+    public string $level;
 
     public function __construct(HCFPlayer $player, string $arena){
 		$this->player = $player;

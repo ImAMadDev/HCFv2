@@ -177,10 +177,10 @@ class HCFPlayer extends Player {
 			if($rank->getName() === "User") {
                 continue;
             }
-            if ($this->getCache()->getCountdown($rank->getName()) == 0) {
+            if ($this->getCache()->getCountdown('rank_' . $rank->getName()) == 0) {
                 continue;
             }
-            if(($this->getCache()->getCountdown($rank->getName()) - time()) <= 0) {
+            if(($this->getCache()->getCountdown('rank_' . $rank->getName()) - time()) <= 0) {
                 $this->removeRank($rank->getName());
                 $this->getCache()->removeInArray('ranks', $rank->getName());
                 $this->getCache()->removeInData('rank_'. $rank->getName() . '_countdown', true);

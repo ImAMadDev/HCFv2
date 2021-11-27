@@ -10,6 +10,7 @@ use ImAMadDev\rank\command\subCommands\AddPermissionSubCommand;
 use ImAMadDev\rank\command\subCommands\InfoSubCommand;
 use ImAMadDev\rank\command\subCommands\GiveSubCommand;
 use ImAMadDev\rank\command\subCommands\RemoveSubCommand;
+use ImAMadDev\rank\command\subCommands\SetReclaimSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -24,6 +25,7 @@ class RankCommand extends Command {
 		$this->addSubCommand(new ListSubCommand());
 		$this->addSubCommand(new RemoveSubCommand());
         $this->addSubCommand(new GetSubCommand());
+        $this->addSubCommand(new SetReclaimSubCommand());
 	}
 	
 	public function execute(CommandSender $sender, string $commandLabel, array $args): void {
@@ -44,4 +46,3 @@ class RankCommand extends Command {
 		return;
 	}
 }
-?>

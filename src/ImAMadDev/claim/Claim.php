@@ -121,6 +121,7 @@ class Claim {
 	
 	public function join(HCFPlayer $player) : bool {
 		$faction = $this->getFaction();
+        if ($player->getGamemode() === GameMode::CREATIVE()) return true;
 		if($faction !== null) {
 			if($player->isInvincible()) {
 				return false;

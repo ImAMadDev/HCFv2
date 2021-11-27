@@ -45,10 +45,10 @@ class GiveSubCommand extends SubCommand {
             $player->setRank($rank);
             $player->getCache()->addInArray('ranks', $rank->getName());
             if ($time === 'permanent') {
-                $player->getCache()->setInData($rank->getName() . COUNTDOWN, 0, true);
+                $player->getCache()->setInData('rank_' . $rank->getName() . COUNTDOWN, 0, true);
                 $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: permanent");
             } else {
-                $player->getCache()->setCountdown($rank->getName() . COUNTDOWN, $time);
+                $player->getCache()->setCountdown('rank_' . $rank->getName(), $time);
                 $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: " . HCFUtils::getTimeString($player->getCache()->getCountdown($rank->getName())));
             }
             $player->getCache()->saveData();
@@ -66,10 +66,10 @@ class GiveSubCommand extends SubCommand {
                 }
                 $player->addInArray('ranks', $rank->getName());
                 if ($time === 'permanent') {
-                    $player->setInData($rank->getName() . COUNTDOWN, 0, true);
+                    $player->setInData('rank_' . $rank->getName() . COUNTDOWN, 0, true);
                     $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$args[2]} to the player {$player->getName()}, duration: Permanent");
                 } else {
-                    $player->setCountdown($rank->getName(),$time);
+                    $player->setCountdown('rank_' . $rank->getName(), $time);
                     $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$args[2]} to the player {$player->getName()}, duration: " . HCFUtils::getTimeString($time));
                 }
                 $player->saveData();

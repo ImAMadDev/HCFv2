@@ -40,7 +40,8 @@ use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\block\SignChangeEvent;
-use pocketmine\event\player\{PlayerJoinEvent,
+use pocketmine\event\player\{PlayerItemUseEvent,
+    PlayerJoinEvent,
     PlayerRespawnEvent,
     PlayerQuitEvent,
     PlayerCreationEvent,
@@ -61,7 +62,8 @@ use pocketmine\event\inventory\{CraftItemEvent,
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
+use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
+    BlockActorDataPacket,
     types\BlockPosition,
     types\CacheableNbt,
     UpdateBlockPacket,
@@ -281,180 +283,220 @@ class HCFListener implements Listener {
 	
 	public function onChatEvent(PlayerChatEvent $event) : void {
 		$player = $event->getPlayer();
-		$format = null;
-		switch($player->getChatMode()) {
-			case PlayerUtils::PUBLIC:
-				$event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
-				break;
-			case PlayerUtils::FACTION:
-				if($player->getFaction() !== null) {
-					$event->cancel();
-					$player->getFaction()->message(TextFormat::DARK_GREEN . "[Faction] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
-				} else {
-					$event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
-				}
-				break;
-			case PlayerUtils::ALLY:
-				if($player->getFaction() !== null) {
-					$event->cancel();
-					foreach($player->getFaction()->getAllies() as $ally) {
-						if(($allyClass = HCF::getInstance()->getFactionManager()->getFaction($ally)) instanceof Faction) {
-							$allyClass->message(TextFormat::DARK_GREEN . "[" . $player->getFaction()->getName() . "] [ALLY] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
-						}
-					}
-					$player->getFaction()->message(TextFormat::DARK_GREEN . "[ALLY] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
-				} else {
-					$event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
-				}
-				break;
-			case PlayerUtils::STAFF:
-				break;
-		}
+        if ($player instanceof HCFPlayer) {
+            switch ($player->getChatMode()) {
+                case PlayerUtils::PUBLIC:
+                    $event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
+                    break;
+                case PlayerUtils::FACTION:
+                    if ($player->getFaction() !== null) {
+                        $event->cancel();
+                        $player->getFaction()->message(TextFormat::DARK_GREEN . "[Faction] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
+                    } else {
+                        $event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
+                    }
+                    break;
+                case PlayerUtils::ALLY:
+                    if ($player->getFaction() !== null) {
+                        $event->cancel();
+                        foreach ($player->getFaction()->getAllies() as $ally) {
+                            if (($allyClass = HCF::getInstance()->getFactionManager()->getFaction($ally)) instanceof Faction) {
+                                $allyClass->message(TextFormat::DARK_GREEN . "[" . $player->getFaction()->getName() . "] [ALLY] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
+                            }
+                        }
+                        $player->getFaction()->message(TextFormat::DARK_GREEN . "[ALLY] " . $player->getName() . ": " . TextFormat::GOLD . $event->getMessage());
+                    } else {
+                        $event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
+                    }
+                    break;
+                case PlayerUtils::STAFF:
+                    $event->cancel();
+                    foreach (Server::getInstance()->getOnlinePlayers() as $staff) {
+                        if ($staff->getChatMode() == PlayerUtils::STAFF) {
+                            $staff->sendMessage(TextFormat::DARK_AQUA . '[MOD-CHAT] ' . $player->getName() . ': ' . $event->getMessage());
+                        }
+                    }
+                    break;
+            }
+        }
 	}
+
+    public function handleReceive(DataPacketReceiveEvent $event) : void
+    {
+        $player = $event->getOrigin()->getPlayer();
+        if ($player instanceof HCFPlayer){
+            $packet = $event->getPacket();
+            if ($packet instanceof AvailableCommandsPacket){
+               // $packet->
+            }
+        }
+    }
 
     public function onPlayerInteractEvent(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$item = $event->getItem();
-		if($player->isClaiming()) {
-			if($item->getId() !== ItemIds::WOODEN_AXE) {
-				return;
-			}
-			if($player->getFaction() === null or !$player->getFaction()->isLeader($player->getName())) {
-				$player->setClaiming(false);
-				$player->setFirstClaimingPosition();
-				$player->setSecondClaimingPosition();
-				$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
-				return;
-			}
-			if(abs($player->getPosition()->getX()) <= 500 and abs($player->getPosition()->getZ()) <= 500) {
-				$player->sendMessage(TextFormat::RED . "You can only claim when you are 300 blocks from spawn!");
-				return;
-			}
-			if($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
-				if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
-					$player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
-					return;
-				}
-				if($player->isSneaking()) {
-					return;
-				}
-				$player->setFirstClaimingPosition($block->getPosition());
-				$player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
-			} elseif($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-				if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
-					$player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
-					return;
-				} 
-				if($player->isSneaking()) {
-					return;
-				}
-				$player->setSecondClaimingPosition($block->getPosition());
-				$player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
-			}
-			if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
-				$firstPosition = $player->getFirstClaimPosition();
-				$firstX = $firstPosition->getX();
-				$firstZ = $firstPosition->getZ();
-				$secondPosition = $player->getSecondClaimPosition();
-				$secondX = $secondPosition->getX();
-				$secondZ = $secondPosition->getZ();
-				$length = max($firstX, $secondX) - min($firstX, $secondX);
-				$width = max($firstZ, $secondZ) - min($firstZ, $secondZ);
-				if($length <= 5 or $width <= 5) {
-					$player->sendMessage(TextFormat::RED . "The claim you selected must be more than 5x5!");
-					$player->setClaiming(false);
-					$player->setFirstClaimingPosition();
-					$player->setSecondClaimingPosition();
-					$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
-					return;
-				}
-				$amount = $length * $width;
-				$price = $amount * 5;
-				if($player->isSneaking()) {
-					$data = ["name" => $player->getFaction()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->level->getName()];
-					$claim = new Claim(HCF::getInstance(), $data);
-					if(ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
-						$player->setClaiming(false);
-						$player->setFirstClaimingPosition();
-						$player->setSecondClaimingPosition();
-						$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
-						$player->sendMessage(TextFormat::RED . "You can't override a claim!");
-						return;
-					}
-					if($player->getFaction()->getBalance() < $price) {
-						$player->sendMessage(TextFormat::RED . "Your faction doesn't have enough money!");
-					} else {
-						ClaimManager::getInstance()->addClaim($claim);
-						$player->getFaction()->claim($claim);
-						$claim->viewMap($player);
-						$player->getFaction()->removeBalance($price);
-						$player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land!");
-					}
-					$player->setClaiming(false);
-					$player->setFirstClaimingPosition();
-					$player->setSecondClaimingPosition();
-					$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
-				} else {
-					$player->sendMessage(TextFormat::GRAY . "You've selected " . TextFormat::GREEN . $amount . TextFormat::GRAY . " blocks. Your price is " . TextFormat::YELLOW . $price . TextFormat::GRAY . ". Sneak and tap anywhere to confirm purchase of claim.");
-				}
-			}
-		}
+        if ($player instanceof HCFPlayer) {
+            if ($player->isClaiming()) {
+                if ($item->getId() !== ItemIds::WOODEN_AXE) {
+                    return;
+                }
+                if ($player->getFaction() === null or !$player->getFaction()->isLeader($player->getName())) {
+                    $player->setClaiming(false);
+                    $player->setFirstClaimingPosition();
+                    $player->setSecondClaimingPosition();
+                    $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                    return;
+                }
+                if (abs($player->getPosition()->getX()) <= 500 and abs($player->getPosition()->getZ()) <= 500) {
+                    $player->sendMessage(TextFormat::RED . "You can only claim when you are 300 blocks from spawn!");
+                    return;
+                }
+                if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
+                        $player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
+                        return;
+                    }
+                    if ($player->isSneaking()) {
+                        return;
+                    }
+                    $player->setFirstClaimingPosition($block->getPosition());
+                    $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
+                } elseif ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
+                        $player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
+                        return;
+                    }
+                    if ($player->isSneaking()) {
+                        return;
+                    }
+                    $player->setSecondClaimingPosition($block->getPosition());
+                    $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
+                }
+            }
+        }
 	}
+
+    public function handleRegisterClaim(PlayerItemUseEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        $item = $event->getItem();
+        if ($player instanceof HCFPlayer) {
+            if ($player->isClaiming()) {
+                if ($item->getId() !== ItemIds::WOODEN_AXE) {
+                    return;
+                }
+                if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
+                    $firstPosition = $player->getFirstClaimPosition();
+                    $firstX = $firstPosition->getX();
+                    $firstZ = $firstPosition->getZ();
+                    $secondPosition = $player->getSecondClaimPosition();
+                    $secondX = $secondPosition->getX();
+                    $secondZ = $secondPosition->getZ();
+                    $length = max($firstX, $secondX) - min($firstX, $secondX);
+                    $width = max($firstZ, $secondZ) - min($firstZ, $secondZ);
+                    if($length <= 5 or $width <= 5) {
+                        $player->sendMessage(TextFormat::RED . "The claim you selected must be more than 5x5!");
+                        $player->setClaiming(false);
+                        $player->setFirstClaimingPosition();
+                        $player->setSecondClaimingPosition();
+                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                        return;
+                    }
+                    $amount = $length * $width;
+                    $price = $amount * 5;
+                    if($player->isSneaking()) {
+                        $data = ["name" => $player->getFaction()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName()];
+                        $claim = new Claim(HCF::getInstance(), $data);
+                        if(ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
+                            $player->setClaiming(false);
+                            $player->setFirstClaimingPosition();
+                            $player->setSecondClaimingPosition();
+                            $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                            $player->sendMessage(TextFormat::RED . "You can't override a claim!");
+                            return;
+                        }
+                        if($player->getFaction()->getBalance() < $price) {
+                            $player->sendMessage(TextFormat::RED . "Your faction doesn't have enough money!");
+                        } else {
+                            ClaimManager::getInstance()->addClaim($claim);
+                            $player->getFaction()->claim($claim);
+                            $claim->viewMap($player);
+                            $player->getFaction()->removeBalance($price);
+                            $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land!");
+                        }
+                        $player->setClaiming(false);
+                        $player->setFirstClaimingPosition();
+                        $player->setSecondClaimingPosition();
+                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                    } else {
+                        $player->sendMessage(TextFormat::GRAY . "You've selected " . TextFormat::GREEN . $amount . TextFormat::GRAY . " blocks. Your price is " . TextFormat::YELLOW . $price . TextFormat::GRAY . ". Sneak and tap anywhere to confirm purchase of claim.");
+                    }
+                }
+            }
+            if ($player->hasOpClaim()) {
+                if ($item->getId() !== ItemIds::DIAMOND_AXE) {
+                    return;
+                }
+                if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
+                    $firstPosition = $player->getFirstClaimPosition();
+                    $secondPosition = $player->getSecondClaimPosition();
+                    if($player->isSneaking()) {
+                        $data = ["name" => $player->getOpClaimName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName()];
+                        $claim = new Claim(HCF::getInstance(), $data);
+                        ClaimManager::getInstance()->createClaim($claim);
+                        $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land, claim name {$player->getOpClaimName()}!");
+                        $player->setOpClaim(false);
+                        $player->setFirstClaimingPosition();
+                        $player->setSecondClaimingPosition();
+                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
+                    } else {
+                        $player->sendMessage(TextFormat::GRAY . "Sneak and tap anywhere to confirm purchase of claim.");
+                    }
+                }
+            }
+        }
+    }
 	
 	public function onPlayerInteractEventOP(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$item = $event->getItem();
-		if($player->hasOpClaim()) {
-			if($item->getId() !== ItemIds::DIAMOND_AXE) {
-				return;
-			}
-			if($player->hasOpClaim() === false) {
-				$player->setClaiming(false);
-				$player->setFirstClaimingPosition();
-				$player->setSecondClaimingPosition();
-				$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
-				return;
-			}
-			if($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
-				if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
-					$player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
-					return;
-				}
-				if($player->isSneaking()) {
-					return;
-				}
-				$player->setFirstClaimingPosition($block->getPosition());
-				$player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
-			} elseif($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-				if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
-					$player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
-					return;
-				} 
-				if($player->isSneaking()) {
-					return;
-				}
-				$player->setSecondClaimingPosition($block->getPosition());
-				$player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
-			}
-			if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
-				$firstPosition = $player->getFirstClaimPosition();
-				$secondPosition = $player->getSecondClaimPosition();
-				if($player->isSneaking()) {
-					$data = ["name" => $player->getOpClaimName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->level->getName()];
-					$claim = new Claim(HCF::getInstance(), $data);
-					ClaimManager::getInstance()->createClaim($claim);
-					$player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land, claim name {$player->getOpClaimName()}!");
-					$player->setOpClaim(false);
-					$player->setFirstClaimingPosition();
-					$player->setSecondClaimingPosition();
-					$player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
-				} else {
-					$player->sendMessage(TextFormat::GRAY . "Sneak and tap anywhere to confirm purchase of claim.");
-				}
-			}
-		}
+        if ($player instanceof HCFPlayer) {
+            if ($player->hasOpClaim()) {
+                if ($item->getId() !== ItemIds::DIAMOND_AXE) {
+                    return;
+                }
+                if ($player->hasOpClaim() === false) {
+                    $player->setClaiming(false);
+                    $player->setFirstClaimingPosition();
+                    $player->setSecondClaimingPosition();
+                    $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
+                    return;
+                }
+                if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
+                        $player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
+                        return;
+                    }
+                    if ($player->isSneaking()) {
+                        return;
+                    }
+                    $player->setFirstClaimingPosition($block->getPosition());
+                    $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
+                } elseif ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
+                        $player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
+                        return;
+                    }
+                    if ($player->isSneaking()) {
+                        return;
+                    }
+                    $player->setSecondClaimingPosition($block->getPosition());
+                    $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
+                }
+            }
+        }
 	}
 	
 	public function onEntityTeleportEvent(EntityTeleportEvent $event) : void {
@@ -480,67 +522,71 @@ class HCFListener implements Listener {
 	
 	public function onDeathData(PlayerDeathEvent $event): void{
 		$player = $event->getPlayer();
-		$player->saveInventory();
-        $item = $this->createCustomSign($player->getName());
-        $player->getWorld()->dropItem($player->getPosition(), $item);
-		if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && EOTWManager::isEnabled() === false) return;
-		$cause = $player->getLastDamageCause();
-		$player->setInvincible();
-		if(($faction = $player->getFaction()) instanceof Faction) {
-			$faction->removeDTR(1);
-			$faction->removePoints(1);
-		}
-		$damager = HCF::getInstance()->getCombatManager()->getTagDamager($player);
-		if($damager !== null) {
-			$killer = Server::getInstance()->getPlayerExact($damager);
-			if($killer instanceof HCFPlayer) {
-				$killer->obtainKill($player->getName());
-				if(($faction = $killer->getFaction()) instanceof Faction) {
-					$faction->addKill(1);
-					$faction->addPoints(1);
-                    if($player->getFaction() instanceof Faction and $player->getFaction()?->getDtr() === 0) {
-                        $faction->addPoints(3);
-                    }
-				}
-				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
-			}
-		} else {
-			if($cause instanceof EntityDamageByEntityEvent) {
-				$killer = $cause->getDamager();
-				if($killer instanceof HCFPlayer) {
-					$killer->obtainKill($player->getName());
-					if(($faction = $killer->getFaction()) instanceof Faction) {
-						$faction->addKill(1);
-						$faction->addPoints(1);
-                        if($player->getFaction() instanceof Faction and $player->getFaction()?->getDtr() === 0) {
+        if ($player instanceof HCFPlayer) {
+            $player->saveInventory();
+            $item = $this->createCustomSign($player->getName());
+            $player->getWorld()->dropItem($player->getPosition(), $item);
+            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && EOTWManager::isEnabled() === false) return;
+            $cause = $player->getLastDamageCause();
+            $player->setInvincible();
+            if (($faction = $player->getFaction()) instanceof Faction) {
+                $faction->removeDTR(1);
+                $faction->removePoints(1);
+            }
+            $damager = HCF::getInstance()->getCombatManager()->getTagDamager($player);
+            if ($damager !== null) {
+                $killer = Server::getInstance()->getPlayerExact($damager);
+                if ($killer instanceof HCFPlayer) {
+                    $killer->obtainKill($player->getName());
+                    if (($faction = $killer->getFaction()) instanceof Faction) {
+                        $faction->addKill(1);
+                        $faction->addPoints(1);
+                        if ($player->getFaction() instanceof Faction and $player->getFaction()?->getDtr() === 0) {
                             $faction->addPoints(3);
                         }
-					}
-					$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
-				}
-			} else {
-				$event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &esome how die!"));
-			}
-		}
-		$player->getWorld()->addParticle($player->getPosition(), new HugeExplodeSeedParticle());
-		$player->getWorld()->addSound($player->getPosition(), new ExplodeSound());
-		if($player->getCooldown()->has('combattag')) {
-			$player->getCooldown()->remove('combattag');
-		}
+                    }
+                    $event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
+                }
+            } else {
+                if ($cause instanceof EntityDamageByEntityEvent) {
+                    $killer = $cause->getDamager();
+                    if ($killer instanceof HCFPlayer) {
+                        $killer->obtainKill($player->getName());
+                        if (($faction = $killer->getFaction()) instanceof Faction) {
+                            $faction->addKill(1);
+                            $faction->addPoints(1);
+                            if ($player->getFaction() instanceof Faction and $player->getFaction()?->getDtr() === 0) {
+                                $faction->addPoints(3);
+                            }
+                        }
+                        $event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &ewas slain by &c" . $killer->getName() . "&7[&4" . $killer->getCache()->getInData('kills', true, 0) . "&7]&e using &c" . $killer->getHandName()));
+                    }
+                } else {
+                    $event->setDeathMessage(TextFormat::colorize("&c" . $player->getName() . "&7[&4" . $player->getCache()->getInData('kills', true, 0) . "&7] &esome how die!"));
+                }
+            }
+            $player->getWorld()->addParticle($player->getPosition(), new HugeExplodeSeedParticle());
+            $player->getWorld()->addSound($player->getPosition(), new ExplodeSound());
+            if ($player->getCooldown()->has('combattag')) {
+                $player->getCooldown()->remove('combattag');
+            }
+        }
 	}
 	
 	public function onRespawn(PlayerRespawnEvent $event): void{
 	    $player = $event->getPlayer();
-		if(EOTWManager::isEnabled() === false) {
-			$event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
-			if($player->getCooldown()->has('combattag')) {
-				$player->getCooldown()->remove('combattag');
-			}
-			$player->setArcherMark(false);
-			$player->activateEffects(true);
-		} else {
-			$player->setGamemode(GameMode::SPECTATOR());
-		}
+        if ($player instanceof HCFPlayer) {
+            if (EOTWManager::isEnabled() === false) {
+                $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
+                if ($player->getCooldown()->has('combattag')) {
+                    $player->getCooldown()->remove('combattag');
+                }
+                $player->setArcherMark(false);
+                $player->activateEffects(true);
+            } else {
+                $player->setGamemode(GameMode::SPECTATOR());
+            }
+        }
 	}
 	/*
 	public function onTransaction(InventoryTransactionEvent $event): void {
@@ -658,28 +704,30 @@ class HCFListener implements Listener {
     public function onPlayerItemConsumeEvent(PlayerItemConsumeEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $event->getItem();
-		if($item->getId() === ItemIds::APPLEENCHANTED){
-			$time = (900 - (time() - $player->getCache()->getCountdown('appleenchanted')));
-			if($time > 0){
-				$player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "NOTCH " . TextFormat::RED . "for " . TextFormat::GOLD . HCFUtils::getTimeString($player->getCache()->getCountdown('appleenchanted')));
-				$event->cancel();
-			}else{
-                $player->getCache()->setCountdown('appleenchanted', 900);
-			}
-		}
-		if($item->getId() === ItemIds::GOLDEN_APPLE){
-			if($player->getCooldown()->has('golden_apple')) {
-				$player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "GOLDEN APPLE " . TextFormat::RED . "for " . TextFormat::GOLD . $player->getCooldown()->get('golden_apple'));
-				$event->cancel();
-				return;
-			}
-			$countdown = 30;
-            $enchant = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantments::getEnchantmentByName(CustomEnchantment::GAPPLER));
-			if($enchant !== null){
-			    $countdown = $enchant->getType()->calculateTime($enchant->getLevel());
+        if ($player instanceof HCFPlayer) {
+            if ($item->getId() === ItemIds::APPLEENCHANTED) {
+                $time = (900 - (time() - $player->getCache()->getCountdown('appleenchanted')));
+                if ($time > 0) {
+                    $player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "NOTCH " . TextFormat::RED . "for " . TextFormat::GOLD . HCFUtils::getTimeString($player->getCache()->getCountdown('appleenchanted')));
+                    $event->cancel();
+                } else {
+                    $player->getCache()->setCountdown('appleenchanted', 900);
+                }
             }
-			$player->getCooldown()->add('golden_apple', $countdown);
-		}
+            if ($item->getId() === ItemIds::GOLDEN_APPLE) {
+                if ($player->getCooldown()->has('golden_apple')) {
+                    $player->sendTip(TextFormat::RED . "You may not eat a " . TextFormat::GOLD . "GOLDEN APPLE " . TextFormat::RED . "for " . TextFormat::GOLD . $player->getCooldown()->get('golden_apple'));
+                    $event->cancel();
+                    return;
+                }
+                $countdown = 30;
+                $enchant = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantments::getEnchantmentByName(CustomEnchantment::GAPPLER));
+                if ($enchant !== null) {
+                    $countdown = $enchant->getType()->calculateTime($enchant->getLevel());
+                }
+                $player->getCooldown()->add('golden_apple', $countdown);
+            }
+        }
 	}
 	
 	public function onSignChange(SignChangeEvent $event) : void {
@@ -765,39 +813,41 @@ class HCFListener implements Listener {
 	public function onSign(PlayerInteractEvent $event){
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
-		$vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
-		$tile = $player->getWorld()->getTile($vec);
-		if($tile instanceof Sign){
-			$line = $tile->getText();
-			if($line->getLine(0) == TextFormat::GREEN . "~BUY~" . TextFormat::RESET){
-				if(!$player->isSneaking()){
-					if($player->getBalance() >= $this->getPrice($line->getLine(3))){
-						if($player->getInventory()->canAddItem($this->getItem($line->getLine(2)))){
-							$player->reduceBalance($this->getPrice($line->getLine(3)));
-							$item = $this->getItem($line->getLine(2));
-							$player->getInventory()->addItem($item);
-							$player->sendMessage(TextFormat::GREEN . "Successfully purchased x". $item->getCount() ." ". $item->getName() . "!");
-						} else {
-							$player->sendMessage(TextFormat::RED . "Your inventory is full!");
-						}
-					} else {
-						$player->sendMessage(TextFormat::RED . "You do not have enough money to make this purchase.");
-					}
-				}
-			} elseif($line->getLine(0) == TextFormat::RED . "~SELL~" . TextFormat::RESET){
-				if(!$player->isSneaking()){
-					$item = $this->getItem($line->getLine(2));
-					if($player->getItemCount($item) >= $item->getCount()){
-						$player->getInventory()->removeItem($item);
-						$player->addBalance($this->getPrice($line->getLine(3)));
-						$player->sendMessage(TextFormat::GREEN . "Sold {$item->getCount()}x " . $item->getName() . " for " . $this->getPrice($line->getLine(3)));
-                        $this->sendSellText($player, $block);
-					} else {
-						$player->sendMessage(TextFormat::RED . "You do not have the required items in your inventory.");
-					}
-				}
-			}
-		}
+        if ($player instanceof HCFPlayer) {
+            $vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
+            $tile = $player->getWorld()->getTile($vec);
+            if ($tile instanceof Sign) {
+                $line = $tile->getText();
+                if ($line->getLine(0) == TextFormat::GREEN . "~BUY~" . TextFormat::RESET) {
+                    if (!$player->isSneaking()) {
+                        if ($player->getBalance() >= $this->getPrice($line->getLine(3))) {
+                            if ($player->getInventory()->canAddItem($this->getItem($line->getLine(2)))) {
+                                $player->reduceBalance($this->getPrice($line->getLine(3)));
+                                $item = $this->getItem($line->getLine(2));
+                                $player->getInventory()->addItem($item);
+                                $player->sendMessage(TextFormat::GREEN . "Successfully purchased x" . $item->getCount() . " " . $item->getName() . "!");
+                            } else {
+                                $player->sendMessage(TextFormat::RED . "Your inventory is full!");
+                            }
+                        } else {
+                            $player->sendMessage(TextFormat::RED . "You do not have enough money to make this purchase.");
+                        }
+                    }
+                } elseif ($line->getLine(0) == TextFormat::RED . "~SELL~" . TextFormat::RESET) {
+                    if (!$player->isSneaking()) {
+                        $item = $this->getItem($line->getLine(2));
+                        if ($player->getItemCount($item) >= $item->getCount()) {
+                            $player->getInventory()->removeItem($item);
+                            $player->addBalance($this->getPrice($line->getLine(3)));
+                            $player->sendMessage(TextFormat::GREEN . "Sold {$item->getCount()}x " . $item->getName() . " for " . $this->getPrice($line->getLine(3)));
+                            $this->sendSellText($player, $block);
+                        } else {
+                            $player->sendMessage(TextFormat::RED . "You do not have the required items in your inventory.");
+                        }
+                    }
+                }
+            }
+        }
 	}
 	
 	public function onCombatLoggerDamage(EntityDamageEvent $event) : void {
@@ -817,17 +867,19 @@ class HCFListener implements Listener {
 	public function onInventoryCloseEvent(InventoryCloseEvent $event) : void {
 		$player = $event->getPlayer();
 		$inventory = $event->getInventory();
-		if($inventory instanceof EnderChestInventory){
-		    # This is to remove the chest when the player closes the inventory
-            $position = $inventory->getHolder();
+        if ($player instanceof HCFPlayer) {
+            if ($inventory instanceof EnderChestInventory) {
+                # This is to remove the chest when the player closes the inventory
+                $position = $inventory->getHolder();
 
-            if($player->getReplaceableBlock() !== 0) {
-                $blockRuntimeId = $player->getReplaceableBlock();
-            } else {
-                $blockRuntimeId = RuntimeBlockMapping::getInstance()->fromRuntimeId(BlockFactory::getInstance()->get(BlockLegacyIds::BEDROCK, 0)->getFullId());
+                if ($player->getReplaceableBlock() !== 0) {
+                    $blockRuntimeId = $player->getReplaceableBlock();
+                } else {
+                    $blockRuntimeId = RuntimeBlockMapping::getInstance()->fromRuntimeId(BlockFactory::getInstance()->get(BlockLegacyIds::BEDROCK, 0)->getFullId());
+                }
+                $pk = UpdateBlockPacket::create(new BlockPosition($position->x, $position->y, $position->z), $blockRuntimeId, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+                $player->getNetworkSession()->sendDataPacket($pk);
             }
-            $pk = UpdateBlockPacket::create(new BlockPosition($position->x,$position->y, $position->z), $blockRuntimeId, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-            $player->getNetworkSession()->sendDataPacket($pk);
         }
 	}
 

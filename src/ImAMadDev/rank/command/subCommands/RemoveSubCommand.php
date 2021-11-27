@@ -27,7 +27,7 @@ class RemoveSubCommand extends SubCommand {
                 return;
             }
             $rank = $this->getMain()->getRankManager()->getRank($args[2]);
-            if (!$player->getCache()->hasDataInArray('ranks', $rank->getName())) {
+            if (!$player->getCache()->hasDataInArray($rank->getName())) {
                 $sender->sendMessage(TextFormat::RED . "This player no have this rank!");
                 return;
             }

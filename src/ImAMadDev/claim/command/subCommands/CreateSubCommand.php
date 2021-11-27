@@ -43,11 +43,10 @@ class CreateSubCommand extends SubCommand {
 		]);
 		if($sender->getInventory()->canAddItem($item)) {
 			$sender->getInventory()->addItem($item);
-			$sender->setClaiming(true);
+			//$sender->setClaiming(true);
 			$sender->setOpClaim(true);
 			$sender->setOpClaimName($name);
 			$sender->sendMessage(TextFormat::GREEN . "Now claiming {$name} land!");
-			return;
 		} else {
 			$sender->sendMessage(TextFormat::RED . "Your inventory is too full!");
 		}

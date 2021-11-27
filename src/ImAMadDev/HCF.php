@@ -11,6 +11,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\raklib\RakLibInterface;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase;
@@ -51,6 +52,8 @@ use muqsit\invmenu\InvMenuHandler;
 class HCF extends PluginBase {
 
     private static array $player_cache = [];
+
+    private static array $staffs = [];
 	
 	public static HCF $instance;
 	
@@ -277,6 +280,21 @@ class HCF extends PluginBase {
             }
         }
         return self::$player_cache[$found];
+    }
+
+    public function getStaffs() : array
+    {
+        return self::$staffs;
+    }
+
+    public function addStaff(Player $player) : void
+    {
+        self::$staffs[spl_object_hash($player)] = $player;
+    }
+
+    public function delStaff(Player $player) : void
+    {
+        unset(self::$staffs[spl_object_hash($player)]);
     }
 
 }

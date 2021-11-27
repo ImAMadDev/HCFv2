@@ -126,43 +126,44 @@ class Obsidian extends Opaque {
      * @param Player|null $player
      *
      * @return bool
+     * @noinspection PhpMultipleClassDeclarationsInspection
      */
     public function onBreak(Item $item, Player $player = null): bool {
         parent::onBreak($item);
         foreach($this->getAllSides() as $i => $block) {
             if($block instanceof Portal) {
                 if($block->getSide(Facing::WEST) instanceof Portal or $block->getSide(Facing::EAST) instanceof Portal) {
-                    for($x = $block->getPosition()->getFloorX(); $this->getPosition()->getWorld()->getBlockAt($x, $block->getPosition()->getFloorY(), $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $x++) {
-                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $y++) {
+                    for($x = $block->getPosition()->getFloorX(); $this->getPosition()->getWorld()->getBlockAt($x, $block->getPosition()->getFloorY(), $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $x++) {
+                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $y++) {
                                 $this->getPosition()->getWorld()->setBlock(new Vector3($x, $y, $block->getPosition()->getFloorZ()), VanillaBlocks::AIR());
                         }
-                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $y--) {
+                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $y--) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($x, $y, $block->getPosition()->getFloorZ()), VanillaBlocks::AIR());
                         }
                     }
-                    for($x = $block->getPosition()->getFloorX() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $block->getPosition()->getFloorY(), $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $x--) {
-                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $y++) {
+                    for($x = $block->getPosition()->getFloorX() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $block->getPosition()->getFloorY(), $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $x--) {
+                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $y++) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($x, $y, $block->getPosition()->getFloorZ()), VanillaBlocks::AIR());
                         }
-                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ()) == BlockLegacyIds::PORTAL; $y--) {
+                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($x, $y, $block->getPosition()->getFloorZ())->getId() == BlockLegacyIds::PORTAL; $y--) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($x, $y, $block->getPosition()->getFloorZ()), VanillaBlocks::AIR());
                         }
                     }
                 }
                 else {
-                    for($z = $block->getPosition()->getFloorZ(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $block->getPosition()->getFloorY(), $z) == BlockLegacyIds::PORTAL; $z++) {
-                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z) == BlockLegacyIds::PORTAL; $y++) {
+                    for($z = $block->getPosition()->getFloorZ(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $block->getPosition()->getFloorY(), $z)->getId() == BlockLegacyIds::PORTAL; $z++) {
+                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z)->getId() == BlockLegacyIds::PORTAL; $y++) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($block->getPosition()->getFloorX(), $y, $z), VanillaBlocks::AIR());
                         }
-                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z) == BlockLegacyIds::PORTAL; $y--) {
+                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z)->getId() == BlockLegacyIds::PORTAL; $y--) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($block->getPosition()->getFloorX(), $y, $z), VanillaBlocks::AIR());
                         }
                     }
-                    for($z = $block->getPosition()->getFloorZ() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $block->getPosition()->getFloorY(), $z) == BlockLegacyIds::PORTAL; $z--) {
-                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z) == BlockLegacyIds::PORTAL; $y++) {
+                    for($z = $block->getPosition()->getFloorZ() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $block->getPosition()->getFloorY(), $z)->getId() == BlockLegacyIds::PORTAL; $z--) {
+                        for($y = $block->getPosition()->getFloorY(); $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z)->getId() == BlockLegacyIds::PORTAL; $y++) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($block->getPosition()->getFloorX(), $y, $z), VanillaBlocks::AIR());
                         }
-                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z) == BlockLegacyIds::PORTAL; $y--) {
+                        for($y = $block->getPosition()->getFloorY() - 1; $this->getPosition()->getWorld()->getBlockAt($block->getPosition()->getFloorX(), $y, $z)->getId() == BlockLegacyIds::PORTAL; $y--) {
                             $this->getPosition()->getWorld()->setBlock(new Vector3($block->getPosition()->getFloorX(), $y, $z), VanillaBlocks::AIR());
                         }
                     }

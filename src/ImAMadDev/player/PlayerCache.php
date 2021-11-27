@@ -91,7 +91,7 @@ class PlayerCache
      */
     public function hasDataInArray(string $data, string $arrayName = 'ranks') : bool
     {
-        return in_array($data, $this->getInData($arrayName), true);
+        return in_array($data, $this->getInData($arrayName) ?? [], true);
     }
 
     /**
@@ -135,8 +135,9 @@ class PlayerCache
 
     public function __destruct()
     {
-        if (!file_exists(PLAYER_DIRECTORY . $this->name . ".js")) return;
-        file_put_contents(PLAYER_DIRECTORY . $this->name . ".js", $this->getJsonData());
+        if (file_exists(PLAYER_DIRECTORY . $this->name . ".js")) {
+            file_put_contents(PLAYER_DIRECTORY . $this->name . ".js", $this->getJsonData());
+        }
     }
 
 }
