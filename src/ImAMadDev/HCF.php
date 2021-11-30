@@ -128,6 +128,7 @@ class HCF extends PluginBase {
 
 	private function loadInstances() : void {
 		self::$instance = $this;
+        self::$KOTHManager = new KOTHManager($this);
 		self::$claimManager = new ClaimManager($this);
 		self::$factionManager = new FactionManager($this);
 		self::$rankManager = new RankManager($this);
@@ -136,7 +137,6 @@ class HCF extends PluginBase {
 		self::$commandManager = new CommandManager($this);
 		self::$combatManager = new CombatManager($this);
 		self::$abilityManager = new AbilityManager($this);
-		self::$KOTHManager = new KOTHManager($this);
 		self::$EventsManager = new EventsManager($this);
         self::$tagManager = new TagManager($this);
         self::$redeemManager = new RedeemManager($this);

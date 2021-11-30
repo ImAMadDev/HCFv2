@@ -55,11 +55,11 @@ class CustomCrate extends Crate
      * @param Item $key
      * @param Item $down_block
      */
-    public function __construct(string $name, array $contents, string $CUSTOM_KEY, string $customName, Item $key, Item $down_block)
+    public function __construct(string $name, array $contents, string $customName, Item $key, Item $down_block)
     {
         $this->name = $name;
         $this->contents = $contents;
-        self::$CUSTOM_KEY = $CUSTOM_KEY;
+        self::$CUSTOM_KEY = $name . "Key";
         $this->customName = TextFormat::colorize($customName);
         $this->key = $key;
         $this->down_block = $down_block;

@@ -378,7 +378,7 @@ class HCFPlayer extends Player {
 		$this->faction = $faction;
 	}
 	
-	public function setInvincible(?int $time = -1): void {
+	public function setInvincible(?int $time = null): void {
 		$this->invincibilityTime = $time !== null ? $time : 3600;
         $this->getCache()->setInData('invincibility_time', $time !== null ? $time : 3600);
 	}
@@ -393,7 +393,8 @@ class HCFPlayer extends Player {
 	}
 	
 	public function subtractInvincibilityTime(): void {
-		--$this->invincibilityTime;
+		$this->invincibilityTime -= 1;
+        $this->getCache()->setInData('invincibility_time', $this->invincibilityTime);
 	}
 	
 	public function getInvincibilityTime(): int {

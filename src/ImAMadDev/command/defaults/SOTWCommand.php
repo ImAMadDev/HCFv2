@@ -44,8 +44,12 @@ class SOTWCommand extends Command {
                 $sender->sendMessage(TextFormat::RED . "Start of the world is disabled!");
                 return;
             }
-            if (!isset($args[1]) and !is_numeric($args[1])){
-                $sender->sendMessage(TextFormat::RED . "Usage numeric arguments");
+            if (!isset($args[1])){
+                if(!is_numeric($args[1])) {
+                    $sender->sendMessage(TextFormat::RED . "Usage numeric arguments in minutes.");
+                    return;
+                }
+                $sender->sendMessage(TextFormat::RED . $this->getUsage());
                 return;
             }
             SOTWManager::set(false, $args[1]);

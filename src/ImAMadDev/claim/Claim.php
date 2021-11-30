@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace ImAMadDev\claim;
 
@@ -127,18 +127,18 @@ class Claim {
 				return false;
 			}
 			if($faction->getDTR() <= 0) {
-				if($player->getGamemode()->id() === 2) {
+				if($player->getGamemode() === GameMode::ADVENTURE()) {
 					$player->setGamemode(GameMode::SURVIVAL());
                     $this->setEdit($player, true);
 				}
             } else {
 				if($faction->isInFaction($player->getName())) {
-					if($player->getGamemode()->id() === 2) {
+					if($player->getGamemode() === GameMode::ADVENTURE()) {
 						$player->setGamemode(GameMode::SURVIVAL());
                         $this->setEdit($player, true);
 					}
                 } else {
-					if($player->getGamemode()->id() === 0) {
+					if($player->getGamemode() === GameMode::SURVIVAL()) {
 						$player->setGamemode(GameMode::ADVENTURE());
                         $this->setEdit($player);
 					}
@@ -150,7 +150,7 @@ class Claim {
 					return false;
 				}
             } else {
-				if($player->getGamemode()->id() === 2) {
+				if($player->getGamemode() === GameMode::ADVENTURE()) {
 					$player->setGamemode(GameMode::SURVIVAL());
                     $this->setEdit($player, true);
 				}
@@ -160,32 +160,32 @@ class Claim {
     }
 	
 	public function viewMap(HCFPlayer $player){
-		$blocks = [BlockLegacyIds::GLASS, BlockLegacyIds::DIAMOND_BLOCK];
+        $blocks = [BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0), BlockFactory::getInstance()->get(BlockLegacyIds::DIAMOND_BLOCK, 0)];
 		$position1 = new Vector3($this->firstPosition->getFloorX(), $player->getPosition()->getFloorY(), $this->firstPosition->getFloorZ());
 		$position2 = new Vector3($this->secondPosition->getFloorX(), $player->getPosition()->getFloorY(), $this->secondPosition->getFloorZ());
 		$position3 = new Vector3($this->firstPosition->getFloorX(), $player->getPosition()->getFloorY(), $this->secondPosition->getFloorZ());
 		$position4 = new Vector3($this->secondPosition->getFloorX(), $player->getPosition()->getFloorY(), $this->firstPosition->getFloorZ());
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
             $pos = new BlockPosition($position1->getFloorX(), $i, $position1->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId(BlockFactory::getInstance()->get($blocks[array_rand($blocks)])->getFullId());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
             $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
 			$player->getNetworkSession()->sendDataPacket($pk);
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
             $pos = new BlockPosition($position2->getFloorX(), $i, $position2->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId(BlockFactory::getInstance()->get($blocks[array_rand($blocks)])->getFullId());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
             $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
             $player->getNetworkSession()->sendDataPacket($pk);
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
             $pos = new BlockPosition($position3->getFloorX(), $i, $position3->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId(BlockFactory::getInstance()->get($blocks[array_rand($blocks)])->getFullId());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
             $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
             $player->getNetworkSession()->sendDataPacket($pk);
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
             $pos = new BlockPosition($position4->getFloorX(), $i, $position4->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId(BlockFactory::getInstance()->get($blocks[array_rand($blocks)])->getFullId());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
             $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
             $player->getNetworkSession()->sendDataPacket($pk);
 		}

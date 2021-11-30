@@ -17,14 +17,14 @@ final class InventoryUtils {
 		if(empty($data)) return [];
 		$contents = [];
         $nbt = new BigEndianNbtSerializer();
-		$inventoryTag = $nbt->read(zlib_decode($data))->mustGetCompoundTag();
+		$inventoryTag = $nbt->read(zlib_decode($data))->mustGetCompoundTag()->getListTag($type);
 		/** @var CompoundTag $tag */
 		foreach ($inventoryTag as $tag) {
 			$contents[$tag->getByte("Slot")] = Item::nbtDeserialize($tag);
 		}
 		return $contents;
 	}
-	
+
 	public static function encode(Inventory $inventory, string $type = "Inventory"): string{
         $nbt = new BigEndianNbtSerializer();
         $inventoryTag = new ListTag([], NBT::TAG_Compound);

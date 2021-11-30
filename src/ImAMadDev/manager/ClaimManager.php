@@ -14,10 +14,10 @@ class ClaimManager {
 	public static ?HCF $main = null;
 	public static array $claims = [];
 	
-	public function __construct(HCF $main) {
-		self::$main = $main;
+	public function __construct(?HCF $main = null) {
+		self::$main = $main ?? HCF::getInstance();
         self::setInstance($this);
-		$this->init();
+        if ($main instanceof HCF) $this->init();
 	}
 	
 	private function init() : void {

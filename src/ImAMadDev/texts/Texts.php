@@ -2,6 +2,10 @@
 
 namespace ImAMadDev\texts;
 
+use ImAMadDev\faction\FactionUtils;
+use ImAMadDev\utils\HCFUtils;
+use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\{World, Position};
 use pocketmine\math\AxisAlignedBB;
 use ImAMadDev\HCF;
@@ -63,6 +67,8 @@ class Texts {
 		foreach($this->main->getServer()->getOnlinePlayers() as $player) {
 			if(!in_array($player->getName(), array_keys($this->send)) && stripos($player->getRegion(), "Spawn") !== false) {
 				$message = str_replace("{player}", $player->getName(), $this->getText());
+                $message = str_replace("{online}", count(Server::getInstance()->getOnlinePlayers()), $message);
+                $message = str_replace("{map_information}", $this->getMapKit(), $message);
 				FloatingTextApi::sendText($this->textID, $player, $message);
 				$this->send[$player->getName()] = $player;
 			}
@@ -84,4 +90,13 @@ class Texts {
 		}
 		return $players;
 	}
+
+    private function getMapKit() : string
+    {
+        return '&7&m--------------------------------' . TextFormat::EOL .
+            '&6&lMapkit&7: &r' . TextFormat::EOL .
+            '&eProtection &f' . HCFUtils::PAID_PROTECTION . '&7, &eSharpness &f' . HCFUtils::PAID_SHARPNESS . TextFormat::EOL .
+            '&ePlayers per faction &f' . FactionUtils::MAXIMUM_MEMBERS . '&7, &eAllies per faction &f' . FactionUtils::MAXIMUM_ALLIES . TextFormat::EOL .
+            '&7&m--------------------------------';
+    }
 }

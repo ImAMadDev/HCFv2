@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace floatingtext;
 
+use pocketmine\item\ItemFactory;
+use pocketmine\network\mcpe\convert\TypeConverter;
+use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
+use pocketmine\network\mcpe\protocol\types\entity\FloatMetadataProperty;
+use pocketmine\network\mcpe\protocol\types\entity\LongMetadataProperty;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStack;
 use Ramsey\Uuid\Uuid;
 use pocketmine\entity\Entity;
@@ -35,14 +40,20 @@ class FloatingTextApi {
         $pk->actorRuntimeId = $eid;
         $pk->actorUniqueId = $eid;
         $pk->position = $pos->add(0.5, 0, 0.5);
-        $pk->item = ItemStackWrapper::legacy(ItemStack::null());
+        $pk->platformChatId = "";
+        $pk->headYaw = 0;
+        $pk->item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(ItemFactory::air()));
+        $flags =
+            1 << EntityMetadataFlags::CAN_SHOW_NAMETAG |
+            1 << EntityMetadataFlags::ALWAYS_SHOW_NAMETAG |
+            1 << EntityMetadataFlags::IMMOBILE;
         $pk->metadata = [
-        	EntityMetadataProperties::BOUNDING_BOX_WIDTH => [EntityMetadataTypes::FLOAT, 0.2],
-			EntityMetadataProperties::BOUNDING_BOX_HEIGHT => [EntityMetadataTypes::FLOAT, 0.2],
-            EntityMetadataProperties::FLAGS => [EntityMetadataTypes::LONG, 1 << EntityMetadataFlags::IMMOBILE],
-            EntityMetadataProperties::SCALE => [EntityMetadataTypes::FLOAT, 0]
+            EntityMetadataProperties::FLAGS => new LongMetadataProperty($flags),
+            EntityMetadataProperties::SCALE => new FloatMetadataProperty(0.01), //zero causes problems on debug builds
+            EntityMetadataProperties::BOUNDING_BOX_WIDTH => new FloatMetadataProperty(0.2),
+			EntityMetadataProperties::BOUNDING_BOX_HEIGHT => new FloatMetadataProperty(0.2)
         ];
-
+        $pk->adventureSettingsPacket = AdventureSettingsPacket::create(0, 0, 0, 0, 0, $eid);
         self::$texts[$eid] = $pk;
 
         return $eid;

@@ -236,7 +236,7 @@ class HCFListener implements Listener {
 			$player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
 		}
-		$player->setInvincible($player->getCache()->getInData('invincibility_time', true, 3600));
+		$player->setInvincible($player->getCache()->getInData('invincibility_time', true));
         $player->getFaction()?->message(TextFormat::GREEN . "+ Member online: " . TextFormat::RED . $player->getName());
 		HCFUtils::saveSkin($player->getSkin(), $player->getName());
 		$player->setJoined(true);
@@ -245,6 +245,7 @@ class HCFListener implements Listener {
 	public function onQuitEvent(PlayerQuitEvent $event) : void {
 		$player = $event->getPlayer();
 		$event->setQuitMessage(TextFormat::GRAY."[".TextFormat::RED."-".TextFormat::GRAY."] ".TextFormat::RED . $player->getName());
+        $player->getCache()->saveData();
 		if($player->canLogout() == true) {
 			return;
 		}
@@ -774,7 +775,7 @@ class HCFListener implements Listener {
 	
 	public function onSignShopChange(SignChangeEvent $event) : void {
 		$player = $event->getPlayer();
-		if(!$player->hasPermission("configurate.shop") && $player->getGamemode() !== 1){
+		if(!$player->hasPermission("configurate.shop") && $player->getGamemode() !== GameMode::CREATIVE()){
 			return;
 		}
 		if(strtolower($event->getNewText()->getLine(0)) == "[shop]" && $player->hasPermission("configurate.shop")){

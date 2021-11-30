@@ -106,10 +106,10 @@ class CrateManager {
         if(!is_dir(self::$main->getDataFolder() . "crates")) mkdir(self::$main->getDataFolder() . "crates");
         foreach (glob(self::$main->getDataFolder() . "crates" . DIRECTORY_SEPARATOR . "*yml") as $file) {
             $config = new Config($file, Config::YAML);
-            $inventory = InventoryUtils::decode($config->get("Inventory", ""));
+            $inventory = InventoryUtils::decode(base64_decode($config->get("Inventory", "")));
             $key = $this->getKeyFromFile($config);
             $down_block = $this->getBlockFromFile($config);
-            $crate = new CustomCrate(basename($file, ".yml"), $inventory, $config->get("CustomKey", strtoupper(basename($file, ".yml")) . "_KEY"), $config->get("customName", "&6" . basename($file, ".yml")), $key, $down_block);
+            $crate = new CustomCrate(basename($file, ".yml"), $inventory, $config->get("customName", "&6" . basename($file, ".yml")), $key, $down_block->asItem());
             $this->addCrate($crate);
         }
 	}
@@ -119,15 +119,12 @@ class CrateManager {
      */
     public function createCustomCrate(CrateCreateSession $session) : void
     {
-        $file = new Config(self::$main->getDataFolder() . "crates" . DIRECTORY_SEPARATOR . $session->getData()["name"] . ".yml", Config::YAML);
-        foreach ($session->getData() as $k => $datum) {
-            $file->set($k, $datum);
-        }
+        $file = new Config(self::$main->getDataFolder() . "crates" . DIRECTORY_SEPARATOR . $session->getData()["name"] . ".yml", Config::YAML, $session->getData());
         $file->save();
-        $items = InventoryUtils::decode($file->get("Inventory", ""));
+        $items = InventoryUtils::decode(base64_decode($file->get("Inventory", "")));
         $key = $this->getKeyFromFile($file);
         $down_block = $this->getBlockFromFile($file);
-        $crate = new CustomCrate($session->getData()["name"], $items, $file->get("CustomKey", strtoupper($session->getData()["name"]) . "_KEY"), $file->get("customName", "&6" . $session->getData()["name"]), $key, $down_block);
+        $crate = new CustomCrate($session->getData()["name"], $items, $file->get("customName", "&6" . $session->getData()["name"]), $key, $down_block->asItem());
         $this->addCrate($crate);
     }
 

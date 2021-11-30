@@ -60,7 +60,7 @@ class CrateCreateSession
         $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
         $menu->setName(TextFormat::colorize($this->data["customName"] ?? "Sin Name") . " " . TextFormat::GREEN . "Crate Creation");
         $menu->setInventoryCloseListener(function (HCFPlayer $player) use($session, $menu): void{
-            $session->data["Inventory"] = InventoryUtils::encode($menu->getInventory());
+            $session->data["Inventory"] = base64_encode(InventoryUtils::encode($menu->getInventory()));
         });
         $menu->send($this->getPlayer());
     }

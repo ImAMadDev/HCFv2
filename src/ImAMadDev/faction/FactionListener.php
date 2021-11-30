@@ -61,7 +61,9 @@ class FactionListener implements Listener {
 		$block = $event->getBlock();
 		$player = $event->getPlayer();
 		$claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-		if($player->getGamemode()->id() === 1 && Server::getInstance()->isOp(strtolower($player->getName()))) return;
+		if($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) {
+            return;
+        }
 		if($player->getCooldown()->has('antitrapper_tag')) {
 			if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
 				if(in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))){
@@ -125,7 +127,9 @@ class FactionListener implements Listener {
 		$player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             $claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-            if ($player->getGamemode()->id() === 1 && Server::getInstance()->isOp(strtolower($player->getName()))) return;
+            if ($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) {
+                return;
+            }
             if ($player->getCooldown()->has('antitrapper_tag')) {
                 $event->cancel();
             }
@@ -149,7 +153,7 @@ class FactionListener implements Listener {
 		$player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             $claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-            if ($player->getGamemode()->id() === 1 && Server::getInstance()->isOp(strtolower($player->getName()))) return;
+            if ($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) return;
             if ($player->getCooldown()->has('antitrapper_tag')) {
                 $event->cancel();
             }
@@ -184,7 +188,7 @@ class FactionListener implements Listener {
                 }
             } else {
                 if ("Wilderness" !== $player->getRegion()) {
-                    if ($player->getGamemode()->id() === 2) {
+                    if ($player->getGamemode() === GameMode::ADVENTURE()) {
                         $player->setGamemode(GameMode::SURVIVAL());
                         return;
                     }
@@ -217,7 +221,7 @@ class FactionListener implements Listener {
 		$player = $event->getPlayer();
 		if($block->getId() === BlockLegacyIds::COBWEB) {
 			if($event->isCancelled()) return;
-			if(($player->getGamemode() == 1) && ($player->hasPermission("edit.lobby"))) return;
+			if(($player->getGamemode() === GameMode::CREATIVE()) && ($player->hasPermission("edit.lobby"))) return;
 			HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ReplaceBlockTick(HCF::getInstance(), $block, $block->getPosition()->getWorld()), (20 * 20));
 		}
 		if($player->getCooldown()->has('deleteblock')) {
