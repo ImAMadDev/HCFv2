@@ -3,7 +3,7 @@
 namespace ImAMadDev\manager;
 
 use formapi\SimpleForm;
-
+use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\block\PotionGenerator;
 use pocketmine\item\Item;
 use pocketmine\block\Block;
@@ -140,19 +140,19 @@ class FormManager {
 			}
 			switch($data){
 				case 0:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::END_STONE, 0, 32), 500, "getEndBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::END_STONE, 0, 32), 500, "getEndBlockShop");
 				break;
 				case 1:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::DRAGON_EGG, 0, 1), 500, "getEndBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::DRAGON_EGG, 0, 1), 500, "getEndBlockShop");
 				break;
 				case 2:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::END_BRICKS, 0, 32), 500, "getEndBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::END_BRICKS, 0, 32), 500, "getEndBlockShop");
 				break;
 				case 3:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::PURPUR_STAIRS, 0, 32), 500, "getEndBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::PURPUR_STAIRS, 0, 32), 500, "getEndBlockShop");
 				break;
 				case 4:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::PURPUR_BLOCK, 0, 32), 500, "getEndBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::PURPUR_BLOCK, 0, 32), 500, "getEndBlockShop");
 				break;
 				default:
 				break;
@@ -174,25 +174,25 @@ class FormManager {
 			}
 			switch($data){
 				case 0:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::RED_NETHER_BRICK, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::RED_NETHER_BRICK, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 1:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_WART_BLOCK, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_WART_BLOCK, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 2:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::SOUL_SAND, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::SOUL_SAND, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 3:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHERRACK, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHERRACK, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 4:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_STAIRS, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_STAIRS, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 5:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_BLOCK, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_BLOCK, 0, 32), 500, "getNetherBlockShop");
 				break;
 				case 6:
-					$this->buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_FENCE, 0, 32), 500, "getNetherBlockShop");
+					self::buyItem($player, ItemFactory::getInstance()->get(ItemIds::NETHER_BRICK_FENCE, 0, 32), 500, "getNetherBlockShop");
 				break;
 				default:
 				break;
@@ -210,17 +210,19 @@ class FormManager {
 	}
 	
 	public static function buyItem(Player $player, Item $item, int $price, string $function) {
-		if($player->getBalance() >= $price){
-			if($player->getInventory()->canAddItem($item)){
-				$player->reduceBalance($price);
-				$player->getInventory()->addItem($item);
-				$player->sendMessage(TextFormat::GREEN . "Successfully purchased x". $item->getCount() ." ". $item->getName() . "!");
-				self::{$function}($player);
+		if ($player instanceof HCFPlayer) {
+			if($player->getBalance() >= $price){
+				if($player->getInventory()->canAddItem($item)){
+					$player->reduceBalance($price);
+					$player->getInventory()->addItem($item);
+					$player->sendMessage(TextFormat::GREEN . "Successfully purchased x". $item->getCount() ." ". $item->getName() . "!");
+					self::{$function}($player);
+				} else {
+					$player->sendMessage(TextFormat::RED . "Your inventory is full");
+				}
 			} else {
-				$player->sendMessage(TextFormat::RED . "Your inventory is full");
+				$player->sendMessage(TextFormat::RED . "You do not have enough money to make this purchase.");
 			}
-		} else {
-			$player->sendMessage(TextFormat::RED . "You do not have enough money to make this purchase.");
 		}
 	}
 }
