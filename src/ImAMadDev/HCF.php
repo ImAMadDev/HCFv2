@@ -8,9 +8,6 @@ use ImAMadDev\player\PlayerCache;
 use ImAMadDev\youtubers\redeem\RedeemManager;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\raklib\RakLibInterface;
-use pocketmine\permission\Permission;
-use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
@@ -87,7 +84,6 @@ class HCF extends PluginBase {
 
     public function onLoad(): void{
 		$this->loadInstances();
-        //PermissionManager::getInstance()->addPermission(new Permission("hol.add", "command", false));
 	}
 	
 	public function onEnable(): void{
@@ -205,23 +201,6 @@ class HCF extends PluginBase {
     {
         return self::$redeemManager;
     }
-
-    /*
-	public function  getTopKills() : array {
-	    $kills = [];
-        foreach (glob($this->getDataFolder() . "players/" . "*.js") as $file) {
-	        $kills[basename($file, ".js")] = json_decode(file_get_contents($file), true)["kills"];
-	    }
-	    arsort($kills);
-	    $top = 0;
-	    $killers = [];
-	    foreach($kills as $name => $count){
-	        if($count <= 0 || $top === 10) break;
-	        $top++;
-	        $killers[] = ["name" => $name, "kills" => $count];
-	    }
-	    return $killers;
-    }*/
 
     public function  getTopKills() : array {
         $kills = [];
