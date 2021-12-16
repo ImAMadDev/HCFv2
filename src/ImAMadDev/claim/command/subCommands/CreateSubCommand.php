@@ -2,6 +2,8 @@
 
 namespace ImAMadDev\claim\command\subCommands;
 
+use ImAMadDev\claim\utils\ClaimType;
+use ImAMadDev\player\sessions\ClaimSession;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\item\ItemFactory;
@@ -15,7 +17,7 @@ use ImAMadDev\manager\ClaimManager;
 class CreateSubCommand extends SubCommand {
 	
 	#[Pure] public function __construct() {
-		parent::__construct("create", "/claim create (string: name)");
+		parent::__construct("create", "/claim create (string: name) (string: type)");
 	}
 	
 	public function execute(CommandSender $sender, string $commandLabel, array $args): void {
@@ -24,10 +26,19 @@ class CreateSubCommand extends SubCommand {
 			return;
 		}
 		if(!isset($args[1])) {
-			$sender->sendMessage($this->getUsage());
+			$sender->sendMessage(TextFormat::RED . $this->getUsage());
 			return;
 		}
+        if(!isset($args[2])) {
+            $sender->sendMessage(TextFormat::RED . $this->getUsage());
+            return;
+        }
 		$name = str_replace(" ", "_", $args[1]);
+        if (!in_array(strtolower($args[2]), [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE])){
+            $sender->sendMessage(TextFormat::RED . "This claim type is invalid {$args[2]}: " . join(',', [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE]));
+            return;
+        }
+        $claim_type = strtolower($args[2]);
 		if(ClaimManager::getInstance()->getClaim($name) !== null || $name === "Wilderness"){
 			$sender->sendMessage(TextFormat::RED . "This name can't be used");
 			return;
@@ -43,9 +54,7 @@ class CreateSubCommand extends SubCommand {
 		]);
 		if($sender->getInventory()->canAddItem($item)) {
 			$sender->getInventory()->addItem($item);
-			//$sender->setClaiming(true);
-			$sender->setOpClaim(true);
-			$sender->setOpClaimName($name);
+			$sender->setClaimSession(new ClaimSession($name, $claim_type,true, $sender));
 			$sender->sendMessage(TextFormat::GREEN . "Now claiming {$name} land!");
 		} else {
 			$sender->sendMessage(TextFormat::RED . "Your inventory is too full!");

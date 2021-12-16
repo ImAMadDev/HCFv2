@@ -5,6 +5,7 @@ namespace ImAMadDev\ticks\player;
 use ImAMadDev\faction\FactionRally;
 use ImAMadDev\HCF;
 use ImAMadDev\faction\Faction;
+use ImAMadDev\kit\classes\IEnergyClass;
 use ImAMadDev\player\{PlayerUtils, HCFPlayer};
 
 use ImAMadDev\manager\{ClaimManager, EventsManager, SOTWManager, KOTHManager, EOTWManager};
@@ -55,12 +56,9 @@ class Scoreboard extends Task {
 		if(SOTWManager::isEnabled()){
 			$scoreboard[] = TextFormat::colorize("&aStartOfTheWorld: ") . gmdate("H:i:s", SOTWManager::getTime());
 		}
-		if($player->isBard()) {
-			$scoreboard[] = TextFormat::colorize("&6Bard Energy: ") . $player->getBardEnergy();
-		}
-		if($player->isMage()) {
-			$scoreboard[] = TextFormat::colorize("&eMage Energy: ") . $player->getBardEnergy();
-		}
+        if ($player->getClassEnergy()->getStorageClass() instanceof IEnergyClass){
+            $scoreboard[] = TextFormat::colorize("&e" . $player->getClassEnergy()->getStorageClass()->name . " Energy: ") . $player->getClassEnergy()->getEnergy();
+        }
 		if($player->getFocus() !== null && $player->getFocus()->getFaction() instanceof Faction) {
 			if(HCF::$factionManager->isFaction($player->getFocus()->getFaction()->getName())) {
 				$scoreboard[] = TextFormat::colorize("&6&l  ");

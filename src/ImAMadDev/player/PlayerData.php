@@ -219,5 +219,3 @@ class PlayerData {
 		return $config->get("store", []);
 	}
 }
-
-?>

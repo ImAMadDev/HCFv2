@@ -112,17 +112,18 @@ final class HCFUtils {
         if ($img == null) {
             return;
         }
-        $config = new Config(HCF::getInstance()->getDataFolder() . "copied_skins/" . $name . '_skin.json');
+        $config = new Config(HCF::getInstance()->getDataFolder() . "copied_skins/" . $name . '_skin.json', Config::JSON);
         $data = ["skinId" => base64_encode($skin->getSkinId()),
             "skinData" => base64_encode($skin->getSkinData()),
             "skinGeometryName" => base64_encode($skin->getGeometryName()),
             "skinGeometry" => base64_encode($skin->getGeometryData()),
             "skinCapeData" => base64_encode($skin->getCapeData())];
-        foreach ($data as $key => $datum) {
-            $config->set($key, $datum);
-        }
         $config->save();
+        $file = fopen(HCF::getInstance()->getDataFolder() . "copied_skins/" . $name . '_skin.json', "w+");
+        $CODED = json_encode($data, JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING);
+        file_put_contents(HCF::getInstance()->getDataFolder() . "copied_skins/" . $name . '_skin.json', $CODED);
         @imagepng($img, HCF::getInstance()->getDataFolder() . "copied_skins/" . $name . ".png");
+        fclose($file);
     }
 
     public static function skinDataToImage($skinData): ?GdImage
@@ -182,7 +183,7 @@ final class HCFUtils {
         for ($y = 0; $y < $size[1]; $y++) {
             for ($x = 0; $x < $size[0]; $x++) {
                 $colorant = @imagecolorat($img, $x, $y);
-                $a = ((~((int)($colorant >> 24))) << 1) & 0xff;
+                $a = ((~($colorant >> 24)) << 1) & 0xff;
                 $r = ($colorant >> 16) & 0xff;
                 $g = ($colorant >> 8) & 0xff;
                 $b = $colorant & 0xff;

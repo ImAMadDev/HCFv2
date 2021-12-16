@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace ImAMadDev\manager;
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\HCF;
+use JetBrains\PhpStorm\Pure;
+use JsonException;
 use ImAMadDev\koth\{KOTHCreator, KOTHArena};
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\VectorUtils;
@@ -32,9 +35,10 @@ class KOTHManager{
 	public function intArenas(): void{
         @mkdir($this->main->getDataFolder() . "koths/");
 		foreach(glob($this->main->getDataFolder() . "koths/" . "*.js") as $kothFile) {
-			$data = (new Config($kothFile, Config::JSON))->getAll();
+            $data = json_decode(file_get_contents($kothFile), true);
+			//$data = (new Config($kothFile, Config::JSON))->getAll();
 			$this->arenas[$data["name"]] = new KOTHArena($data["name"], $data["pos1"], $data["pos2"], $data["corner1"], $data["corner2"], (int)$data["time"], $data["level"], $data["keys"]);
-			$data = ["name" => $data["name"], "x1" => VectorUtils::stringToVector($data["pos1"], ":")->x, "z1" => VectorUtils::stringToVector($data["pos1"], ":")->z, "x2" => VectorUtils::stringToVector($data["pos2"], ":")->x, "z2" => VectorUtils::stringToVector($data["pos2"], ":")->z, "level" => $data["level"]];
+			$data = ["name" => $data["name"], "x1" => VectorUtils::stringToVector($data["pos1"], ":")->x, "z1" => VectorUtils::stringToVector($data["pos1"], ":")->z, "x2" => VectorUtils::stringToVector($data["pos2"], ":")->x, "z2" => VectorUtils::stringToVector($data["pos2"], ":")->z, "level" => $data["level"], 'claim_type' => ClaimType::KOTH];
 			$claim = new Claim(HCF::getInstance(), $data);
 			ClaimManager::getInstance()->addClaim($claim);
 			$this->main->getLogger()->info(TextFormat::GREEN."KOTH » {$claim->getName()} was loaded successfully!");
@@ -42,12 +46,12 @@ class KOTHManager{
 	}
 	
 	public function addCreator(HCFPlayer $player, string $arena): string{
-		if(isset($this->creators[$player->getName()])) return "ya estas en creacion";
+		if(isset($this->creators[$player->getName()])) return TextFormat::RED . 'Ya estas en creacion';
 		$this->creators[$player->getName()] = new KOTHCreator($player, $arena);
-		return "haz sido agregado a la creacion de arenas con la arena: ".$arena;
+		return TextFormat::GREEN . 'Haz sido agregado a la creacion de arenas con la arena: ' . TextFormat::GOLD . $arena;
 	}
 	
-	public function creatorExists(HCFPlayer $player): bool{
+	#[Pure] public function creatorExists(HCFPlayer $player): bool{
 		if(isset($this->creators[$player->getName()])) return true;
 		return false;
 	}
@@ -58,7 +62,7 @@ class KOTHManager{
 		} elseif($pos == 2) {
 			return $this->creators[$player->getName()]->setPos("two");
 		} else {
-			return "Error: corner 1 o 2, no existe {$pos}";
+			return TextFormat::RED . "Error: corner 1 o 2, no existe {$pos}";
 		}
 	}
 	
@@ -68,7 +72,7 @@ class KOTHManager{
 		} elseif($pos == 2) {
 			return $this->creators[$player->getName()]->setCorner("two");
 		} else {
-			return "Error: corner 1 o 2, no existe {$pos}";
+			return TextFormat::RED . "Error: corner 1 o 2, no existe {$pos}";
 		}
 	}
 	
@@ -79,8 +83,11 @@ class KOTHManager{
 	public function setKeys(int $keys, HCFPlayer $player) : string {
 		return $this->creators[$player->getName()]->setKeys($keys);
 	}
-	
-	public function addArena(HCFPlayer $player): bool{
+
+    /**
+     * @throws JsonException
+     */
+    public function addArena(HCFPlayer $player): bool{
 		$class = $this->creators[$player->getName()];
 		$config = new Config($this->main->getDataFolder()."koths/".$class->name.".js", Config::JSON);
 		$config->set("name", $class->name);
@@ -93,7 +100,7 @@ class KOTHManager{
 		$config->set("keys", $class->keys);
 		$config->save();
 		$this->arenas[$class->name] = new KOTHArena($class->name, $class->pos["one"], $class->pos["two"], $class->corner["one"], $class->corner["two"], $class->time, $class->level, $class->keys);
-		$data = ["name" => $class->name, "x1" => VectorUtils::stringToVector($class->pos["one"], ":")->x, "z1" => VectorUtils::stringToVector($class->pos["one"], ":")->z, "x2" => VectorUtils::stringToVector($class->pos["two"], ":")->x, "z2" => VectorUtils::stringToVector($class->pos["two"], ":")->z, "level" => $class->level];
+		$data = ["name" => $class->name, "x1" => VectorUtils::stringToVector($class->pos["one"], ":")->x, "z1" => VectorUtils::stringToVector($class->pos["one"], ":")->z, "x2" => VectorUtils::stringToVector($class->pos["two"], ":")->x, "z2" => VectorUtils::stringToVector($class->pos["two"], ":")->z, "level" => $class->level, 'claim_type' => ClaimType::KOTH];
 		$claim = new Claim(HCF::getInstance(), $data);
 		ClaimManager::getInstance()->addClaim($claim);
 		unset($this->creators[$player->getName()]);
@@ -124,19 +131,19 @@ class KOTHManager{
 	public function getKoths(): string{
 		$koths = [];
 		foreach($this->arenas as $koth){
-			$status = $koth->isEnabled() ? "§aActivated" : "§cDeactivated";
+			$status = $koth->isEnabled() ? TextFormat::GREEN . "Activated" : TextFormat::RED . "Deactivated";
 			$vec = explode(":", $koth->pos["one"]);
 			$koths[] = "§l§6KOTH §r§9".$koth->getName().": §eStatus {$status} §eCoords: §a".round((int)$vec[0]) ." : ".round((int)$vec[2])." §eTime: §a".gmdate("i:s", $koth->time);
 		}
-		if(count($koths) === 0) return "Sin Koths";
+		if(count($koths) === 0) return TextFormat::RED . "Empty";
 		return implode("\n", $koths);
 	}
 	
 	public function getKoth(string $name): string{
-		if(!isset($this->arenas[$name])) return "This koth doesn't exist";
+		if(!isset($this->arenas[$name])) return TextFormat::RED . "This koth doesn't exist";
 		$koth = $this->arenas[$name];
 		$vec = explode(":", $koth->pos["one"]);
-		$status = $koth->isEnabled() ? "§aActivate" : "§cDeactivate";
+		$status = $koth->isEnabled() ? TextFormat::GREEN . "Activated" : TextFormat::RED . "Deactivated";
 		return "§l§6KOTH §r§9".$koth->getName().": §eStatus {$status} §eCoords: §a".round((int)$vec[0]) ." : ".round((int)$vec[2])." §eTime: §a".gmdate("i:s", $koth->time);
 	}
 	

@@ -266,11 +266,23 @@ class HCF extends PluginBase {
         return self::$staffs;
     }
 
+    /**
+     * Add an staff to the list
+     *
+     * @param Player $player
+     * @return void
+     */
     public function addStaff(Player $player) : void
     {
         self::$staffs[spl_object_hash($player)] = $player;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Player $player
+     * @return void
+     */
     public function delStaff(Player $player) : void
     {
         unset(self::$staffs[spl_object_hash($player)]);

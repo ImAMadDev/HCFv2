@@ -124,7 +124,6 @@ class PlayerCache
     {
         if ($lowerCase) $key = strtolower($key);
         unset($this->data[$key]);
-        var_dump($this->data);
     }
 
     public function saveData() : void

@@ -38,7 +38,7 @@ class StartOfTheWorldTick extends Task {
     {
         foreach (Server::getInstance()->getOnlinePlayers() as $player) {
             if ($player instanceof HCFPlayer){
-                if(stripos($player->getRegion(), "Spawn") !== false){
+                if(stripos($player->getRegion()->get(), "Spawn") !== false){
                     foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
                         $onlinePlayer->hidePlayer($player);
                     }

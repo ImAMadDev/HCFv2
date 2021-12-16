@@ -7,6 +7,8 @@ use ImAMadDev\faction\Faction;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\{EOTWManager, ClaimManager};
 
+use ImAMadDev\player\PlayerUtils;
+use ImAMadDev\player\sessions\ClaimSession;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
@@ -53,7 +55,7 @@ class ClaimSubCommand extends SubCommand {
 		]);
 		if($sender->getInventory()->canAddItem($item)) {
 			$sender->getInventory()->addItem($item);
-			$sender->setClaiming(true);
+			$sender->setClaimSession(new ClaimSession($faction->getName(), 'faction', false, $sender));
 		} else {
 			$sender->sendMessage(TextFormat::RED . "Your inventory is too full!");
 		}

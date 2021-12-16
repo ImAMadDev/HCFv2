@@ -62,7 +62,7 @@ class MonsterSpawner extends Spawnable {
      * @param CompoundTag $nbt
      */
     public function readSaveData(CompoundTag $nbt): void {
-        if($nbt->getCompoundTag(self::TAG_MOB_TYPE) instanceof IntTag) {
+        if($nbt->getTag(self::TAG_MOB_TYPE) instanceof IntTag) {
             $this->mobType = $nbt->getInt(self::TAG_MOB_TYPE);
         }
     }

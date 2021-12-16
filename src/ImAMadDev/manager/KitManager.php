@@ -2,10 +2,18 @@
 
 namespace ImAMadDev\manager;
 
+use ImAMadDev\kit\classes\ArcherClass;
+use ImAMadDev\kit\classes\BardClass;
+use ImAMadDev\kit\classes\IClass;
+use ImAMadDev\kit\classes\MageClass;
+use ImAMadDev\kit\classes\MinerClass;
+use ImAMadDev\kit\classes\RogueClass;
 use ImAMadDev\kit\KitCreatorSession;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\InventoryUtils;
 use JetBrains\PhpStorm\Pure;
+use JsonException;
+use pocketmine\inventory\ArmorInventory;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -39,6 +47,11 @@ class KitManager {
      */
 	private array $kits = [];
 
+    /**
+     * @var IClass[] $classes
+     */
+    private array $classes = [];
+
 	/**
      * @var HCF|null
      */
@@ -53,6 +66,7 @@ class KitManager {
 		self::$main = $main;
         self::setInstance($this);
 		$this->loadKits();
+        $this->loadClasses();
 	}
 
     /**
@@ -137,6 +151,15 @@ class KitManager {
         }
 	}
 
+    public function loadClasses() : void
+    {
+        $this->addClass(new ArcherClass());
+        $this->addClass(new BardClass());
+        $this->addClass(new MinerClass());
+        $this->addClass(new MageClass());
+        $this->addClass(new RogueClass());
+    }
+
     /**
      * @param string $name
      */
@@ -150,6 +173,7 @@ class KitManager {
 
     /**
      * @param KitCreatorSession $session
+     * @throws JsonException
      */
 	public function createCustomKit(KitCreatorSession $session) : void
     {
@@ -219,5 +243,32 @@ class KitManager {
 		}
 		return $items;
 	}
+
+    /**
+     * @param IClass $class
+     * @return void
+     */
+    public function addClass(IClass $class) : void
+    {
+        $this->classes[$class->name] = $class;
+    }
+
+    /**
+     * @return IClass[]
+     */
+    public function getClasses(): array
+    {
+        return $this->classes;
+    }
+
+    public function getClassByInventory(ArmorInventory $armorInventory): ?IClass
+    {
+        foreach ($this->getClasses() as $class) {
+            if ($class->isThis($armorInventory)) {
+                return $class;
+            }
+        }
+        return null;
+    }
 
 }

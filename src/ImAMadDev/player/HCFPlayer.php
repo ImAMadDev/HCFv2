@@ -2,28 +2,39 @@
 
 namespace ImAMadDev\player;
 
-use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects};
+use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects, Location};
 use ImAMadDev\HCF;
+use ImAMadDev\kit\classes\IClass;
+use ImAMadDev\player\sessions\ArcherMark;
+use ImAMadDev\player\sessions\ChatMode;
+use ImAMadDev\player\sessions\ClaimSession;
+use ImAMadDev\player\sessions\ClassEnergy;
+use ImAMadDev\player\sessions\PlayerRegion;
 use ImAMadDev\tags\Tag;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\Thin;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\EffectIds;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\NetworkSession;
+use pocketmine\player\PlayerInfo;
+use pocketmine\Server;
 use pocketmine\utils\Limits;
 use pocketmine\world\Position;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Event;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\{
-    types\BlockPosition,
+use pocketmine\network\mcpe\protocol\{types\BlockPosition,
     types\BoolGameRule,
     types\entity\EntityMetadataProperties,
     types\entity\EntityMetadataTypes,
+    types\entity\StringMetadataProperty,
     UpdateBlockPacket,
     ChangeDimensionPacket,
     GameRulesChangedPacket};
@@ -32,7 +43,7 @@ use pocketmine\math\{Vector3, AxisAlignedBB};
 use ImAMadDev\faction\Faction;
 use ImAMadDev\rank\RankClass;
 use ImAMadDev\customenchants\CustomEnchantment;
-use ImAMadDev\manager\{AbilityManager, CrateManager, ClaimManager};
+use ImAMadDev\manager\{AbilityManager, CrateManager, ClaimManager, KitManager};
 use ImAMadDev\utils\InventoryUtils;
 use ImAMadDev\crate\Crate;
 use ImAMadDev\ticks\player\{ParticleTick, BardTick};
@@ -42,33 +53,25 @@ class HCFPlayer extends Player {
 	
 	private array $rank = [];
 	
-	private ? Faction $faction = null;
-	
-	private bool $claiming = false;
-	
-	private string $region = "Unknown";
-	
-	private ? Position $claimingFirstPosition = null;
-	
-	private ? Position $claimingSecondPosition = null;
-	
-	private int $chatMode = PlayerUtils::PUBLIC;
+	private ?Faction $faction = null;
+
+	private PlayerRegion $region;
+
+	private ChatMode $chatMode;
 	
 	private ?int $invincibilityTime = null;
 	
-	private bool $opClaim = false;
-	
-	private ?string $opClaimName = null;
-	
+	private ?ClaimSession $claimSession = null;
+
 	private string $device = 'Unknown';
 	
 	private string $inputMode = 'Unknown';
 	
 	private string $uiMode = 'Classic';
 	
-	private float $energy = 0.0;
+	private ClassEnergy $energy;
 	
-	public bool $archerMark = false;
+	public ArcherMark $archerMark;
 	
 	private ?Cooldowns $cooldown = null;
 	
@@ -84,16 +87,14 @@ class HCFPlayer extends Player {
 	
 	public array $abilityLastHit = [];
 	
-	public ? Focus $focus = null;
+	public ?Focus $focus = null;
 	
 	private bool $checkingForVote = false;
 	
 	private bool $vote = false;
 	
 	private int $replaceableBlock = 0;
-	
-	private int $counterHits = 0;
-	
+
 	private bool $leave = false;
 	
 	private bool $particle = false;
@@ -105,7 +106,18 @@ class HCFPlayer extends Player {
      */
     private bool $joined = false;
 
-    public string|null $tag = null;
+    public ?string $tag = null;
+
+    public ?IClass $class = null;
+
+    public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
+    {
+        parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
+        $this->chatMode = new ChatMode(PlayerUtils::PUBLIC);
+        $this->region = new PlayerRegion($this);
+        $this->archerMark = new ArcherMark($this);
+        $this->energy = new ClassEnergy($this);
+    }
 
 
     public function setCanLogout(bool $can = false) : void {
@@ -184,7 +196,7 @@ class HCFPlayer extends Player {
                 $this->removeRank($rank->getName());
                 $this->getCache()->removeInArray('ranks', $rank->getName());
                 $this->getCache()->removeInData('rank_'. $rank->getName() . '_countdown', true);
-                $this->sendMessage(TextFormat::GOLD . "Your rank {$rank->getName()} has expired!");
+                $this->sendMessage(TextFormat::RED . "Your rank {$rank->getName()} has expired!");
 			}
 		}
 	}
@@ -223,7 +235,7 @@ class HCFPlayer extends Player {
 	}
 	
 	public function load() : void {
-		$this->cooldown = new Cooldowns();
+		$this->cooldown = new Cooldowns($this);
 		new BardTick($this);
 	}
 	
@@ -232,7 +244,7 @@ class HCFPlayer extends Player {
 	}
 	
 	public function getCooldown() : Cooldowns {
-		if($this->cooldown === null) $this->load();
+		if($this->cooldown === null) $this->cooldown = new Cooldowns($this);
 		return $this->cooldown;
 	}
 	
@@ -249,20 +261,12 @@ class HCFPlayer extends Player {
 		$this->focus = new Focus($faction);
 	}
 	
-	public function setOpClaim(bool $val = true) : void {
-		$this->opClaim = $val;
+	public function setClaimSession(?ClaimSession $session = null) : void {
+		$this->claimSession = $session;
 	}
-	
-	public function setOpClaimName(string $name = "Spawn") : void {
-		$this->opClaimName = $name;
-	}
-	
-	public function hasOpClaim() : bool {
-		return $this->opClaim;
-	}
-	
-	public function getOpClaimName() : string {
-		return $this->opClaimName;
+
+	public function getClaimSession() : ?ClaimSession {
+		return $this->claimSession;
 	}
 	
 	public function setRank(RankClass $rank){
@@ -307,35 +311,6 @@ class HCFPlayer extends Player {
         return $this->getCurrentTag() == null ? "" : " " . $this->getCurrentTag()->getFormat();
     }
 	
-	public function isClaiming(): bool {
-		return $this->claiming;
-	}
-	
-	public function setClaiming(bool $value = true): void {
-		$this->claiming = $value;
-	}
-	
-	public function getFirstClaimPosition(): ?Position {
-		return $this->claimingFirstPosition;
-	}
-	public function getSecondClaimPosition(): ?Position {
-		return $this->claimingSecondPosition;
-	}
-	
-	public function setFirstClaimingPosition(?Position $position = null): void {
-		$this->claimingFirstPosition = $position;
-		if($position instanceof Position) {
-			$this->sendFakeBlock($position);
-		}
-	}
-	
-	public function setSecondClaimingPosition(?Position $position = null): void {
-		$this->claimingSecondPosition = $position;
-		if($position instanceof Position) {
-			$this->sendFakeBlock($position);
-		}
-	}
-	
 	public function sendFakeBlock(?Position $position = null): void {
 		$blocks = [BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0), BlockFactory::getInstance()->get(BlockLegacyIds::DIAMOND_BLOCK, 0)];
 		for($i = $position->getFloorY(); $i < $position->getFloorY() + 40; $i++){
@@ -353,20 +328,11 @@ class HCFPlayer extends Player {
 		$this->sendMessage(TextFormat::GREEN . "Your coords settings changed.");
 	}
 	
-	public function getRegion() : string {
+	public function getRegion() : PlayerRegion {
 		return $this->region;
 	}
 	
-	public function setRegion(string $region = "Wilderness") : void {
-		$this->region = $region;
-		$this->sendMessage(TextFormat::RED . "Now entering " . TextFormat::RESET . TextFormat::GRAY . "(" . $region . ")");
-	}
-	
-	public function setChatMode(int $chatMode) : void {
-		$this->chatMode = $chatMode;
-	}
-	
-	public function getChatMode() : int {
+	public function getChatMode() : ChatMode {
 		return $this->chatMode;
 	}
 	
@@ -388,7 +354,7 @@ class HCFPlayer extends Player {
 	}
 	
 	#[Pure] public function canDeductInvincibilityTime(): bool {
-		if(!$this->isAlive() || $this->getRegion() === "Unknown" || $this->getRegion() === "Spawn") return false;
+		if(!$this->isAlive() || $this->getRegion()->get() === "Unknown" || $this->getRegion()->get() === "Spawn") return false;
 		return $this->invincibilityTime > 0;
 	}
 	
@@ -416,35 +382,31 @@ class HCFPlayer extends Player {
 			}
 		}
 	}
-	
-	public function setBardEnergy(int $energy) : void {
-		$this->energy = $energy;
-	}
-	
-	public function getBardEnergy() : int {
+
+	public function getClassEnergy() : ClassEnergy {
 		return $this->energy;
 	}
 	
 	public function sendCustomTagTo(string $customTag, array $players = []){
-		$this->sendData($players, [EntityMetadataProperties::NAMETAG => [EntityMetadataTypes::STRING, $customTag]]);
+		$this->sendData($players, [EntityMetadataProperties::NAMETAG =>  new StringMetadataProperty($customTag)]);
     }
 
 	
 	public function updateNameTag() : void {
 		if($this->getFaction() === null) {
 			if($this->isInvincible()) {
-				$nametag = TextFormat::YELLOW . $this->getName();
+				$name = TextFormat::YELLOW . $this->getName();
 			} else {
-				$nametag = TextFormat::RED . $this->getName();
+				$name = TextFormat::RED . $this->getName();
 			}
 		} else {
 			if($this->isInvincible()) {
-				$nametag = TextFormat::YELLOW . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::YELLOW . " ] " . TextFormat::EOL . TextFormat::YELLOW . $this->getName();
+				$name = TextFormat::YELLOW . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::YELLOW . " ] " . TextFormat::EOL . TextFormat::YELLOW . $this->getName();
 			} else {
-				$nametag = TextFormat::RED . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::RED . " ] " . TextFormat::EOL . TextFormat::RED . $this->getName();
+				$name = TextFormat::RED . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::RED . " ] " . TextFormat::EOL . TextFormat::RED . $this->getName();
 			}
 		}
-		$this->sendCustomTagTo($nametag, $this->getViewers());
+		$this->sendCustomTagTo($name, $this->getViewers());
 	}
 	
 	public function obtainKill(string $name) : void {
@@ -498,7 +460,7 @@ class HCFPlayer extends Player {
 				}
 			}
 		}
-		if($this->hasArcherMark() && $effect->getType()->getName() === "invisibility") {
+		if($this->getArcherMark()->getDamage() > 0 && $effect->getType()->getName() === "invisibility") {
 			return;
 		}
 		if($this->hasEffectsActivate()) {
@@ -517,142 +479,32 @@ class HCFPlayer extends Player {
 		}
 	}
 	
-	public function getClass():? string {
-		if ($this->isBard()) return PlayerUtils::BARD;
-		if ($this->isMiner()) return PlayerUtils::MINER;
-		if ($this->isArcher()) return PlayerUtils::ARCHER;
-		if ($this->isRogue()) return PlayerUtils::ROGUE;
-		if ($this->isMage()) return PlayerUtils::MAGE;
-		return PlayerUtils::NONE;
-	}
-	
-	public function isBard() : bool {
-		$helmet = $this->getArmorInventory()->getHelmet()->getId();
-		$chestplate = $this->getArmorInventory()->getChestplate()->getId();
-		$leggigns = $this->getArmorInventory()->getLeggings()->getId();
-		$boots = $this->getArmorInventory()->getBoots()->getId();
-		return ($helmet == 314 and $chestplate == 315 and $leggigns == 316 and $boots == 317);
-	}
-	
-	public function isMage() : bool {
-		$helmet = $this->getArmorInventory()->getHelmet()->getId();
-		$chestplate = $this->getArmorInventory()->getChestplate()->getId();
-		$leggigns = $this->getArmorInventory()->getLeggings()->getId();
-		$boots = $this->getArmorInventory()->getBoots()->getId();
-		return ($helmet == 314 and $chestplate == 303 and $leggigns == 304 and $boots == 317);
-	}
-	
-	public function isMiner() : bool {
-		$helmet = $this->getArmorInventory()->getHelmet()->getId();
-		$chestplate = $this->getArmorInventory()->getChestplate()->getId();
-		$leggigns = $this->getArmorInventory()->getLeggings()->getId();
-		$boots = $this->getArmorInventory()->getBoots()->getId();
-		return ($helmet == 306 and $chestplate == 307 and $leggigns == 308 and $boots == 309);
-	}
-	
-	public function isArcher() : bool {
-		$helmet = $this->getArmorInventory()->getHelmet()->getId();
-		$chestplate = $this->getArmorInventory()->getChestplate()->getId();
-		$leggigns = $this->getArmorInventory()->getLeggings()->getId();
-		$boots = $this->getArmorInventory()->getBoots()->getId();
-		return ($helmet == 298 and $chestplate == 299 and $leggigns == 300 and $boots == 301);
-	}
-	
-	public function isRogue() : bool {
-		$helmet = $this->getArmorInventory()->getHelmet()->getId();
-		$chestplate = $this->getArmorInventory()->getChestplate()->getId();
-		$leggigns = $this->getArmorInventory()->getLeggings()->getId();
-		$boots = $this->getArmorInventory()->getBoots()->getId();
-		return ($helmet == 302 and $chestplate == 303 and $leggigns == 304 and $boots == 305);
-	}
-	
 	public function checkSets() {
-		if($this->isBard() && $this->hasEffectsActivate()) {
-			if(!$this->getEffects()->has(EffectIdMap::getInstance()->fromId(EffectIds::SPEED))) {
-				$speed = new EffectInstance(EffectIdMap::getInstance()->fromId(EffectIds::SPEED), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($speed);
-			}
-			if(!$this->getEffects()->has(EffectIdMap::getInstance()->fromId(EffectIds::REGENERATION))) {
-                $reg =new EffectInstance(EffectIdMap::getInstance()->fromId(EffectIds::REGENERATION), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($reg);
-			}
-			if(!$this->getEffects()->has(EffectIdMap::getInstance()->fromId(EffectIds::RESISTANCE))) {
-                $res = new EffectInstance(EffectIdMap::getInstance()->fromId(EffectIds::RESISTANCE), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($res);
-			}
-		} elseif($this->isMage() && $this->hasEffectsActivate()) {
-			if(!$this->getEffects()->has(EffectIdMap::getInstance()->fromId(EffectIds::SPEED))) {
-                $speed = new EffectInstance(EffectIdMap::getInstance()->fromId(EffectIds::SPEED), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($speed);
-			}
-			if(!$this->getEffects()->has(EffectIdMap::getInstance()->fromId(EffectIds::REGENERATION))) {
-                $reg = new EffectInstance(EffectIdMap::getInstance()->fromId(EffectIds::REGENERATION), Limits::INT32_MAX, 0, false);
-				$this->applyPotionEffect($reg);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::RESISTANCE())) {
-				$res = new EffectInstance(VanillaEffects::RESISTANCE(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($res);
-			}
-		} elseif ($this->isMiner() && $this->hasEffectsActivate()) {
-			if(!$this->getEffects()->has(VanillaEffects::NIGHT_VISION())) {
-				$nv = new EffectInstance(VanillaEffects::NIGHT_VISION(), Limits::INT32_MAX, 0, false);
-				$this->applyPotionEffect($nv);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::HASTE())) {
-				$haste = new EffectInstance(VanillaEffects::HASTE(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($haste);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::FIRE_RESISTANCE())) {
-				$fres = new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), Limits::INT32_MAX, 0, false);
-				$this->applyPotionEffect($fres);
-			}
-			if($this->getPosition()->getFloorY() < 20) {
-				if(!$this->getEffects()->has(VanillaEffects::INVISIBILITY()) && !$this->hasArcherMark()) {
-					$inv = new EffectInstance(VanillaEffects::INVISIBILITY(), Limits::INT32_MAX, 0, false);
-					$this->applyPotionEffect($inv);
-				}
-			} else {
-				if($this->getEffects()->has(VanillaEffects::INVISIBILITY())) {
-					$this->getEffects()->remove(VanillaEffects::INVISIBILITY());
-				}
-			}
-		} elseif ($this->isArcher() && $this->hasEffectsActivate()) {
-			if(!$this->getEffects()->has(VanillaEffects::SPEED())) {
-				$speed = new EffectInstance(VanillaEffects::SPEED(), Limits::INT32_MAX, 2, false);
-				$this->applyPotionEffect($speed);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::REGENERATION())) {
-				$reg = new EffectInstance(VanillaEffects::REGENERATION(), Limits::INT32_MAX, 0, false);
-				$this->applyPotionEffect($reg);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::RESISTANCE())) {
-				$res = new EffectInstance(VanillaEffects::RESISTANCE(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($res);
-			}
-		} elseif ($this->isRogue() && $this->hasEffectsActivate()) {
-			if(!$this->getEffects()->has(VanillaEffects::SPEED())) {
-				$speed = new EffectInstance(VanillaEffects::SPEED(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($speed);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::JUMP_BOOST())) {
-				$reg = new EffectInstance(VanillaEffects::JUMP_BOOST(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($reg);
-			}
-			if(!$this->getEffects()->has(VanillaEffects::RESISTANCE())) {
-				$res = new EffectInstance(VanillaEffects::RESISTANCE(), Limits::INT32_MAX, 1, false);
-				$this->applyPotionEffect($res);
-			}
-		} else {
-			if($this->getClass() == PlayerUtils::NONE) {
-				if(count($this->getEffects()->all()) > 0) {
-					foreach ($this->getEffects()->all() as $effect) {
-						if($effect->getDuration() >= 2000*20) {
-							$this->getEffects()->remove($effect->getType());
-						}
-					}
-				}
-			}
-		}
+        $class = KitManager::getInstance()->getClassByInventory($this->getArmorInventory());
+        if ($class == null and $this->class !== null) $this->sendMessage(TextFormat::GRAY . 'Your ' . TextFormat::YELLOW . $this->class->name . TextFormat::GRAY . ' class has been disabled!');
+        if ($class !== null and $this->class == null) $this->sendMessage(TextFormat::GRAY . 'Your ' . TextFormat::YELLOW . $class->name . TextFormat::GRAY . ' class has been enabled!');
+        if ($class !== null and $this->class !== null){
+            if($class->name !== $this->class->name) $this->sendMessage(TextFormat::GRAY . 'Your ' . TextFormat::YELLOW . $this->class->name . TextFormat::GRAY . ' class has been changed to ' . TextFormat::YELLOW . $class->name . '!');
+        }
+        $this->class = $class;
+        $this->getClassEnergy()->setStorageClass($class);
+        if($this->hasEffectsActivate() and $this->class instanceof IClass){
+            foreach ($this->class->getEffects() as $effect) {
+                if(!$this->getEffects()->has($effect->getType())) {
+                    $this->applyPotionEffect($effect);
+                }
+            }
+            return;
+        }
+        if ($class === null){
+            if(count($this->getEffects()->all()) > 0) {
+                foreach ($this->getEffects()->all() as $effect) {
+                    if($effect->getDuration() >= 2000*20) {
+                        $this->getEffects()->remove($effect->getType());
+                    }
+                }
+            }
+        }
 	}
 	
 	public function getInventoryStatus(int $val = 1): string{
@@ -724,9 +576,9 @@ class HCFPlayer extends Player {
 		$this->setBalance(($bal - $balance));
 	}
 	
-	public function getNearbyPlayers(int $dictance, int $up) : array {
+	public function getNearbyPlayers(int $distance, int $up) : array {
 		$players = [];
-		foreach($this->getWorld()->getNearbyEntities(new AxisAlignedBB($this->getPosition()->getFloorX() - $dictance, $this->getPosition()->getFloorY() - $up, $this->getPosition()->getFloorZ() - $dictance, $this->getPosition()->getFloorX() + $dictance, $this->getPosition()->getFloorY() + $up, $this->getPosition()->getFloorZ() + $dictance)) as $e){
+		foreach($this->getWorld()->getNearbyEntities(new AxisAlignedBB($this->getPosition()->getFloorX() - $distance, $this->getPosition()->getFloorY() - $up, $this->getPosition()->getFloorZ() - $distance, $this->getPosition()->getFloorX() + $distance, $this->getPosition()->getFloorY() + $up, $this->getPosition()->getFloorZ() + $distance)) as $e){
             if(!$e instanceof Player){
                 continue;
             }
@@ -741,11 +593,7 @@ class HCFPlayer extends Player {
 		return $players;
 	}
 	
-	public function setArcherMark(bool $mark) : void {
-		$this->archerMark = $mark;
-	}
-	
-	public function hasArcherMark() : bool {
+	public function getArcherMark() : ArcherMark {
 		return $this->archerMark;
 	}
 	
@@ -858,5 +706,43 @@ class HCFPlayer extends Player {
     #[Pure] public function getCache() : PlayerCache
     {
         return HCF::getInstance()->getCache($this->getName());
+    }
+
+    /**
+     * @return IClass|null
+     */
+    public function getClass(): ?IClass
+    {
+        return $this->class;
+    }
+
+    public function isBard() : bool
+    {
+        if ($this->class == null) return false;
+        return $this->class->name === 'Bard';
+    }
+
+    public function isMage() : bool
+    {
+        if ($this->class == null) return false;
+        return $this->class->name === 'Mage';
+    }
+
+    public function isRogue() : bool
+    {
+        if ($this->class == null) return false;
+        return $this->class->name === 'Rogue';
+    }
+
+    public function isArcher() : bool
+    {
+        if ($this->class == null) return false;
+        return $this->class->name === 'Archer';
+    }
+
+    public function isMiner() : bool
+    {
+        if ($this->class == null) return false;
+        return $this->class->name === 'Miner';
     }
 }

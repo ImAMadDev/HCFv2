@@ -72,66 +72,6 @@ use pocketmine\world\sound\ExplodeSound;
 
 class HCFListener implements Listener {
 
-    /*
-    public function onPacketReceive(DataPacketReceiveEvent $event): void {
-        $packet = $event->getPacket();
-        if($packet instanceof LoginPacket) {
-            foreach ( Server::getInstance()->getNetwork()->getInterfaces() as $interface ) {
-                if ( $interface instanceof RakLibInterface ) {
-                    try {
-                        $reflector = new ReflectionProperty( $interface, "interface" );
-                        $reflector->setAccessible( true );
-                        $reflector->getValue( $interface )->sendOption( "packetLimit", 900000000000 );
-                    } catch ( ReflectionException $e ) {}
-                }
-            }
-            if(isset($packet->clientData["Waterdog_IP"])) {
-                $class = new ReflectionClass($event->getOrigin()->getPlayer());
-
-                $prop = $class->getProperty("ip");
-                $prop->setAccessible(true);
-                $prop->setValue($event->getOrigin()->getPlayer(), $packet->clientData["Waterdog_IP"]);
-            }
-            if (isset($packet->clientData["Waterdog_XUID"])) {
-                $class = new ReflectionClass($event->getOrigin()->getPlayer());
-
-                $prop = $class->getProperty("xuid");
-                $prop->setAccessible(true);
-                $prop->setValue($event->getOrigin()->getPlayer(), $packet->clientData["Waterdog_XUID"]);
-                $packet->xuid = $packet->clientData["Waterdog_XUID"];
-            }
-        }
-    }
-
-    public function onDataPacketReceiveEvent(DataPacketReceiveEvent $event) : void
-    {
-        $packet = $event->getPacket();
-        $player = $event->getOrigin()->getPlayer();
-        if ($packet instanceof InventoryTransactionPacket) {
-            if ($packet->trData instanceof UseItemOnEntityTransactionData) {
-                $entity = $player->getWorld()->getEntity($packet->trData->getActorRuntimeId());
-                if ($entity instanceof NPCEntity and $packet->trData->getActionType() == UseItemOnEntityTransactionData::ACTION_INTERACT) {
-                    $entity->onActivate($player, $player->getInventory()->getItemInHand());
-                }
-            }
-        }
-    }
-
-    public function onDataPacketSend(DataPacketSendEvent $event): void
-    {
-        $packets = $event->getPackets();
-        foreach ($packets as $packet) {
-            if ($packet instanceof InventorySlotPacket) {
-                $packet->item = new ItemStackWrapper($packet->item->getStackId(), CustomEnchantments::displayEnchants($packet->item->getItemStack()));
-            }
-            if ($packet instanceof InventoryContentPacket) {
-                foreach ($packet->items as $i => $item) {
-                    $packet->items[$i] = new ItemStackWrapper($item->getStackId(), CustomEnchantments::displayEnchants($item->getItemStack()));
-                }
-            }
-        }
-    }*/
-
     public function handleLeaves(LeavesDecayEvent $event) : void
     {
         $event->cancel();
@@ -161,7 +101,7 @@ class HCFListener implements Listener {
         }
     }
 
-    public function onPickup(EntityItemPickupEvent $event) : void {
+    public function handleItemPickup(EntityItemPickupEvent $event) : void {
         $player = $event->getOrigin();
 		if($player instanceof HCFPlayer){
 			if($player->isInvincible() or !$player->isAlive()){
@@ -170,7 +110,7 @@ class HCFListener implements Listener {
 		}
 	}
 
-	public function onItemSpawnEvent(ItemSpawnEvent $event) : void {
+	public function handleItemSpawn(ItemSpawnEvent $event) : void {
 		$entity = $event->getEntity();
 		if(!$entity instanceof ItemEntity) return;
 		if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($entity->getPosition()->asPosition()), "Spawn") !== false and SOTWManager::isEnabled()) {
@@ -182,8 +122,9 @@ class HCFListener implements Listener {
 		}
 	}
 	
-	public function onDataPacketReceive(DataPacketReceiveEvent $event) : void{
-	    if (!$event->getOrigin()->getPlayer() instanceof HCFPlayer) return;
+	public function handlePacketReceive(DataPacketReceiveEvent $event) : void{
+        $player = $event->getOrigin()->getPlayer();
+	    if (!$player instanceof HCFPlayer) return;
 		if(($packet = $event->getPacket()) instanceof LoginPacket) {
 			$devices = array(1 => 'Android', 'iOS', 'Mac', 'FireOS', 'GearVR', 'HoloLens', 'Win10', 'Windows', 'Dedicated', 'tvOS', 'PS4', 'Switch', 'Xbox', 'WindowsPhone'); 
 			$controls = ["Keyboard", "Touch", "Controller"];
@@ -191,9 +132,9 @@ class HCFListener implements Listener {
 			$dev = $devices[$packet->clientData['DeviceOS']] ?? 'Unknown';
 			$control = $controls[$packet->clientData["CurrentInputMode"]] ?? 'Unknown';
 			$ui = $input[$packet->clientData["UIProfile"]] ?? 'Classic';
-			$event->getOrigin()->getPlayer()->setDeviceString($dev);
-			$event->getOrigin()->getPlayer()->setInputString($control);
-			$event->getOrigin()->getPlayer()->setUIString($ui);
+			$player->setDeviceString($dev);
+			$player->setInputString($control);
+			$player->setUIString($ui);
 		}
 	}
 	
@@ -232,7 +173,7 @@ class HCFListener implements Listener {
 		$player->load();
 		if(!$player->hasPlayedBefore()) {
 			$player->setInvincible();
-			HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), "rank give " . $player->getName() . " Anubis 3h");
+			HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Anubis 3h');
 			$player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
 		}
@@ -269,6 +210,8 @@ class HCFListener implements Listener {
 		$nbt->setString("faction", $faction);
 		$entity = new CombatLogger($player->getLocation(), $nbt);
 		$entity->setNameTag("CombatLogger");
+        $entity->setNameTagAlwaysVisible(true);
+        $entity->setNameTagVisible(true);
 		$entity->load($time);
 		$entity->setHealth(100.0);
 		$entity->setMaxHealth(100);
@@ -285,7 +228,7 @@ class HCFListener implements Listener {
 	public function onChatEvent(PlayerChatEvent $event) : void {
 		$player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
-            switch ($player->getChatMode()) {
+            switch ($player->getChatMode()->get()) {
                 case PlayerUtils::PUBLIC:
                     $event->setFormat($player->getChatFormat() . $player->getName() . $player->getCurrentTagFormat() . ': ' . $event->getMessage());
                     break;
@@ -313,7 +256,7 @@ class HCFListener implements Listener {
                 case PlayerUtils::STAFF:
                     $event->cancel();
                     foreach (Server::getInstance()->getOnlinePlayers() as $staff) {
-                        if ($staff->getChatMode() == PlayerUtils::STAFF) {
+                        if ($staff->getChatMode()->get() == PlayerUtils::STAFF) {
                             $staff->sendMessage(TextFormat::DARK_AQUA . '[MOD-CHAT] ' . $player->getName() . ': ' . $event->getMessage());
                         }
                     }
@@ -322,30 +265,18 @@ class HCFListener implements Listener {
         }
 	}
 
-    public function handleReceive(DataPacketReceiveEvent $event) : void
-    {
-        $player = $event->getOrigin()->getPlayer();
-        if ($player instanceof HCFPlayer){
-            $packet = $event->getPacket();
-            if ($packet instanceof AvailableCommandsPacket){
-               // $packet->
-            }
-        }
-    }
-
     public function onPlayerInteractEvent(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if ($player->isClaiming()) {
+            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession()->isOpClaim() == false) {
                 if ($item->getId() !== ItemIds::WOODEN_AXE) {
                     return;
                 }
                 if ($player->getFaction() === null or !$player->getFaction()->isLeader($player->getName())) {
-                    $player->setClaiming(false);
-                    $player->setFirstClaimingPosition();
-                    $player->setSecondClaimingPosition();
+                    $player->setClaimSession();
                     $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
                     return;
                 }
@@ -361,7 +292,7 @@ class HCFListener implements Listener {
                     if ($player->isSneaking()) {
                         return;
                     }
-                    $player->setFirstClaimingPosition($block->getPosition());
+                    $player->getClaimSession()->setPosition1($block->getPosition());
                     $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
                 } elseif ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
@@ -371,7 +302,7 @@ class HCFListener implements Listener {
                     if ($player->isSneaking()) {
                         return;
                     }
-                    $player->setSecondClaimingPosition($block->getPosition());
+                    $player->getClaimSession()->setPosition2($block->getPosition());
                     $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
                 }
             }
@@ -383,24 +314,23 @@ class HCFListener implements Listener {
         $player = $event->getPlayer();
         $item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if ($player->isClaiming()) {
+            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession()->isOpClaim() == false) {
                 if ($item->getId() !== ItemIds::WOODEN_AXE) {
                     return;
                 }
-                if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
-                    $firstPosition = $player->getFirstClaimPosition();
+                if($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
+                    $firstPosition = $player->getClaimSession()->getPosition1();
                     $firstX = $firstPosition->getX();
                     $firstZ = $firstPosition->getZ();
-                    $secondPosition = $player->getSecondClaimPosition();
+                    $secondPosition = $player->getClaimSession()->getPosition2();
                     $secondX = $secondPosition->getX();
                     $secondZ = $secondPosition->getZ();
                     $length = max($firstX, $secondX) - min($firstX, $secondX);
                     $width = max($firstZ, $secondZ) - min($firstZ, $secondZ);
                     if($length <= 5 or $width <= 5) {
                         $player->sendMessage(TextFormat::RED . "The claim you selected must be more than 5x5!");
-                        $player->setClaiming(false);
-                        $player->setFirstClaimingPosition();
-                        $player->setSecondClaimingPosition();
+                        $player->setClaimSession();
                         $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
                         return;
                     }
@@ -410,9 +340,7 @@ class HCFListener implements Listener {
                         $data = ["name" => $player->getFaction()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName()];
                         $claim = new Claim(HCF::getInstance(), $data);
                         if(ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
-                            $player->setClaiming(false);
-                            $player->setFirstClaimingPosition();
-                            $player->setSecondClaimingPosition();
+                            $player->setClaimSession();
                             $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
                             $player->sendMessage(TextFormat::RED . "You can't override a claim!");
                             return;
@@ -426,30 +354,26 @@ class HCFListener implements Listener {
                             $player->getFaction()->removeBalance($price);
                             $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land!");
                         }
-                        $player->setClaiming(false);
-                        $player->setFirstClaimingPosition();
-                        $player->setSecondClaimingPosition();
+                        $player->setClaimSession();
                         $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
                     } else {
                         $player->sendMessage(TextFormat::GRAY . "You've selected " . TextFormat::GREEN . $amount . TextFormat::GRAY . " blocks. Your price is " . TextFormat::YELLOW . $price . TextFormat::GRAY . ". Sneak and tap anywhere to confirm purchase of claim.");
                     }
                 }
             }
-            if ($player->hasOpClaim()) {
+            if ($player->getClaimSession()->isOpClaim()) {
                 if ($item->getId() !== ItemIds::DIAMOND_AXE) {
                     return;
                 }
-                if($player->getFirstClaimPosition() !== null and $player->getSecondClaimPosition() !== null) {
-                    $firstPosition = $player->getFirstClaimPosition();
-                    $secondPosition = $player->getSecondClaimPosition();
+                if($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
+                    $firstPosition = $player->getClaimSession()->getPosition1();
+                    $secondPosition = $player->getClaimSession()->getPosition2();
                     if($player->isSneaking()) {
-                        $data = ["name" => $player->getOpClaimName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName()];
+                        $data = ["name" => $player->getClaimSession()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName(), 'claim_type' => $player->getClaimSession()->getType()];
                         $claim = new Claim(HCF::getInstance(), $data);
                         ClaimManager::getInstance()->createClaim($claim);
-                        $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land, claim name {$player->getOpClaimName()}!");
-                        $player->setOpClaim(false);
-                        $player->setFirstClaimingPosition();
-                        $player->setSecondClaimingPosition();
+                        $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land, claim name {$player->getClaimSession()->getName()}!");
+                        $player->setClaimSession();
                         $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
                     } else {
                         $player->sendMessage(TextFormat::GRAY . "Sneak and tap anywhere to confirm purchase of claim.");
@@ -464,15 +388,9 @@ class HCFListener implements Listener {
 		$block = $event->getBlock();
 		$item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if ($player->hasOpClaim()) {
+            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession()->isOpClaim()) {
                 if ($item->getId() !== ItemIds::DIAMOND_AXE) {
-                    return;
-                }
-                if ($player->hasOpClaim() === false) {
-                    $player->setClaiming(false);
-                    $player->setFirstClaimingPosition();
-                    $player->setSecondClaimingPosition();
-                    $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::DIAMOND_AXE));
                     return;
                 }
                 if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
@@ -483,7 +401,7 @@ class HCFListener implements Listener {
                     if ($player->isSneaking()) {
                         return;
                     }
-                    $player->setFirstClaimingPosition($block->getPosition());
+                    $player->getClaimSession()->setPosition1($block->getPosition());
                     $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "first" . TextFormat::GRAY . " position!");
                 } elseif ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
@@ -493,7 +411,7 @@ class HCFListener implements Listener {
                     if ($player->isSneaking()) {
                         return;
                     }
-                    $player->setSecondClaimingPosition($block->getPosition());
+                    $player->getClaimSession()->setPosition2($block->getPosition());
                     $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
                 }
             }
@@ -582,7 +500,7 @@ class HCFListener implements Listener {
                 if ($player->getCooldown()->has('combattag')) {
                     $player->getCooldown()->remove('combattag');
                 }
-                $player->setArcherMark(false);
+                $player->getArcherMark()->setDistance(0);
                 $player->activateEffects(true);
             } else {
                 $player->setGamemode(GameMode::SPECTATOR());

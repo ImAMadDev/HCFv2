@@ -5,7 +5,9 @@ namespace ImAMadDev\ticks;
 use ImAMadDev\HCF;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\scheduler\Task;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use ImAMadDev\ticks\player\UpdateDataAsyncTask;
 
 class BroadcastTick extends Task {
 	
@@ -37,6 +39,7 @@ class BroadcastTick extends Task {
 	
 	public function onRun(): void {
 		$this->main->getServer()->broadcastMessage(TextFormat::colorize($this->getNextMessage()));
+        Server::getInstance()->getAsyncPool()->submitTask(new UpdateDataAsyncTask());
 	}
 	
 	#[Pure] private function getAllVIPPlayers() : string {

@@ -182,18 +182,18 @@ class FactionListener implements Listener {
                     $event->cancel();
                     return;
                 }
-                if ($claim->getName() !== $player->getRegion()) {
-                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion() . ")");
-                    $player->setRegion($claim->getName());
+                if ($claim->getName() !== $player->getRegion()->get()) {
+                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion()->get() . ")");
+                    $player->getRegion()->set($claim->getName());
                 }
             } else {
-                if ("Wilderness" !== $player->getRegion()) {
+                if ("Wilderness" !== $player->getRegion()->get()) {
                     if ($player->getGamemode() === GameMode::ADVENTURE()) {
                         $player->setGamemode(GameMode::SURVIVAL());
                         return;
                     }
-                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion() . ")");
-                    $player->setRegion();
+                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion()->get() . ")");
+                    $player->getRegion()->set();
                 }
             }
         }

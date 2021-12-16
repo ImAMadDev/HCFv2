@@ -4,7 +4,7 @@ namespace ImAMadDev\faction\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
 use JetBrains\PhpStorm\Pure;
-use ImAMadDev\player\{PlayerUtils, HCFPlayer};
+use ImAMadDev\player\{PlayerUtils, HCFPlayer, sessions\ChatMode};
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -32,12 +32,12 @@ class ChatSubCommand extends SubCommand {
 		} else {
 			$mode = PlayerUtils::FACTION;
 		}
-		$sender->setChatMode($mode);
+		$sender->getChatMode()->set($mode);
 		$sender->sendMessage(TextFormat::GRAY . "Your chat mode has been switched to " . TextFormat::GREEN . strtoupper($this->modeString($sender)));
 	}
 	
 	#[Pure] public function modeString(HCFPlayer $player) : string {
-        return match ($player->getChatMode()) {
+        return match ($player->getChatMode()->get()) {
             PlayerUtils::PUBLIC => "public",
             PlayerUtils::ALLY => "ally",
             PlayerUtils::FACTION => "faction",

@@ -4,6 +4,9 @@ namespace ImAMadDev\command\defaults;
 
 use ImAMadDev\HCF;
 use muqsit\invmenu\InvMenu;
+use muqsit\invmenu\transaction\InvMenuTransaction;
+use muqsit\invmenu\transaction\InvMenuTransactionResult;
+use muqsit\invmenu\type\InvMenuTypeIds;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\inventory\EnderChestInventory;
@@ -12,6 +15,7 @@ use pocketmine\block\tile\Tile;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\command\CommandSender;
 use pocketmine\block\Block;
+use pocketmine\inventory\Inventory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
@@ -43,11 +47,12 @@ class EnderChestCommand extends Command{
             $sender->getNetworkSession()->sendDataPacket(BlockActorDataPacket::create(BlockPosition::fromVector3($sender->getPosition()->subtract(0, 1, 0)), new CacheableNbt($nbt)));
             $this->send($sender);
 			$sender->setCurrentWindow($sender->getEnderInventory());
-            */
+
             $sender->setReplaceableBlock(RuntimeBlockMapping::getInstance()->toRuntimeId($sender->getWorld()->getBlock($sender->getPosition()->subtract(0, 1, 0))->getFullId()));
             $this->send($sender, $sender->getPosition());
             $sender->getNetworkSession()->sendDataPacket(ContainerOpenPacket::blockInv($sender->getNetworkSession()->getInvManager()->getCurrentWindowId(), WindowTypes::CONTAINER, new BlockPosition($sender->getPosition()->x, ($sender->getPosition()->y -1), $sender->getPosition()->z)));
-            $sender->setCurrentWindow(new EnderChestInventory(Position::fromObject($sender->getPosition()->subtract(0, 1, 0), $sender->getWorld()), $sender->getEnderInventory()));
+            $sender->setCurrentWindow(new EnderChestInventory(Position::fromObject($sender->getPosition()->subtract(0, 1, 0), $sender->getWorld()), $sender->getEnderInventory()));*/
+            $this->sendChest($sender);
 		} else {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do this!");
 		}
@@ -70,6 +75,19 @@ class EnderChestCommand extends Command{
         $tag = CompoundTag::create()->setString(Tile::TAG_ID, "EnderChest");
         $tag->setString(Nameable::TAG_CUSTOM_NAME, $playerName . TextFormat::YELLOW . " Ender Chest");
         return $tag;
+    }
+
+    public function sendChest(HCFPlayer $player){
+        $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
+        $menu->setName( $player . "'s Enderchest");
+        $menu->getInventory()->setContents($player->getEnderInventory()->getContents());
+        $menu->setListener(function (InvMenuTransaction $transaction) : InvMenuTransactionResult {
+            return $transaction->continue();
+        });
+        $menu->setInventoryCloseListener(function(Player $player, Inventory $inventory) : void {
+            $player->getEnderInventory()->setContents($inventory->getContents());
+        });
+        $menu->send($player);
     }
 
 }

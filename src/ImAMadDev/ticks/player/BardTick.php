@@ -27,12 +27,8 @@ class BardTick extends Task {
 			$this->getHandler()->cancel();
 			return;
 		}
-		if($player->isMage()){
-			if($player->getBardEnergy() < 120) $player->setBardEnergy(($player->getBardEnergy() + 1.5));
-			return;
-		}
+        $player->getClassEnergy()->onTick();
 		if($player->isBard()) {
-			if($player->getBardEnergy() < 120) $player->setBardEnergy(($player->getBardEnergy() + 1));
 			if($player->isInvincible()){
 				return;
 			}

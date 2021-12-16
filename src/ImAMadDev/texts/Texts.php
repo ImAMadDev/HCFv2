@@ -65,7 +65,7 @@ class Texts {
 	*/
 	public function onTick() : void {
 		foreach($this->main->getServer()->getOnlinePlayers() as $player) {
-			if(!in_array($player->getName(), array_keys($this->send)) && stripos($player->getRegion(), "Spawn") !== false) {
+			if(!in_array($player->getName(), array_keys($this->send)) && stripos($player->getRegion()->get(), "Spawn") !== false) {
 				$message = str_replace("{player}", $player->getName(), $this->getText());
                 $message = str_replace("{online}", count(Server::getInstance()->getOnlinePlayers()), $message);
                 $message = str_replace("{map_information}", $this->getMapKit(), $message);

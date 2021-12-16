@@ -23,7 +23,7 @@ class BuggyListener implements Listener
     public function sendAlertToStaff(HCFPlayer $cheater) : void {
         foreach(Server::getInstance()->getOnlinePlayers() as $player) {
             if($player->hasPermission('staff.alert') === true) {
-                $player->sendMessage(TextFormat::RED . "AntiCheat > " . TextFormat::GRAY . $cheater->getName() . TextFormat::BLUE . "is receiving suffocation damage, Claim: " . TextFormat::RED . $cheater->getRegion());
+                $player->sendMessage(TextFormat::RED . "AntiCheat > " . TextFormat::GRAY . $cheater->getName() . TextFormat::BLUE . "is receiving suffocation damage, Claim: " . TextFormat::RED . $cheater->getRegion()->get());
             }
         }
     }

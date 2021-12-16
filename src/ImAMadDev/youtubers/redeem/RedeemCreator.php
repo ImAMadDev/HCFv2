@@ -31,6 +31,7 @@ class RedeemCreator
 
     /**
      * @param int $claims
+     * @throws \JsonException
      */
     public function addClaim(int $claims): void
     {

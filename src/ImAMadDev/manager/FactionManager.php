@@ -4,10 +4,12 @@ namespace ImAMadDev\manager;
 
 use pocketmine\utils\{Config, SingletonTrait, TextFormat};
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\faction\Faction;
 use ImAMadDev\player\HCFPlayer;
+use JsonException;
 
 class FactionManager {
     use SingletonTrait;
@@ -49,7 +51,7 @@ class FactionManager {
 		foreach(glob(self::$main->getDataFolder() . "factions/" . "*.yml") as $file) {
             $content = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
 			self::$factions[basename($file, ".yml")] = new Faction(self::$main, $content);
-			$data = ["name" => basename($file, ".yml"), "x1" => $content['x1'], "z1" => $content["z1"], "x2" => $content["x2"], "z2" => $content["z2"], "level" => $content["level"]];
+			$data = ["name" => basename($file, ".yml"), "x1" => $content['x1'], "z1" => $content["z1"], "x2" => $content["x2"], "z2" => $content["z2"], "level" => $content["level"], 'claim_type' => ClaimType::FACTION];
 			$claim = new Claim(HCF::getInstance(), $data);
 			if($data['x1'] && $data['x2'] !== null) {
 			    ClaimManager::getInstance()->addClaim($claim);
@@ -57,13 +59,17 @@ class FactionManager {
 			}
 		}
 	}
-	
-	public function createFaction(array $data, HCFPlayer $player) : bool {
+
+    /**
+     * @throws JsonException
+     */
+    public function createFaction(array $data, HCFPlayer $player) : bool {
 		if($this->validate($data)){
 			$config = new Config(self::$main->getDataFolder() . "factions/" . $data['name'] . ".yml", Config::YAML);
 			foreach($data as $key => $value) {
 				$config->set($key, $value);
 			}
+            $config->set('claim_type', ClaimType::FACTION);
 			$config->save();
 			self::$factions[$data['name']] = new Faction(self::$main, $config->getAll());
 

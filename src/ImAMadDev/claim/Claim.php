@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\claim;
 
+use ImAMadDev\claim\utils\ClaimType;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockFactory;
@@ -30,10 +31,13 @@ class Claim {
 	public Position $firstPosition;
 	
 	public Position $secondPosition;
+
+    private ClaimType $claimType;
 	
 	public function __construct(HCF $main, array $data) {
 		$this->main = $main;
 		$this->data = $data;
+        $this->claimType = new ClaimType($data['claim_type'] ?? 'faction');
 		$world = $main->getServer()->getWorldManager()->getWorldByName($this->data['level']);
 		$this->firstPosition = new Position((float)$this->data['x1'], 0, (float)$this->data['z1'], $world);
 		$this->secondPosition = new Position((float)$this->data['x2'], World::Y_MAX, (float)$this->data['z2'], $world);
@@ -94,6 +98,7 @@ class Claim {
 	}
 	
 	public function canEdit(?Faction $faction) : bool {
+        if ($this->getClaimType() == ClaimType::KOTH or $this->getClaimType() == ClaimType::SPAWN) return false;
 		if($this->isFaction()) {
 			$claim = HCF::getFactionManager()->getFaction($this->getName());
 			if($claim->getDTR() <= 0) {
@@ -206,5 +211,13 @@ class Claim {
     {
         $pk = AdventureSettingsPacket::create(AdventureSettingsPacket::DOORS_AND_SWITCHES, AdventureSettingsPacket::PERMISSION_NORMAL, -1, PlayerPermissions::VISITOR, 0, $player->getId());;
         $player->getNetworkSession()->sendDataPacket($pk);
+    }
+
+    /**
+     * @return ClaimType
+     */
+    public function getClaimType(): ClaimType
+    {
+        return $this->claimType;
     }
 }

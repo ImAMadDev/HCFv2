@@ -6,7 +6,7 @@ use ImAMadDev\faction\Faction;
 
 class Focus {
 	
-	private $faction = null;
+	private ?Faction $faction;
 	
 	public function __construct(Faction $faction) {
 		$this->faction = $faction;
@@ -16,4 +16,3 @@ class Focus {
 		return $this->faction;
 	}
 }
-?>

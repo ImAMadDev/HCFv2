@@ -55,15 +55,15 @@ class KitListener implements Listener {
 			return;
 		}
 		if($event instanceof EntityDamageByEntityEvent){
-			$damager = $event->getDamager();
-			if($player instanceof HCFPlayer and $damager instanceof HCFPlayer){
+			$attacker = $event->getDamager();
+			if($player instanceof HCFPlayer and $attacker instanceof HCFPlayer){
 				if($event->getCause() === EntityDamageEvent::CAUSE_PROJECTILE) {
-					if($damager->isArcher() && !$player->isArcher()) {
-						if($damager->getInventory()->getItemInHand()->getId() === ItemIds::BOW) {
-							if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($damager->getPosition()), "Spawn") !== false or stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false or $player->isInvincible() or $damager->isInvincible()) {
+					if($attacker->isArcher() && !$player->isArcher()) {
+						if($attacker->getInventory()->getItemInHand()->getId() === ItemIds::BOW) {
+							if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($attacker->getPosition()), "Spawn") !== false or stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false or $player->isInvincible() or $attacker->isInvincible()) {
 								return;
 							}
-							$player->setArcherMark(true);
+							$player->getArcherMark()->setDistance($attacker->getPosition()->distance($player->getPosition()));
 							if($player->getEffects()->has(VanillaEffects::INVISIBILITY())) {
 								$player->getEffects()->remove(VanillaEffects::INVISIBILITY());
 							}
@@ -73,14 +73,15 @@ class KitListener implements Listener {
 							foreach(Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
 								$onlinePlayer->showPlayer($player);
 							}
-                            $damager->sendMessage(TextFormat::YELLOW . "You have hit " . TextFormat::AQUA . $player->getName() . TextFormat::YELLOW . " and have archer tagged");
-                            $player->sendMessage(TextFormat::YELLOW . "You have been archer tagged by " . TextFormat::AQUA . $damager->getName());
+                            $attacker->sendMessage(TextFormat::YELLOW . "You have hit " . TextFormat::AQUA . $player->getName() . TextFormat::YELLOW . " and have archer tagged");
+                            $player->sendMessage(TextFormat::YELLOW . "You have been archer tagged by " . TextFormat::AQUA . $attacker->getName());
+                            $player->sendMessage(TextFormat::YELLOW .  "You marked " . TextFormat::GOLD . $attacker->getName() . " for 10 seconds " . TextFormat::GRAY . "[Damage: " . TextFormat::RED . $event->getBaseDamage() . TextFormat::GRAY . "]");
 						}
 					}
 				}
-				if($player->hasArcherMark()){
+				if($player->getArcherMark()->getDamage() > 0){
 					$baseDamage = $event->getBaseDamage();
-					$event->setBaseDamage($baseDamage + 2.5);
+					$event->setBaseDamage($baseDamage + $player->getArcherMark()->getDamage());
 				}
 			}
 		}
@@ -89,554 +90,556 @@ class KitListener implements Listener {
 	public function onPlayerInteractEventBard(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
-		if($player->isBard()) {
-			if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvisible()) {
-				switch($item->getId()) {
-					case ItemIds::SUGAR:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== "false") {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::SPEED(), 20 * 15, 2);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::DYE:
-						if($item->getDamage() == 0) {
-							if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-								$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-								return;
-							}
-							if($player->getCooldown()->has('effects_cooldown')) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-								return;
-							}
-							if($player->isInvincible()) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-								return;
-							}
-							if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-								return;
-							}
-							if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-								return;
-							}
-							$effect = new EffectInstance(VanillaEffects::INVISIBILITY(), 30 * 10, 0);
-							foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-								$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-								if($player->getFaction() !== null) {
-									if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-										$nearby->applyPotionEffect($effect);
-									}
-								}
-							}
-							$player->applyPotionEffect($effect);
-							$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-							$item->setCount($item->getCount() - 1);
-							$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-							$player->getCooldown()->add('effects_cooldown', 10);
-							$player->getCooldown()->add('combattag', 30);
-						}
-						break;
-					case ItemIds::FEATHER:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::JUMP(), 20 * 15, 6);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::GHAST_TEAR:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::REGENERATION(), 20 * 10, 2);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::BLAZE_POWDER:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::STRENGTH(), 20 * 10, 1);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::IRON_INGOT:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 10, 3);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::SPIDER_EYE:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::WITHER(), 20 * 10, 1);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::MAGMA_CREAM:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getBardEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getBardEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 50 * 50, 1);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getBardEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-				}
-			}
-		}
+        if ($player instanceof HCFPlayer) {
+            if ($player->isBard()) {
+                if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvisible()) {
+                    switch ($item->getId()) {
+                        case ItemIds::SUGAR:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== "false") {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::SPEED(), 20 * 15, 2);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::DYE:
+                            if ($item->getMeta() == 0) {
+                                if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                    $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                    return;
+                                }
+                                if ($player->getCooldown()->has('effects_cooldown')) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                    return;
+                                }
+                                if ($player->isInvincible()) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                    return;
+                                }
+                                if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                    return;
+                                }
+                                if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                    return;
+                                }
+                                $effect = new EffectInstance(VanillaEffects::INVISIBILITY(), 30 * 10, 0);
+                                foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                    $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                    if ($player->getFaction() !== null) {
+                                        if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                            $nearby->applyPotionEffect($effect);
+                                        }
+                                    }
+                                }
+                                $player->applyPotionEffect($effect);
+                                $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                                $item->setCount($item->getCount() - 1);
+                                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                                $player->getCooldown()->add('effects_cooldown', 10);
+                                $player->getCooldown()->add('combattag', 30);
+                            }
+                            break;
+                        case ItemIds::FEATHER:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 15, 6);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::GHAST_TEAR:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::REGENERATION(), 20 * 10, 2);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::BLAZE_POWDER:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::STRENGTH(), 20 * 10, 1);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::IRON_INGOT:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 10, 3);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::SPIDER_EYE:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::WITHER(), 20 * 10, 1);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::MAGMA_CREAM:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Bard Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 50 * 50, 1);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if ($player->getFaction()->isInFaction($nearby) or $player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                    }
+                }
+            }
+        }
 	}
 	
 	public function onPlayerInteractEventMage(PlayerInteractEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
-		if($player->isMage()) {
-			if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvincible()) {
-				switch($item->getId()) {
-					case ItemIds::COAL:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::WEAKNESS(), 20 * 15, 0);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::DYE:
-						if($item->getDamage() == 2) {
-							if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-								$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-								return;
-							}
-							if($player->getCooldown()->has('effects_cooldown')) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-								return;
-							}
-							if($player->isInvincible()) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-								return;
-							}
-							if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-								return;
-							}
-							if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-								$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-								return;
-							}
-							$effect = new EffectInstance(VanillaEffects::POISON(), 20 * 15, 0);
-							foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-								$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-								if($player->getFaction() !== null) {
-									if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-										$nearby->applyPotionEffect($effect);
-									}
-								} else {
-									$nearby->applyPotionEffect($effect);
-								}
-							}
-							$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-							$item->setCount($item->getCount() - 1);
-							$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-							$player->getCooldown()->add('effects_cooldown', 10);
-							$player->getCooldown()->add('combattag', 30);
-						}
-						break;
-					case ItemIds::ROTTEN_FLESH:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::HUNGER(), 20 * 15, 0);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::SPIDER_EYE:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::WITHER(), 20 * 10, 1);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->applyPotionEffect($effect);
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::GOLDEN_NUGGET:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::SLOWNESS(), 20 * 15, 1);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-					case ItemIds::SEEDS:
-						if($item->getNamedTag()->getString(Ability::ABILITY, "false") !== false) {
-							$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
-							return;
-						}
-						if($player->getCooldown()->has('effects_cooldown')) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
-							return;
-						}
-						if($player->isInvincible()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
-							return;
-						}
-						if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
-							return;
-						}
-						if($player->getBardEnergy() < $player->getMageEnergyCost($item->getId())) {
-							$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . ($player->getMageEnergyCost($item->getId()) - $player->getBardEnergy()));
-							return;
-						}
-						$effect = new EffectInstance(VanillaEffects::NAUSEA(), 20 * 15, 0);
-						foreach($player->getNearbyPlayers(40, 40) as $nearby) {
-							$nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
-							if($player->getFaction() !== null) {
-								if(!$player->getFaction()->isInFaction($nearby->getName()) && !$player->getFaction()->isAlly($nearbyFaction)) {
-									$nearby->applyPotionEffect($effect);
-								}
-							} else {
-								$nearby->applyPotionEffect($effect);
-							}
-						}
-						$player->setBardEnergy(($player->getBardEnergy() - $player->getMageEnergyCost($item->getId())));
-						$item->setCount($item->getCount() - 1);
-						$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-						$player->getCooldown()->add('effects_cooldown', 10);
-						$player->getCooldown()->add('combattag', 30);
-						break;
-				}
-			}
-		}
+        if ($player instanceof HCFPlayer) {
+            if ($player->isMage()) {
+                if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvincible()) {
+                    switch ($item->getId()) {
+                        case ItemIds::COAL:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::WEAKNESS(), 20 * 15, 0);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::DYE:
+                            if ($item->getMeta() == 2) {
+                                if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                    $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                    return;
+                                }
+                                if ($player->getCooldown()->has('effects_cooldown')) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                    return;
+                                }
+                                if ($player->isInvincible()) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                    return;
+                                }
+                                if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                    return;
+                                }
+                                if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                    $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                    return;
+                                }
+                                $effect = new EffectInstance(VanillaEffects::POISON(), 20 * 15, 0);
+                                foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                    $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                    if ($player->getFaction() !== null) {
+                                        if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                            $nearby->applyPotionEffect($effect);
+                                        }
+                                    } else {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                }
+                                $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                                $item->setCount($item->getCount() - 1);
+                                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                                $player->getCooldown()->add('effects_cooldown', 10);
+                                $player->getCooldown()->add('combattag', 30);
+                            }
+                            break;
+                        case ItemIds::ROTTEN_FLESH:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::HUNGER(), 20 * 15, 0);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::SPIDER_EYE:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::WITHER(), 20 * 10, 1);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::GOLDEN_NUGGET:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 20 * 15, 1);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                        case ItemIds::SEEDS:
+                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if ($player->isInvincible()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because your pvp timer is enabled");
+                                return;
+                            }
+                            if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getMageEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Mage Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getMageEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::NAUSEA(), 20 * 15, 0);
+                            foreach ($player->getNearbyPlayers(40, 40) as $nearby) {
+                                $nearbyFaction = $nearby->getFaction() === null ? "" : $nearby->getFaction()->getName();
+                                if ($player->getFaction() !== null) {
+                                    if (!$player->getFaction()->isInFaction($nearby->getName()) && !$player->getFaction()->isAlly($nearbyFaction)) {
+                                        $nearby->applyPotionEffect($effect);
+                                    }
+                                } else {
+                                    $nearby->applyPotionEffect($effect);
+                                }
+                            }
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10);
+                            $player->getCooldown()->add('combattag', 30);
+                            break;
+                    }
+                }
+            }
+        }
 	}
 
     /** @noinspection PhpParamsInspection */

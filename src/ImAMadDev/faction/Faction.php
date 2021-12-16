@@ -458,6 +458,12 @@ class Faction {
 		$this->main->getFactionManager()->disband($this->getName());
 	}
 
+    public function saveData() : void
+    {
+        if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;
+        file_put_contents(FACTION_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
+    }
+
     public function __destruct()
     {
         if (!file_exists(FACTION_DIRECTORY . $this->getName()  . '.yml')) return;

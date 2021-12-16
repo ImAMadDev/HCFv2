@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\manager;
 
+use JsonException;
 use pocketmine\utils\Config;
 
 use ImAMadDev\HCF;
@@ -50,8 +51,11 @@ class RankManager {
 			}
 		}
 	}
-	
-	public function createRank(array $data) : void {
+
+    /**
+     * @throws JsonException
+     */
+    public function createRank(array $data) : void {
 		if($this->validate($data)){
 			self::$ranks[$data['name']] = new RankClass(self::$main, $data);
 			$config = new Config(self::$main->getDataFolder() . "ranks/" . $data['name'] . ".yml", Config::YAML);
