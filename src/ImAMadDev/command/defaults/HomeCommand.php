@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\command\defaults;
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\command\Command;
 use ImAMadDev\faction\ticks\TeleportHomeTask;
 use ImAMadDev\manager\ClaimManager;
@@ -37,8 +38,7 @@ class HomeCommand extends Command
             return;
         }
         $claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? null : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition());
-        $claimName = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getName();
-        if(stripos($claimName, "Spawn") !== false) {
+        if($claim?->getClaimType()->getType() == ClaimType::SPAWN) {
             $home = $sender->getFaction()->getHome();
             $sender->teleport($home);
             $sender->sendMessage(TextFormat::GREEN . "You have successfully teleport to your home location.");
@@ -46,10 +46,10 @@ class HomeCommand extends Command
             return;
         }
         if($claim !== null) {
-            if($claim->isFaction() and $claim->getFaction()->isInFaction($sender->getName()) === false) {
+            if(!$claim->getFaction()?->isInFaction($sender->getName())) {
                 $time = 20;
             }
-            if($claim->isFaction() and $claim->getFaction()->isInFaction($sender->getName()) === true) {
+            if($claim->getFaction()?->isInFaction($sender->getName())) {
                 $time = 10;
             }
         }

@@ -2,6 +2,8 @@
 
 namespace ImAMadDev\faction\ticks;
 
+use ImAMadDev\claim\Claim;
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\HCF;
@@ -67,7 +69,7 @@ class StuckTask extends Task {
 	public function searchStuck($x, $z):? Vector3{
 		for($i = $x; $i <= ($x + 200); $i++){
 			for($l = $z; $l <= ($z + 200); $l++){
-				if(ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld())) !== null && ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld()))->isFaction()) {
+				if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
 					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
@@ -77,7 +79,7 @@ class StuckTask extends Task {
 		}
 		for($i = $x; $i >= ($x - 200); $i--){
 			for($l = $z; $l >= ($z - 200); $l--){
-				if(ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld())) !== null && ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld()))->isFaction()) {
+                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
 					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
@@ -87,7 +89,7 @@ class StuckTask extends Task {
 		}
 		for($i = $x; $i >= ($x - 200); $i--){
 			for($l = $z; $l <= ($z + 200); $l++){
-				if(ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld())) !== null && ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld()))->isFaction()) {
+                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
 					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
@@ -97,7 +99,7 @@ class StuckTask extends Task {
 		}
 		for($i = $x; $i <= ($x + 200); $i++){
 			for($l = $z; $l >= ($z - 200); $l--){
-				if(ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld())) !== null && ClaimManager::getInstance()->getClaimByPosition(new Position($i, $this->lastPos->y, $l, $this->lastPos->getWorld()))->isFaction()) {
+                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
 					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
@@ -107,5 +109,11 @@ class StuckTask extends Task {
 		}
 		return null;
 	}
+
+    public function checkClaim(Position $pos) : bool
+    {
+        if(($claim = ClaimManager::getInstance()->getClaimByPosition($pos)) instanceof Claim) return $claim->getClaimType()->getType() == ClaimType::FACTION;
+        return false;
+    }
 
 }

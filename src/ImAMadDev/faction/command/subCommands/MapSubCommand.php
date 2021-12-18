@@ -22,11 +22,7 @@ class MapSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You must be a player to do this!");
 			return;
 		}
-		if(($claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())) instanceof Claim) {
-			if($claim->isFaction()) {
-				$claim->viewMap($sender);
-				$sender->sendMessage(TextFormat::GRAY . "Now you are seeing the claim of " . TextFormat::GREEN . $claim->getName());
-			}
-		}
+        $sender->getClaimView()->setUpdate(true);
+        $sender->sendMessage(TextFormat::GRAY . "Now you are seeing all the claims");
 	}
 }

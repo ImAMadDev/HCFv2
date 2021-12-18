@@ -2,6 +2,8 @@
 
 namespace ImAMadDev\player\sessions;
 
+use ImAMadDev\claim\Claim;
+use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\player\HCFPlayer;
 use pocketmine\utils\TextFormat;
 
@@ -25,8 +27,17 @@ class PlayerRegion
      */
     public function set(string $name = 'Wilderness'): void
     {
+        $last = $this->name;
         $this->name = $name;
-        $this->getPlayer()->sendMessage(TextFormat::RED . "Now entering " . TextFormat::RESET . TextFormat::GRAY . "(" . $name . ")");
+        $this->getPlayer()->getClaimView()->update();
+        $this->getPlayer()->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $last . "), " . $this->getSafety($last));
+        $this->getPlayer()->sendMessage(TextFormat::RED . "Now entering " . TextFormat::RESET . TextFormat::GRAY . "(" . $name . "), " . $this->getSafety($name));
+    }
+
+    private function getSafety(string $claim_name) : string
+    {
+        if (ClaimManager::getInstance()->getClaim($claim_name) instanceof Claim) return ClaimManager::getInstance()->getClaim($claim_name)->getSafety();
+        return TextFormat::RED . '(DeathBan)';
     }
 
     /**

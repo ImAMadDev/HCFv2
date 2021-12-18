@@ -78,7 +78,7 @@ class EnderPearl extends Throwable {
                 $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
                 return;
             }
-            $claim = ClaimManager::getInstance()->getClaimByPosition($this->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($this->getPosition())->getName();
+            $claim = ClaimManager::getInstance()->getClaimNameByPosition($owning->getPosition());
             if ($owning->getCooldown()->has('combattag') && stripos($claim, "Spawn") !== false) {
                 $this->kill();
                 if ($owning->getCooldown()->has('enderpearl')) {

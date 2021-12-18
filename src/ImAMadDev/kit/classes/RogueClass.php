@@ -24,7 +24,7 @@ class RogueClass extends IClass
     public function getEffects() : array
     {
         return [new EffectInstance(VanillaEffects::SPEED(), Limits::INT32_MAX, 1, false),
-            new EffectInstance(VanillaEffects::JUMP_BOOST(), Limits::INT32_MAX, 1, false),
+                new EffectInstance(VanillaEffects::JUMP_BOOST(), Limits::INT32_MAX, 1, false),
                 new EffectInstance(VanillaEffects::RESISTANCE(), Limits::INT32_MAX, 1, false)
             ];
     }

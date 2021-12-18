@@ -29,11 +29,11 @@ class Switcher extends Throwable {
 	public function onHit(ProjectileHitEvent $event) : void {
 		$sender = $this->getOwningEntity();
 		if($sender instanceof HCFPlayer && $event instanceof ProjectileHitEntityEvent){
-			$claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getName();
+			$claim = ClaimManager::getInstance()->getClaimNameByPosition($sender->getPosition());
 			if(stripos($claim, "Spawn") === false){
 				$player = $event->getEntityHit();
 				if($player instanceof HCFPlayer){
-					$claim2 = ClaimManager::getInstance()->getClaimByPosition($player) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($player->getPosition())->getName();
+					$claim2 = ClaimManager::getInstance()->getClaimNameByPosition($sender->getPosition());
 					if(stripos($claim2, "Spawn") === false && round($sender->getPosition()->distance($player)) <= 20){
 						$position = $player->getPosition();
 						$player->teleport($sender->getPosition());

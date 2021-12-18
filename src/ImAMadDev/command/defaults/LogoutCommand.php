@@ -22,7 +22,7 @@ class LogoutCommand extends Command {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do this!");
 			return;
 		}
-		$claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getName();
+		$claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getProperties()->getName();
 		if(stripos($claim, "Spawn") !== false or SOTWManager::isEnabled()) {
 			$sender->setCanLogout(true);
             $sender->kick(KnownTranslationKeys::DISCONNECTIONSCREEN_NOREASON);

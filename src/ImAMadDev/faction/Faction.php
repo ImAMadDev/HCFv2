@@ -64,20 +64,17 @@ class Faction {
 	}
 	
 	public function isLeader(string $name) : bool {
-		if($name instanceof HCFPlayer) $name = $name->getName();
-		if(empty($name)) return false;
+        if(empty($name)) return false;
 		return $name == $this->getLeader();
 	}
 	
 	public function isMember(string $name) : bool {
-		if($name instanceof HCFPlayer) $name = $name->getName();
-		if(empty($name)) return false;
+        if(empty($name)) return false;
 		return in_array($name, $this->getMembers(), true);
 	}
 	
 	public function isColeader(string $name) : bool {
-		if($name instanceof HCFPlayer) $name = $name->getName();
-		if(empty($name)) return false;
+        if(empty($name)) return false;
 		return in_array($name, $this->getColeaders(), true);
 	}
 	

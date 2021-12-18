@@ -9,6 +9,7 @@ class ClaimType
     const KOTH = 'koth';
     const SPAWN = 'spawn';
     const WARZONE = 'warzone';
+    const ROAD = 'road';
 
     public function __construct(
         private string $type = "faction"

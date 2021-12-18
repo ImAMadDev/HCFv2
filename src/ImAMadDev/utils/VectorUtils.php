@@ -4,7 +4,7 @@ namespace ImAMadDev\utils;
 
 use pocketmine\Server;
 use pocketmine\math\{Vector3, AxisAlignedBB};
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 
 final class VectorUtils {
 	
@@ -24,7 +24,7 @@ final class VectorUtils {
 	}
 	
 	public static function stringToPosition(string $pos, string $separator = ",") : Position {
-		$level = Server::getInstance()->getWorldByName(explode($separator, $pos)[3]);
+		$level = Server::getInstance()->getWorldManager()->getWorldByName(explode($separator, $pos)[3]);
 		return new Position(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2], $level);
 	}
 	

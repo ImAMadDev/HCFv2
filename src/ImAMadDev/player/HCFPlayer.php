@@ -5,6 +5,7 @@ namespace ImAMadDev\player;
 use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects, Location};
 use ImAMadDev\HCF;
 use ImAMadDev\kit\classes\IClass;
+use ImAMadDev\player\modules\ViewClaim;
 use ImAMadDev\player\sessions\ArcherMark;
 use ImAMadDev\player\sessions\ChatMode;
 use ImAMadDev\player\sessions\ClaimSession;
@@ -110,6 +111,8 @@ class HCFPlayer extends Player {
 
     public ?IClass $class = null;
 
+    public ViewClaim $claimView;
+
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
         parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
@@ -117,8 +120,8 @@ class HCFPlayer extends Player {
         $this->region = new PlayerRegion($this);
         $this->archerMark = new ArcherMark($this);
         $this->energy = new ClassEnergy($this);
+        $this->claimView = new ViewClaim($this);
     }
-
 
     public function setCanLogout(bool $can = false) : void {
 		$this->leave = $can;
@@ -744,5 +747,13 @@ class HCFPlayer extends Player {
     {
         if ($this->class == null) return false;
         return $this->class->name === 'Miner';
+    }
+
+    /**
+     * @return ViewClaim
+     */
+    public function getClaimView(): ViewClaim
+    {
+        return $this->claimView;
     }
 }

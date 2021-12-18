@@ -20,13 +20,12 @@ class SpawnCommand extends Command {
 			$sender->sendMessage("No permission");
 			return;
 		}
-		$claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getName();
+		$claim = ClaimManager::getInstance()->getClaimNameByPosition($sender->getPosition());
 		if(stripos($claim, "Spawn") !== false or SOTWManager::isEnabled()) {
 			$sender->teleport($sender->getWorld()->getSpawnLocation());
 			$sender->sendMessage(TextFormat::GREEN . "Teleported Spawn");
 		} else {
 			$sender->sendMessage(TextFormat::RED . "You aren't in the spawn!");
 		}
-		return;
 	}
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ImAMadDev\manager;
 
+use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\claim\utils\ClaimType;
+use ImAMadDev\claim\utils\EditClaimFlag;
 use ImAMadDev\HCF;
 use JetBrains\PhpStorm\Pure;
 use JsonException;
@@ -14,6 +16,7 @@ use ImAMadDev\utils\VectorUtils;
 use ImAMadDev\koth\ticks\KOTHTick;
 use ImAMadDev\claim\Claim;
 
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\utils\{SingletonTrait, TextFormat, Config};
 
 class KOTHManager{
@@ -40,8 +43,11 @@ class KOTHManager{
 			$this->arenas[$data["name"]] = new KOTHArena($data["name"], $data["pos1"], $data["pos2"], $data["corner1"], $data["corner2"], (int)$data["time"], $data["level"], $data["keys"]);
 			$data = ["name" => $data["name"], "x1" => VectorUtils::stringToVector($data["pos1"], ":")->x, "z1" => VectorUtils::stringToVector($data["pos1"], ":")->z, "x2" => VectorUtils::stringToVector($data["pos2"], ":")->x, "z2" => VectorUtils::stringToVector($data["pos2"], ":")->z, "level" => $data["level"], 'claim_type' => ClaimType::KOTH];
 			$claim = new Claim(HCF::getInstance(), $data);
+            $claim->getProperties()->addFlag(ClaimFlags::INTERACT, new EditClaimFlag([3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154, BlockLegacyIds::ACACIA_DOOR_BLOCK, BlockLegacyIds::DARK_OAK_DOOR_BLOCK, BlockLegacyIds::ACACIA_TRAPDOOR]));
+            $claim->getProperties()->addFlag(ClaimFlags::BREAK, new EditClaimFlag());
+            $claim->getProperties()->addFlag(ClaimFlags::PLACE, new EditClaimFlag());
 			ClaimManager::getInstance()->addClaim($claim);
-			$this->main->getLogger()->info(TextFormat::GREEN."KOTH » {$claim->getName()} was loaded successfully!");
+			$this->main->getLogger()->info(TextFormat::GREEN."KOTH » {$claim->getProperties()->getName()} was loaded successfully!");
 		}
 	}
 	

@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\faction\command\subCommands;
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\command\SubCommand;
 use ImAMadDev\faction\ticks\TeleportHomeTask;
 use ImAMadDev\player\HCFPlayer;
@@ -35,9 +36,8 @@ class HomeSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You may not enter here while your pvp timer is active!");
 			return;
 		}
-		$claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? null : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition());
-		$claimName = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? "Wilderness" : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition())->getName();
-		if(stripos($claimName, "Spawn") !== false) {
+        $claim = ClaimManager::getInstance()->getClaimByPosition($sender->getPosition()) == null ? null : ClaimManager::getInstance()->getClaimByPosition($sender->getPosition());
+        if($claim?->getClaimType()->getType() == ClaimType::SPAWN) {
 			$home = $sender->getFaction()->getHome();
 			$sender->teleport($home);
 			$sender->sendMessage(TextFormat::GREEN . "You have successfully teleport to your home location.");
@@ -45,10 +45,10 @@ class HomeSubCommand extends SubCommand {
 			return;
 		}
 		if($claim !== null) {
-			if($claim->isFaction() and $claim->getFaction()->isInFaction($sender->getName()) === false) {
+			if(!$claim->getFaction()?->isInFaction($sender->getName())) {
 				$time = 20;
 			}
-			if($claim->isFaction() and $claim->getFaction()->isInFaction($sender->getName()) === true) {
+			if($claim->getFaction()?->isInFaction($sender->getName())) {
 				$time = 10;
 			}
 		}

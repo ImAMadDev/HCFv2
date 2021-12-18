@@ -2,6 +2,8 @@
 
 namespace ImAMadDev\listener;
 
+use DateTime;
+use Exception;
 use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
@@ -13,12 +15,14 @@ use ImAMadDev\faction\Faction;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\customenchants\CustomEnchantment;
 
+use pocketmine\block\BaseSign;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\utils\SignText;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\event\block\BlockSpreadEvent;
@@ -31,6 +35,8 @@ use pocketmine\nbt\TreeRoot;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
@@ -64,8 +70,10 @@ use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
     BlockActorDataPacket,
+    PlayStatusPacket,
     types\BlockPosition,
     types\CacheableNbt,
+    types\DimensionIds,
     UpdateBlockPacket,
     LoginPacket};
 use pocketmine\world\sound\ExplodeSound;
@@ -361,6 +369,7 @@ class HCFListener implements Listener {
                     }
                 }
             }
+            if($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim()) {
                 if ($item->getId() !== ItemIds::DIAMOND_AXE) {
                     return;
@@ -443,7 +452,7 @@ class HCFListener implements Listener {
 		$player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             $player->saveInventory();
-            $item = $this->createCustomSign($player->getName());
+            $item = $this->createCustomSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagDamager($player));
             $player->getWorld()->dropItem($player->getPosition(), $item);
             if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && EOTWManager::isEnabled() === false) return;
             $cause = $player->getLastDamageCause();
@@ -693,9 +702,16 @@ class HCFListener implements Listener {
 	
 	public function onSignShopChange(SignChangeEvent $event) : void {
 		$player = $event->getPlayer();
-		if(!$player->hasPermission("configurate.shop") && $player->getGamemode() !== GameMode::CREATIVE()){
-			return;
-		}
+		if(!$player->hasPermission("configurate.shop") && $player->getGamemode() !== GameMode::CREATIVE()) return;
+        if (is_string($event->getSign()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue())) {
+            $text = $event->getSign()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue();
+            var_dump(TextFormat::clean(explode("\n", $text)[1]));
+            if(strpos(TextFormat::clean(explode("\n", $text)[1]), "slain") != false) {
+                var_dump("aa");
+                $event->cancel();
+                return;
+            }
+        }
 		if(strtolower($event->getNewText()->getLine(0)) == "[shop]" && $player->hasPermission("configurate.shop")){
 			if(strtolower($event->getNewText()->getLine(1)) == "buy"){
 				$items = explode(":", $event->getNewText()->getLine(2));
@@ -745,6 +761,7 @@ class HCFListener implements Listener {
                                 $item = $this->getItem($line->getLine(2));
                                 $player->getInventory()->addItem($item);
                                 $player->sendMessage(TextFormat::GREEN . "Successfully purchased x" . $item->getCount() . " " . $item->getName() . "!");
+                                $this->sendSellText($player, $block, TextFormat::GREEN . "Item bought\n" . TextFormat::GREEN . "for " . $line->getLine(3));
                             } else {
                                 $player->sendMessage(TextFormat::RED . "Your inventory is full!");
                             }
@@ -759,7 +776,7 @@ class HCFListener implements Listener {
                             $player->getInventory()->removeItem($item);
                             $player->addBalance($this->getPrice($line->getLine(3)));
                             $player->sendMessage(TextFormat::GREEN . "Sold {$item->getCount()}x " . $item->getName() . " for " . $this->getPrice($line->getLine(3)));
-                            $this->sendSellText($player, $block);
+                            $this->sendSellText($player, $block, TextFormat::GREEN . "Sold {$item->getCount()}\n" . TextFormat::GREEN . "for " . $line->getLine(3));
                         } else {
                             $player->sendMessage(TextFormat::RED . "You do not have the required items in your inventory.");
                         }
@@ -782,6 +799,16 @@ class HCFListener implements Listener {
 			}
 		}
 	}
+
+    public function handleBreak(BlockBreakEvent $event) : void
+    {
+        if ($event->getBlock() instanceof BaseSign) {
+            if ($event->getBlock()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)) {
+                var_dump($event->getBlock()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue());
+                $event->setDropsVariadic($event->getBlock()->getPickedItem(true)->setCustomName(TextFormat::DARK_PURPLE . "Death Sing "));
+            }
+        }
+    }
 	
 	public function onInventoryCloseEvent(InventoryCloseEvent $event) : void {
 		$player = $event->getPlayer();
@@ -846,30 +873,41 @@ class HCFListener implements Listener {
     }
 
 
-    protected function sendSellText(Player $player, Block $block) : void
+    protected function sendSellText(Player $player, Block $block, string $text) : void
     {
-        $pk = new BlockActorDataPacket();
-        $tile = $block->getPosition()->getWorld()->getTile($block->getPosition());
-        $pk->blockPosition = new BlockPosition($block->getPosition()->x, $block->getPosition()->getY(), $block->getPosition()->z);
-        if ($tile instanceof Sign) {
-            $nbt = $tile->getSpawnCompound();
-            $nbt->setTag(Sign::TAG_TEXT_BLOB, new StringTag('Hola\nesto es\nuna prueba'));
-        }
-        $pk->nbt = new CacheableNbt($nbt);
-        $pk2 = new UpdateBlockPacket();
-        $pk2->blockPosition = new BlockPosition($block->getPosition()->x, $block->getPosition()->getY(), $block->getPosition()->z);
-        $pk2->blockRuntimeId = RuntimeBlockMapping::getInstance()->toRuntimeId($block->getFullId());
-        $pk2->flags = UpdateBlockPacket::FLAG_NETWORK;
-        $pk2->dataLayerId = UpdateBlockPacket::DATA_LAYER_NORMAL;
-        $player->getNetworkSession()->sendDataPacket($pk);
-       // $player->getNetworkSession()->sendDataPacket($pk2);
+        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block, $text) extends Task {
+            private HCFPlayer $player;
+            private Block $block;
+            private string $text;
+            public function __construct(HCFPlayer $player, Block $block, string $text) {
+                $this->player = $player;
+                $this->block = $block;
+                $this->text = $text;
+            }
+            public function onRun() : void {
+                if($this->player->isOnline() === false) {
+                    return;
+                }
+                $pk = new BlockActorDataPacket();
+                $tile = $this->block->getPosition()->getWorld()->getTile($this->block->getPosition());
+                $pk->blockPosition = new BlockPosition($this->block->getPosition()->x, $this->block->getPosition()->getY(), $this->block->getPosition()->z);
+                if ($tile instanceof Sign) {
+                    $nbt = $tile->getSpawnCompound();
+                    $nbt->setTag(Sign::TAG_TEXT_BLOB, new StringTag($this->text));
+                }
+                $pk->nbt = new CacheableNbt($nbt);
+                $this->player->getNetworkSession()->sendDataPacket($pk);
+            }
+        }, 20);
     }
 
-    private function createCustomSign(string $name) : Item
+    private function createCustomSign(string $name, string $killer) : Item
     {
         $sing = ItemFactory::getInstance()->get(ItemIds::SIGN, 0);
-        $data = gmdate("H:i:s", time());
-        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag("$name\n$data"));
+        $date = new DateTime();
+        $time = $date->format('D H:i:s');
+        $text = [TextFormat::GREEN . $name, TextFormat::GRAY . "slain by", TextFormat::GREEN . $killer, TextFormat::GRAY . $time];
+        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag(join(PHP_EOL, $text)));
         $sing->setCustomBlockData($nbt);
         $sing->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . $name);
         return $sing;

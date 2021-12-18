@@ -2,6 +2,7 @@
 
 namespace ImAMadDev;
 
+use ImAMadDev\claim\ClaimListener;
 use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\inventory\EnderChestInvMenuType;
 use ImAMadDev\player\PlayerCache;
@@ -102,6 +103,7 @@ class HCF extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new ReachModule($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new KitListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new BuggyListener(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new ClearLagTick(), 20);
 		$this->getScheduler()->scheduleRepeatingTask(new BroadcastTick($this), 4800);
 		if(!InvMenuHandler::isRegistered()){

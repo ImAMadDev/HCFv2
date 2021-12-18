@@ -2,7 +2,12 @@
 
 namespace ImAMadDev\manager;
 
-use pocketmine\utils\{Config, SingletonTrait, TextFormat};
+use pocketmine\utils\{Config, Filesystem, SingletonTrait, TextFormat};
+use ImAMadDev\claim\ClaimListener;
+use ImAMadDev\claim\utils\ClaimFlags;
+use ImAMadDev\claim\utils\EditClaimFlag;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\Server;
 use pocketmine\world\Position;
 
 use ImAMadDev\HCF;
@@ -21,26 +26,22 @@ class ClaimManager {
 	}
 	
 	private function init() : void {
-		if(!is_dir(self::$main->getDataFolder() . "opClaims/")) {
-			@mkdir(self::$main->getDataFolder() . "opClaims/");
-		}
+		if(!is_dir(self::$main->getDataFolder() . "opClaims/")) @mkdir(self::$main->getDataFolder() . "opClaims/");
 		foreach(glob(self::$main->getDataFolder() . "opClaims/" . "*.yml") as $file) {
-			$config = new Config($file, Config::YAML);
-			$data = ["name" => basename($file, ".yml"), "x1" => $config->get("x1"), "z1" => $config->get("z1"), "x2" => $config->get("x2"), "z2" => $config->get("z2"), "level" => $config->get("level")];
-			$claim = new Claim(HCF::getInstance(), $data);
-			if($data['x1'] && $data['x2'] !== null) {
+            $contents = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
+			$claim = new Claim(HCF::getInstance(), $contents);
+			if($contents['x1'] && $contents['x2'] !== null) {
+                $claim->getProperties()->addFlag(ClaimFlags::INTERACT, new EditClaimFlag([3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154, BlockLegacyIds::ACACIA_DOOR_BLOCK, BlockLegacyIds::DARK_OAK_DOOR_BLOCK, BlockLegacyIds::ACACIA_TRAPDOOR]));
+                $claim->getProperties()->addFlag(ClaimFlags::BREAK, new EditClaimFlag());
+                $claim->getProperties()->addFlag(ClaimFlags::PLACE, new EditClaimFlag());
 				$this->addClaim($claim);
-				self::$main->getLogger()->info(TextFormat::GREEN."Claim » {$claim->getName()} was loaded successfully!");
+				self::$main->getLogger()->info(TextFormat::GREEN."Claim » {$claim->getProperties()->getName()} was loaded successfully!");
 			}
 		}
 	}
 	
 	public function createClaim(Claim $claim) : void {
-		$config = new Config(self::$main->getDataFolder() . "opClaims/" . $claim->getName() . ".yml", Config::YAML);
-		foreach($claim->getAllArray() as $key => $value) {
-			$config->set($key, $value);
-		}
-		$config->save();
+        Filesystem::safeFilePutContents(self::$main->getDataFolder() . "opClaims/" . $claim->getProperties()->getName() . ".yml", $claim->getProperties()->getYamlData());
 		$this->addClaim($claim);
 	}
 
@@ -51,7 +52,7 @@ class ClaimManager {
 	
 	public function getClaim(string $name) : ? Claim {
 		foreach(self::$claims as $claim) {
-			if($claim->getName() === $name) {
+			if($claim->getProperties()->getName() === $name) {
 				return $claim;
 			}
 		}
@@ -59,18 +60,18 @@ class ClaimManager {
 	}
 	
 	public function isClaim($claim) : bool {
-		if($claim instanceof Claim)  $claim = $claim->getName();
+		if($claim instanceof Claim)  $claim = $claim->getProperties()->getName();
 		return in_array($claim, array_keys(self::$claims));
 	}
 	
 	public function equalClaim($claim1, $claim2) : bool {
-		if($claim1 instanceof Claim) $claim1 = $claim1->getName();
-		if($claim2 instanceof Claim) $claim2 = $claim2->getName();
+		if($claim1 instanceof Claim) $claim1 = $claim1->getProperties()->getName();
+		if($claim2 instanceof Claim) $claim2 = $claim2->getProperties()->getName();
 		return ($claim1 === $claim2);
 	}
 	
 	public function addClaim(Claim $claim) : void {
-		self::$claims[$claim->getName()] = $claim;
+		self::$claims[$claim->getProperties()->getName()] = $claim;
 	}
 /*
 	public function addClaim(Claim $claim) {
@@ -105,7 +106,7 @@ class ClaimManager {
 	}
 	
 	public function disband(Claim $claim) {
-		unset(self::$claims[$claim->getName()]);
+		unset(self::$claims[$claim->getProperties()->getName()]);
 	}
 	/*
 	public function disband(Claim $claim) {
@@ -129,7 +130,7 @@ class ClaimManager {
 	*/
 	public function getClaimNameByPosition(Position $position): string {
 		if(($claim = $this->getClaimByPosition($position)) instanceof Claim) {
-			return $claim->getName();
+			return $claim->getProperties()->getName();
 		}
 		return "Wilderness";
 	}

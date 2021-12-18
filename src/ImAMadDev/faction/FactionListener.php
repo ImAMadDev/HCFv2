@@ -2,6 +2,8 @@
 
 namespace ImAMadDev\faction;
 
+use ImAMadDev\claim\Claim;
+use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\ClaimManager;
@@ -56,148 +58,77 @@ class FactionListener implements Listener {
 			}
 		}
 	}
-	
+
+    /*
 	public function onPlayerInteractEvent(PlayerInteractEvent $event) : void {
 		$block = $event->getBlock();
 		$player = $event->getPlayer();
 		$claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-		if($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) {
-            return;
-        }
-		if($player->getCooldown()->has('antitrapper_tag')) {
-			if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-				if(in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))){
-					$event->cancel();
-				}
-				if(in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL){
-					$event->cancel();
-					HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-						$player->cancelMovement(true);
-						}
-					), 1);
-					HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-						$player->cancelMovement(false);
-						}
-					), 40);
-				}
-			}
-		}
-		if($claim !== null) {
-			if(!$claim->canEdit($player->getFaction()) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-				if(in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))){
-					$event->cancel();
-					return;
-				}
-				if(in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL){
-					$event->cancel();
-					HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-						$player->cancelMovement(true);
-						}
-					), 1);
-					HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-						$player->cancelMovement(false);
-						}
-					), 40);
-				}
-			} else {
-				if($player->getCooldown()->has('antitrapper_tag')) {
-					if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-						if(in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))){
-							$event->cancel();
-						}
-						if(in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL){
-							$event->cancel();
-							HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-								$player->cancelMovement(true);
-								}
-							), 1);
-							HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function() use ($player): void{
-								$player->cancelMovement(false);
-								}
-							), 40);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public function onBlockBreakEvent(BlockBreakEvent $event) : void {
-		$block = $event->getBlock();
-		$player = $event->getPlayer();
+		if($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) return;
         if ($player instanceof HCFPlayer) {
-            $claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-            if ($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) {
-                return;
-            }
             if ($player->getCooldown()->has('antitrapper_tag')) {
-                $event->cancel();
-            }
-            if ($claim !== null) {
-                if (!$claim->canEdit($player->getFaction())) {
-                    $event->cancel();
-                } else {
-                    if ($player->getCooldown()->has('antitrapper_tag')) {
+                if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if ($claim instanceof Claim){
+                        if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)?->run($block)){
+                            $event->cancel();
+                        }
+                    }
+                    if (in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))) {
                         $event->cancel();
+                    }
+                    if (in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL) {
+                        $event->cancel();
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(true);
+                        }
+                        ), 1);
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(false);
+                        }
+                        ), 40);
                     }
                 }
             }
-            if (!$event->isCancelled()) {
-                $player->activateEnchantment($event);
-            }
-        }
-	}
-	
-	public function onBlockPlaceEvent(BlockPlaceEvent $event) : void {
-		$block = $event->getBlock();
-		$player = $event->getPlayer();
-        if ($player instanceof HCFPlayer) {
-            $claim = ClaimManager::getInstance()->getClaimByPosition($block->getPosition());
-            if ($player->getGamemode() === GameMode::CREATIVE() && Server::getInstance()->isOp(strtolower($player->getName()))) return;
-            if ($player->getCooldown()->has('antitrapper_tag')) {
-                $event->cancel();
-            }
             if ($claim !== null) {
-                if (!$claim->canEdit($player->getFaction())) {
-                    $event->cancel();
-                } else {
-                    if ($player->getCooldown()->has('antitrapper_tag')) {
+                if (!$claim->canEdit($player->getFaction()) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if (in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))) {
                         $event->cancel();
-                    }
-                }
-            }
-        }
-	}
-	
-	public function onPlayerMoveEvent(PlayerMoveEvent $event) : void {
-		$player = $event->getPlayer();
-        if ($player instanceof HCFPlayer) {
-            if ($player->hasCancelledMovement()) {
-                $player->correctMovement();
-            }
-            $claim = ClaimManager::getInstance()->getClaimByPosition($player->getPosition());
-            if ($claim !== null) {
-                if ($claim->join($player) === false) {
-                    $event->setTo($event->getFrom());
-                    $event->cancel();
-                    return;
-                }
-                if ($claim->getName() !== $player->getRegion()->get()) {
-                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion()->get() . ")");
-                    $player->getRegion()->set($claim->getName());
-                }
-            } else {
-                if ("Wilderness" !== $player->getRegion()->get()) {
-                    if ($player->getGamemode() === GameMode::ADVENTURE()) {
-                        $player->setGamemode(GameMode::SURVIVAL());
                         return;
                     }
-                    $player->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $player->getRegion()->get() . ")");
-                    $player->getRegion()->set();
+                    if (in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL) {
+                        $event->cancel();
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(true);
+                        }
+                        ), 1);
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(false);
+                        }
+                        ), 40);
+                    }
+                } else {
+                    if ($player->getCooldown()->has('antitrapper_tag')) {
+                        if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                            if (in_array($block->getId(), array(3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154))) {
+                                $event->cancel();
+                            }
+                            if (in_array($block->getId(), array(330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167)) && $player->getInventory()->getItemInHand()->getId() !== ItemIds::ENDER_PEARL) {
+                                $event->cancel();
+                                HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                                    $player->cancelMovement(true);
+                                }
+                                ), 1);
+                                HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                                    $player->cancelMovement(false);
+                                }
+                                ), 40);
+                            }
+                        }
+                    }
                 }
             }
         }
-	}
+	}*/
 	
 	public function onAntiDrop(BlockBreakEvent $event): void {
 		if($event->isCancelled()) return;
