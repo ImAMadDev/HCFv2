@@ -338,7 +338,7 @@ class Faction {
 	}
 	
 	public function claim(Claim $claim) : void {
-		foreach($claim->data as $key => $value) {
+		foreach($claim->getProperties()->getData() as $key => $value) {
 			$this->data[$key] = $value;
             $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
