@@ -3,14 +3,7 @@
 namespace ImAMadDev\manager;
 
 use JetBrains\PhpStorm\Pure;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
-use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\block\Block;
-use pocketmine\utils\Config;
 use ImAMadDev\HCF;
 use ImAMadDev\ability\Ability;
 
@@ -35,7 +28,6 @@ use ImAMadDev\ability\types\{PartnerPackages,
     RankSharp};
 
 use pocketmine\utils\SingletonTrait;
-use const INT32_MAX;
 use function count;
 
 class AbilityManager {

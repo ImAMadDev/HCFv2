@@ -3,6 +3,7 @@
 namespace ImAMadDev\player;
 
 use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects, Location};
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\HCF;
 use ImAMadDev\kit\classes\IClass;
 use ImAMadDev\player\modules\ViewClaim;
@@ -18,6 +19,7 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\Thin;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\EffectIds;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
@@ -31,15 +33,18 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Event;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\{types\BlockPosition,
+use pocketmine\network\mcpe\protocol\{SetActorDataPacket,
+    types\BlockPosition,
     types\BoolGameRule,
+    types\entity\EntityMetadataCollection,
+    types\entity\EntityMetadataFlags,
     types\entity\EntityMetadataProperties,
     types\entity\EntityMetadataTypes,
     types\entity\StringMetadataProperty,
     UpdateBlockPacket,
     ChangeDimensionPacket,
     GameRulesChangedPacket};
-use pocketmine\math\{Vector3, AxisAlignedBB};
+use pocketmine\math\{Facing, Vector3, AxisAlignedBB};
 
 use ImAMadDev\faction\Faction;
 use ImAMadDev\rank\RankClass;
@@ -112,6 +117,8 @@ class HCFPlayer extends Player {
     public ?IClass $class = null;
 
     public ViewClaim $claimView;
+
+    private array $previousBlocks = [];
 
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
@@ -641,8 +648,12 @@ class HCFPlayer extends Player {
 	}
 	
 	public function sendDimension(int $dimension, bool $respawn = false): void {
-        $pk = ChangeDimensionPacket::create($dimension, $this->getPosition()->asVector3(), $respawn);
-		$this->getNetworkSession()->sendDataPacket($pk);
+        $pk = new ChangeDimensionPacket();
+        $pk->position = $this->getPosition()->asVector3();
+        $pk->dimension = $dimension;
+        $pk->respawn = $respawn;
+
+        $this->getNetworkSession()->sendDataPacket($pk);
 	}
 	
 	public function getHandName() : string {
@@ -755,5 +766,77 @@ class HCFPlayer extends Player {
     public function getClaimView(): ViewClaim
     {
         return $this->claimView;
+    }
+
+    public function checkWall(): void{
+        $locations = $this->getWallBlocks();
+        $removeBlocks = $this->previousBlocks;
+        /** @var Location $location */
+        foreach ($locations as $location) {
+            if (isset($removeBlocks[$location->__toString()])) {
+                unset($removeBlocks[$location->__toString()]);
+            }
+            $pos = new BlockPosition($location->getFloorX(), $location->getFloorY(), $location->getFloorZ());
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId(BlockFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS, 14)->getFullId());
+            $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+            $this->getNetworkSession()->sendDataPacket($pk);
+        }
+        foreach ($removeBlocks as $location) {
+            $location = $location->floor();
+            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($this->getWorld()->getBlock($location)->getFullId());
+            $pk = UpdateBlockPacket::create(new BlockPosition($location->getFloorX(), $location->getFloorY(), $location->getFloorZ()), $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+            $this->getNetworkSession()->sendDataPacket($pk);
+        }
+        $this->previousBlocks = $locations;
+    }
+
+    private function getWallBlocks(): array{
+        $locations = [];
+        if(!HCF::getInstance()->getCombatManager()->isTagged($this)) return $locations;
+        $radius = 4;
+        $l = $this->getPosition();
+        $loc1 = clone $l->add($radius, 0, $radius);
+        $loc2 = clone $l->subtract($radius, 0, $radius);
+        $maxBlockX = max($loc1->getFloorX(), $loc2->getFloorX());
+        $minBlockX = min($loc1->getFloorX(), $loc2->getFloorX());
+        $maxBlockZ = max($loc1->getFloorZ(), $loc2->getFloorZ());
+        $minBlockZ = min($loc1->getFloorZ(), $loc2->getFloorZ());
+        for($x = $minBlockX; $x <= $maxBlockX; $x++){
+            for($z = $minBlockZ; $z <= $maxBlockZ; $z++){
+                $location = new Position($x, $l->getFloorY(), $z, $l->getWorld());
+                if(ClaimManager::getInstance()->getClaimByPosition($location)?->getClaimType()->getType() == ClaimType::SPAWN) continue;
+                if(!$this->isPvpSurrounding($location)) continue;
+                for($i = 0; $i <= $radius; $i++){
+                    $loc = clone $location;
+                    $new = Position::fromObject($loc->withComponents($loc->getX(), $loc->getY() + $i, $loc->getZ()), $loc->getWorld());
+                    if($new->getWorld()->getBlock($new)->getId() != BlockLegacyIds::AIR) continue;
+                    $locations[$new->__toString()] = $new;
+                }
+            }
+        }
+        return $locations;
+    }
+
+    public function isPvpSurrounding(Position $pos): bool{
+        foreach (Facing::ALL as $i) {
+            if(ClaimManager::getInstance()->getClaimByPosition($pos->getSide($i))?->getClaimType()->getType() == ClaimType::SPAWN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function upa() : void
+    {
+        $metadata = new EntityMetadataCollection();
+        $metadata->setLong(EntityMetadataProperties::FLAGS, 0
+            ^ 1 << EntityMetadataFlags::INVISIBLE);
+        $pk2 = new SetActorDataPacket();
+        $pk2->actorRuntimeId = $this->getId();
+        $pk2->metadata = $metadata->getAll();
+        foreach ($this->getViewers() as $viewer) {
+            $viewer->getNetworkSession()->sendDataPacket($pk2);
+        }
+       // $this->sendData($this->getViewers(), [EntityMetadataFlags::INVISIBLE =>  new StringMetadataProperty($customTag)]);
     }
 }

@@ -11,7 +11,7 @@ use pocketmine\data\bedrock\PotionTypeIdMap;
 use pocketmine\entity\Location;
 use pocketmine\item\ItemFactory;
 
-use ImAMadDev\item\{EnderPearl, FishingRod, EnchantedBook, GoldenApple, GoldenAppleEnchanted, Fireworks, SplashPotion, EnderEye};
+use ImAMadDev\item\{EnderPearl, EnchantedBook, GoldenApple, GoldenAppleEnchanted, Fireworks, SplashPotion, EnderEye};
 use ImAMadDev\HCF;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;

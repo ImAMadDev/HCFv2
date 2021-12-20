@@ -35,6 +35,7 @@ use ImAMadDev\kit\types\{CustomKit,
     Rogue,
     Archer};
 
+use pocketmine\utils\Filesystem;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 use function count;
@@ -143,10 +144,10 @@ class KitManager {
     {
         if (!is_dir(self::$main->getDataFolder() . "kits")) @mkdir(self::$main->getDataFolder() . "kits");
         foreach(glob(self::$main->getDataFolder() . "kits" . DIRECTORY_SEPARATOR . "*.json") as $file){
-            $config = new Config($file, Config::JSON);
-            $armor = InventoryUtils::decode($config->get("Armor", ""), "Armor");
-            $items = InventoryUtils::decode($config->get("Inventory", ""));
-            $kit = new CustomKit(basename($file, ".json"), $config->get("permission", basename($file, ".json") . ".kit"), $armor, $items, $this->getIconFromFile($config), $config->get("description", "Example kit"), $config->get("countdown", 172800), $config->get("customName", "&6" . basename($file, ".json")), $config->get("slot", 0));
+            $contents = json_decode(file_get_contents($file), true);
+            $armor = InventoryUtils::decode($contents["Armor"] ?? "", "Armor");
+            $items = InventoryUtils::decode($contents["Inventory"] ?? "", "");
+            $kit = new CustomKit(basename($file, ".json"), $contents["permission"] ?? basename($file, ".json") . ".kit", $armor, $items, $this->getIconFromFile($contents['icon']), $contents["description"] ?? "Example kit", $contents["countdown"] ?? 172800, $contents["customName"] ?? "&6" . basename($file, ".json"), $contents["slot"] ?? 0);
             $this->addKit($kit);
         }
 	}
@@ -173,28 +174,23 @@ class KitManager {
 
     /**
      * @param KitCreatorSession $session
-     * @throws JsonException
      */
 	public function createCustomKit(KitCreatorSession $session) : void
     {
-        $file = new Config(self::$main->getDataFolder() . "kits" . DIRECTORY_SEPARATOR . $session->getData()["name"] . ".json", Config::JSON);
-        foreach ($session->getData() as $k => $datum) {
-            $file->set($k, $datum);
-        }
-        $file->save();
-        $armor = InventoryUtils::decode($file->get("Armor", ""), "Armor");
-        $items = InventoryUtils::decode($file->get("Inventory", ""));
-        $kit = new CustomKit($session->getData()["name"], $file->get("permission", $session->getData()["name"] . ".kit"), $armor, $items, $this->getIconFromFile($file), $file->get("description", "Example kit"), $file->get("countdown", 172800), $file->get("customName", "&6" . $session->getData()["name"]), $file->get("slot", 0));
+        Filesystem::safeFilePutContents(self::$main->getDataFolder() . "kits/" . $session->getData()["name"] . ".json", json_encode($session->getData(), JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING));
+        $armor = InventoryUtils::decode($session->getData()["Armor"] ?? "", "Armor");
+        $items = InventoryUtils::decode($session->getData()["Inventory"] ?? "");
+        $kit = new CustomKit($session->getData()["name"], $session->getData()["permission"] ?? $session->getData()["name"] . ".kit", $armor, $items, $this->getIconFromFile($session->getData()['icon']), $session->getData()["description"] ?? "Example kit", $session->getData()["countdown"] ?? 172800, $session->getData()["customName"] ?? "&6" . $session->getData()["name"], $session->getData()["slot"] ?? 0);
         $this->addKit($kit);
     }
 
     /**
-     * @param Config $file
+     * @param string $value
      * @return Item
      */
-    public function getIconFromFile(Config $file) : Item
+    public function getIconFromFile(string $value) : Item
     {
-        $icon = explode(":", $file->get("icon", ItemIds::DIAMOND . ":0:1"));
+        $icon = explode(":", $value);
         return ItemFactory::getInstance()->get($icon[0], $icon[1], $icon[2]);
 	}
 

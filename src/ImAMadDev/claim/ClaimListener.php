@@ -23,6 +23,8 @@ class ClaimListener implements Listener
     {
         $player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
+            $player->upa();
+            if (!$event->getFrom()->equals($event->getTo()->asVector3())) $player->checkWall();
             if ($player->hasCancelledMovement()) {
                 $player->correctMovement();
             }

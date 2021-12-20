@@ -8,11 +8,14 @@ use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\HCF;
 
+use pocketmine\player\XboxLivePlayerInfo;
 use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\world\Position;
 use pocketmine\world\sound\EndermanTeleportSound;
+use pocketmine\world\World;
+use pocketmine\world\WorldManager;
 
 class StuckTask extends Task {
 
@@ -39,7 +42,7 @@ class StuckTask extends Task {
 			return;
 		}
 		if($player->getCooldown()->get('stuck_teleport') <= 0){
-			if(($vec = $this->searchStuck($player->getPosition()->x, $player->getPosition()->z)) instanceof Vector3){
+			if(($vec = $this->getNearestSafePosition()) instanceof Vector3){
 				$player->getCooldown()->remove('stuck_teleport');
 				$player->teleport($vec);
 				$player->getWorld()->addSound($player->getPosition(), new EndermanTeleportSound());
@@ -55,55 +58,110 @@ class StuckTask extends Task {
                 }
 			}
 		} else {
-			if(round($player->getPosition()->asVector3()->distance($this->lastPos)) > 4){
+			if($this->checkMovement($player->getPosition()->getFloorX(), $player->getPosition()->getFloorY(), $player->getPosition()->getFloorZ())){
 				$player->getCooldown()->remove('stuck_teleport');
                 $this->getHandler()->cancel();
-				return;
 			}
 			if(!$player->getCooldown()->has('stuck_teleport')){
                 $this->getHandler()->cancel();
 			}
 		}
 	}
+
+    /*
+    public function nearestSafeLocation() : ? Vector3 {
+        $atPos = clone $this->lastPos;
+        $atNeg = clone $this->lastPos;
+        for ($xPos = 2, $xNeg = -2; $xPos < 250; $xPos += 2, $xNeg -= 2) {
+            for ($zPos = 2, $zNeg = -2; $zPos < 250; $zPos += 2, $zNeg -= 2) {
+                $atPos->add($xPos, 0, $zPos);
+                var_dump("pos: " . $atPos->__toString());
+                if (ClaimManager::getInstance()->getClaimByPosition($atPos) == null) {
+                    $y = $this->player->getWorld()->getHighestBlockAt($xPos, $zPos);
+                    return new Vector3 ($atPos->x, ($y + 1), $atPos->z);
+                }
+                $atNeg->subtract($xNeg, 0, $zNeg);
+                var_dump("neg: " . $atNeg->__toString());
+                if (ClaimManager::getInstance()->getClaimByPosition($atNeg) == null) {
+                    $y = $this->player->getWorld()->getHighestBlockAt($xNeg, $zNeg);
+                    return new Vector3 ($atNeg->x, ($y + 1), $atNeg->z);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public function getNearestSafePosition(int $searchRadius = 100): ?Vector3
+    {
+        $minX = $this->lastPos->getFloorX() - $searchRadius;
+        $maxX = $this->lastPos->getFloorX() + $searchRadius;
+        $minZ = $this->lastPos->getFloorZ() - $searchRadius;
+        $maxZ = $this->lastPos->getFloorZ() + $searchRadius;
+        $atPos = clone $this->lastPos;
+        $atNeg = clone $this->lastPos;
+        for ($x = $minX; $x < $maxX; ++$x) {
+            for ($z = $minZ; $z < $maxZ; ++$z) {
+                $atPos->add($x, 0, $z);
+                var_dump("pos: " . $atPos->__toString());
+                $factionAtPos = ClaimManager::getInstance()->getClaimByPosition($atPos);
+                if (!$factionAtPos instanceof Claim){
+                    $y = $this->player->getWorld()->getHighestBlockAt($x, $z);
+                    return new Vector3 ($atPos->x, ($y + 1), $atPos->z);
+                }
+                $atNeg->add($x, 0, $z);
+                $factionAtNeg = ClaimManager::getInstance()->getClaimByPosition($atNeg);
+                if (!$factionAtNeg instanceof Claim){
+                    $y = $this->player->getWorld()->getHighestBlockAt($x, $z);
+                    return new Vector3 ($atNeg->x, ($y + 1), $atNeg->z);
+                }
+            }
+        }
+        return null;
+    }*/
 	
-	public function searchStuck($x, $z):? Vector3{
-		for($i = $x; $i <= ($x + 200); $i++){
-			for($l = $z; $l <= ($z + 200); $l++){
-				if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
+	public function getNearestSafePosition():? Vector3{
+        $minimumX = $this->lastPos->getFloorX() - 200;
+        $minimumZ = $this->lastPos->getFloorZ() - 200;
+        $maximumX = $this->lastPos->getFloorX() + 200;
+        $maximumZ = $this->lastPos->getFloorZ() + 200;
+		for($x_ = $this->lastPos->getFloorX(); $x_ <= $maximumX; $x_++){
+			for($z_ = $this->lastPos->getFloorZ(); $z_ <= $maximumZ; $z_++){
+				if($this->checkClaim(new Position($z_, 0, $z_, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
-					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
-                    return new Vector3 ($i, ($yL + 1), $l);
+					$yL = $this->player->getWorld()->getHighestBlockAt($x_, $z_);
+                    return new Vector3 ($x_, ($yL + 1), $z_);
 				}
 			}
 		}
-		for($i = $x; $i >= ($x - 200); $i--){
-			for($l = $z; $l >= ($z - 200); $l--){
-                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
+		for($x_ = $this->lastPos->getFloorX(); $x_ >= $minimumX; $x_--){
+			for($z_ = $this->lastPos->getFloorZ(); $z_ >= $minimumZ; $z_--){
+                if($this->checkClaim(new Position($x_, 0, $z_, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
-					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
-                    return new Vector3 ($i, ($yL + 1), $l);
+					$yL = $this->player->getWorld()->getHighestBlockAt($x_, $z_);
+                    return new Vector3 ($x_, ($yL + 1), $z_);
 				}
 			}
 		}
-		for($i = $x; $i >= ($x - 200); $i--){
-			for($l = $z; $l <= ($z + 200); $l++){
-                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
+		for($x_ = $this->lastPos->getFloorX(); $x_ >= $minimumX; $x_--){
+			for($z_ = $this->lastPos->getFloorZ(); $z_ <= $maximumZ; $z_++){
+                if($this->checkClaim(new Position($x_, 0, $z_, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
-					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
-                    return new Vector3 ($i, ($yL + 1), $l);
+					$yL = $this->player->getWorld()->getHighestBlockAt($x_, $z_);
+                    return new Vector3 ($x_, ($yL + 1), $z_);
 				}
 			}
 		}
-		for($i = $x; $i <= ($x + 200); $i++){
-			for($l = $z; $l >= ($z - 200); $l--){
-                if($this->checkClaim(new Position($i, 0, $l, $this->lastPos->getWorld()))) {
+		for($x_ = $this->lastPos->getFloorX(); $x_ <= $maximumX; $x_++){
+			for($z_ = $this->lastPos->getFloorZ(); $z_ >= $minimumZ; $z_--){
+                if($this->checkClaim(new Position($x_, 0, $z_, $this->lastPos->getWorld()))) {
 					continue;
 				} else {
-					$yL = $this->player->getWorld()->getHighestBlockAt($i, $l);
-                    return new Vector3 ($i, ($yL + 1), $l);
+					$yL = $this->player->getWorld()->getHighestBlockAt($x_, $z_);
+                    return new Vector3 ($x_, ($yL + 1), $z_);
 				}
 			}
 		}
@@ -115,5 +173,17 @@ class StuckTask extends Task {
         if(($claim = ClaimManager::getInstance()->getClaimByPosition($pos)) instanceof Claim) return $claim->getClaimType()->getType() == ClaimType::FACTION;
         return false;
     }
+
+    private function checkMovement(int $x, int $y, int $z) : bool {
+        $last = $this->lastPos;
+        $xDiff = abs($last->getFloorX() - $x);
+        $yDiff = abs($last->getFloorY() - $y);
+        $zDiff = abs($last->getFloorZ() - $z);
+        if (($xDiff > 5) || ($yDiff > 5) || ($zDiff > 5)) {
+            $this->player->sendMessage(TextFormat::RED . "You moved more than " . TextFormat::BOLD . '5' . TextFormat::RED . " blocks. " . TextFormat::DARK_PURPLE . "Stuck" . TextFormat::RED . " timer ended.");
+            return true;
+        }
+        return false;
+   }
 
 }

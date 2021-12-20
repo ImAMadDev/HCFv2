@@ -6,6 +6,7 @@ use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\events\{Events, EventsCreator};
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 
@@ -28,7 +29,7 @@ class EventsManager{
 		return TextFormat::GREEN . "Haz sido agregado a la creacion de eventos con el evento: ".$event;
 	}
 	
-	public function creatorExists(HCFPlayer $player): bool{
+	#[Pure] public function creatorExists(HCFPlayer $player): bool{
 		if(isset(self::$creators[$player->getName()])) return true;
 		return false;
 	}

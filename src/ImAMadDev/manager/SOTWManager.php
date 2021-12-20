@@ -15,7 +15,7 @@ class SOTWManager implements Listener {
 	public static HCF $main;
 	public static bool $enabled = false;
 	public static int $time = 3600;
-	public static ? StartOfTheWorldTick $tick = null;
+	public static ?StartOfTheWorldTick $tick = null;
 	
 	public function __construct(HCF $main) {
 		self::$main = $main;

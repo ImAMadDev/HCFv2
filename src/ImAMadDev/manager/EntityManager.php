@@ -2,7 +2,7 @@
 
 namespace ImAMadDev\manager;
 
-use ImAMadDev\item\Fireworks;
+use Exception;
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\bedrock\PotionTypeIdMap;
 use pocketmine\data\bedrock\PotionTypeIds;
@@ -15,7 +15,6 @@ use ImAMadDev\entity\mobs\{Enderman, Cow, Creeper, Blaze};
 use ImAMadDev\HCF;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
-use pocketmine\entity\Location;
 use pocketmine\entity\Skin;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -31,7 +30,11 @@ class EntityManager {
 		self::$main = $main;
 		$this->init();
 	}
-	public function init() {
+
+    /**
+     * @throws Exception
+     */
+    public function init() {
         $skin = new Skin("NPCEntity", base64_encode(str_repeat(random_bytes(5) . "\xff", 2048)));
         $factory = EntityFactory::getInstance();
         $factory->register(FishingHook::class, function(World $world, CompoundTag $nbt) : FishingHook{

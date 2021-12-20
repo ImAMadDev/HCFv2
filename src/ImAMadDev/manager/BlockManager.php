@@ -10,7 +10,19 @@ use pocketmine\block\{BlockBreakInfo,
     BlockFactory};
 
 use pocketmine\item\ToolTier;
-use ImAMadDev\block\{Portal, IronDoor, Flower, DoublePlant, MonsterSpawner, PotionGenerator, Observer, Dirt, Grass, TNT, Obsidian, PressurePlate};
+use ImAMadDev\block\{EndPortalFrame,
+    Portal,
+    IronDoor,
+    Flower,
+    DoublePlant,
+    MonsterSpawner,
+    PotionGenerator,
+    Observer,
+    Dirt,
+    Grass,
+    TNT,
+    Obsidian,
+    PressurePlate};
 use ImAMadDev\HCF;
 
 class BlockManager {
@@ -45,6 +57,7 @@ class BlockManager {
         $bf->register(new TNT(), true);
         $bf->register(new IronDoor(), true);
         $bf->register(new Portal(), true);
+        $bf->register(new EndPortalFrame(), true);
         $bf->register(new Obsidian(), true);
         $bf->register(new PotionGenerator(), true);
         $bf->register(new MonsterSpawner(), true);

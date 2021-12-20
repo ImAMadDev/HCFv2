@@ -3,6 +3,7 @@
 namespace ImAMadDev\player\sessions;
 
 use ImAMadDev\player\HCFPlayer;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 
 class ClaimSession
@@ -16,7 +17,13 @@ class ClaimSession
         private string $type,
         private bool $opClaim,
         private HCFPlayer $player
-    ){}
+    )
+    {
+    $this->player->sendMessage(TextFormat::GOLD . "Team land claim started." . TextFormat::YELLOW .
+        PHP_EOL . "Left click at a corner of the land you'd like to claim." .
+        PHP_EOL . "Right click on the second corner of the land you'd like to claim." .
+        PHP_EOL . "Crouch left click the air to purchase your claim.");
+    }
 
     /**
      * @return string

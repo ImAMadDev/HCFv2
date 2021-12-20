@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\utils;
 
+use Closure;
 use GdImage;
 use ImAMadDev\HCF;
 use pocketmine\entity\Skin;
@@ -16,7 +17,7 @@ use pocketmine\utils\TextFormat;
 
 final class HCFUtils {
 	
-	public const DEFAULT_MAP = 'world';
+	public const DEFAULT_MAP = 'MS';
 	
 	public const NETHER_MAP = 'Nether';
 	
@@ -206,5 +207,30 @@ final class HCFUtils {
             $book->setPageText(2, "Page #3");
         }
         $player->getInventory()->addItem($book);
+    }
+
+    public static function firstOrDefault(array $array, Closure $condition, mixed $fallback = null) : mixed{
+        foreach($array as $index => $element){
+            if($condition($index, $element)){
+                return $element;
+            }
+        }
+
+        return $fallback;
+    }
+
+    public static function startsWith(string $string, string $startString): bool
+    {
+        $len = strlen($startString);
+        return (substr($string, 0, $len) === $startString);
+    }
+
+    public static function endsWith(string $string, string $endString): bool
+    {
+        $len = strlen($endString);
+        if ($len == 0) {
+            return true;
+        }
+        return (substr($string, -$len) === $endString);
     }
 }

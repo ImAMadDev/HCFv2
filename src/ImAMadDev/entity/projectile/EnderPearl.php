@@ -192,6 +192,12 @@ class EnderPearl extends Throwable {
       return False;
     }
 
+    public function isInSolid(float $x, float $y, float $z): bool
+    {
+        $block = $this->getWorld()->getBlockAt((int) floor($x), (int) floor($y), (int) floor($z));
+        return $block->isSolid() and !$block->isTransparent() and $block->collidesWithBB($this->getBoundingBox());
+    }
+
     /** 
 	 * @param Int $currentTick
 	 * @return bool

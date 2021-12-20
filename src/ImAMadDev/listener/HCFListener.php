@@ -899,6 +899,22 @@ class HCFListener implements Listener {
                 $this->player->getNetworkSession()->sendDataPacket($pk);
             }
         }, 20);
+        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block) extends Task {
+            private HCFPlayer $player;
+            private Block $block;
+            public function __construct(HCFPlayer $player, Block $block) {
+                $this->player = $player;
+                $this->block = $block;
+            }
+            public function onRun() : void {
+                if($this->player->isOnline() === false) {
+                    return;
+                }
+                $blockRuntimeId = RuntimeBlockMapping::getInstance()->fromRuntimeId($this->block->getFullId());
+                $pk = UpdateBlockPacket::create(new BlockPosition($this->block->getPosition()->x, $this->block->getPosition()->y, $this->block->getPosition()->z), $blockRuntimeId, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+                $this->player->getNetworkSession()->sendDataPacket($pk);
+            }
+        }, 20);
     }
 
     private function createCustomSign(string $name, string $killer) : Item

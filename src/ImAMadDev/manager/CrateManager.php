@@ -18,6 +18,7 @@ use ImAMadDev\crate\Crate;
 
 use ImAMadDev\crate\types\{Basic, CustomCrate, KOTH, Eternal, Sapphire, Anubis, Vote, Cthulhu};
 
+use pocketmine\utils\Filesystem;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\TextFormat;
 use function count;
@@ -105,11 +106,11 @@ class CrateManager {
     {
         if(!is_dir(self::$main->getDataFolder() . "crates")) mkdir(self::$main->getDataFolder() . "crates");
         foreach (glob(self::$main->getDataFolder() . "crates" . DIRECTORY_SEPARATOR . "*yml") as $file) {
-            $config = new Config($file, Config::YAML);
-            $inventory = InventoryUtils::decode(base64_decode($config->get("Inventory", "")));
-            $key = $this->getKeyFromFile($config);
-            $down_block = $this->getBlockFromFile($config);
-            $crate = new CustomCrate(basename($file, ".yml"), $inventory, $config->get("customName", "&6" . basename($file, ".yml")), $key, $down_block->asItem());
+            $contents = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
+            $inventory = InventoryUtils::decode(base64_decode($contents["Inventory"] ?? ""));
+            $key = $this->getKeyFromFile($contents['key']);
+            $down_block = $this->getBlockFromFile($contents['down_block']);
+            $crate = new CustomCrate(basename($file, ".yml"), $inventory, $contents["customName"] ?? "&6" . $contents["name"], $key, $down_block->asItem());
             $this->addCrate($crate);
         }
 	}
@@ -119,32 +120,31 @@ class CrateManager {
      */
     public function createCustomCrate(CrateCreateSession $session) : void
     {
-        $file = new Config(self::$main->getDataFolder() . "crates" . DIRECTORY_SEPARATOR . $session->getData()["name"] . ".yml", Config::YAML, $session->getData());
-        $file->save();
-        $items = InventoryUtils::decode(base64_decode($file->get("Inventory", "")));
-        $key = $this->getKeyFromFile($file);
-        $down_block = $this->getBlockFromFile($file);
-        $crate = new CustomCrate($session->getData()["name"], $items, $file->get("customName", "&6" . $session->getData()["name"]), $key, $down_block->asItem());
+        Filesystem::safeFilePutContents(self::$main->getDataFolder() . "crates/" . $session->getData()['name'] . ".yml", yaml_emit($session->getData(), YAML_UTF8_ENCODING));
+        $items = InventoryUtils::decode(base64_decode($session->getData()["Inventory"] ?? ''));
+        $key = $this->getKeyFromFile($session->getData()['key']);
+        $down_block = $this->getBlockFromFile($session->getData()['down_block']);
+        $crate = new CustomCrate($session->getData()["name"], $items, $session->getData()["customName"] ?? "&6" . $session->getData()["name"], $key, $down_block->asItem());
         $this->addCrate($crate);
     }
 
     /**
-     * @param Config $file
+     * @param string $value
      * @return Item
      */
-    public function getKeyFromFile(Config $file) : Item
+    public function getKeyFromFile(string $value) : Item
     {
-        $icon = explode(":", $file->get("key", ItemIds::DYE . ":0:1"));
+        $icon = explode(":", $value ?? ItemIds::DYE . ":0:1");
         return ItemFactory::getInstance()->get($icon[0], $icon[1], $icon[2]);
     }
 
     /**
-     * @param Config $file
+     * @param string $value
      * @return Block
      */
-    public function getBlockFromFile(Config $file) : Block
+    public function getBlockFromFile(string $value) : Block
     {
-        $block = explode(":", $file->get("down_block", BlockLegacyIds::BRICK_BLOCK . ":0:1"));
+        $block = explode(":", $value ?? BlockLegacyIds::BRICK_BLOCK . ":0:1");
         return BlockFactory::getInstance()->get($block[0], $block[1], $block[2]);
     }
 
@@ -152,7 +152,7 @@ class CrateManager {
 		$this->crates[$crate->getName()] = $crate;
 	}
 	
-	public function getCrateByName(string $name): ?Crate
+	#[Pure] public function getCrateByName(string $name): ?Crate
     {
 		foreach ($this->getCrates() as $crate) {
 			if ($crate->isCrateName($name)) {

@@ -17,7 +17,7 @@ use ImAMadDev\koth\ticks\KOTHTick;
 use ImAMadDev\claim\Claim;
 
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\utils\{SingletonTrait, TextFormat, Config};
+use pocketmine\utils\{Filesystem, SingletonTrait, TextFormat, Config};
 
 class KOTHManager{
     use SingletonTrait;
@@ -39,7 +39,6 @@ class KOTHManager{
         @mkdir($this->main->getDataFolder() . "koths/");
 		foreach(glob($this->main->getDataFolder() . "koths/" . "*.js") as $kothFile) {
             $data = json_decode(file_get_contents($kothFile), true);
-			//$data = (new Config($kothFile, Config::JSON))->getAll();
 			$this->arenas[$data["name"]] = new KOTHArena($data["name"], $data["pos1"], $data["pos2"], $data["corner1"], $data["corner2"], (int)$data["time"], $data["level"], $data["keys"]);
 			$data = ["name" => $data["name"], "x1" => VectorUtils::stringToVector($data["pos1"], ":")->x, "z1" => VectorUtils::stringToVector($data["pos1"], ":")->z, "x2" => VectorUtils::stringToVector($data["pos2"], ":")->x, "z2" => VectorUtils::stringToVector($data["pos2"], ":")->z, "level" => $data["level"], 'claim_type' => ClaimType::KOTH];
 			$claim = new Claim(HCF::getInstance(), $data);
@@ -91,20 +90,13 @@ class KOTHManager{
 	}
 
     /**
-     * @throws JsonException
+     * @param HCFPlayer $player
+     * @return bool
      */
     public function addArena(HCFPlayer $player): bool{
 		$class = $this->creators[$player->getName()];
-		$config = new Config($this->main->getDataFolder()."koths/".$class->name.".js", Config::JSON);
-		$config->set("name", $class->name);
-		$config->set("pos1", $class->pos["one"]);
-		$config->set("pos2", $class->pos["two"]);
-		$config->set("corner1", $class->corner["one"]);
-		$config->set("corner2", $class->corner["two"]);
-		$config->set("level", $class->level);
-		$config->set("time", $class->time);
-		$config->set("keys", $class->keys);
-		$config->save();
+        $dats = ["name" => $class->name, "pos1" => $class->pos["one"], "pos2" => $class->pos["two"], "corner1" => $class->corner["one"], "corner2" => $class->corner["two"], "level" => $class->level, "time" => $class->time, "keys" => $class->keys];
+        Filesystem::safeFilePutContents($this->main->getDataFolder()."koths/".$class->name.".js", json_encode($dats, JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING));
 		$this->arenas[$class->name] = new KOTHArena($class->name, $class->pos["one"], $class->pos["two"], $class->corner["one"], $class->corner["two"], $class->time, $class->level, $class->keys);
 		$data = ["name" => $class->name, "x1" => VectorUtils::stringToVector($class->pos["one"], ":")->x, "z1" => VectorUtils::stringToVector($class->pos["one"], ":")->z, "x2" => VectorUtils::stringToVector($class->pos["two"], ":")->x, "z2" => VectorUtils::stringToVector($class->pos["two"], ":")->z, "level" => $class->level, 'claim_type' => ClaimType::KOTH];
 		$claim = new Claim(HCF::getInstance(), $data);

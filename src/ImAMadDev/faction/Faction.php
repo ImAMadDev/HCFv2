@@ -16,7 +16,7 @@ use ImAMadDev\faction\ticks\{FactionTick, InviteTask, UpdateDataAsyncTask};
 define("FACTION_DIRECTORY", HCF::getInstance()->getDataFolder() . "factions" . DIRECTORY_SEPARATOR);
 class Faction {
 
-	public FactionTick $task;
+	public ?FactionTick $task = null;
 
 	public int $regenerationTime = FactionUtils::REGENERATION_TIME;
 	

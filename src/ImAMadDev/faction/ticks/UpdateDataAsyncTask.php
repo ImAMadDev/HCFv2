@@ -20,7 +20,6 @@ class UpdateDataAsyncTask extends AsyncTask {
 		$main = Server::getInstance()->getPluginManager()->getPlugin("HCF");
 		if(($faction = $main::$factionManager->getFaction($this->faction)) instanceof Faction) {
 			$faction->updateData();
-			$main->getLogger()->info("Datos Actualizados");
 		}
 	}
 
