@@ -6,13 +6,16 @@ use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects, Location};
 use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\HCF;
 use ImAMadDev\kit\classes\IClass;
+use ImAMadDev\player\modules\FactionRank;
 use ImAMadDev\player\modules\ViewClaim;
 use ImAMadDev\player\sessions\ArcherMark;
 use ImAMadDev\player\sessions\ChatMode;
 use ImAMadDev\player\sessions\ClaimSession;
 use ImAMadDev\player\sessions\ClassEnergy;
 use ImAMadDev\player\sessions\PlayerRegion;
+use ImAMadDev\player\sessions\TraderPlayer;
 use ImAMadDev\tags\Tag;
+use ImAMadDev\utils\HCFUtils;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
@@ -49,7 +52,7 @@ use pocketmine\math\{Facing, Vector3, AxisAlignedBB};
 use ImAMadDev\faction\Faction;
 use ImAMadDev\rank\RankClass;
 use ImAMadDev\customenchants\CustomEnchantment;
-use ImAMadDev\manager\{AbilityManager, CrateManager, ClaimManager, KitManager};
+use ImAMadDev\manager\{AbilityManager, CrateManager, ClaimManager, FactionManager, KitManager};
 use ImAMadDev\utils\InventoryUtils;
 use ImAMadDev\crate\Crate;
 use ImAMadDev\ticks\player\{ParticleTick, BardTick};
@@ -120,6 +123,8 @@ class HCFPlayer extends Player {
 
     private array $previousBlocks = [];
 
+    private TraderPlayer $traderPlayer;
+
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
         parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
@@ -128,6 +133,7 @@ class HCFPlayer extends Player {
         $this->archerMark = new ArcherMark($this);
         $this->energy = new ClassEnergy($this);
         $this->claimView = new ViewClaim($this);
+        $this->traderPlayer = new TraderPlayer($this);
     }
 
     public function setCanLogout(bool $can = false) : void {
@@ -352,6 +358,7 @@ class HCFPlayer extends Player {
 	
 	public function setFaction(?Faction $faction): void {
 		$this->faction = $faction;
+        $this->getCache()->loadFactionRank();
 	}
 	
 	public function setInvincible(?int $time = null): void {
@@ -425,13 +432,7 @@ class HCFPlayer extends Player {
 		$this->addBalance(PlayerUtils::KILL_PRICE);
 		if($this->getInventory()->getItemInHand()->getId() !== 0) {
 			$item = $this->getInventory()->getItemInHand();
-			$lore = $item->getLore();
-			$message = TextFormat::colorize("&9{$this->getName()}&e killed &f$name");
-			if(count($lore) >= 10){
-				array_shift($lore);
-			}
-			$lore[] = $message;
-			$item->setLore($lore);
+            HCFUtils::addKillsLore($item,$this->getName(), $name);
 			$this->getInventory()->setItemInHand($item);
 		}
 	}
@@ -458,6 +459,7 @@ class HCFPlayer extends Player {
             $this->checkAbilityLastHit();
             $this->updateNameTag();
             $this->checkRank();
+            $this->upa();
         }
         return parent::onUpdate($currentTick);
     }
@@ -828,15 +830,27 @@ class HCFPlayer extends Player {
 
     public function upa() : void
     {
+        if (!$this->getEffects()->has(VanillaEffects::INVISIBILITY())) return;
         $metadata = new EntityMetadataCollection();
         $metadata->setLong(EntityMetadataProperties::FLAGS, 0
-            ^ 1 << EntityMetadataFlags::INVISIBLE);
+            ^ 0 << EntityMetadataFlags::INVISIBLE);
         $pk2 = new SetActorDataPacket();
         $pk2->actorRuntimeId = $this->getId();
         $pk2->metadata = $metadata->getAll();
         foreach ($this->getViewers() as $viewer) {
-            $viewer->getNetworkSession()->sendDataPacket($pk2);
+            if ($viewer instanceof HCFPlayer) {
+                if (FactionManager::getInstance()->equalFaction($viewer->getFaction(), $this->getFaction())) {
+                    $viewer->getNetworkSession()->sendDataPacket($pk2);
+                }
+            }
         }
-       // $this->sendData($this->getViewers(), [EntityMetadataFlags::INVISIBLE =>  new StringMetadataProperty($customTag)]);
+    }
+
+    /**
+     * @return TraderPlayer
+     */
+    public function getTraderPlayer(): TraderPlayer
+    {
+        return $this->traderPlayer;
     }
 }

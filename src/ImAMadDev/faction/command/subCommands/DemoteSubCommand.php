@@ -44,7 +44,7 @@ class DemoteSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "This player can't be demoted!");
 			return;
 		}
-		if($sender->getFaction()->isColeader($player->getName())) {
+		if($sender->getFaction()->isCoLeader($player->getName())) {
 			$sender->getFaction()->addMember($player);
 			$sender->getFaction()->message(TextFormat::GREEN . $player->getName() . TextFormat::GRAY . " Demoted from Coleader to Member by " . TextFormat::LIGHT_PURPLE . $sender->getName());
 		}

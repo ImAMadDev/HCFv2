@@ -40,7 +40,7 @@ class LeaderSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do this!");
 			return;
 		}
-		$sender->getFaction()->addColeader($sender, $player);
+		$sender->getFaction()->addCoLeader($sender, $player);
 		$sender->getFaction()->message(TextFormat::GREEN . $player->getName() . TextFormat::GRAY . " has been promoted to " . TextFormat::GOLD . "Leader");
 	}
 }

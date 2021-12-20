@@ -22,4 +22,10 @@ final class FactionUtils {
 	public const REGENERATION_TIME = 300;
 	
 	public const FREEZE_TIME = 1200;
+
+    public const MEMBER = 'member';
+
+    public const CO_LEADER = 'co_leader';
+
+    public const LEADER = 'leader';
 }

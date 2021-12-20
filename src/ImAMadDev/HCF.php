@@ -14,8 +14,7 @@ use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase;
 
-use ImAMadDev\manager\{
-    FactionManager,
+use ImAMadDev\manager\{FactionManager,
     TagManager,
     TextsManager,
     EventsManager,
@@ -30,7 +29,8 @@ use ImAMadDev\manager\{
     EntityManager,
     ClaimManager,
     RankManager,
-    CommandManager};
+    CommandManager,
+    TradeManager};
 use ImAMadDev\listener\HCFListener;
 use ImAMadDev\listener\projectile\ProjectileListener;
 use ImAMadDev\faction\FactionListener;
@@ -83,6 +83,8 @@ class HCF extends PluginBase {
 
     public const INV_MENU_TYPE_ENDER_CHEST = "hcf:enderchest";
 
+    private static TradeManager $tradeManager;
+
     public function onLoad(): void{
 		$this->loadInstances();
 	}
@@ -122,6 +124,7 @@ class HCF extends PluginBase {
         }
         Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::DEFAULT_MAP);
 		self::$textsManager = new TextsManager($this);
+        FactionManager::getInstance()->validateAll();
 	}
 
 	private function loadInstances() : void {
@@ -138,6 +141,7 @@ class HCF extends PluginBase {
 		self::$EventsManager = new EventsManager($this);
         self::$tagManager = new TagManager($this);
         self::$redeemManager = new RedeemManager($this);
+        self::$tradeManager = new TradeManager($this);
 		new EntityManager($this);
 		new BlockManager($this);
 		new ItemManager($this);
@@ -151,7 +155,15 @@ class HCF extends PluginBase {
 	public static function getClaimManager() : ClaimManager {
 		return self::$claimManager;
 	}
-	
+
+    /**
+     * @return TradeManager
+     */
+    public static function getTradeManager(): TradeManager
+    {
+        return self::$tradeManager;
+    }
+
 	public static function getFactionManager() : FactionManager {
 		return self::$factionManager;
 	}
@@ -260,7 +272,7 @@ class HCF extends PluginBase {
                 }
             }
         }
-        return self::$player_cache[$found];
+        return self::$player_cache[$found] ?? null;
     }
 
     public function getStaffs() : array

@@ -2,7 +2,11 @@
 
 namespace ImAMadDev\player;
 
+use ImAMadDev\faction\Faction;
+use ImAMadDev\faction\FactionUtils;
 use ImAMadDev\HCF;
+use ImAMadDev\manager\FactionManager;
+use ImAMadDev\player\modules\FactionRank;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
@@ -12,11 +16,16 @@ define("COUNTDOWN", '_countdown');
 class PlayerCache
 {
     use SingletonTrait;
+    
+    private FactionRank $factionRank;
 
     public function __construct(
         private string $name,
         private array $data
-    ){}
+    ){
+        $this->factionRank = new FactionRank($this->name);
+        $this->loadFactionRank();
+    }
 
     /**
      * @return string
@@ -137,6 +146,40 @@ class PlayerCache
         if (file_exists(PLAYER_DIRECTORY . $this->name . ".js")) {
             file_put_contents(PLAYER_DIRECTORY . $this->name . ".js", $this->getJsonData());
         }
+    }
+
+    public function loadFactionRank() : void
+    {
+        $faction = FactionManager::getInstance()->getFactionByPlayer($this->getName());
+        if ($this->getInData('faction') === null){
+            if ($faction instanceof Faction){
+                if ($faction->isLeader($this->getName())) {
+                    $faction->disband();
+                    return;
+                }
+                if ($faction->isInFaction($this->getName())) {
+                    $faction->removeMember($this->getName());
+                    return;
+                }
+                $this->getFactionRank()->set(null);
+            }
+        } else {
+            if ($faction instanceof Faction){
+                if ($faction->isLeader($this->getName())) $this->getFactionRank()->set(FactionUtils::LEADER);
+                if ($faction->isCoLeader($this->getName())) $this->getFactionRank()->set(FactionUtils::CO_LEADER);
+                if ($faction->isMember($this->getName())) $this->getFactionRank()->set(FactionUtils::MEMBER);
+            } else {
+                $this->setInData('faction', null);
+            }
+        }
+    }
+
+    /**
+     * @return FactionRank
+     */
+    public function getFactionRank(): FactionRank
+    {
+        return $this->factionRank;
     }
 
 }

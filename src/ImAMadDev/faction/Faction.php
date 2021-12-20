@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\faction;
 
+use ImAMadDev\manager\FactionManager;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
@@ -51,7 +52,7 @@ class Faction {
 		return $this->data['leader'];
 	}
 	
-	public function getColeaders() : array {
+	public function getCoLeaders() : array {
 		return $this->data['coleaders'];
 	}
 	
@@ -73,9 +74,9 @@ class Faction {
 		return in_array($name, $this->getMembers(), true);
 	}
 	
-	public function isColeader(string $name) : bool {
+	public function isCoLeader(string $name) : bool {
         if(empty($name)) return false;
-		return in_array($name, $this->getColeaders(), true);
+		return in_array($name, $this->getCoLeaders(), true);
 	}
 	
 	public function isAlly(string $name) : bool {
@@ -139,7 +140,7 @@ class Faction {
 	}
 	
 	public function setLeader(HCFPlayer $player) : void {
-		if($this->isColeader($player->getName())) {
+		if($this->isCoLeader($player->getName())) {
 			$this->removeMember($player->getName());
 		}
 		if($this->isMember($player->getName())) {
@@ -156,7 +157,7 @@ class Faction {
 			$this->data['leader'] = array_rand($this->data['coleaders'], array_rand($this->data['coleaders']));
 			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
-		if($this->isColeader($player->getName())) {
+		if($this->isCoLeader($player->getName())) {
 			$this->removeMember($player->getName());
 		}
 		if(!$this->isMember($player->getName())) {
@@ -187,7 +188,7 @@ class Faction {
         $this->rally = new FactionRally($player->getPosition(), $player->getName());
     }
 	
-	public function addColeader(HCFPlayer $player, ? HCFPlayer $newLeader = null) : void {
+	public function addCoLeader(HCFPlayer $player, ? HCFPlayer $newLeader = null) : void {
 		if($this->isLeader($player->getName())) {
 			if($newLeader === null) {
 				$this->data['leader'] = array_rand($this->data['coleaders'], array_rand($this->data['coleaders']));
@@ -199,7 +200,7 @@ class Faction {
 		if($this->isMember($player->getName())) {
 			$this->removeMember($player->getName());
 		}
-		if(!$this->isColeader($player->getName())) {
+		if(!$this->isCoLeader($player->getName())) {
 			$this->data['coleaders'][] = $player->getName();
             $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
@@ -360,7 +361,7 @@ class Faction {
     }
 	
 	public function getAllMembers() : array {
-		$newArray = array_merge($this->getMembers(), $this->getColeaders());
+		$newArray = array_merge($this->getMembers(), $this->getCoLeaders());
 		$newArray[] = $this->getLeader();
 		return $newArray;
 	}
@@ -406,9 +407,9 @@ class Faction {
 	}
 	
 	public function removeMember(string $player) : void {
-		if($this->isColeader($player)) {
+		if($this->isCoLeader($player)) {
 			$new = [];
-			foreach($this->getColeaders() as $co) {
+			foreach($this->getCoLeaders() as $co) {
 				if($co === $player) {
 					continue;
 				}
@@ -452,7 +453,7 @@ class Faction {
 			}
 		}
         $this->task?->getHandler()->cancel();
-		$this->main->getFactionManager()->disband($this->getName());
+        FactionManager::getInstance()->disband($this->getName());
 	}
 
     public function saveData() : void

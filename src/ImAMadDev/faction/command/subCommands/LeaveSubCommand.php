@@ -31,7 +31,7 @@ class LeaveSubCommand extends SubCommand {
 		}
 		$sender->getFaction()->message(TextFormat::GREEN . $sender->getName() . TextFormat::RED . " has left the faction!");
 		$sender->getFaction()->removeMember($sender->getName());
-		$sender->setFaction(null);
         $sender->getCache()->setInData('faction', null);
+		$sender->setFaction(null);
     }
 }

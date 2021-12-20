@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\utils;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\Server;
 use pocketmine\math\{Vector3, AxisAlignedBB};
 use pocketmine\world\Position;
@@ -19,8 +20,8 @@ final class VectorUtils {
 	}
 	
 	
-	public static function positionToString(Position $pos) : string {
-		return implode(',', [$pos->x, $pos->y, $pos->z, $pos->level->getName()]); 
+	#[Pure] public static function positionToString(Position $pos) : string {
+		return implode(',', [$pos->x, $pos->y, $pos->z, $pos->world->getFolderName()]);
 	}
 	
 	public static function stringToPosition(string $pos, string $separator = ",") : Position {
@@ -28,7 +29,7 @@ final class VectorUtils {
 		return new Position(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2], $level);
 	}
 	
-	public static function stringToVector(string $pos, string $separator = ",") : Vector3 {
+	#[Pure] public static function stringToVector(string $pos, string $separator = ",") : Vector3 {
 		return new Vector3(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2]);
 	}
 }

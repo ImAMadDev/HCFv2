@@ -6,20 +6,21 @@ use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\TradeManager;
 use muqsit\invmenu\InvMenu;
+use muqsit\invmenu\transaction\InvMenuTransactionResult;
+use muqsit\invmenu\transaction\SimpleInvMenuTransaction;
+use muqsit\invmenu\type\InvMenuTypeIds;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class TradeSession {
-	
-	private HCFPlayer $sender;
-	
-	private HCFPlayer $receiver;
-	
-	private int $time;
-	
+
+    private int $time;
+
 	private ?int $tradeTime = null;
 	
 	private bool $senderStatus = false;
@@ -30,11 +31,13 @@ class TradeSession {
 	
 	private int $key;
 	
-	public function __construct(HCFPlayer $sender, HCFPlayer $receiver) {
-		$this->sender = $sender;
-		$this->receiver = $receiver;
+	public function __construct(
+        private HCFPlayer $sender,
+        private HCFPlayer $receiver) {
+        $sender->getTraderPlayer()->setHasSession(true);
+        $receiver->getTraderPlayer()->setHasSession(true);
 		$this->time = time();
-		$this->menu = InvMenu::create(InvMenu::TYPE_CHEST);
+		$this->menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$this->menu->setName(TextFormat::YELLOW . "Trading Session");
 		$item = ItemFactory::getInstance()->get(ItemIds::STAINED_GLASS, 14);
 		$item->setCustomName(TextFormat::RESET . TextFormat::RED . TextFormat::BOLD . "DENY");
@@ -45,51 +48,51 @@ class TradeSession {
 		$item->setLore([TextFormat::RESET . TextFormat::GRAY . "This can only be modified by " . TextFormat::LIGHT_PURPLE . $this->receiver->getName()]);
 		$this->menu->getInventory()->setItem(22, $item);
 		$this->menu->setListener(
-			function(Player $player, Item $itemClicked, Item $itemClickedWith, SlotChangeAction $action): bool {
-				if($action->getSlot() === 4 and $player->getRawUniqueId() === $this->sender->getRawUniqueId()) {
-					if($itemClicked->getId() === Item::STAINED_GLASS and $itemClicked->getDamage() === 14) {
+			function(SimpleInvMenuTransaction $st): InvMenuTransactionResult {
+				if($st->getAction()->getSlot() === 4 and $st->getPlayer()->getUniqueId()->equals($this->sender->getUniqueId())) {
+					if($st->getItemClicked()->getId() === ItemIds::STAINED_GLASS and $st->getItemClicked()->getMeta() === 14) {
 						$item = ItemFactory::getInstance()->get(ItemIds::STAINED_GLASS, 13);
 						$item->setCustomName(TextFormat::RESET . TextFormat::GREEN . TextFormat::BOLD . "ACCEPT");
 						$item->setLore([TextFormat::RESET . TextFormat::GRAY . "This can only be modified by " . TextFormat::LIGHT_PURPLE . $this->sender->getName()]);
-						$action->getInventory()->setItem(4, $item);
+                        $st->getAction()->getInventory()->setItem(4, $item);
 						$this->senderStatus = true;
-						return false;
-					}elseif($itemClicked->getId() === Item::STAINED_GLASS and $itemClicked->getDamage() === 13) {
+						return $st->discard();
+					}elseif($st->getItemClicked()->getId() === ItemIds::STAINED_GLASS and $st->getItemClicked()->getMeta() === 13) {
 						$item = ItemFactory::getInstance()->get(ItemIds::STAINED_GLASS, 14);
 						$item->setCustomName(TextFormat::RESET . TextFormat::RED . TextFormat::BOLD . "DENY");
 						$item->setLore([TextFormat::RESET . TextFormat::GRAY . "This can only be modified by " . TextFormat::LIGHT_PURPLE . $this->sender->getName()]);
-						$action->getInventory()->setItem(4, $item);
+						$st->getAction()->getInventory()->setItem(4, $item);
 						$this->senderStatus = false;
-						return false;
+						return $st->discard();
 					}
 				}
-				if($action->getSlot() === 22 and $player->getRawUniqueId() === $this->receiver->getRawUniqueId()) {
-					if($itemClicked->getId() === Item::STAINED_GLASS and $itemClicked->getDamage() === 14) {
+				if($st->getAction()->getSlot() === 22 and $st->getPlayer()->getUniqueId()->equals($this->receiver->getUniqueId())) {
+					if($st->getItemClicked()->getId() === ItemIds::STAINED_GLASS and $st->getItemClicked()->getMeta() === 14) {
 						$item = ItemFactory::getInstance()->get(ItemIds::STAINED_GLASS, 13);
 						$item->setCustomName(TextFormat::RESET . TextFormat::GREEN . TextFormat::BOLD . "ACCEPT");
 						$item->setLore([TextFormat::RESET . TextFormat::GRAY . "This can only be modified by " . TextFormat::LIGHT_PURPLE . $this->receiver->getName()]);
-						$action->getInventory()->setItem(22, $item);
+                        $st->getAction()->getInventory()->setItem(22, $item);
 						$this->receiverStatus = true;
-						return false;
-					} elseif($itemClicked->getId() === Item::STAINED_GLASS and $itemClicked->getDamage() === 13) {
+						return $st->discard();
+					} elseif($st->getItemClicked()->getId() === ItemIds::STAINED_GLASS and $st->getItemClicked()->getMeta() === 13) {
 						$item = ItemFactory::getInstance()->get(ItemIds::STAINED_GLASS, 14);
 						$item->setCustomName(TextFormat::RESET . TextFormat::RED . TextFormat::BOLD . "DENY");
 						$item->setLore([TextFormat::RESET . TextFormat::GRAY . "This can only be modified by " . TextFormat::LIGHT_PURPLE . $this->receiver->getName()]);
-						$action->getInventory()->setItem(22, $item);
+                        $st->getAction()->getInventory()->setItem(22, $item);
 						$this->receiverStatus = false;
-						return false;
+						return $st->discard();
 					}
 				}
-				if($action->getSlot() === 13) {
-					return false;
+				if($st->getAction()->getSlot() === 13) {
+					return $st->discard();
 				}
-				if(($action->getSlot() % 9) < 4 and $player->getRawUniqueId() === $this->sender->getRawUniqueId() and $this->senderStatus === false and $this->receiverStatus === false) {
-					return true;
+				if(($st->getAction()->getSlot() % 9) < 4 and $st->getPlayer()->getUniqueId()->equals($this->sender->getUniqueId()) and $this->senderStatus === false and $this->receiverStatus === false) {
+					return $st->continue();
 				}
-				if(($action->getSlot() % 9) > 4 and $player->getRawUniqueId() === $this->receiver->getRawUniqueId() and $this->receiverStatus === false and $this->senderStatus === false) {
-					return true;
+				if(($st->getAction()->getSlot() % 9) > 4 and $st->getPlayer()->getUniqueId()->equals($this->receiver->getUniqueId()) and $this->receiverStatus === false and $this->senderStatus === false) {
+					return $st->continue();
 				}
-				return false;
+				return $st->discard();
 			}
 		);
 		$this->menu->setInventoryCloseListener(
@@ -105,7 +108,7 @@ class TradeSession {
 								$inventory->addItem($item);
 								continue;
 							}
-							$this->sender->getWorld()->dropItem($this->sender, $item);
+							$this->sender->getWorld()->dropItem($this->sender->getPosition(), $item);
 						} else {
 							$this->receiver->sendMessage(TextFormat::RED . "Sender is Offline");
 							return;
@@ -120,23 +123,18 @@ class TradeSession {
 								$inventory->addItem($item);
 								continue;
 							}
-							$this->receiver->getWorld()->dropItem($this->receiver, $item);
+							$this->receiver->getWorld()->dropItem($this->receiver->getPosition(), $item);
 						} else {
 							$this->sender->sendMessage(TextFormat::RED . "Sender is Offline");
 							return; 
 						}
 					}
 				}
-				$this->menu->getInventory()->clearAll(true);
-				if($this->sender->isOnline()) {
-					$this->sender->removeWindow($this->menu->getInventory(), true);
-				}
-				if($this->receiver->isOnline()) {
-					$this->receiver->removeWindow($this->menu->getInventory(), true);
-				}
+				$this->menu->getInventory()->clearAll();
 				TradeManager::getInstance()->removeSession($this->key);
 			}
 		);
+        $this->sendMenus();
 	}
 	
 	public function getSender(): HCFPlayer {
@@ -156,11 +154,11 @@ class TradeSession {
 		$this->key = $key;
 		if(!$this->sender->isOnline() or !$this->receiver->isOnline()) {
 			if($this->sender->isOnline()) {
-				$this->sender->removeWindow($this->menu->getInventory(), true);
+				$this->sender->removeCurrentWindow();
 				$this->sender->sendMessage("successTrade");
 			}
 			if($this->receiver->isOnline()) {
-				$this->receiver->removeWindow($this->menu->getInventory(), true);
+				$this->receiver->removeCurrentWindow();
 				$this->receiver->sendMessage("successTrade");
 			}
 			$manager->removeSession($key);
@@ -185,7 +183,7 @@ class TradeSession {
 								$inventory->addItem($item);
 								continue;
 							}
-							$this->receiver->getWorld()->dropItem($this->receiver, $item);
+							$this->receiver->getWorld()->dropItem($this->receiver->getPosition(), $item);
 						} else {
 							$this->receiver->sendMessage(TextFormat::RED . "Sender is Offline");
 							return; 
@@ -200,23 +198,37 @@ class TradeSession {
 								$inventory->addItem($item);
 								continue;
 							}
-							$this->receiver->getWorld()->dropItem($this->receiver, $item);
+							$this->receiver->getWorld()->dropItem($this->receiver->getPosition(), $item);
 						} else {
 							$this->sender->sendMessage(TextFormat::RED . "Sender is Offline");
 							return; 
 						}
 					}
-				}$this->menu->getInventory()->clearAll(true);
+				}$this->menu->getInventory()->clearAll();
                 if($this->sender->isOnline()) {
-                    $this->sender->removeWindow($this->menu->getInventory(), true);
+                    $this->sender->removeCurrentWindow();
                     $this->sender->sendMessage("successTrade");
                 }
                 if($this->receiver->isOnline()) {
-                    $this->receiver->removeWindow($this->menu->getInventory(), true);
+                    $this->receiver->removeCurrentWindow();
                     $this->receiver->sendMessage("successTrade");
                 }
                 $manager->removeSession($key);
             }
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getTime(): int
+    {
+        return $this->time;
+    }
+
+    public function __destruct()
+    {
+        $this->getSender()?->getTraderPlayer()?->setHasSession(true);
+        $this->getReceiver()?->getTraderPlayer()?->setHasSession(true);
     }
 }

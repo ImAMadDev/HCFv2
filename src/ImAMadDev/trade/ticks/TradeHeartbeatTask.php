@@ -10,8 +10,7 @@ use pocketmine\scheduler\Task;
 
 class TradeHeartbeatTask extends Task {
 
-    /** @var TradeSession */
-    private $manager;
+    private TradeManager $manager;
 
     /**
      * TradeHeartbeatTask constructor.
@@ -22,12 +21,7 @@ class TradeHeartbeatTask extends Task {
         $this->manager = $manager;
     }
 
-    /**
-     * @param int $currentTick
-     *
-     * @throws TranslationException
-     */
-    public function onRun(int $currentTick) {
+    public function onRun() : void {
         foreach($this->manager->getSessions() as $key => $session) {
             $session->tick($key, $this->manager);
         }

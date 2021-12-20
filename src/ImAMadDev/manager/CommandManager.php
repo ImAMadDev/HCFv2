@@ -4,6 +4,7 @@ namespace ImAMadDev\manager;
 
 use ImAMadDev\staff\command\StaffCommand;
 use ImAMadDev\tags\command\TagCommand;
+use ImAMadDev\trade\command\TradeCommand;
 use ImAMadDev\youtubers\redeem\command\RedeemCommand;
 use pocketmine\command\Command;
 use pocketmine\plugin\PluginException;
@@ -92,6 +93,7 @@ class CommandManager {
         $this->registerCommand(new CapeCommand());
         $this->registerCommand(new RedeemCommand());
         $this->registerCommand(new StaffCommand());
+      //  $this->registerCommand(new TradeCommand());
 	}
 	
 	public function registerCommand(Command $command): void {

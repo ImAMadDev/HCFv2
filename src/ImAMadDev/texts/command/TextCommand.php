@@ -4,10 +4,12 @@ namespace ImAMadDev\texts\command;
 
 use ImAMadDev\command\Command;
 use ImAMadDev\texts\command\subCommands\CreateSubCommand;
+use ImAMadDev\texts\command\subCommands\EditSubCommand;
 use ImAMadDev\texts\command\subCommands\ListSubCommand;
 use ImAMadDev\texts\command\subCommands\DisbandSubCommand;
-use ImAMadDev\texts\command\subCommands\EditSubCommand;
+use ImAMadDev\texts\command\subCommands\TPHereSubCommand;
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat;
 
 class TextCommand extends Command {
 	
@@ -16,7 +18,8 @@ class TextCommand extends Command {
 		$this->addSubCommand(new CreateSubCommand());
 		$this->addSubCommand(new ListSubCommand());
 		$this->addSubCommand(new DisbandSubCommand());
-		$this->addSubCommand(new EditSubCommand());
+        $this->addSubCommand(new EditSubCommand());
+		$this->addSubCommand(new TPHereSubCommand());
 	}
 	
 	public function execute(CommandSender $sender, string $commandLabel, array $args): void {
@@ -36,4 +39,3 @@ class TextCommand extends Command {
 		$sender->sendMessage("/text help <1-5>");
 	}
 }
-?>

@@ -44,11 +44,11 @@ class PromoteSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . $player->getName() . " can not be promoted!");
 			return;
 		}
-		if($sender->getFaction()->isColeader($player->getName())) {
+		if($sender->getFaction()->isCoLeader($player->getName())) {
 			$sender->sendMessage(TextFormat::RED . $player->getName() . " can not be promoted!");
 			return;
 		}
 		$sender->getFaction()->message(TextFormat::GREEN . $player->getName() . TextFormat::GRAY . " has been promoted to " . TextFormat::LIGHT_PURPLE . $sender->getName());
-		$sender->getFaction()->addColeader($player);
+		$sender->getFaction()->addCoLeader($player);
 	}
 }

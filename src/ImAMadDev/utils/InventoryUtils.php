@@ -8,6 +8,7 @@ use pocketmine\nbt\TreeRoot;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\{ListTag, CompoundTag};
+use pocketmine\plugin\PluginException;
 
 final class InventoryUtils {
 	

@@ -28,7 +28,7 @@ class KickSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . $this->getUsage());
 			return;
 		}
-		if($sender->getFaction()->isLeader($sender->getName()) === false && $sender->getFaction()->isColeader($sender->getName()) === false) {
+		if($sender->getFaction()->isLeader($sender->getName()) === false && $sender->getFaction()->isCoLeader($sender->getName()) === false) {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do!");
 			return;
 		}
@@ -42,13 +42,14 @@ class KickSubCommand extends SubCommand {
 			return;
 		}
         $player = $this->getServer()->getPlayerByPrefix($name);
+        if($sender->getFaction()->isInFaction($name)) {
+            HCF::getInstance()->getCache($name)?->setInData('faction', null);
+            HCF::getInstance()->getCache($name)?->loadFactionRank();
+        }
 		if($player instanceof HCFPlayer) {
 			if($sender->getFaction()->isInFaction($name)) {
 				$player->setFaction(null);
 			}
-		} 
-		if($sender->getFaction()->isInFaction($name)) {
-            HCF::getInstance()->getCache($name)->setInData('faction', null);
 		}
 		$sender->getFaction()->message(TextFormat::GREEN . $name . " has left the faction.");
 		$sender->getFaction()->removeMember($name);

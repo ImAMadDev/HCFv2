@@ -5,6 +5,7 @@ namespace ImAMadDev\staff\command;
 use ImAMadDev\command\Command;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\staff\command\subCommands\ChatSubCommand;
+use ImAMadDev\staff\command\subCommands\CopyInvSubCommand;
 use ImAMadDev\staff\command\subCommands\EnderchestSubCommand;
 use ImAMadDev\staff\command\subCommands\InvSubCommand;
 use ImAMadDev\youtubers\redeem\command\subCommand\AddSubCommand;
@@ -31,6 +32,7 @@ class StaffCommand extends Command
         $this->addSubCommand(new EnderchestSubCommand());
         $this->addSubCommand(new InvSubCommand());
         $this->addSubCommand(new ChatSubCommand());
+        $this->addSubCommand(new CopyInvSubCommand());
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): void

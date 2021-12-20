@@ -98,6 +98,19 @@ class CustomEnchantments {
         return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
+    public static function filterDisplayedEnchants(ItemStack $itemStack): ItemStack
+    {
+        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
+        $tag = $item->getNamedTag();
+        if (count($item->getEnchantments()) > 0) $tag->removeTag(Item::TAG_DISPLAY);
+        if ($tag->getTag("OriginalDisplayTag") instanceof CompoundTag) {
+            $tag->setTag(Item::TAG_DISPLAY, $tag->getTag("OriginalDisplayTag"));
+            $tag->removeTag("OriginalDisplayTag");
+        }
+        $item->setNamedTag($tag);
+        return TypeConverter::getInstance()->coreItemStackToNet($item);
+    }
+
     public static function displayEnchantsOld(Item &$item): void
     {
         if (count($item->getEnchantments()) > 0) {

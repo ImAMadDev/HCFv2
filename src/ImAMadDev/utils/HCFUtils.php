@@ -3,15 +3,18 @@
 namespace ImAMadDev\utils;
 
 use Closure;
+use DateTime;
 use GdImage;
 use ImAMadDev\HCF;
+use pocketmine\block\tile\Sign;
 use pocketmine\entity\Skin;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
-use pocketmine\item\WritableBook;
 use pocketmine\item\WrittenBook;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\player\Player;
-use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
@@ -58,7 +61,6 @@ final class HCFUtils {
 
     public static function strToSeconds(string $string) : ?int {
         //if(!preg_match("/(^[1-9][0-9]{0,2}[mhd])(,[1-9][0-9]{0,2}[mhd]){0,2}$/", $string)) return null;
-        Server::getInstance()->broadcastMessage("time: " . $string);
         $time = 0;
         $parts = explode(",", $string);
         foreach($parts as $part) {
@@ -219,18 +221,32 @@ final class HCFUtils {
         return $fallback;
     }
 
-    public static function startsWith(string $string, string $startString): bool
+    public static function createDeathSign(string $name, string $killer) : Item
     {
-        $len = strlen($startString);
-        return (substr($string, 0, $len) === $startString);
+        $sing = ItemFactory::getInstance()->get(ItemIds::SIGN, 0);
+        $date = new DateTime();
+        $time = $date->format('D H:i:s');
+        $text = [TextFormat::GREEN . $name, TextFormat::GRAY . "slain by", TextFormat::GREEN . $killer, TextFormat::GRAY . $time];
+        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag(join(TextFormat::EOL, $text)));
+        $sing->setCustomBlockData($nbt);
+        $sing->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . $name);
+        return $sing;
     }
 
-    public static function endsWith(string $string, string $endString): bool
+    public static function addKillsLore(Item &$stack, string $killer, string $player) : void
     {
-        $len = strlen($endString);
-        if ($len == 0) {
-            return true;
+        $lore = $stack->getLore();
+        $next_lore = $lore;
+        if (empty($lore) || !str_starts_with(TextFormat::clean($lore[0]), "Kills: ")) {
+            array_unshift($next_lore, TextFormat::DARK_RED . "Kills: " . TextFormat::YELLOW . "1");
+        } else {
+            $killsString = str_replace(TextFormat::DARK_RED . "Kills: " . TextFormat::YELLOW, "", $lore[0]);
+            $kills = intval($killsString);
+            $next_lore[0] = TextFormat::DARK_RED . "Kills: " . TextFormat::YELLOW . ($kills += 1);
+            $next_lore[1] = "";
+            $next_lore = array_slice($next_lore, 0, 6);
         }
-        return (substr($string, -$len) === $endString);
+        $next_lore[] = $killer . TextFormat::WHITE . " killed " . TextFormat::RED . $player;
+        $stack->setLore($next_lore);
     }
 }

@@ -6,6 +6,7 @@ use JetBrains\PhpStorm\Pure;
 use pocketmine\block\Block;
 use pocketmine\block\Door;
 use pocketmine\block\FenceGate;
+use pocketmine\block\tile\Container;
 use pocketmine\block\Trapdoor;
 
 class EditClaimFlag
@@ -32,13 +33,12 @@ class EditClaimFlag
         $this->blocks = $blocks;
     }
 
-    #[Pure] public function run(Block $block) : bool
+    public function run(Block $block) : bool
     {
         if (empty($this->getBlocks())) return false;
         foreach ($this->getBlocks() as $block_) {
-            if ($block->getIdInfo()->getBlockId() == $block_ or $block instanceof Trapdoor or $block instanceof Door or $block instanceof FenceGate){
-                return false;
-            }
+            if($this->isCancelMovement() == false) if ($block->getPosition()->getWorld()->getTile($block->getPosition()) instanceof Container) return false;
+            if ($block->getIdInfo()->getBlockId() == $block_ or $block instanceof Trapdoor or $block instanceof Door or $block instanceof FenceGate) return false;
         }
         return true;
     }

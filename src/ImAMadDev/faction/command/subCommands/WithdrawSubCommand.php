@@ -23,7 +23,7 @@ class WithdrawSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You must be in a Faction to do this!");
 			return;
 		}
-		if(!$sender->getFaction()->isLeader($sender->getName()) || !$sender->getFaction()->isColeader($sender->getName())) {
+		if(!$sender->getFaction()->isLeader($sender->getName()) || !$sender->getFaction()->isCoLeader($sender->getName())) {
 			$sender->sendMessage(TextFormat::RED . "You doesn't have permissions to do this!");
 			return;
 		}

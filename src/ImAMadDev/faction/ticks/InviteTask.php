@@ -61,7 +61,7 @@ class InviteTask extends Task {
 			if($this->time-- <= 0) {
 				$this->faction->removeAllyRequest($faction);
 				foreach($faction->getOnlineMembers() as $m) {
-					if($faction->isLeader($m->getName()) or $faction->isColeader($m->getName())) {
+					if($faction->isLeader($m->getName()) or $faction->isCoLeader($m->getName())) {
 						$m->sendMessage(TextFormat::RED . "Your invitation to the faction " . TextFormat::GOLD . $this->faction->getName() . TextFormat::RED . " has expired!");
 					}
 				}

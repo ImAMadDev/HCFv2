@@ -69,6 +69,16 @@ class TextsManager {
 		$config->save();
 		$this->init();
 	}
+
+    public function moveText(string $name, Position $pos) : void {
+        $config = new Config(self::$main->getDataFolder() . "floatingTexts.yml", Config::YAML, ["texts" => []]);
+        $config->setNested("texts.".$name.".x", round($pos->getX()));
+        $config->setNested("texts.".$name.".y", round($pos->getY()));
+        $config->setNested("texts.".$name.".z", round($pos->getZ()));
+        $config->setNested("texts.".$name.".level", $pos->getWorld()->getFolderName());
+        $config->save();
+        $this->init();
+    }
 	
 	public function removeText(string $remove): void {
 		$id = self::$texts[$remove]->textID;

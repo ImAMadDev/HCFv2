@@ -33,16 +33,23 @@ class FactionManager {
 		if($name === null) return null;
 		return self::$factions[$name] ?? null;
 	}
-	
+
+    public function getFactionByPlayer(HCFPlayer | string $player) :?Faction
+    {
+        if ($player instanceof HCFPlayer) $player = $player->getName();
+        foreach (self::$factions as $faction) if ($faction->isInFaction($player)) return $faction;
+        return null;
+    }
+
 	public function isFaction($faction) : bool {
 		if($faction instanceof Faction)  $faction = $faction->getName();
 		return in_array($faction, array_keys(self::$factions));
 	}
 	
 	public function equalFaction($faction1, $faction2) : bool {
-		if($faction1 instanceof Faction)  $faction1 = $faction1->getName();
-		if($faction2 instanceof Faction)  $faction2 = $faction2->getName();
-		if($faction1 === null && $faction2 === null) return false;
+		if($faction1 instanceof Faction) $faction1 = $faction1->getName();
+		if($faction2 instanceof Faction) $faction2 = $faction2->getName();
+		if($faction1 === null or $faction2 === null) return false;
 		return ($faction1 === $faction2);
 	}
 	
@@ -117,5 +124,14 @@ class FactionManager {
 		}
 		return $message;
 	}
+
+    public function validateAll() : void
+    {
+        foreach (self::$factions as $faction) {
+            if (HCF::getInstance()->getCache($faction->getLeader())?->getInData('faction') !== $faction->getName()){
+                $faction->disband();
+            }
+        }
+    }
 	
 }

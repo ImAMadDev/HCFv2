@@ -41,8 +41,8 @@ class JoinSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You must leave your faction to do this!");
 			return;
 		}
-		$sender->setFaction($faction);
         $sender->getCache()->setInData('faction', $faction->getName());
+        $sender->setFaction($faction);
 		$faction->addMember($sender);
 		$faction->message(TextFormat::GREEN . $sender->getName() . " has joined the faction.");
 	}
