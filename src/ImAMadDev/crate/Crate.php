@@ -4,6 +4,7 @@ namespace ImAMadDev\crate;
 
 use pocketmine\block\Block;
 use ImAMadDev\player\HCFPlayer;
+use pocketmine\player\Player;
 
 abstract class Crate {
 
@@ -32,6 +33,6 @@ abstract class Crate {
 	abstract public function isCrate(Block $block): bool;
 
 
-	abstract public function getContents(HCFPlayer $player);
+	abstract public function getContents(HCFPlayer|Player $player);
 
 }

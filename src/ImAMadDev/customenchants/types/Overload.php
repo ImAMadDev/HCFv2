@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -14,7 +15,7 @@ use ImAMadDev\customenchants\CustomEnchantment;
 use ImAMadDev\utils\HCFUtils;
 use pocketmine\item\Item;
 
-class Overload extends CustomEnchantment {
+class Overload extends CustomEnchantment implements Tickable {
 	
     #[Pure] public function __construct(){
         parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ARMOR, ItemFlags::NONE, 1);
@@ -54,13 +55,11 @@ class Overload extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
    
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::OVERLOAD_ITEMS));

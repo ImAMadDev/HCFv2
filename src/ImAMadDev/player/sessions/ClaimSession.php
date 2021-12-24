@@ -20,9 +20,9 @@ class ClaimSession
     )
     {
     $this->player->sendMessage(TextFormat::GOLD . "Team land claim started." . TextFormat::YELLOW .
-        PHP_EOL . "Left click at a corner of the land you'd like to claim." .
-        PHP_EOL . "Right click on the second corner of the land you'd like to claim." .
-        PHP_EOL . "Crouch left click the air to purchase your claim.");
+        TextFormat::EOL . "Left click at a corner of the land you'd like to claim." .
+        TextFormat::EOL . "Right click on the second corner of the land you'd like to claim." .
+        TextFormat::EOL . "Crouch left click the air to purchase your claim.");
     }
 
     /**

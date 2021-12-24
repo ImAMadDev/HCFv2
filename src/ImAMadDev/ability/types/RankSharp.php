@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use ImAMadDev\rank\RankClass;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\console\ConsoleCommandSender;
@@ -12,6 +13,7 @@ use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
@@ -19,12 +21,11 @@ use pocketmine\math\Vector3;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\HCFUtils;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\item\Fireworks;
 use ImAMadDev\entity\projectile\FireworksRocket;
 use pocketmine\world\Position;
 
-class RankSharp extends Ability {
+class RankSharp extends InteractionAbility {
 
 	/**
      * @var string $name
@@ -57,7 +58,7 @@ class RankSharp extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player) : void {
+	public function consume(HCFPlayer|Player $player) : void {
 		$item = $player->getInventory()->getItemInHand();
         $rank = $item->getNamedTag()->getString("rank", "");
         $duration = $item->getNamedTag()->getString("duration", "permanent");
@@ -117,7 +118,7 @@ class RankSharp extends Ability {
         $entity->setLifeTime(1);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\item\Item;
@@ -10,18 +11,18 @@ use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Location;
 
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\item\Fireworks;
 use ImAMadDev\entity\projectile\FireworksRocket;
 use ImAMadDev\manager\AbilityManager;
 use pocketmine\world\Position;
 
-class SummerLootbox extends Ability {
+class SummerLootbox extends InteractionAbility {
 
 	/**
      * @var string $name
@@ -49,7 +50,7 @@ class SummerLootbox extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player) : void {
+	public function consume(HCFPlayer|Player $player) : void {
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName());
 		$item->setCount($item->getCount() - 1);
@@ -120,7 +121,7 @@ class SummerLootbox extends Ability {
         $entity->setLifeTime(1);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

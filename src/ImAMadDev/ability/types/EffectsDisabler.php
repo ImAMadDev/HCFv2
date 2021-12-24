@@ -2,21 +2,22 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\DamageOtherAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\EffectDisablerTick;
 
-class EffectsDisabler extends Ability {
+class EffectsDisabler extends DamageOtherAbility {
 
 	/** @var string */
 	private string $name = 'Effects_Disabler';
@@ -40,7 +41,7 @@ class EffectsDisabler extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player, HCFPlayer $entity) : void {
+	public function consume(HCFPlayer|Player $player, HCFPlayer|Player $entity) : void {
 		$time = (60 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));

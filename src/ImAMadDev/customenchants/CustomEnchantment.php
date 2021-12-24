@@ -24,6 +24,7 @@ abstract class CustomEnchantment extends Enchantment {
 	public const OVERLOAD = 'Overload';
 	public const GAPPLER = 'Gappler';
 	public const UNREPAIRABLE = 'Unrepairable';
+    public const MERMAID = 'Mermaid';
 	
 	public const HELL_FORGET_ITEMS = [298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317];
 	public const IMPLANTS_ITEMS = [312];
@@ -40,8 +41,9 @@ abstract class CustomEnchantment extends Enchantment {
 	public const NUTRITION_ITEMS = [276];
 	public const LIFE_STEAL_ITEMS = [276];
 	public const SMELTING_ITEMS = [257, 278];
-	
-	#[Pure] public function __construct(string $name, int $rarity, int $primaryItemFlags, int $secondaryItemFlags, int $maxLevel = 1){
+    public const MERMAID_ITEMS = [310];
+
+    #[Pure] public function __construct(string $name, int $rarity, int $primaryItemFlags, int $secondaryItemFlags, int $maxLevel = 1){
 		parent::__construct($name, $rarity, $primaryItemFlags, $secondaryItemFlags, $maxLevel);
 	}
 	
@@ -50,9 +52,5 @@ abstract class CustomEnchantment extends Enchantment {
 	abstract public function getEnchantmentPrice() : int;
 	
 	abstract public function getNameWithFormat(int $level = 1) : string;
-	
-	public function canBeActivate(): bool {
-		return false;
-	}
 
 }

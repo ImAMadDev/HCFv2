@@ -13,11 +13,9 @@ use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
 
 class BardTick extends Task {
-	
-	public HCFPlayer $player;
 
-	public function __construct(HCFPlayer $player) {
-		$this->player = $player;
+	public function __construct(
+        public HCFPlayer $player) {
 		HCF::getInstance()->getScheduler()->scheduleRepeatingTask($this, 20);
 	}
 

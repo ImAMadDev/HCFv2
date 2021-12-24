@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Actionable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -18,7 +19,7 @@ use pocketmine\event\Event;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class LifeSteal extends CustomEnchantment {
+class LifeSteal extends CustomEnchantment implements Actionable {
 	
     #[Pure] public function __construct(){
         parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::SWORD, ItemFlags::NONE, 2);

@@ -16,6 +16,7 @@ use pocketmine\color\Color;
 use pocketmine\entity\Entity;
 use pocketmine\math\RayTraceResult;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\world\sound\PotionSplashSound;
 
 class SplashPotion extends Throwable {
 
@@ -71,6 +72,7 @@ class SplashPotion extends Throwable {
                 }
             }
         }
+        $this->getWorld()->addSound($this->getPosition(), new PotionSplashSound());
         $this->close();
     }
    

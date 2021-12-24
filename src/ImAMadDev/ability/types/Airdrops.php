@@ -2,23 +2,25 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionBlockAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\item\Item;
 use pocketmine\block\Block;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\item\ItemFactory;
+use pocketmine\math\Facing;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\AirDropTick;
 use ImAMadDev\manager\ClaimManager;
 
-class Airdrops extends Ability {
+class Airdrops extends InteractionBlockAbility {
 
 	/** @var string */
 	private string $name = 'Airdrops';
@@ -44,7 +46,7 @@ class Airdrops extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player, Block $block) : void {
+	public function consume(HCFPlayer|Player $player, Block $block, int $face = Facing::UP) : void {
 		if($block->getId() === BlockLegacyIds::AIR) {
 			return;
 		}
@@ -54,7 +56,7 @@ class Airdrops extends Ability {
 				return;
 			}
 		}
-		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new AirDropTick($block->getPosition()), 20);
+		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new AirDropTick($block->getPosition(), $face), 20);
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName());
 		$item->setCount($item->getCount() - 1);
@@ -87,7 +89,7 @@ class Airdrops extends Ability {
 		return strtolower($this->getName()) == strtolower($name);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

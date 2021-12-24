@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -15,7 +16,7 @@ use ImAMadDev\utils\HCFUtils;
 
 use pocketmine\item\Item;
 
-class Invisibility extends CustomEnchantment {
+class Invisibility extends CustomEnchantment implements Tickable {
 
     /**
      * Invisibility Constructor.
@@ -60,13 +61,11 @@ class Invisibility extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
    
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::INVISIBILITY_ITEMS));

@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -16,7 +17,7 @@ use ImAMadDev\utils\HCFUtils;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class Implants extends CustomEnchantment {
+class Implants extends CustomEnchantment implements Tickable {
 	
 	
 	#[Pure] public function __construct(){
@@ -43,13 +44,6 @@ class Implants extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 30000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
 
     /**
      * @param Item $item
@@ -58,4 +52,9 @@ class Implants extends CustomEnchantment {
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::IMPLANTS_ITEMS));
    }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
 }

@@ -81,6 +81,7 @@ use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
     InventoryTransactionPacket,
     MobEquipmentPacket,
     PlayStatusPacket,
+    SetActorDataPacket,
     types\BlockPosition,
     types\CacheableNbt,
     types\DimensionIds,
@@ -89,6 +90,7 @@ use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
     UpdateBlockPacket,
     LoginPacket};
 use pocketmine\world\sound\ExplodeSound;
+use pocketmine\world\World;
 
 class HCFListener implements Listener {
 
@@ -486,7 +488,7 @@ class HCFListener implements Listener {
                 }
                 if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
                     if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition()) !== null) {
-                        $player->sendMessage(TextFormat::RED . "You can only claim here because is a protected zone!");
+                        $player->sendMessage(TextFormat::RED . "You cant claim here because is a protected zone!");
                         return;
                     }
                     if ($player->isSneaking()) {
@@ -503,7 +505,7 @@ class HCFListener implements Listener {
                         return;
                     }
                     $player->getClaimSession()->setPosition2($block->getPosition());
-                    $player->sendMessage(TextFormat::GRAY . "You've successfully the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
+                    $player->sendMessage(TextFormat::GRAY . "You've successfully put the claim's " . TextFormat::GREEN . "second" . TextFormat::GRAY . " position!");
                 }
             }
         }
@@ -518,7 +520,7 @@ class HCFListener implements Listener {
 		if(!$player->getCooldown()->has('combattag')) {
 			return;
 		}
-		if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($to->asPosition()), "Spawn") !== false) {
+		if(ClaimManager::getInstance()->getClaimByPosition($to->asPosition())?->getClaimType()->getType() == ClaimType::SPAWN) {
 			$event->cancel();
 			$player->sendMessage(TextFormat::RED . "YOU CAN'T ENTER SAFEZONE WHILE IN COMBAT!");
 		}
@@ -541,12 +543,12 @@ class HCFListener implements Listener {
                 $faction->removeDTR(1);
                 $faction->removePoints(1);
             }
-            $attacker = HCF::getInstance()->getCombatManager()->getTagDamager($player);
+            $attacker = HCF::getInstance()->getCombatManager()->getTagAttacker($player);
             if ($attacker !== null) {
                 $killer = Server::getInstance()->getPlayerExact($attacker);
                 if ($killer instanceof HCFPlayer) {
                     $killer->obtainKill($player->getName());
-                    $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagDamager($player));
+                    $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagAttacker($player));
                     $player->getWorld()->dropItem($player->getPosition(), $item);
                     if (($faction = $killer->getFaction()) instanceof Faction) {
                         $faction->addKill(1);
@@ -562,7 +564,7 @@ class HCFListener implements Listener {
                     $killer = $cause->getDamager();
                     if ($killer instanceof HCFPlayer) {
                         $killer->obtainKill($player->getName());
-                        $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagDamager($player));
+                        $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagAttacker($player));
                         $player->getWorld()->dropItem($player->getPosition(), $item);
                         if (($faction = $killer->getFaction()) instanceof Faction) {
                             $faction->addKill(1);
@@ -589,7 +591,11 @@ class HCFListener implements Listener {
 	    $player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             if (EOTWManager::isEnabled() === false) {
-                $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
+                if(Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP) instanceof World) {
+                    $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
+                } else {
+                    $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getDefaultWorld()));
+                }
                 if ($player->getCooldown()->has('combattag')) {
                     $player->getCooldown()->remove('combattag');
                 }
@@ -892,6 +898,12 @@ class HCFListener implements Listener {
 		}
 	}
 
+    /**
+     * @priority MONITOR
+     * @ignoreCancelled
+     * @param BlockBreakEvent $event
+     * @return void
+     */
     public function handleBreak(BlockBreakEvent $event) : void
     {
         if ($event->getBlock() instanceof BaseSign) {
@@ -1017,7 +1029,7 @@ class HCFListener implements Listener {
         $date = new DateTime();
         $time = $date->format('D H:i:s');
         $text = [TextFormat::GREEN . $name, TextFormat::GRAY . "slain by", TextFormat::GREEN . $killer, TextFormat::GRAY . $time];
-        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag(join(PHP_EOL, $text)));
+        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag(join(TextFormat::EOL, $text)));
         $sing->setCustomBlockData($nbt);
         $sing->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . $name);
         return $sing;

@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\customenchants\types;
 
+use ImAMadDev\customenchants\utils\Actionable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\data\bedrock\EnchantmentIds;
 use pocketmine\entity\effect\VanillaEffects;
@@ -20,7 +21,7 @@ use pocketmine\event\Event;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\item\Item;
 
-class Fortune extends CustomEnchantment {
+class Fortune extends CustomEnchantment implements Actionable {
 
     /**
      * FortuneEnchantment Constructor.
@@ -30,7 +31,7 @@ class Fortune extends CustomEnchantment {
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId() : string {
         return EnchantmentIds::FORTUNE;

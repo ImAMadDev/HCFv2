@@ -47,7 +47,7 @@ class KitCommand extends Command {
 				$sender->sendMessage(TextFormat::RED . "You've died in EOTW! You can't respawn!");
 				return;
 			}
-			if($sender->getUIString() === "Classic") {
+			if($sender->getPlayerInfo()->getExtraData()[''] === "Classic") {
 				$this->getKits($sender);
 			} else {
 				$this->getKitsAndroid($sender);
@@ -72,6 +72,7 @@ class KitCommand extends Command {
                     } else {
                         $player->getCache()->setCountdown($kit->getName(), $kit->getCooldown());
                         $kit->giveKit($player);
+                        $player->removeCurrentWindow();
                     }
 				}
 			} elseif(($kit = KitManager::getInstance()->getKitByName($possibleKitName)) instanceof Kit) {
@@ -84,6 +85,7 @@ class KitCommand extends Command {
                     } else {
                         $player->getCache()->setCountdown($kit->getName(), $kit->getCooldown());
                         $kit->giveKit($player);
+                        $player->removeCurrentWindow();
                     }
 				}
 			} else {
@@ -93,7 +95,7 @@ class KitCommand extends Command {
 		});
 		$menu->send($player);
 		foreach(KitManager::getInstance()->getKits() as $kit) {
-			$item = $kit->getIcon()->setLore([$kit->getDescription(), "Kit Countdown: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName()))]);
+			$item = $kit->getIcon()->setLore([$kit->getDescription(), "Countdown: " . HCFUtils::getTimeString(time() + $kit->getCooldown()), "Available in: " . HCFUtils::getTimeString($player->getCache()->getCountdown($kit->getName()))]);
 			$menu->getInventory()->setItem($kit->getSlot(), $item);
 		}
 	}

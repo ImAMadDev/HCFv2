@@ -2,6 +2,9 @@
 
 namespace ImAMadDev\ability;
 
+use ImAMadDev\ability\utils\DamageOtherAbility;
+use ImAMadDev\ability\utils\InteractionAbility;
+use ImAMadDev\ability\utils\InteractionBlockAbility;
 use ImAMadDev\HCF;
 use ImAMadDev\player\{HCFPlayer};
 use ImAMadDev\manager\{AbilityManager};
@@ -17,32 +20,44 @@ class AbilityListener implements Listener {
 		
 	}
 	
-	public function onPlayerInteractEvent(PlayerItemUseEvent $event) : void {
+	public function handleItemUse(PlayerItemUseEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
 		$ability = AbilityManager::getInstance()->getAbilityByItem($item);
-		if($ability !== null) {
+		if($ability instanceof InteractionAbility) {
 			$event->cancel();
 			if($item->getNamedTag()->getTag(Ability::INTERACT_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
-                $ability->consume($player, $player->getPosition()->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0)));
+                $ability->consume($player);
             }
 		}
 	}
+
+    public function handleInteract(PlayerInteractEvent $event) : void {
+        $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
+        $ability = AbilityManager::getInstance()->getAbilityByItem($item);
+        if($ability instanceof InteractionBlockAbility) {
+            $event->cancel();
+            if($item->getNamedTag()->getTag(Ability::INTERACT_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
+                $ability->consume($player, $event->getBlock(), $event->getFace());
+            }
+        }
+    }
 	
 	public function onEntityDamageEvent(EntityDamageEvent $event) : void {
 		$player = $event->getEntity();
 		if($player instanceof HCFPlayer) {
 			if($event instanceof EntityDamageByEntityEvent) {
-				$damager = $event->getDamager();
-				if($damager instanceof HCFPlayer) {
-					$item = $damager->getInventory()->getItemInHand();
+				$attacker = $event->getDamager();
+				if($attacker instanceof HCFPlayer) {
+					$item = $attacker->getInventory()->getItemInHand();
 					$ability = AbilityManager::getInstance()->getAbilityByItem($item);
-					if(HCF::getInstance()->getFactionManager()->equalFaction($damager->getFaction(), $player->getFaction()) === false && $event->isCancelled() === false) {
-						if($ability !== null) {
+					if(HCF::getInstance()->getFactionManager()->equalFaction($attacker->getFaction(), $player->getFaction()) === false && $event->isCancelled() === false) {
+						if($ability instanceof DamageOtherAbility) {
 							if($item->getNamedTag()->getTag(Ability::DAMAGE_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
-								$damager->addAbilityHits($item);
-								if($damager->canActivateAbility($item) === true) {
-									$ability->consume($damager);
+								$attacker->addAbilityHits($item);
+								if($attacker->canActivateAbility($item) === true) {
+									$ability->consume($attacker);
 								}
 							}
 						}

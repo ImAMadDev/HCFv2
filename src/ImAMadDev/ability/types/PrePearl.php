@@ -2,20 +2,21 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\PrePearlTick;
 
-class PrePearl extends Ability {
+class PrePearl extends InteractionAbility {
 
 	/** @var string */
 	private string $name = 'Pre_Pearl';
@@ -39,7 +40,7 @@ class PrePearl extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player) : void {
+	public function consume(HCFPlayer|Player $player) : void {
 		if($player->getCooldown()->has($this->name)) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $player->getCooldown()->get($this->name)));
 			return;
@@ -79,7 +80,7 @@ class PrePearl extends Ability {
 		return strtolower($this->getName()) == strtolower($name);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

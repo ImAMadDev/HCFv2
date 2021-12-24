@@ -95,7 +95,7 @@ class CombatLogger extends Villager{
 			$item = Item::nbtDeserialize($item);
 			$drops[] = $item;
 		}
-		$namedTag->setTag("Inventory2", new ListTag([], NBT::TAG_Compound));
+		$namedTag->setTag("Inventory", new ListTag([], NBT::TAG_Compound));
         $namedTag->setTag("Pos", new ListTag([
             new DoubleTag(0),
             new DoubleTag(100),

@@ -4,6 +4,7 @@ namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantment;
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Actionable;
 use ImAMadDev\utils\HCFUtils;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
@@ -15,7 +16,7 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class Gappler extends CustomEnchantment
+class Gappler extends CustomEnchantment implements Actionable
 {
 
     /**

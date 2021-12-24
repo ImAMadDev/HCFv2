@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Actionable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -19,7 +20,7 @@ use pocketmine\event\Event;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class KeyFinder extends CustomEnchantment {
+class KeyFinder extends CustomEnchantment implements Actionable {
 
     /**
      * KeyFinderEnchantment Constructor.
@@ -64,7 +65,7 @@ class KeyFinder extends CustomEnchantment {
     		if(rand(0, $probability) === rand(0, $probability)) {
     			$keys = ["legendary", "ability", "zkita", "ejrecords"];
           	    new Key($player, $keys[array_rand($keys)], (2 *$level));
-          	    $player->sendMessage(Main::getPrefix("&dKey Finder") . TextFormat::GOLD . " You have found a key!");
+          	    $player->sendMessage(TextFormat::colorize("&dKey Finder") . TextFormat::GOLD . " You have found a key!");
        	    }
     	}
    }

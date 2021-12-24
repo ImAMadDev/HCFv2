@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -15,7 +16,7 @@ use ImAMadDev\customenchants\CustomEnchantment;
 
 use pocketmine\item\Item;
 
-class JumpBoost extends CustomEnchantment {
+class JumpBoost extends CustomEnchantment implements Tickable {
 
     /**
      * JumpBoost Constructor.
@@ -60,13 +61,11 @@ class JumpBoost extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
    
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::JUMP_BOOST_ITEMS));

@@ -4,6 +4,8 @@ namespace ImAMadDev\player;
 
 use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects, Location};
 use ImAMadDev\claim\utils\ClaimType;
+use ImAMadDev\customenchants\utils\Actionable;
+use ImAMadDev\customenchants\utils\Tickable;
 use ImAMadDev\HCF;
 use ImAMadDev\kit\classes\IClass;
 use ImAMadDev\player\modules\FactionRank;
@@ -27,6 +29,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\player\PlayerInfo;
 use pocketmine\Server;
@@ -36,7 +39,8 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Event;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\{SetActorDataPacket,
+use pocketmine\network\mcpe\protocol\{MobArmorEquipmentPacket,
+    SetActorDataPacket,
     types\BlockPosition,
     types\BoolGameRule,
     types\entity\EntityMetadataCollection,
@@ -44,6 +48,7 @@ use pocketmine\network\mcpe\protocol\{SetActorDataPacket,
     types\entity\EntityMetadataProperties,
     types\entity\EntityMetadataTypes,
     types\entity\StringMetadataProperty,
+    types\inventory\ItemStackWrapper,
     UpdateBlockPacket,
     ChangeDimensionPacket,
     GameRulesChangedPacket};
@@ -442,24 +447,25 @@ class HCFPlayer extends Player {
             $armor = $this->getArmorInventory()->getContents();
             foreach ($armor as $slot => $item) {
                 foreach ($item->getEnchantments() as $enchantment) {
-                    if ($enchantment->getType() instanceof CustomEnchantment) {
-                        if ($enchantment->getType()->canBeActivate()) {
+                    $type = $enchantment->getType();
+                    if ($type instanceof Actionable) {
+                        if ($type->canBeActivate()) {
                             if ((time() % 120) === 0) {
-                                $enchantment->getType()->activate($item, $slot, $this);
+                                $type->activate($item, $slot, $this);
                             }
-                        } else {
-                            if ($this->hasEffectsActivate()) {
-                                $this->applyPotionEffect($enchantment->getType()->getEffectsByEnchantment($enchantment->getLevel()));
-                            }
+                        }
+                    } elseif($type instanceof Tickable){
+                        if ($this->hasEffectsActivate()) {
+                            $this->applyPotionEffect($type->getEffectsByEnchantment($enchantment->getLevel()));
                         }
                     }
                 }
             }
             $this->checkSets();
             $this->checkAbilityLastHit();
+            $this->loadInvisibility();
             $this->updateNameTag();
             $this->checkRank();
-            $this->upa();
         }
         return parent::onUpdate($currentTick);
     }
@@ -483,9 +489,10 @@ class HCFPlayer extends Player {
 	public function activateEnchantment(? Event $event = null) : void {
 		$item = $this->getInventory()->getItemInHand();
 		foreach($item->getEnchantments() as $enchantment){
-			if($enchantment->getType() instanceof CustomEnchantment){
-				if($enchantment->getType()->canBeActivate()) {
-					$enchantment->getType()->activate($item, 0, $this, $enchantment->getLevel(), $event);
+            $type = $enchantment->getType();
+			if($type instanceof Actionable){
+				if($type->canBeActivate()) {
+					$type->activate($item, 0, $this, $enchantment->getLevel(), $event);
 				}
 			}
 		}
@@ -597,7 +604,7 @@ class HCFPlayer extends Player {
             if($e->getName() === $this->getName()) {
                 continue;
             }
-            if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($e->getPosition()), "Spawn") !== false && $e->isInvincible()) {
+            if(ClaimManager::getInstance()->getClaimByPosition($e->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && $e->isInvincible()) {
                 continue;
             }
             $players[] = $e;
@@ -828,12 +835,11 @@ class HCFPlayer extends Player {
         return false;
     }
 
-    public function upa() : void
+    public function loadInvisibility() : void
     {
         if (!$this->getEffects()->has(VanillaEffects::INVISIBILITY())) return;
-        $metadata = new EntityMetadataCollection();
-        $metadata->setLong(EntityMetadataProperties::FLAGS, 0
-            ^ 0 << EntityMetadataFlags::INVISIBLE);
+        $metadata = clone $this->getNetworkProperties();
+        $metadata->setGenericFlag(EntityMetadataFlags::INVISIBLE, false);
         $pk2 = new SetActorDataPacket();
         $pk2->actorRuntimeId = $this->getId();
         $pk2->metadata = $metadata->getAll();
@@ -852,5 +858,19 @@ class HCFPlayer extends Player {
     public function getTraderPlayer(): TraderPlayer
     {
         return $this->traderPlayer;
+    }
+
+    public function sendFullInvis() : void
+    {
+        $converter = TypeConverter::getInstance();
+        foreach ($this->getViewers() as $viewer) {
+            $viewer->getNetworkSession()->sendDataPacket(MobArmorEquipmentPacket::create(
+                $this->getId(),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air()))
+            ));
+        }
     }
 }

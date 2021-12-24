@@ -15,6 +15,7 @@ use ImAMadDev\entity\mobs\{Enderman, Cow, Creeper, Blaze};
 use ImAMadDev\HCF;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\entity\Human;
 use pocketmine\entity\Skin;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -50,26 +51,26 @@ class EntityManager {
         $factory->register(EnderPearl::class, function(World $world, CompoundTag $nbt) : EnderPearl{
             return new EnderPearl(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
         }, ['ThrownEnderpearl', EntityIds::ENDER_PEARL], EntityLegacyIds::ENDER_PEARL);
-        $factory->register(CombatLogger::class, function(World $world, CompoundTag $nbt) use($skin): CombatLogger{
+        $factory->register(CombatLogger::class, function(World $world, CompoundTag $nbt): CombatLogger{
             return new CombatLogger(EntityDataHelper::parseLocation($nbt, $world), $nbt);
         }, ['CombatLogger', 'minecraft:combat_logger'], EntityLegacyIds::VILLAGER);
-        $factory->register(BlackMarket::class, function(World $world, CompoundTag $nbt) use($skin): BlackMarket{
-            return new BlackMarket(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(BlackMarket::class, function(World $world, CompoundTag $nbt): BlackMarket{
+            return new BlackMarket(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['BlackMarket', 'minecraft:black_market'], EntityLegacyIds::NPC);
-        $factory->register(LegendaryMarket::class, function(World $world, CompoundTag $nbt) use($skin): LegendaryMarket{
-            return new LegendaryMarket(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(LegendaryMarket::class, function(World $world, CompoundTag $nbt): LegendaryMarket{
+            return new LegendaryMarket(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['LegendaryMarket', 'minecraft:legendary_market'], EntityLegacyIds::NPC);
-        $factory->register(TopOne::class, function(World $world, CompoundTag $nbt) use($skin): TopOne{
-            return new TopOne(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(TopOne::class, function(World $world, CompoundTag $nbt): TopOne{
+            return new TopOne(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['TopOne', 'minecraft:top_one'], EntityLegacyIds::NPC);
-        $factory->register(TopTwo::class, function(World $world, CompoundTag $nbt) use($skin): TopTwo{
-            return new TopTwo(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(TopTwo::class, function(World $world, CompoundTag $nbt): TopTwo{
+            return new TopTwo(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['TopTwo', 'minecraft:top_two'], EntityLegacyIds::NPC);
-        $factory->register(TopThree::class, function(World $world, CompoundTag $nbt) use($skin): TopThree{
-            return new TopThree(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(TopThree::class, function(World $world, CompoundTag $nbt): TopThree{
+            return new TopThree(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['TopThree', 'minecraft:top_three'], EntityLegacyIds::NPC);
-        $factory->register(BlockMarket::class, function(World $world, CompoundTag $nbt) use($skin): BlockMarket{
-            return new BlockMarket(EntityDataHelper::parseLocation($nbt, $world), $skin, $nbt);
+        $factory->register(BlockMarket::class, function(World $world, CompoundTag $nbt): BlockMarket{
+            return new BlockMarket(EntityDataHelper::parseLocation($nbt, $world), Human::parseSkinNBT($nbt), $nbt);
         }, ['BlockMarket', 'minecraft:block_market'], EntityLegacyIds::NPC);
         $factory->register(Switcher::class, function (World $world, CompoundTag $nbt) : Switcher {
             return new Switcher(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);

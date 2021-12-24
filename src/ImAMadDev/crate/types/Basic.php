@@ -3,23 +3,17 @@
 namespace ImAMadDev\crate\types;
 
 use JetBrains\PhpStorm\Pure;
-use muqsit\invmenu\MenuIds;
 use muqsit\invmenu\type\InvMenuTypeIds;
-use muqsit\invmenu\type\util\InvMenuTypeBuilders;
-use pocketmine\block\BlockIds;
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\entity\EffectInstance;
 use pocketmine\item\Item;
 use pocketmine\block\Block;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\item\enchantment\{Enchantment, EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 
-use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\crate\Crate;
@@ -27,8 +21,6 @@ use ImAMadDev\crate\Crate;
 use muqsit\invmenu\InvMenu;
 use muqsit\invmenu\transaction\InvMenuTransactionResult;
 use muqsit\invmenu\transaction\InvMenuTransaction;
-
-use function count;
 
 class Basic extends Crate {
 
@@ -138,7 +130,7 @@ class Basic extends Crate {
 		return $item;
 	}
 	
-	public function getContents(HCFPlayer $player) : void {
+	public function getContents(HCFPlayer|Player $player) : void {
 		$menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
 		$menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -157,7 +149,7 @@ class Basic extends Crate {
         }
 	} 
 
-	public function open(HCFPlayer $player, Block $block) : void {
+	public function open(HCFPlayer|Player $player, Block $block) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->sendBack($block->getPosition()->asVector3(), 1);

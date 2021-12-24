@@ -17,7 +17,9 @@ class Cooldowns {
     public function add(string $name, int $duration = 16) : void {
 		$this->cooldowns[strtolower($name)] = time();
 		$this->defaultTime[strtolower($name)] = $duration;
-        if ($this->player instanceof HCFPlayer) $this->player->sendMessage(TextFormat::RED . "You have entered the " . TextFormat::GOLD . $name . TextFormat::RED . " countdown for " . gmdate('i:s', $duration));
+        if ($this->player instanceof HCFPlayer) {
+            if (!$this->has($name)) $this->player->sendMessage(TextFormat::RED . "You have entered the " . TextFormat::GOLD . $name . TextFormat::RED . " countdown for " . gmdate('i:s', $duration));
+        }
 	}
 	
 	public function reduce(string $name, int $duration = 16) : void {

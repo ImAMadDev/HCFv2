@@ -12,6 +12,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\network\mcpe\protocol\types\command\CommandOriginData;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -38,7 +39,6 @@ class Anubis extends Crate {
 	/**
 	 * @return array
 	 */
-//x3 Ability Random (Ninja Shear | StormBreaker | Fuerza Portable)
 	public function getInventory(): array {
 		$items = [];
 		$helmet = ItemFactory::getInstance()->get(ItemIds::DIAMOND_HELMET);
@@ -167,7 +167,7 @@ class Anubis extends Crate {
 		return $item;
 	}
 	
-	public function getContents(HCFPlayer $player) : void {
+	public function getContents(HCFPlayer|Player $player) : void {
 		$menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
 		$menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -177,9 +177,16 @@ class Anubis extends Crate {
 		foreach($this->getInventory() as $slot => $item) {
 			$menu->getInventory()->setItem($slot, $item);
 		}
+        for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
+            if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
+                $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
+                $panel->setCustomName(TextFormat::RED . "");
+                $menu->getInventory()->setItem($i, $panel);
+            }
+        }
 	} 
 
-	public function open(HCFPlayer $player, Block $block) : void {
+	public function open(HCFPlayer|Player $player, Block $block) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->sendBack($block->getPosition()->asVector3(), 1);

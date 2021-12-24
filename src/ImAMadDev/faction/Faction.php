@@ -155,7 +155,6 @@ class Faction {
 	public function addMember(HCFPlayer $player) : void {
 		if($this->isLeader($player->getName())) {
 			$this->data['leader'] = array_rand($this->data['coleaders'], array_rand($this->data['coleaders']));
-			$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
 		}
 		if($this->isCoLeader($player->getName())) {
 			$this->removeMember($player->getName());
@@ -383,7 +382,7 @@ class Faction {
 	}
 	
 	public function getInformationString() : string {
-        $message = TextFormat::DARK_RED . TextFormat::BOLD . $this->getName() . TextFormat::RESET . TextFormat::DARK_GRAY . " [" . TextFormat::GRAY . count($this->getAllMembers()) . "/" . FactionUtils::MAXIMUM_MEMBERS . TextFormat::DARK_GRAY . "] " . TextFormat::GRAY . $this->getHomeString() . PHP_EOL;
+        $message = TextFormat::DARK_RED . TextFormat::BOLD . $this->getName() . TextFormat::RESET . TextFormat::DARK_GRAY . " [" . TextFormat::GRAY . count($this->getAllMembers()) . "/" . FactionUtils::MAXIMUM_MEMBERS . TextFormat::DARK_GRAY . "] " . TextFormat::GRAY . $this->getHomeString() . TextFormat::EOL;
 		$members = [];
 		foreach($this->getAllMembers() as $member) {
 			if(($player = $this->main->getServer()->getPlayerByPrefix($member)) instanceof HCFPlayer) {
@@ -397,12 +396,12 @@ class Faction {
 			$raidable = TextFormat::RED . TextFormat::DARK_RED . " (RAIDABLE)";
 		}
 		$time = $this->freezeTime <= 0 ? $this->regenerationTime : $this->freezeTime;
-		$message .= TextFormat::RED . " Leader: " . TextFormat::GRAY . $this->getLeader() . PHP_EOL;
-		$message .= TextFormat::RED . " Members: " . implode(TextFormat::GRAY . ", ", $members) . PHP_EOL;
-		$message .= TextFormat::RED . " Allies: " . TextFormat::WHITE . implode(", ", $this->getAllies()) . PHP_EOL;
-		$message .= TextFormat::RED . " DTR: " . TextFormat::WHITE . $this->getDTRColored() . $raidable . PHP_EOL;
-		$message .= TextFormat::RED . " DTR Regeneration: " . TextFormat::WHITE . gmdate('i:s', $time) . PHP_EOL;
-		$message .= TextFormat::RED . " Balance: " . TextFormat::WHITE . "$" . $this->getBalance() . PHP_EOL;
+		$message .= TextFormat::RED . " Leader: " . TextFormat::GRAY . $this->getLeader() . TextFormat::EOL;
+		$message .= TextFormat::RED . " Members: " . implode(TextFormat::GRAY . ", ", $members) . TextFormat::EOL;
+		$message .= TextFormat::RED . " Allies: " . TextFormat::WHITE . implode(", ", $this->getAllies()) . TextFormat::EOL;
+		$message .= TextFormat::RED . " DTR: " . TextFormat::WHITE . $this->getDTRColored() . $raidable . TextFormat::EOL;
+		$message .= TextFormat::RED . " DTR Regeneration: " . TextFormat::WHITE . gmdate('i:s', $time) . TextFormat::EOL;
+		$message .= TextFormat::RED . " Balance: " . TextFormat::WHITE . "$" . $this->getBalance() . TextFormat::EOL;
 		return $message;
 	}
 	

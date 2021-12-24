@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -14,7 +15,7 @@ use ImAMadDev\customenchants\CustomEnchantment;
 use ImAMadDev\utils\HCFUtils;
 
 use pocketmine\item\Item;
-class Strength extends CustomEnchantment {
+class Strength extends CustomEnchantment implements Tickable {
 
     /**
      * StrengthEnchantment Constructor.
@@ -59,13 +60,11 @@ class Strength extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
    
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::STRENGTH_ITEMS));

@@ -17,7 +17,7 @@ class CrateListener implements Listener {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
 		$crate = CrateManager::getInstance()->getCrateByBlock($block);
-		if($crate !== null) {
+		if($crate instanceof Crate) {
 			if($item->getNamedTag()->getTag(Crate::KEY_TAG) instanceof CompoundTag && $crate->isCrateKey($item)) {
 				$crate->open($player, $block);
 			} else {
@@ -34,12 +34,12 @@ class CrateListener implements Listener {
                 $message = $event->getMessage();
                 $args = explode(" ", $message);
                 if ($args[0] == "help") {
-                    $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . PHP_EOL .
-                        "- inventory [Se abrira un cofre y cuando lo cierres ese sera el iventario de la crate]" . PHP_EOL .
-                        "- key [El item en tu mano sera la key]" . PHP_EOL .
-                        "- down [El bloque que tengas en la mano sera escogido para validar la crate, debes colocarlo 4 bloques debajo de la crate]" . PHP_EOL .
-                        "- customname (string: nombre de la crate) [Aqui deberas colocar el nombre de la crate con formato de color, sera el mismo para la key]" . PHP_EOL .
-                        "- cancel [cancelar la sesion]" . PHP_EOL .
+                    $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . TextFormat::EOL .
+                        "- inventory [Se abrira un cofre y cuando lo cierres ese sera el iventario de la crate]" . TextFormat::EOL .
+                        "- key [El item en tu mano sera la key]" . TextFormat::EOL .
+                        "- down [El bloque que tengas en la mano sera escogido para validar la crate, debes colocarlo 4 bloques debajo de la crate]" . TextFormat::EOL .
+                        "- customname (string: nombre de la crate) [Aqui deberas colocar el nombre de la crate con formato de color, sera el mismo para la key]" . TextFormat::EOL .
+                        "- cancel [cancelar la sesion]" . TextFormat::EOL .
                         "- save [guardar la crate]"
                     );
                     $event->cancel();

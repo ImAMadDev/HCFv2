@@ -86,10 +86,10 @@ class TradeSession {
 				if($st->getAction()->getSlot() === 13) {
 					return $st->discard();
 				}
-				if(($st->getAction()->getSlot() % 9) < 4 and $st->getPlayer()->getUniqueId()->equals($this->sender->getUniqueId()) and $this->senderStatus === false and $this->receiverStatus === false) {
+				if(($st->getAction()->getSlot() % 9) < 4 and $st->getPlayer()->getUniqueId()->compareTo($this->sender->getUniqueId()) and $this->senderStatus === false and $this->receiverStatus === false) {
 					return $st->continue();
 				}
-				if(($st->getAction()->getSlot() % 9) > 4 and $st->getPlayer()->getUniqueId()->equals($this->receiver->getUniqueId()) and $this->receiverStatus === false and $this->senderStatus === false) {
+				if(($st->getAction()->getSlot() % 9) > 4 and $st->getPlayer()->getUniqueId()->compareTo($this->receiver->getUniqueId()) and $this->receiverStatus === false and $this->senderStatus === false) {
 					return $st->continue();
 				}
 				return $st->discard();

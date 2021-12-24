@@ -69,13 +69,13 @@ class CombatManager{
 		if($player instanceof HCFPlayer) $player = $player->getName();
 		return ($this->isTagged($player) ? $this->taggedPlayers[$player] : 0);
 	}
-	
-	/**
-	 * @param string|Player $player
-	 *
-	 * @return string
-	 */
-	#[Pure] public function getTagDamager(Player|string $player): ?string
+
+    /**
+     * @param string|Player $player
+     *
+     * @return string|null
+     */
+	#[Pure] public function getTagAttacker(Player|string $player): ?string
     {
 		if($player instanceof HCFPlayer) $player = $player->getName();
 		return ($this->isTagged($player) ? $this->tagged[$player] : null);

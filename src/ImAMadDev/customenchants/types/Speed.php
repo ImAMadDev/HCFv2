@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\enchantment\ItemFlags;
 use pocketmine\item\enchantment\Rarity;
@@ -14,7 +15,7 @@ use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects};
 
 use pocketmine\item\Item;
 
-class Speed extends CustomEnchantment {
+class Speed extends CustomEnchantment implements Tickable {
 
     /**
      * SpeedEnchantment Constructor.
@@ -60,13 +61,11 @@ class Speed extends CustomEnchantment {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
+
+    public function isTickable(): bool
+    {
+        return true;
+    }
    
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::SPEED_ITEMS));

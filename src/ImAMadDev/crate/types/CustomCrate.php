@@ -16,6 +16,7 @@ use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class CustomCrate extends Crate
@@ -50,7 +51,6 @@ class CustomCrate extends Crate
     /**
      * @param string $name
      * @param array $contents
-     * @param string $CUSTOM_KEY
      * @param string $customName
      * @param Item $key
      * @param Item $down_block
@@ -133,7 +133,7 @@ class CustomCrate extends Crate
         return $item;
     }
 
-    public function getContents(HCFPlayer $player) : void {
+    public function getContents(HCFPlayer|Player $player) : void {
         $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
         $menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
         $menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -150,7 +150,7 @@ class CustomCrate extends Crate
         }
     }
 
-    public function open(HCFPlayer $player, Block $block) : void {
+    public function open(HCFPlayer|Player $player, Block $block) : void {
         $status = $player->getInventoryStatus();
         if($status === "FULL") {
             $player->sendBack($block->getPosition()->asVector3(), 1);

@@ -24,12 +24,8 @@ final class DiscordIntegration {
 			$embed = new Embed();
 			$embed->setColor(0xffa965);
 			$embed->setTitle($title);
-			if(!empty($fields)) {
-				foreach($fields as $field) {
-					$embed->addField($field, "_ _");
-				}
-			} else {
-				$embed->setDescription($message);
+            foreach($fields as $field) {
+                $embed->addField($field, "_ _");
 			}
 			$msg->addEmbed($embed);
 		}

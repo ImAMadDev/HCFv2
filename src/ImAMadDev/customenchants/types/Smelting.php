@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Actionable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -21,7 +22,7 @@ use pocketmine\item\Item;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\player\Player;
 
-class Smelting extends CustomEnchantment {
+class Smelting extends CustomEnchantment implements Actionable {
 
     /**
      * SmeltingEnchantment Constructor.

@@ -34,7 +34,8 @@ class TradeCommand extends Command {
                     if (isset($args[1])) {
                         $sender_ = Server::getInstance()->getPlayerByPrefix($args[1]);
                         foreach (TradeManager::getInstance()->getRequests() as $request) {
-                            if ($request->isSender($sender_)){
+                            if ($request->isSender($sender_) and $request->isReceiver($sender)){
+                                var_dump("Holaaa");
                                 $request->continue();
                                 return;
                             }
@@ -44,7 +45,7 @@ class TradeCommand extends Command {
                     if (isset($args[1])) {
                         $sender_ = Server::getInstance()->getPlayerByPrefix($args[1]);
                         foreach (TradeManager::getInstance()->getRequests() as $request) {
-                            if ($request->isSender($sender_)){
+                            if ($request->isSender($sender_) and $request->isReceiver($sender)){
                                 $request->cancel();
                                 return;
                             }

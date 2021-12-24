@@ -4,6 +4,7 @@ namespace ImAMadDev\ability\types;
 
 use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\EffectDisablerTick;
+use ImAMadDev\ability\utils\DamageOtherAbility;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use JetBrains\PhpStorm\Pure;
@@ -14,9 +15,10 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class FairFight extends Ability
+class FairFight extends DamageOtherAbility
 {
 
     /** @var string */
@@ -41,7 +43,7 @@ class FairFight extends Ability
         return $item;
     }
 
-    public function consume(HCFPlayer $player, HCFPlayer $entity) : void {
+    public function consume(HCFPlayer|Player $player, HCFPlayer|Player $entity) : void {
         $time = (60 - (time() - $player->getCache()->getCountdown($this->getName())));
         if($time > 0) {
             $player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
@@ -87,7 +89,7 @@ class FairFight extends Ability
         return strtolower($this->getName()) == strtolower($name);
     }
 
-    public function obtain(HCFPlayer $player, int $count) : void {
+    public function obtain(HCFPlayer|Player $player, int $count) : void {
         $status = $player->getInventoryStatus();
         if($status === "FULL") {
             $player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

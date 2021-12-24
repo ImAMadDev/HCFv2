@@ -3,6 +3,7 @@
 namespace ImAMadDev\customenchants\types;
 
 use ImAMadDev\customenchants\CustomEnchantmentIds;
+use ImAMadDev\customenchants\utils\Actionable;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\Armor;
@@ -14,7 +15,7 @@ use ImAMadDev\customenchants\CustomEnchantment;
 use pocketmine\entity\Effect\EffectInstance;
 use pocketmine\item\Item;
 
-class HellForget extends CustomEnchantment {
+class HellForget extends CustomEnchantment implements Actionable {
 	
 	#[Pure] public function __construct(){
 		parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ARMOR, ItemFlags::NONE);
@@ -67,14 +68,12 @@ class HellForget extends CustomEnchantment {
     	return 30000;
    }
    
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return true;
-   }
-   
    public function canEnchant(Item $item): bool {
    	 return (in_array($item->getId(), CustomEnchantment::HELL_FORGET_ITEMS));
    }
+
+    public function canBeActivate(): bool
+    {
+        return true;
+    }
 }

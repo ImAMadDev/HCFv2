@@ -15,9 +15,9 @@ class CheckVoteTick extends AsyncTask {
 
     const API_KEY = "up5wXKqGSoLtsK6witDcNZ6PohKkzULX";
 
-    const CHECK_URL = "http://minecraftpocket-servers.com/api-vrc/?object=votes&element=claim&key=" . self:: API_KEY . "&username={USERNAME}";
+    const CHECK_URL = "https://minecraftpocket-servers.com/api-vrc/?object=votes&element=claim&key=" . self:: API_KEY . "&username={USERNAME}";
 
-    const POST_URL = "http://minecraftpocket-servers.com/api-vrc/?action=post&object=votes&element=claim&key=" . self:: API_KEY . "&username={USERNAME}";
+    const POST_URL = "https://minecraftpocket-servers.com/api-vrc/?action=post&object=votes&element=claim&key=" . self:: API_KEY . "&username={USERNAME}";
 
     const VOTED = "voted";
 

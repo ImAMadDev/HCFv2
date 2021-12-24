@@ -10,6 +10,7 @@ use ImAMadDev\ability\Ability;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
 use pocketmine\Server;
 use pocketmine\entity\{effect\EffectInstance, effect\VanillaEffects};
@@ -95,7 +96,7 @@ class KitListener implements Listener {
                 if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvisible()) {
                     switch ($item->getId()) {
                         case ItemIds::SUGAR:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== "false") {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -133,7 +134,7 @@ class KitListener implements Listener {
                             break;
                         case ItemIds::DYE:
                             if ($item->getMeta() == 0) {
-                                if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                     $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                     return;
                                 }
@@ -171,7 +172,7 @@ class KitListener implements Listener {
                             }
                             break;
                         case ItemIds::FEATHER:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -208,7 +209,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::GHAST_TEAR:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -245,7 +246,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::BLAZE_POWDER:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -282,7 +283,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::IRON_INGOT:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -318,7 +319,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::SPIDER_EYE:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -356,7 +357,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::MAGMA_CREAM:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -406,7 +407,7 @@ class KitListener implements Listener {
                 if (stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") == false && !$player->isInvincible()) {
                     switch ($item->getId()) {
                         case ItemIds::COAL:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -445,7 +446,7 @@ class KitListener implements Listener {
                             break;
                         case ItemIds::DYE:
                             if ($item->getMeta() == 2) {
-                                if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                                if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                     $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                     return;
                                 }
@@ -484,7 +485,7 @@ class KitListener implements Listener {
                             }
                             break;
                         case ItemIds::ROTTEN_FLESH:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -522,7 +523,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::SPIDER_EYE:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -561,7 +562,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::GOLDEN_NUGGET:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -599,7 +600,7 @@ class KitListener implements Listener {
                             $player->getCooldown()->add('combattag', 30);
                             break;
                         case ItemIds::SEEDS:
-                            if ($item->getNamedTag()->getString(Ability::ABILITY, "false") !== 'false') {
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                                 $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
                                 return;
                             }
@@ -650,15 +651,15 @@ class KitListener implements Listener {
             $message = $event->getMessage();
             $args = explode(" ", $message);
             if($args[0] == "help"){
-                $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . PHP_EOL .
-                    "- permission (string: permiso del kit)" . PHP_EOL .
-                    "- inventory [Todo tu inventario sera escogido para este kit]" . PHP_EOL .
-                    "- description (string: la descripcion que aparecera en el kit)" . PHP_EOL .
-                    "- icon [el item en tu mano sera el icono del kit]" . PHP_EOL .
-                    "- countdown (string: tiempo de refresco del kit) [ejemplo: 1d,2h,30m se lee como 1 dia 2 hora y 30 minutos]" . PHP_EOL .
-                    "- slot (int: slot) [esto es para los win10 en que slot del cofre aparecera el icono del kit]" . PHP_EOL .
-                    "- customname (string: name) [Aqui podras colocar un nombre customizado para el icono del kit]" . PHP_EOL .
-                    "- cancel [cancelar la sesion]" . PHP_EOL .
+                $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . TextFormat::EOL .
+                    "- permission (string: permiso del kit)" . TextFormat::EOL .
+                    "- inventory [Todo tu inventario sera escogido para este kit]" . TextFormat::EOL .
+                    "- description (string: la descripcion que aparecera en el kit)" . TextFormat::EOL .
+                    "- icon [el item en tu mano sera el icono del kit]" . TextFormat::EOL .
+                    "- countdown (string: tiempo de refresco del kit) [ejemplo: 1d,2h,30m se lee como 1 dia 2 hora y 30 minutos]" . TextFormat::EOL .
+                    "- slot (int: slot) [esto es para los win10 en que slot del cofre aparecera el icono del kit]" . TextFormat::EOL .
+                    "- customname (string: name) [Aqui podras colocar un nombre customizado para el icono del kit]" . TextFormat::EOL .
+                    "- cancel [cancelar la sesion]" . TextFormat::EOL .
                     "- save [guardar el kit]"
                 );
                 $event->cancel();

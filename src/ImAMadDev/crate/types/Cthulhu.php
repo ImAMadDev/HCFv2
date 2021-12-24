@@ -11,6 +11,7 @@ use pocketmine\block\Block;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -149,7 +150,7 @@ class Cthulhu extends Crate {
 		return $item;
 	}
 	
-	public function getContents(HCFPlayer $player) : void {
+	public function getContents(HCFPlayer|Player $player) : void {
 		$menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
 		$menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -161,7 +162,7 @@ class Cthulhu extends Crate {
 		}
 	} 
 
-	public function open(HCFPlayer $player, Block $block) : void {
+	public function open(HCFPlayer|Player $player, Block $block) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->sendBack($block->getPosition()->asVector3(), 1);

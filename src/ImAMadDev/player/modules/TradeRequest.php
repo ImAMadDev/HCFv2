@@ -14,9 +14,12 @@ class TradeRequest
     private bool $canceled = false;
 
     public function __construct(
-        private HCFPlayer $receiver,
-        private HCFPlayer $sender
-    ){}
+        private HCFPlayer $sender,
+        private HCFPlayer $receiver
+    ){
+        $this->receiver?->sendMessage(TextFormat::GREEN . "You have received a trade request from " . $this->sender?->getName());
+        $this->sender?->sendMessage(TextFormat::GREEN . "You have send a trade request to " . $this->receiver?->getName());
+    }
 
     /**
      * @return HCFPlayer

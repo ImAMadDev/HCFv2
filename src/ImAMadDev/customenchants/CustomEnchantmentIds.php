@@ -20,5 +20,6 @@ final class CustomEnchantmentIds
     public const GAPPLER = 62;
     public const UNREPAIRABLE = 63;
     public const KEY_FINDER = 64;
+    public const MERMAID = 65;
 
 }

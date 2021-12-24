@@ -38,7 +38,7 @@ class GiveSubCommand extends SubCommand {
                 return;
             }
             $rank = $this->getMain()->getRankManager()->getRank($args[2]);
-            if ($player->getCache()->hasDataInArray($rank->getName(), 'ranks')) {
+            if ($player->getCache()->hasDataInArray($rank->getName())) {
                 $sender->sendMessage(TextFormat::RED . "This player already have this rank!");
                 return;
             }
@@ -49,7 +49,7 @@ class GiveSubCommand extends SubCommand {
                 $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: permanent");
             } else {
                 $player->getCache()->setCountdown('rank_' . $rank->getName(), $time);
-                $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: " . HCFUtils::getTimeString($player->getCache()->getCountdown($rank->getName())));
+                $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: " . HCFUtils::getTimeString((time() + $time)));
             }
             $player->getCache()->saveData();
         } else {

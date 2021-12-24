@@ -47,7 +47,6 @@ class TradeManager {
 
     public function addRequest(TradeRequest $request): void {
         $this->requests[spl_object_hash($request)] = $request;
-        var_dump($request);
     }
 
     public function removeRequest(TradeRequest $key): void {
@@ -67,7 +66,6 @@ class TradeManager {
                 $request->isReceiver($player2) and $request->isSender($player1)) {
                 return true;
             }
-            var_dump($request);
         }
         return false;
     }

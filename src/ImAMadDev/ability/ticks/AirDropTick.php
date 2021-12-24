@@ -13,6 +13,7 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\Location;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
+use pocketmine\math\Facing;
 use pocketmine\scheduler\Task;
 use pocketmine\world\Position;
 use pocketmine\block\tile\Chest;
@@ -21,20 +22,19 @@ use pocketmine\utils\TextFormat;
 class AirDropTick extends Task {
 
     /**
-     * @var Position|null $pos
-     */
-    protected ? Position $pos = null;
-
-    /**
      * @var int $time
      */
     public int $time = 6;
 
     /**
      * @param Position $pos
+     * @param int $face
      */
-    public function __construct(Position $pos) {
-		$this->pos = $pos;
+    public function __construct(
+        protected Position $pos,
+        protected int $face = Facing::UP) {
+        $block = BlockFactory::getInstance()->get(BlockLegacyIds::OBSERVER, 0);
+        $this->pos->getWorld()->setBlock($this->pos->getSide($this->face), $block);
 	}
 
     public function onRun() : void {

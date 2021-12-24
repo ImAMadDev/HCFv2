@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\Location;
@@ -11,16 +12,16 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\world\Position;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\item\Fireworks;
 use ImAMadDev\entity\projectile\FireworksRocket;
 use ImAMadDev\manager\AbilityManager;
 
-class PartnerPackages extends Ability {
+class PartnerPackages extends InteractionAbility {
 
 	/** @var string */
 	private string $name = 'PartnerPackages';
@@ -46,7 +47,7 @@ class PartnerPackages extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player) : void {
+	public function consume(HCFPlayer|Player $player) : void {
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName());
 		$item->setCount($item->getCount() - 1);
@@ -112,7 +113,7 @@ class PartnerPackages extends Ability {
         $entity->setLifeTime(1);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

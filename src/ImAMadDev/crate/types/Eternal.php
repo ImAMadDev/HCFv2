@@ -12,6 +12,7 @@ use pocketmine\block\Block;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -79,7 +80,7 @@ class Eternal extends Crate {
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::POWER(), 3));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$bow->setCustomName(TextFormat::LIGHT_PURPLE . 'Eternal Bow');
-		$items[4] = $bow;
+		$items[6] = $bow;
 		
 		$fortune = ItemFactory::getInstance()->get(ItemIds::DIAMOND_PICKAXE);
 		$fortune->addEnchantment(new EnchantmentInstance(VanillaEnchantments::EFFICIENCY(), 3));
@@ -152,7 +153,7 @@ class Eternal extends Crate {
 		return $item;
 	}
 	
-	public function getContents(HCFPlayer $player) : void {
+	public function getContents(HCFPlayer|Player $player) : void {
 		$menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
 		$menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -162,10 +163,17 @@ class Eternal extends Crate {
 		foreach($this->getInventory() as $slot => $item) {
 			$menu->getInventory()->setItem($slot, $item);
 		}
+        for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
+            if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
+                $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
+                $panel->setCustomName(TextFormat::RED . "");
+                $menu->getInventory()->setItem($i, $panel);
+            }
+        }
 	} 
 
-	public function open(HCFPlayer $player, Block $block) : void {
-		$status = $player->getInventoryStatus(1);
+	public function open(HCFPlayer|Player $player, Block $block) : void {
+		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->sendBack($block->getPosition()->asVector3(), 1);
 			return;

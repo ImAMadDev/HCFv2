@@ -6,6 +6,7 @@ use ImAMadDev\customenchants\types\{Gappler,
     LifeSteal,
     Implants,
     Glow,
+    Mermaid,
     Nutrition,
     Smelting,
     Overload,
@@ -59,6 +60,7 @@ class CustomEnchantments {
         self::register(new Overload());
         self::register(new Gappler());
         self::register(new Unrepairable());
+        self::register(new Mermaid());
         HCF::getInstance()->getLogger()->info("§aThe Custom enchantments have been loaded! Number of enchants: " . count(self::$enchantments));
     }
 
@@ -75,9 +77,6 @@ class CustomEnchantments {
  	    $item->getNamedTag()->setTag(InventoryUtils::CUSTOM_ENCHANTMENT, clone CompoundTag::create());
 		$enchantment = CustomEnchantments::getEnchantmentByName($enchantName);
 		$item->addEnchantment(new EnchantmentInstance($enchantment, $level));
-		$newLore = $item->getLore();
-		array_unshift($newLore, $enchantment->getNameWithFormat($level));
-		$item->setLore($newLore);
 		return $item;
     }
 

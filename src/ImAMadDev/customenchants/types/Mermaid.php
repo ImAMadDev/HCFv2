@@ -5,6 +5,7 @@ namespace ImAMadDev\customenchants\types;
 use ImAMadDev\customenchants\CustomEnchantmentIds;
 use ImAMadDev\customenchants\utils\Tickable;
 use JetBrains\PhpStorm\Pure;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\enchantment\ItemFlags;
 use pocketmine\item\enchantment\Rarity;
@@ -13,24 +14,23 @@ use pocketmine\utils\TextFormat;
 use ImAMadDev\customenchants\CustomEnchantment;
 use ImAMadDev\utils\HCFUtils;
 use pocketmine\item\Item;
-use pocketmine\entity\effect\EffectInstance;
 
-class BurnShield extends CustomEnchantment implements Tickable {
+class Mermaid extends CustomEnchantment implements Tickable {
 	
     #[Pure] public function __construct(){
-            parent::__construct($this->getName(), Rarity::COMMON, ItemFlags::ARMOR, ItemFlags::NONE, 1);
+        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ARMOR, ItemFlags::HEAD);
     }
     
     
     public function getId() : int {
-        return CustomEnchantmentIds::BURN_SHIELD;
+        return CustomEnchantmentIds::MERMAID;
     }
 
     /**
      * @return string
      */
     public function getName() : string {
-        return CustomEnchantment::BURN_SHIELD;
+        return CustomEnchantment::MERMAID;
     }
 
     /**
@@ -38,7 +38,7 @@ class BurnShield extends CustomEnchantment implements Tickable {
      * @return string
      */
     #[Pure] public function getNameWithFormat(int $level = 1) : string {
-    	return TextFormat::RESET . TextFormat::RED . $this->getName() . " " . HCFUtils::getGreekFormat($level);
+    	return TextFormat::RESET . TextFormat::GREEN . $this->getName() . " " . HCFUtils::getGreekFormat($level);
     }
 
     /**
@@ -46,7 +46,7 @@ class BurnShield extends CustomEnchantment implements Tickable {
      * @return EffectInstance
      */
     public function getEffectsByEnchantment(int $level = 1) : EffectInstance {
-        return new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 60, ($level - 1));
+        return new EffectInstance(VanillaEffects::WATER_BREATHING(), 60, ($level - 1));
     }
     
     /**
@@ -55,20 +55,13 @@ class BurnShield extends CustomEnchantment implements Tickable {
     public function getEnchantmentPrice() : int {
     	return 25000;
    }
-   
-   /**
-     * @return bool
-     */
-   public function canBeActivate(): bool {
-   	return false;
-   }
-   
-   public function canEnchant(Item $item): bool {
-   	 return (in_array($item->getId(), CustomEnchantment::BURN_SHIELD_ITEMS));
-   }
 
     public function isTickable(): bool
     {
         return true;
     }
+   
+   public function canEnchant(Item $item): bool {
+   	 return (in_array($item->getId(), CustomEnchantment::MERMAID_ITEMS));
+   }
 }

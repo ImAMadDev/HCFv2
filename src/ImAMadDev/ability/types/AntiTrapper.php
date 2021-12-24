@@ -2,18 +2,19 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 
-class AntiTrapper extends Ability {
+class AntiTrapper extends InteractionAbility {
 
 	/** @var string */
 	private string $name = 'Anti_Trapper';
@@ -37,7 +38,7 @@ class AntiTrapper extends Ability {
 		return $item;
 	}
 
-    public function consume(HCFPlayer $player) : void {
+    public function consume(HCFPlayer|Player $player) : void {
         $currentTime = time();
         $time = (90 - ($currentTime - $player->getCache()->getCountdown($this->getName())));
         if($time > 0) {
@@ -86,7 +87,7 @@ class AntiTrapper extends Ability {
 		return strtolower($this->getName()) == strtolower($name);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

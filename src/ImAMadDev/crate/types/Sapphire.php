@@ -12,6 +12,7 @@ use pocketmine\block\Block;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -161,7 +162,7 @@ class Sapphire extends Crate {
 		return $item;
 	}
 	
-	public function getContents(HCFPlayer $player) : void {
+	public function getContents(HCFPlayer|Player $player) : void {
 		$menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
 		$menu->setName($this->getColoredName() . " " . TextFormat::GREEN . "Crate Content");
 		$menu->setListener(function(InvMenuTransaction $transaction) : InvMenuTransactionResult{
@@ -171,9 +172,16 @@ class Sapphire extends Crate {
 		foreach($this->getInventory() as $slot => $item) {
 			$menu->getInventory()->setItem($slot, $item);
 		}
+        for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
+            if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
+                $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
+                $panel->setCustomName(TextFormat::RED . "");
+                $menu->getInventory()->setItem($i, $panel);
+            }
+        }
 	} 
 
-	public function open(HCFPlayer $player, Block $block) : void {
+	public function open(HCFPlayer|Player $player, Block $block) : void {
 		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->sendBack($block->getPosition()->asVector3(), 1);

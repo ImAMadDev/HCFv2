@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability\types;
 
+use ImAMadDev\ability\utils\InteractionAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\Item;
@@ -9,6 +10,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\entity\effect\EffectInstance;
@@ -17,7 +19,7 @@ use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 
-class NinjaAbility extends Ability {
+class NinjaAbility extends InteractionAbility {
 
 	/** @var string */
 	private string $name = 'Ninja_Ability';
@@ -41,13 +43,13 @@ class NinjaAbility extends Ability {
 		return $item;
 	}
 	
-	public function consume(HCFPlayer $player) : void {
+	public function consume(HCFPlayer|Player $player) : void {
 		$time = (120 - (time() - $player->getCache()->getCountdown($this->getName())));
 		if($time > 0) {
 			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
 			return;
 		}
-		$tagger = HCF::getInstance()->getCombatManager()->getTagDamager($player);
+		$tagger = HCF::getInstance()->getCombatManager()->getTagAttacker($player);
 		if($tagger === null) {
 			$player->sendMessage(TextFormat::RED . "No one has tagged you!");
 			return;
@@ -79,10 +81,10 @@ class NinjaAbility extends Ability {
 		return TextFormat::colorize("&9Ninja Ability&r");
 	}
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
+    /**
+     * @param Item $item
+     * @return bool
+     */
 	public function isAbility(Item $item): bool {
 		if($item->getId() === ItemIds::NETHERSTAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
 			return true;
@@ -94,7 +96,7 @@ class NinjaAbility extends Ability {
 		return strtolower($this->getName()) == strtolower($name);
 	}
 	
-	public function obtain(HCFPlayer $player, int $count) : void {
+	public function obtain(HCFPlayer|Player $player, int $count) : void {
 		$status = $player->getInventoryStatus(1);
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));

@@ -42,8 +42,14 @@ class Starter extends Kit {
 		$this->description = wordwrap(TextFormat::colorize("&r&7With this kit you can start playing HCF, it has the basics to get you started, but beware of getting into a &cPVP&7!"), 40);
 	}
 
+    /**
+     * @return int
+     */
 	public function getSlot() : int { return 10; }
-	
+
+    /**
+     * @return int
+     */
 	public function getCooldown() : int {
 		return 14400;
 	}
@@ -126,11 +132,18 @@ class Starter extends Kit {
 	#[Pure] public function isKit(string $name): bool {
 		return strtolower($this->getName()) == strtolower($name);
 	}
-	
+
+    /**
+     * @return string
+     */
 	public function getDescription(): string {
 		return $this->description;
 	}
 
+    /**
+     * @param HCFPlayer $player
+     * @return void
+     */
 	public function giveKit(HCFPlayer $player) {
 		foreach($this->getItems() as $item) {
 			if($player->getInventory()->canAddItem($item)) {
