@@ -41,12 +41,12 @@ class AirDropTick extends Task {
 		$position = $this->pos;
 		if($this->time-- <= 0) {
             $block = BlockFactory::getInstance()->get(BlockLegacyIds::CHEST, 0);
-            $position->getWorld()->setBlock($position->add(0, 1, 0), $block);
-            $chest = $position->getWorld()->getTile($position->add(0, 1, 0));
+            $position->getWorld()->setBlock($position->getSide($this->face), $block);
+            $chest = $position->getWorld()->getTile($position->getSide($this->face));
             if ($chest instanceof Chest) {
                 $chest->setName(TextFormat::colorize("&5&k!!&r&l&3Air Drops&5&k!!&r"));
             } else {
-                $chest = new Chest($position->getWorld(), $position->add(0, 1, 0));
+                $chest = new Chest($position->getWorld(), $position->getSide($this->face));
                 $chest->setName(TextFormat::colorize("&5&k!!&r&l&3Air Drops&5&k!!&r"));
                 $position->getWorld()->addTile($chest);
             }
