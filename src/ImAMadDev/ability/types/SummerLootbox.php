@@ -81,7 +81,7 @@ class SummerLootbox extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === BlockLegacyIds::SHULKER_BOX && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === BlockLegacyIds::MOB_HEAD_BLOCK && $item->getMeta() == 4 && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
 			return true;
 		}
 		return false;
