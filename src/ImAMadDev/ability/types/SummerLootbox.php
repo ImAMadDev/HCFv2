@@ -95,7 +95,7 @@ class SummerLootbox extends InteractionAbility {
 		$items = [];
 		$list = [];
 		foreach(AbilityManager::getInstance()->getAbilities() as $ability) {
-			if($ability->getName() === "SummerLootbox" and $ability->getName() === "RankSharp") {
+			if($ability->getName() === "SummerLootbox" or $ability->getName() === "RankSharp") {
 				continue;
 			}
 			if($ability->getName() === "Airdrops") {
