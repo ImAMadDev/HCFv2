@@ -48,7 +48,7 @@ class AbilityListener implements Listener {
         $ability = AbilityManager::getInstance()->getAbilityByItem($item);
         if($ability instanceof InteractionBlockAbility) {
             $event->cancel();
-            if($item->getNamedTag()->getTag(Ability::INTERACT_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
+            if($item->getNamedTag()->getTag(Ability::PLACE_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
                 $ability->consume($player, $event->getBlock(), $event->getFace());
             }
         }
