@@ -39,7 +39,7 @@ class Airdrops extends InteractionBlockAbility {
 	public function get(int $count = 1, mixed $value = null): Item {
 		$item = ItemFactory::getInstance()->get(BlockLegacyIds::OBSERVER, 0, $count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
-        $item->getNamedTag()->setTag(self::INTERACT_ABILITY, CompoundTag::create());
+        $item->getNamedTag()->setTag(self::PLACE_ABILITY, CompoundTag::create());
         $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$item->setCustomName($this->getColoredName());
 		$item->setLore([$this->description]);
@@ -79,7 +79,7 @@ class Airdrops extends InteractionBlockAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === BlockLegacyIds::OBSERVER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === BlockLegacyIds::OBSERVER && $item->getNamedTag()->getTag(self::PLACE_ABILITY) instanceof CompoundTag) {
 			return true;
 		}
 		return false;

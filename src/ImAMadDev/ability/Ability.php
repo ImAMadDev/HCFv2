@@ -12,6 +12,8 @@ abstract class Ability {
 	public const ABILITY = "Ability";
 	
 	public const INTERACT_ABILITY = "Interaction";
+
+    public const PLACE_ABILITY = "Place";
 	
 	public const DAMAGE_ABILITY = "Damageable";
 

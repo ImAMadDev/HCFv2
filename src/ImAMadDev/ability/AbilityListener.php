@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ability;
 
+use ImAMadDev\ability\utils\DamageAbility;
 use ImAMadDev\ability\utils\DamageOtherAbility;
 use ImAMadDev\ability\utils\InteractionAbility;
 use ImAMadDev\ability\utils\InteractionBlockAbility;
@@ -9,6 +10,7 @@ use ImAMadDev\HCF;
 use ImAMadDev\player\{HCFPlayer};
 use ImAMadDev\manager\{AbilityManager};
 
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\{PlayerInteractEvent, PlayerItemUseEvent};
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent};
@@ -16,9 +18,16 @@ use pocketmine\nbt\tag\CompoundTag;
 
 class AbilityListener implements Listener {
 	
-	public function __construct(){
-		
-	}
+	public function __construct(){}
+
+    public function handlePlace(BlockPlaceEvent $event) : void
+    {
+        $item = $event->getItem();
+        $ability = AbilityManager::getInstance()->getAbilityByItem($item);
+        if ($ability instanceof DamageAbility or $ability instanceof DamageOtherAbility or $ability instanceof InteractionAbility){
+            $event->cancel();
+        }
+    }
 	
 	public function handleItemUse(PlayerItemUseEvent $event) : void {
 		$player = $event->getPlayer();
