@@ -44,7 +44,7 @@ class KickSubCommand extends SubCommand {
         $player = $this->getServer()->getPlayerByPrefix($name);
         if($sender->getFaction()->isInFaction($name)) {
             HCF::getInstance()->getCache($name)?->setInData('faction', null);
-            HCF::getInstance()->getCache($name)?->loadFactionRank();
+            //HCF::getInstance()->getCache($name)?->loadFactionRank();
         }
 		if($player instanceof HCFPlayer) {
 			if($sender->getFaction()->isInFaction($name)) {

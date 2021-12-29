@@ -363,7 +363,7 @@ class HCFPlayer extends Player {
 	
 	public function setFaction(?Faction $faction): void {
 		$this->faction = $faction;
-        $this->getCache()->loadFactionRank();
+        //$this->getCache()->loadFactionRank();
 	}
 	
 	public function setInvincible(?int $time = null): void {

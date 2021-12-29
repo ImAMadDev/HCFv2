@@ -24,7 +24,7 @@ class PlayerCache
         private array $data
     ){
         $this->factionRank = new FactionRank($this->name);
-        $this->loadFactionRank();
+       // $this->loadFactionRank();
     }
 
     /**
@@ -159,6 +159,7 @@ class PlayerCache
                 }
                 if ($faction->isInFaction($this->getName())) {
                     $faction->removeMember($this->getName());
+                    var_dump("jjjjj");
                     return;
                 }
                 $this->getFactionRank()->set(null);

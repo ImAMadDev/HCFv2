@@ -57,7 +57,7 @@ class AbilityListener implements Listener {
 							if($item->getNamedTag()->getTag(Ability::DAMAGE_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
 								$attacker->addAbilityHits($item);
 								if($attacker->canActivateAbility($item) === true) {
-									$ability->consume($attacker);
+									$ability->consume($attacker, $player);
 								}
 							}
 						}

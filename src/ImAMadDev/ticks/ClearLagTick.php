@@ -24,12 +24,10 @@ class ClearLagTick extends Task{
 	public function onRun() : void {
 		if(in_array($this->time, [30, 10, 5])){
 			$time = $this->time . " &csecond(s)&r";
-			if($this->time >= 60) $time = floor(($this->time / 60) % 60) . " &cminute(s)&r";
 			Server::getInstance()->broadcastMessage(TextFormat::colorize("&7All entities will be cleared from the ground in: &c" . $time));
 		}
 		if($this->time <= 0){
 			$this->clearItems();
-			$this->clearChunks();
 			$this->time = HCFUtils::CLEARLAG_TIME;
 		} else {
 			$this->time--;
@@ -47,14 +45,6 @@ class ClearLagTick extends Task{
 			}
 		}
 		Server::getInstance()->broadcastMessage(TextFormat::colorize("&cA total of&7 [&l&6 ". $count." &r&7] &r&cDropped items were removed.&r"));
-	}
-	
-	public function clearChunks(): void{
-		foreach(Server::getInstance()->getWorldManager()->getWorlds() as $level){
-			foreach($level->getLoadedChunks() as $chunk){
-                $chunk->onUnload();
-			}
-		}
 	}
 
 }
