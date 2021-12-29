@@ -24,7 +24,7 @@ class AbilityListener implements Listener {
     {
         $item = $event->getItem();
         $ability = AbilityManager::getInstance()->getAbilityByItem($item);
-        if ($ability instanceof DamageAbility or $ability instanceof DamageOtherAbility or $ability instanceof InteractionAbility){
+        if (get_parent_class($ability) !== "InteractionBlockAbility"){
             $event->cancel();
         }
     }
