@@ -84,18 +84,11 @@ class Portal extends Transparent {
                     $this->player->portalQueue = false;
                     return;
                 }
-                $dimension = DimensionIds::NETHER;
-                if($this->player->getWorld()->getFolderName() === HCFUtils::NETHER_MAP) {
-                    $dimension = DimensionIds::OVERWORLD;
-                }
                 $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::NETHER_MAP)->getSpawnLocation();
                 if($this->player->getWorld()->getFolderName() === HCFUtils::NETHER_MAP) {
                     $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)->getSpawnLocation();
                 }
-                $this->player->sendMessage(TextFormat::RED . "End portal and Nether portal was disabled, Thanks pocketmine 4.0!");
-                /*$this->player->sendDimension($dimension);
-                $this->player->getNetworkSession()->sendDataPacket(PlayStatusPacket::create(PlayStatusPacket::PLAYER_SPAWN));
-                $this->player->teleport($position);*/
+                $this->player->teleport($position);
                 $this->player->portalQueue = false;
             }
         }, 80);

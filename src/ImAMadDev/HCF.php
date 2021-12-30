@@ -4,7 +4,7 @@ namespace ImAMadDev;
 
 use ImAMadDev\claim\ClaimListener;
 use ImAMadDev\customenchants\CustomEnchantments;
-use ImAMadDev\inventory\EnderChestInvMenuType;
+use czechpmdevs\multiworld\generator\ender\EnderGenerator;
 use ImAMadDev\player\PlayerCache;
 use ImAMadDev\youtubers\redeem\RedeemManager;
 use JetBrains\PhpStorm\Pure;
@@ -111,7 +111,6 @@ class HCF extends PluginBase {
 		if(!InvMenuHandler::isRegistered()){
 			InvMenuHandler::register($this);
 		}
-        InvMenuHandler::getTypeRegistry()->register(self::INV_MENU_TYPE_ENDER_CHEST, new EnderChestInvMenuType());
         CustomEnchantments::init();
 		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&5&l&oMine&fStalia &r&7»"));
         if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::NETHER_MAP)){
@@ -119,6 +118,14 @@ class HCF extends PluginBase {
             $g->setGeneratorClass(Nether::class);
             $g->setSpawnPosition(new Vector3(0, 100, 0));
             $this->getServer()->getWorldManager()->generateWorld(HCFUtils::NETHER_MAP, $g);
+        } else {
+            Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::NETHER_MAP);
+        }
+        if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::END_MAP)){
+            $g = WorldCreationOptions::create();
+            $g->setGeneratorClass(EnderGenerator::class);
+            $g->setSpawnPosition(new Vector3(0, 100, 0));
+            $this->getServer()->getWorldManager()->generateWorld(HCFUtils::END_MAP, $g);
         } else {
             Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::NETHER_MAP);
         }

@@ -10,7 +10,8 @@ use pocketmine\block\{BlockBreakInfo,
     BlockFactory};
 
 use pocketmine\item\ToolTier;
-use ImAMadDev\block\{EndPortalFrame,
+use ImAMadDev\block\{EndPortal,
+    EndPortalFrame,
     Portal,
     IronDoor,
     Flower,
@@ -57,6 +58,7 @@ class BlockManager {
         $bf->register(new TNT(), true);
         $bf->register(new IronDoor(), true);
         $bf->register(new Portal(), true);
+        $bf->register(new EndPortal(), true);
         $bf->register(new EndPortalFrame(), true);
         $bf->register(new Obsidian(), true);
         $bf->register(new PotionGenerator(), true);

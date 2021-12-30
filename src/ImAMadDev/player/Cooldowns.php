@@ -33,6 +33,7 @@ class Cooldowns {
 	}
 	
 	public function has(string $name) : bool {
+        if (!isset($this->cooldowns[strtolower($name)])) return false;
 		$remaining = 0;
 		if(isset($this->cooldowns[strtolower($name)])) {
 			$remaining = ($this->defaultTime[strtolower($name)] - (time() - $this->cooldowns[strtolower($name)]));

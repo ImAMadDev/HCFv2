@@ -96,6 +96,8 @@ class HCFPlayer extends Player {
 	private ? Position $lastPosition = null;
 	
 	public bool $portalQueue = false;
+
+    public bool $endQueue = false;
 	
 	public array $abilityHits = [];
 	

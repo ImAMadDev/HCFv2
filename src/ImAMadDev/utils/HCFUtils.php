@@ -23,6 +23,8 @@ final class HCFUtils {
 	public const DEFAULT_MAP = 'MS';
 	
 	public const NETHER_MAP = 'Nether';
+
+    public const END_MAP = 'End';
 	
 	public const PAID_SHARPNESS = 2;
 	
