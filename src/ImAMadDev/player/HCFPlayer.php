@@ -188,7 +188,7 @@ class HCFPlayer extends Player {
 	
 	public function checkAbilityLastHit() : void {
 		foreach(array_keys($this->abilityHits) as $abi) {
-			$remaining = (1 - (time() - $this->abilityLastHit[$abi]));
+			$remaining = (2 - (time() - $this->abilityLastHit[$abi]));
 			if($remaining <= 0) {
 				$this->abilityHits[$abi] = 0;
 				$this->abilityLastHit[$abi] = 0;
