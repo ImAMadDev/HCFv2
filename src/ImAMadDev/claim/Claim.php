@@ -96,18 +96,18 @@ class Claim {
 			if($faction->getDTR() <= 0) {
 				if($player->getGamemode() === GameMode::ADVENTURE()) {
 					$player->setGamemode(GameMode::SURVIVAL());
-                    $this->setEdit($player, true);
+                    //$this->setEdit($player, true);
 				}
             } else {
 				if($faction->isInFaction($player->getName())) {
 					if($player->getGamemode() === GameMode::ADVENTURE()) {
 						$player->setGamemode(GameMode::SURVIVAL());
-                        $this->setEdit($player, true);
+                        //$this->setEdit($player, true);
 					}
                 } else {
 					if($player->getGamemode() === GameMode::SURVIVAL()) {
 						$player->setGamemode(GameMode::ADVENTURE());
-                        $this->setEdit($player);
+                        //$this->setEdit($player);
 					}
                 }
             }
@@ -117,7 +117,7 @@ class Claim {
             } else {
 				if($player->getGamemode() === GameMode::ADVENTURE()) {
 					$player->setGamemode(GameMode::SURVIVAL());
-                    $this->setEdit($player, true);
+                    //$this->setEdit($player, true);
 				}
             }
         }

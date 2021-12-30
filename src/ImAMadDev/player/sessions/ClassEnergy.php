@@ -51,7 +51,7 @@ class ClassEnergy
 
     public function reduce(float $reduce) : void
     {
-        $this->energy += $reduce;
+        $this->energy -= $reduce;
     }
 
     public function onTick() : void

@@ -4,7 +4,7 @@ namespace ImAMadDev;
 
 use ImAMadDev\claim\ClaimListener;
 use ImAMadDev\customenchants\CustomEnchantments;
-use czechpmdevs\multiworld\generator\ender\EnderGenerator;
+use ImAMadDev\generator\EndGenerator;
 use ImAMadDev\player\PlayerCache;
 use ImAMadDev\youtubers\redeem\RedeemManager;
 use JetBrains\PhpStorm\Pure;
@@ -42,6 +42,7 @@ use ImAMadDev\kit\KitListener;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\ticks\{ClearLagTick, BroadcastTick};
 use CombatLogger\CombatManager;
+use pocketmine\world\generator\GeneratorManager;
 use pocketmine\world\generator\hell\Nether;
 use pocketmine\world\WorldCreationOptions;
 use scoreboard\Scoreboard;
@@ -108,6 +109,7 @@ class HCF extends PluginBase {
         $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new ClearLagTick(), 20);
 		$this->getScheduler()->scheduleRepeatingTask(new BroadcastTick($this), 4800);
+        GeneratorManager::getInstance()->addGenerator(EndGenerator::class, "ender", fn() => null, true);
 		if(!InvMenuHandler::isRegistered()){
 			InvMenuHandler::register($this);
 		}
@@ -123,11 +125,11 @@ class HCF extends PluginBase {
         }
         if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::END_MAP)){
             $g = WorldCreationOptions::create();
-            $g->setGeneratorClass(EnderGenerator::class);
+            $g->setGeneratorClass(EndGenerator::class);
             $g->setSpawnPosition(new Vector3(0, 100, 0));
             $this->getServer()->getWorldManager()->generateWorld(HCFUtils::END_MAP, $g);
         } else {
-            Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::NETHER_MAP);
+            Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::END_MAP);
         }
         Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::DEFAULT_MAP);
 		self::$textsManager = new TextsManager($this);

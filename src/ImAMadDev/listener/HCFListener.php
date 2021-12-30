@@ -214,22 +214,6 @@ class HCFListener implements Listener {
 		}
 	}
 	
-	public function handlePacketReceive(DataPacketReceiveEvent $event) : void{
-        $player = $event->getOrigin()->getPlayer();
-	    if (!$player instanceof HCFPlayer) return;
-		if(($packet = $event->getPacket()) instanceof LoginPacket) {
-			$devices = array(1 => 'Android', 'iOS', 'Mac', 'FireOS', 'GearVR', 'HoloLens', 'Win10', 'Windows', 'Dedicated', 'tvOS', 'PS4', 'Switch', 'Xbox', 'WindowsPhone'); 
-			$controls = ["Keyboard", "Touch", "Controller"];
-			$input = ["Classic", "Pocket"];
-			$dev = $devices[$packet->clientData['DeviceOS']] ?? 'Unknown';
-			$control = $controls[$packet->clientData["CurrentInputMode"]] ?? 'Unknown';
-			$ui = $input[$packet->clientData["UIProfile"]] ?? 'Classic';
-			$player->setDeviceString($dev);
-			$player->setInputString($control);
-			$player->setUIString($ui);
-		}
-	}
-	
 	public function onCreationEvent(PlayerCreationEvent $event) : void {
 		$event->setPlayerClass(HCFPlayer::class);
 	}
@@ -240,6 +224,7 @@ class HCFListener implements Listener {
 			if(ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN or $player->isInvincible()) {
 				if(EOTWManager::isEnabled() === false) {
 					$event->cancel();
+                    return;
 				}
 			}
 			if($event instanceof EntityDamageByEntityEvent) {
@@ -295,16 +280,16 @@ class HCFListener implements Listener {
 			$player->kill();
 			return;
 		}
-		$time = $player->hasPermission("vip.combatlogger") === true ? 400 : 550;
+		$time = $player->hasPermission("vip.combatlogger") === true ? 400 : 500;
 		$faction = $player->getFaction() === null ? "" : $player->getFaction()->getName();
-		$nbt = new CompoundTag();
-		$nbt->setString("player", $player->getName());
-		$nbt->setString("faction", $faction);
-		$entity = new CombatLogger($player->getLocation(), $nbt);
+		$entity = new CombatLogger($player->getLocation());
+        $entity->setFaction($faction);
+        $entity->setPlayer($player->getName());
 		$entity->setNameTag("CombatLogger");
         $entity->setNameTagAlwaysVisible(true);
         $entity->setNameTagVisible(true);
 		$entity->load($time);
+        $entity->setCanSaveWithChunk(true);
 		$entity->setHealth(100.0);
 		$entity->setMaxHealth(100);
 		$entity->spawnToAll();

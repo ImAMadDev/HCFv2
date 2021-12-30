@@ -78,7 +78,7 @@ class EndPortal extends Transparent {
                 $this->player->teleport($position);
                 $this->player->endQueue = false;
             }
-        }, 60);
+        }, 40);
         return true;
     }
 }

@@ -233,30 +233,6 @@ class HCFPlayer extends Player {
 		return $this->movement;
 	}
 	
-	public function setDeviceString(string $device) : void {
-		$this->device = $device;
-	}
-	
-	public function setInputString(string $inputMode) : void {
-		$this->inputMode = $inputMode;
-	}
-	
-	public function getDeviceString() : string {
-		return $this->device;
-	}
-	
-	public function getInputString() : string {
-		return $this->inputMode;
-	}
-	
-	public function setUIString(string $ui) : void {
-		$this->uiMode = $ui;
-	}
-	
-	public function getUIString() : string {
-		return $this->uiMode;
-	}
-	
 	public function load() : void {
 		$this->cooldown = new Cooldowns($this);
 		new BardTick($this);
@@ -633,7 +609,7 @@ class HCFPlayer extends Player {
             ItemIds::GOLDEN_NUGGET => 35,
             ItemIds::COAL, ItemIds::SPIDER_EYE => 30,
             ItemIds::SEEDS => 40,
-            default => null,
+            default => 0,
         };
 	}
 	
@@ -644,7 +620,7 @@ class HCFPlayer extends Player {
             ItemIds::SPIDER_EYE, ItemIds::BLAZE_POWDER => 40,
             ItemIds::GHAST_TEAR => 35,
             ItemIds::MAGMA_CREAM => 25,
-            default => null,
+            default => 0,
         };
 	}
 	

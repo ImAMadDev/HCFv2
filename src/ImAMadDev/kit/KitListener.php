@@ -76,7 +76,7 @@ class KitListener implements Listener {
 							}
                             $attacker->sendMessage(TextFormat::YELLOW . "You have hit " . TextFormat::AQUA . $player->getName() . TextFormat::YELLOW . " and have archer tagged");
                             $player->sendMessage(TextFormat::YELLOW . "You have been archer tagged by " . TextFormat::AQUA . $attacker->getName());
-                            $player->sendMessage(TextFormat::YELLOW .  "You marked " . TextFormat::GOLD . $attacker->getName() . " for 10 seconds " . TextFormat::GRAY . "[Damage: " . TextFormat::RED . $event->getBaseDamage() . TextFormat::GRAY . "]");
+                            $attacker->sendMessage(TextFormat::YELLOW .  "You marked " . TextFormat::GOLD . $player->getName() . TextFormat::GRAY . " for 10 seconds " . TextFormat::GRAY . "[Damage: +" . TextFormat::RED . $player->getArcherMark()->getDamage() . TextFormat::GRAY . "]");
 						}
 					}
 				}
@@ -350,7 +350,6 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->applyPotionEffect($effect);
                             $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));                            $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
@@ -438,7 +437,7 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                             $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
@@ -477,7 +476,7 @@ class KitListener implements Listener {
                                         $nearby->applyPotionEffect($effect);
                                     }
                                 }
-                                $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                                $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                                 $item->setCount($item->getCount() - 1);
                                 $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                                 $player->getCooldown()->add('effects_cooldown', 10);
@@ -516,7 +515,7 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                             $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
@@ -554,8 +553,7 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->applyPotionEffect($effect);
-                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                             $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
@@ -593,7 +591,7 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                             $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
@@ -631,7 +629,7 @@ class KitListener implements Listener {
                                     $nearby->applyPotionEffect($effect);
                                 }
                             }
-                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $player->getClassEnergy()->reduce($player->getMageEnergyCost($item->getId()));
                             $item->setCount($item->getCount() - 1);
                             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
                             $player->getCooldown()->add('effects_cooldown', 10);
