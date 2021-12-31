@@ -7,6 +7,7 @@ use ImAMadDev\faction\FactionUtils;
 use ImAMadDev\HCF;
 use ImAMadDev\manager\FactionManager;
 use ImAMadDev\player\modules\FactionRank;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
@@ -19,7 +20,7 @@ class PlayerCache
     
     private FactionRank $factionRank;
 
-    public function __construct(
+    #[Pure] public function __construct(
         private string $name,
         private array $data
     ){
@@ -86,6 +87,12 @@ class PlayerCache
     public function getCountdown(string $countdown) : int
     {
         return $this->getInData($countdown . COUNTDOWN, true) ?? 0;
+    }
+
+    public function hasCountdown(string $countdown, int $time = 60) : bool
+    {
+        if ($this->getCountdown($countdown) == 0) return false;
+        return ($time - (time() - $this->getCountdown($countdown))) > 0;
     }
 
     public function setCountdown(string $countdown, int $time) : void

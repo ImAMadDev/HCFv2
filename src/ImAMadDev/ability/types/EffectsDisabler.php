@@ -24,7 +24,12 @@ class EffectsDisabler extends DamageOtherAbility {
 
 	private string $description = "&eHit a player 3 times to remove all effects\n&cHas a cooldown of 2 minutes";
 	
-	private int $cooldown = 120;
+	public int $cooldown = 120;
+
+    public function __construct()
+    {
+        $this->cooldown = 120;
+    }
 
     /**
      * @param int $count

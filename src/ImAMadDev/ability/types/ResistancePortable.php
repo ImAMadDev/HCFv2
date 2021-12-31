@@ -24,7 +24,7 @@ class ResistancePortable extends InteractionAbility {
 
 	private string $description;
 	
-	private int $cooldown = 20;
+	public int $cooldown = 20;
 	
 	public function __construct() {
 		$this->description = TextFormat::colorize("&dRight Click to activate\n&7&oThis item gives you 5 seconds of &6[Resistance III]&r");

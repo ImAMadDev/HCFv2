@@ -60,12 +60,6 @@ class ClaimListener implements Listener
             if ($player->getCooldown()->has('antitrapper_tag')) {
                 if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if ($claim instanceof Claim){
-                        if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT)){
-                            if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
-                                $event->cancel();
-                                return;
-                            }
-                        }
                         if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL)){
                             if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
                                 $event->cancel();
@@ -80,29 +74,34 @@ class ClaimListener implements Listener
                                 return;
                             }
                         }
+                        if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT)){
+                            if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
+                                $event->cancel();
+                                return;
+                            }
+                        }
                     }
 
                 }
             }
             if ($claim instanceof Claim){
+                if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
+                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
+                        $event->cancel();
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(true);
+                        }
+                        ), 1);
+                        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
+                            $player->cancelMovement(false);
+                        }
+                        ), 40);
+                    }
+                }
                 if (!$claim->canEdit($player->getFaction()) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT)){
                         if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
                             $event->cancel();
-                            return;
-                        }
-                    }
-                    if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL)){
-                        if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
-                            $event->cancel();
-                            HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
-                                $player->cancelMovement(true);
-                            }
-                            ), 1);
-                            HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
-                                $player->cancelMovement(false);
-                            }
-                            ), 40);
                         }
                     }
                 }

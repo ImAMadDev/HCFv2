@@ -12,7 +12,7 @@ use ImAMadDev\manager\{AbilityManager};
 
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\{PlayerInteractEvent, PlayerItemUseEvent};
+use pocketmine\event\player\{PlayerInteractEvent, PlayerItemHeldEvent, PlayerItemUseEvent};
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent};
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -74,18 +74,17 @@ class AbilityListener implements Listener {
 				}
 			}
 		}
-	}/*
+	}
 	
 	public function onPlayerItemHeldEvent(PlayerItemHeldEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $event->getItem();
 		$ability = AbilityManager::getInstance()->getAbilityByItem($item);
-		if($ability !== null) {
-			$event->setCancelled(true);
-			if($item->getNamedTagEntry(Ability::INTERACT_ABILITY) instanceof CompoundTag or $item->getNamedTagEntry(Ability::DAMAGE_ABILITY) instanceof CompoundTag) {
-				
-			}
+		if($ability instanceof Ability) {
+            if ($ability->handCountdown($player) !== ""){
+                $player->sendTip($ability->handCountdown($player));
+            }
 		}
 	}
-	*/
+
 }

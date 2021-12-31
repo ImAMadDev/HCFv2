@@ -21,7 +21,7 @@ class AntiTrapper extends InteractionAbility {
 
 	private string $description = "&eWhen used, all players within a radius of 10 blocks\n&ewill not be able to place or break blocks.\n&cHas a cooldown of 3 minutes";
 	
-	private int $cooldown = 180;
+	public int $cooldown = 180;
 
     /**
      * @param int $count

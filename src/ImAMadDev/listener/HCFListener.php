@@ -92,7 +92,8 @@ use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
 use pocketmine\world\sound\ExplodeSound;
 use pocketmine\world\World;
 
-class HCFListener implements Listener {
+class HCFListener implements Listener
+{
 
     private bool $cancel_send = true;
 
@@ -102,9 +103,10 @@ class HCFListener implements Listener {
      * @priority NORMAL
      * @ignoreCancelled true
      */
-    public function onDataPacketSend(DataPacketSendEvent $event) : void{
+    public function onDataPacketSend(DataPacketSendEvent $event): void
+    {
         foreach ($event->getPackets() as $packet) {
-            if($this->cancel_send && $packet instanceof ContainerClosePacket){
+            if ($this->cancel_send && $packet instanceof ContainerClosePacket) {
                 $event->cancel();
             }
         }
@@ -115,64 +117,66 @@ class HCFListener implements Listener {
      * @priority NORMAL
      * @ignoreCancelled true
      */
-    public function onDataPacketReceive(DataPacketReceiveEvent $event) : void{
+    public function onDataPacketReceive(DataPacketReceiveEvent $event): void
+    {
         $packet = $event->getPacket();
-        if($packet instanceof ContainerClosePacket){
+        if ($packet instanceof ContainerClosePacket) {
             $this->cancel_send = false;
             $event->getOrigin()->sendDataPacket($packet, false);
             $this->cancel_send = true;
         }
     }
 
-    public function handleLeaves(LeavesDecayEvent $event) : void
+    public function handleLeaves(LeavesDecayEvent $event): void
     {
         $event->cancel();
     }
 
-    public function handleGrow(BlockGrowEvent $event) : void
+    public function handleGrow(BlockGrowEvent $event): void
     {
         $block = $event->getBlock();
-        if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
+        if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::KOTH ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::ROAD ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::WARZONE
-        ){
+        ) {
             $event->cancel();
         }
     }
 
-    public function handleBurn(BlockBurnEvent $event) : void
+    public function handleBurn(BlockBurnEvent $event): void
     {
         $block = $event->getBlock();
-        if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
+        if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::KOTH ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::ROAD ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::WARZONE
-        ){
+        ) {
             $event->cancel();
         }
     }
 
-    public function handleSpread(BlockSpreadEvent $event) : void
+    public function handleSpread(BlockSpreadEvent $event): void
     {
         $block = $event->getBlock();
-        if(ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
+        if (ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::KOTH ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::ROAD ||
             ClaimManager::getInstance()->getClaimByPosition($block->getPosition())?->getClaimType()->getType() == ClaimType::WARZONE
-        ){
+        ) {
             $event->cancel();
         }
     }
 
-    public function handleItemPickup(EntityItemPickupEvent $event) : void {
+    public function handleItemPickup(EntityItemPickupEvent $event): void
+    {
         $player = $event->getOrigin();
-		if($player instanceof HCFPlayer){
-			if($player->isInvincible() or !$player->isAlive()){
-				$event->cancel();
-			}
-		}
-	}
+        if ($player instanceof HCFPlayer) {
+            if ($player->isInvincible() or !$player->isAlive()) {
+                $event->cancel();
+            }
+        }
+    }
 
     public function handleSend(DataPacketSendEvent $event): void
     {
@@ -202,108 +206,115 @@ class HCFListener implements Listener {
         if ($packet instanceof MobEquipmentPacket) CustomEnchantments::filterDisplayedEnchants($packet->item->getItemStack());
     }
 
-	public function handleItemSpawn(ItemSpawnEvent $event) : void {
-		$entity = $event->getEntity();
-		if(!$entity instanceof ItemEntity) return;
-		if(ClaimManager::getInstance()->getClaimByPosition($entity->getPosition()->asPosition())?->getClaimType()->getType() == ClaimType::SPAWN and SOTWManager::isEnabled()) {
+    public function handleItemSpawn(ItemSpawnEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (!$entity instanceof ItemEntity) return;
+        if (ClaimManager::getInstance()->getClaimByPosition($entity->getPosition()->asPosition())?->getClaimType()->getType() == ClaimType::SPAWN and SOTWManager::isEnabled()) {
             $player = $entity->getOwningEntity();
-            if ($player instanceof HCFPlayer){
+            if ($player instanceof HCFPlayer) {
                 $player->sendMessage(TextFormat::RED . "In the SOTW items dropped in the spawn will be removed automatically.");
             }
-			$entity->flagForDespawn();
-		}
-	}
-	
-	public function onCreationEvent(PlayerCreationEvent $event) : void {
-		$event->setPlayerClass(HCFPlayer::class);
-	}
-	
-	public function onEntityDamageEvent(EntityDamageEvent $event) : void {
-		$player = $event->getEntity();
-		if($player instanceof HCFPlayer) {
-			if(ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN or $player->isInvincible()) {
-				if(EOTWManager::isEnabled() === false) {
-					$event->cancel();
+            $entity->flagForDespawn();
+        }
+    }
+
+    public function onCreationEvent(PlayerCreationEvent $event): void
+    {
+        $event->setPlayerClass(HCFPlayer::class);
+    }
+
+    public function onEntityDamageEvent(EntityDamageEvent $event): void
+    {
+        $player = $event->getEntity();
+        if ($player instanceof HCFPlayer) {
+            if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN or $player->isInvincible()) {
+                if (EOTWManager::isEnabled() === false) {
+                    $event->cancel();
                     return;
-				}
-			}
-			if($event instanceof EntityDamageByEntityEvent) {
-				$attacker = $event->getDamager();
-				if($attacker instanceof HCFPlayer){
-					if(ClaimManager::getInstance()->getClaimByPosition($attacker->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN or $player->isInvincible() or $attacker->isInvincible()) {
-						if(EOTWManager::isEnabled() === false) {
-							$event->cancel();
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public function onJoinEvent(PlayerJoinEvent $event) : void {
-		$player = $event->getPlayer();
-		if (!$player instanceof HCFPlayer) return;
-		PlayerData::register($player->getName());
-		$event->setJoinMessage(TextFormat::GRAY . "[" . TextFormat::GREEN . "+" . TextFormat::GRAY . "] " . TextFormat::GREEN . $player->getName());
-		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new Scoreboard($player), 20);
-		$player->showCoordinates();
-		$player->load();
-		if(!$player->hasPlayedBefore()) {
-			$player->setInvincible();
-			HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Anubis 3h');
-			$player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
+                }
+            }
+            if ($event instanceof EntityDamageByEntityEvent) {
+                $attacker = $event->getDamager();
+                if ($attacker instanceof HCFPlayer) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($attacker->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN or $player->isInvincible() or $attacker->isInvincible()) {
+                        if (EOTWManager::isEnabled() === false) {
+                            $event->cancel();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function onJoinEvent(PlayerJoinEvent $event): void
+    {
+        $player = $event->getPlayer();
+        if (!$player instanceof HCFPlayer) return;
+        PlayerData::register($player->getName());
+        $event->setJoinMessage(TextFormat::GRAY . "[" . TextFormat::GREEN . "+" . TextFormat::GRAY . "] " . TextFormat::GREEN . $player->getName());
+        HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new Scoreboard($player), 20);
+        $player->showCoordinates();
+        $player->load();
+        if (!$player->hasPlayedBefore()) {
+            $player->setInvincible();
+            HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Anubis 3h');
+            $player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
-		}
-		$player->setInvincible($player->getCache()->getInData('invincibility_time', true));
+        }
+        $player->setInvincible($player->getCache()->getInData('invincibility_time', true));
         $player->getFaction()?->message(TextFormat::GREEN . "+ Member online: " . TextFormat::RED . $player->getName());
-		HCFUtils::saveSkin($player->getSkin(), $player->getName());
-		$player->setJoined(true);
-	}
-	
-	public function onQuitEvent(PlayerQuitEvent $event) : void {
-		$player = $event->getPlayer();
-		$event->setQuitMessage(TextFormat::GRAY."[".TextFormat::RED."-".TextFormat::GRAY."] ".TextFormat::RED . $player->getName());
+        HCFUtils::saveSkin($player->getSkin(), $player->getName());
+        $player->setJoined(true);
+    }
+
+    public function onQuitEvent(PlayerQuitEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $event->setQuitMessage(TextFormat::GRAY . "[" . TextFormat::RED . "-" . TextFormat::GRAY . "] " . TextFormat::RED . $player->getName());
         $player->getCache()->saveData();
-		if($player->canLogout() == true) {
-			return;
-		}
-		if(!$player->isAlive()) {
-			return;
-		}
-		if(ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
-			return;
-		}
-		if($event->getQuitReason() === "Server Closed" || $event->getQuitReason() === "Internal server error"){
-			return;
-		}
-		if($player->getCooldown()->has('combattag')) {
-			$player->kill();
-			return;
-		}
-		$time = $player->hasPermission("vip.combatlogger") === true ? 400 : 500;
-		$faction = $player->getFaction() === null ? "" : $player->getFaction()->getName();
-		$entity = new CombatLogger($player->getLocation());
+        if ($player->canLogout() == true) {
+            return;
+        }
+        if (!$player->isAlive()) {
+            return;
+        }
+        if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
+            return;
+        }
+        if ($event->getQuitReason() === "Server Closed" || $event->getQuitReason() === "Internal server error") {
+            return;
+        }
+        if ($player->getCooldown()->has('combattag')) {
+            $player->kill();
+            return;
+        }
+        $time = $player->hasPermission("vip.combatlogger") === true ? 400 : 500;
+        $faction = $player->getFaction() === null ? "" : $player->getFaction()->getName();
+        $entity = new CombatLogger($player->getLocation());
         $entity->setFaction($faction);
         $entity->setPlayer($player->getName());
-		$entity->setNameTag("CombatLogger");
+        $entity->setNameTag("CombatLogger");
         $entity->setNameTagAlwaysVisible(true);
         $entity->setNameTagVisible(true);
-		$entity->load($time);
+        $entity->load($time);
         $entity->setCanSaveWithChunk(true);
-		$entity->setHealth(100.0);
-		$entity->setMaxHealth(100);
-		$entity->spawnToAll();
-	}
-	
-	public function onLevelChangeEvent(EntityTeleportEvent $event) : void {
-		$player = $event->getEntity();
-		if($player instanceof HCFPlayer and $event->getFrom()->getWorld()->getFolderName() !== $event->getTo()->getWorld()->getFolderName()) {
-			$player->showCoordinates();
-		}
-	}
-	
-	public function onChatEvent(PlayerChatEvent $event) : void {
-		$player = $event->getPlayer();
+        $entity->setHealth(100.0);
+        $entity->setMaxHealth(100);
+        $entity->spawnToAll();
+    }
+
+    public function onLevelChangeEvent(EntityTeleportEvent $event): void
+    {
+        $player = $event->getEntity();
+        if ($player instanceof HCFPlayer and $event->getFrom()->getWorld()->getFolderName() !== $event->getTo()->getWorld()->getFolderName()) {
+            $player->showCoordinates();
+        }
+    }
+
+    public function onChatEvent(PlayerChatEvent $event): void
+    {
+        $player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             switch ($player->getChatMode()->get()) {
                 case PlayerUtils::PUBLIC:
@@ -340,14 +351,15 @@ class HCFListener implements Listener {
                     break;
             }
         }
-	}
+    }
 
-    public function onPlayerInteractEvent(PlayerInteractEvent $event) : void {
-		$player = $event->getPlayer();
-		$block = $event->getBlock();
-		$item = $event->getItem();
+    public function onPlayerInteractEvent(PlayerInteractEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $block = $event->getBlock();
+        $item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim() == false) {
                 if ($item->getId() !== ItemIds::WOODEN_AXE) {
                     return;
@@ -384,19 +396,19 @@ class HCFListener implements Listener {
                 }
             }
         }
-	}
+    }
 
-    public function handleRegisterClaim(PlayerItemUseEvent $event) : void
+    public function handleRegisterClaim(PlayerItemUseEvent $event): void
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim() == false) {
                 if ($item->getId() !== ItemIds::WOODEN_AXE) {
                     return;
                 }
-                if($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
+                if ($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
                     $firstPosition = $player->getClaimSession()->getPosition1();
                     $firstX = $firstPosition->getX();
                     $firstZ = $firstPosition->getZ();
@@ -405,7 +417,7 @@ class HCFListener implements Listener {
                     $secondZ = $secondPosition->getZ();
                     $length = max($firstX, $secondX) - min($firstX, $secondX);
                     $width = max($firstZ, $secondZ) - min($firstZ, $secondZ);
-                    if($length <= 5 or $width <= 5) {
+                    if ($length <= 5 or $width <= 5) {
                         $player->sendMessage(TextFormat::RED . "The claim you selected must be more than 5x5!");
                         $player->setClaimSession();
                         $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
@@ -413,16 +425,16 @@ class HCFListener implements Listener {
                     }
                     $amount = $length * $width;
                     $price = $amount * 5;
-                    if($player->isSneaking()) {
+                    if ($player->isSneaking()) {
                         $data = ["name" => $player->getFaction()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName()];
                         $claim = new Claim(HCF::getInstance(), $data);
-                        if(ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
+                        if (ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
                             $player->setClaimSession();
                             $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
                             $player->sendMessage(TextFormat::RED . "You can't override a claim!");
                             return;
                         }
-                        if($player->getFaction()->getBalance() < $price) {
+                        if ($player->getFaction()->getBalance() < $price) {
                             $player->sendMessage(TextFormat::RED . "Your faction doesn't have enough money!");
                         } else {
                             ClaimManager::getInstance()->addClaim($claim);
@@ -438,15 +450,15 @@ class HCFListener implements Listener {
                     }
                 }
             }
-            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim()) {
                 if ($item->getId() !== ItemIds::DIAMOND_AXE) {
                     return;
                 }
-                if($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
+                if ($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
                     $firstPosition = $player->getClaimSession()->getPosition1();
                     $secondPosition = $player->getClaimSession()->getPosition2();
-                    if($player->isSneaking()) {
+                    if ($player->isSneaking()) {
                         $data = ["name" => $player->getClaimSession()->getName(), "x1" => $firstPosition->x, "z1" => $firstPosition->z, "x2" => $secondPosition->x, "z2" => $secondPosition->z, "level" => $firstPosition->getWorld()->getFolderName(), 'claim_type' => $player->getClaimSession()->getType()];
                         $claim = new Claim(HCF::getInstance(), $data);
                         ClaimManager::getInstance()->createClaim($claim);
@@ -460,13 +472,14 @@ class HCFListener implements Listener {
             }
         }
     }
-	
-	public function onPlayerInteractEventOP(PlayerInteractEvent $event) : void {
-		$player = $event->getPlayer();
-		$block = $event->getBlock();
-		$item = $event->getItem();
+
+    public function onPlayerInteractEventOP(PlayerInteractEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $block = $event->getBlock();
+        $item = $event->getItem();
         if ($player instanceof HCFPlayer) {
-            if($player->getClaimSession() === null) return;
+            if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim()) {
                 if ($item->getId() !== ItemIds::DIAMOND_AXE) {
                     return;
@@ -494,31 +507,33 @@ class HCFListener implements Listener {
                 }
             }
         }
-	}
-	
-	public function onEntityTeleportEvent(EntityTeleportEvent $event) : void {
-		$to = $event->getTo();
-		$player = $event->getEntity();
-		if(!$player instanceof HCFPlayer) {
-			return;
-		}
-		if(!$player->getCooldown()->has('combattag')) {
-			return;
-		}
-		if(ClaimManager::getInstance()->getClaimByPosition($to->asPosition())?->getClaimType()->getType() == ClaimType::SPAWN) {
-			$event->cancel();
-			$player->sendMessage(TextFormat::RED . "YOU CAN'T ENTER SAFEZONE WHILE IN COMBAT!");
-		}
-		/*if($event->isCancelled()) return;
-		$dimension = 1;
-		if($to->getWorld()->getFolderName() === HCFUtils::NETHER_MAP) {
-			$dimension = 0;
-		}
-		$player->sendDimension($dimension);*/
-	}
-	
-	public function onDeathData(PlayerDeathEvent $event): void{
-		$player = $event->getPlayer();
+    }
+
+    public function onEntityTeleportEvent(EntityTeleportEvent $event): void
+    {
+        $to = $event->getTo();
+        $player = $event->getEntity();
+        if (!$player instanceof HCFPlayer) {
+            return;
+        }
+        if (!$player->getCooldown()->has('combattag')) {
+            return;
+        }
+        if (ClaimManager::getInstance()->getClaimByPosition($to->asPosition())?->getClaimType()->getType() == ClaimType::SPAWN) {
+            $event->cancel();
+            $player->sendMessage(TextFormat::RED . "YOU CAN'T ENTER SAFEZONE WHILE IN COMBAT!");
+        }
+        /*if($event->isCancelled()) return;
+        $dimension = 1;
+        if($to->getWorld()->getFolderName() === HCFUtils::NETHER_MAP) {
+            $dimension = 0;
+        }
+        $player->sendDimension($dimension);*/
+    }
+
+    public function onDeathData(PlayerDeathEvent $event): void
+    {
+        $player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             $player->saveInventory();
             if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN && EOTWManager::isEnabled() === false) return;
@@ -570,13 +585,14 @@ class HCFListener implements Listener {
                 $player->getCooldown()->remove('combattag');
             }
         }
-	}
-	
-	public function onRespawn(PlayerRespawnEvent $event): void{
-	    $player = $event->getPlayer();
+    }
+
+    public function onRespawn(PlayerRespawnEvent $event): void
+    {
+        $player = $event->getPlayer();
         if ($player instanceof HCFPlayer) {
             if (EOTWManager::isEnabled() === false) {
-                if(Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP) instanceof World) {
+                if (Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP) instanceof World) {
                     $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
                 } else {
                     $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getDefaultWorld()));
@@ -590,61 +606,62 @@ class HCFListener implements Listener {
                 $player->setGamemode(GameMode::SPECTATOR());
             }
         }
-	}
-	/*
-	public function onTransaction(InventoryTransactionEvent $event): void {
-		$transaction = $event->getTransaction();
-		$actions = array_values($transaction->getActions());
-		if (count($actions) === 2) {
-			foreach ($actions as $i => $action) {
-				if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK  && $action->getTargetItem()->getNamedTag()->getCompoundTag(InventoryUtils::CUSTOM_ENCHANTMENT) instanceof CompoundTag && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR) {
-					if (count($itemClickedWith->getEnchantments()) < 1) return;
-					$enchantmentSuccessful = false;
-					foreach ($itemClickedWith->getEnchantments() as $enchantment) {
-						$newLevel = $enchantment->getLevel();
-						if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
-							if ($existingEnchant->getLevel() > $newLevel) {
+    }
+
+    /*
+    public function onTransaction(InventoryTransactionEvent $event): void {
+        $transaction = $event->getTransaction();
+        $actions = array_values($transaction->getActions());
+        if (count($actions) === 2) {
+            foreach ($actions as $i => $action) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK  && $action->getTargetItem()->getNamedTag()->getCompoundTag(InventoryUtils::CUSTOM_ENCHANTMENT) instanceof CompoundTag && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR) {
+                    if (count($itemClickedWith->getEnchantments()) < 1) return;
+                    $enchantmentSuccessful = false;
+                    foreach ($itemClickedWith->getEnchantments() as $enchantment) {
+                        $newLevel = $enchantment->getLevel();
+                        if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
+                            if ($existingEnchant->getLevel() > $newLevel) {
                                 if ($action instanceof PlayerInventory){
                                     if($action->getHolder() instanceof HCFPlayer) {
                                         $action->getHolder()->sendMessage(TextFormat::RED . "The enchantment of this book is less than that of the item!");
                                     }
                                 }
-							    continue;
+                                continue;
                             }
-							$newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
-							if($newLevel > $existingEnchant->getType()->getMaxLevel()) {
-								if ($action instanceof PlayerInventory){
+                            $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
+                            if($newLevel > $existingEnchant->getType()->getMaxLevel()) {
+                                if ($action instanceof PlayerInventory){
                                     if($action->getHolder() instanceof HCFPlayer) {
                                         $action->getHolder()->sendMessage(TextFormat::RED . "Maximum enchantment level!");
                                     }
                                 }
-								continue;
-							}
-						}
-						if($enchantment->getType() instanceof CustomEnchantment){
-							if($enchantment->getType()->canEnchant($itemClicked) === false) {
+                                continue;
+                            }
+                        }
+                        if($enchantment->getType() instanceof CustomEnchantment){
+                            if($enchantment->getType()->canEnchant($itemClicked) === false) {
                                 $p = $otherAction->getInventory();
                                 if($p instanceof PlayerInventory) {
                                     if($p->getHolder() instanceof HCFPlayer) {
                                         $p->getHolder()->sendMessage(TextFormat::RED . "This item cannot be enchanted with this book.!");
                                     }
                                 }
-								continue;
-							}
-						}
-						$rand1 = rand(0, 100);
-						if($rand1 <= 60) {
-							$event->cancel();
-							$otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
+                                continue;
+                            }
+                        }
+                        $rand1 = rand(0, 100);
+                        if($rand1 <= 60) {
+                            $event->cancel();
+                            $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
                             $p = $otherAction->getInventory();
-							if($p instanceof PlayerInventory) {
-								if($p->getHolder() instanceof HCFPlayer) {
-									$p->getHolder()->sendMessage(TextFormat::RED . "Oh :( this book don't like that item!");
-								}
-							}
-							continue;
-						}
-						$itemClicked->addEnchantment($enchantment->getType()->setLevel($newLevel));
+                            if($p instanceof PlayerInventory) {
+                                if($p->getHolder() instanceof HCFPlayer) {
+                                    $p->getHolder()->sendMessage(TextFormat::RED . "Oh :( this book don't like that item!");
+                                }
+                            }
+                            continue;
+                        }
+                        $itemClicked->addEnchantment($enchantment->getType()->setLevel($newLevel));
                         $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;
                     }
@@ -653,10 +670,10 @@ class HCFListener implements Listener {
                         $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
                         $p = $otherAction->getInventory();
                         if($p instanceof PlayerInventory) {
-                        	if($p->getHolder() instanceof HCFPlayer) {
-                        		$p->getHolder()->playXpLevelUpSound();
-                     		   $p->getHolder()->sendMessage(TextFormat::GREEN . "Your item loved this book and accepted it!");
-                        	}
+                            if($p->getHolder() instanceof HCFPlayer) {
+                                $p->getHolder()->playXpLevelUpSound();
+                                $p->getHolder()->sendMessage(TextFormat::GREEN . "Your item loved this book and accepted it!");
+                            }
                         }
                     }
                 }
@@ -680,7 +697,7 @@ class HCFListener implements Listener {
                             if ($existingEnchant->getLevel() > $currentLevel) continue;
                             $currentLevel = $existingEnchant->getLevel() === $currentLevel ? $currentLevel + 1 : $currentLevel;
                         }
-                        if($enchantmentType instanceof CustomEnchantment) {
+                        if ($enchantmentType instanceof CustomEnchantment) {
                             if (!$enchantmentType->canEnchant($itemClicked) or ($itemClickedWith->getId() !== ItemIds::ENCHANTED_BOOK)) continue;
                         }
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $currentLevel));
@@ -692,13 +709,13 @@ class HCFListener implements Listener {
                         $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
                         $p = $action->getInventory();
                         $p2 = $action->getInventory();
-                        if($p instanceof PlayerInventory) {
-                            if($p->getHolder() instanceof Player) {
+                        if ($p instanceof PlayerInventory) {
+                            if ($p->getHolder() instanceof Player) {
                                 $p->getHolder()?->playXpLevelUpSound();
                                 $p->getHolder()->sendMessage(TextFormat::GREEN . "Your item loved this book and accepted it!");
                             }
-                        } elseif($p2 instanceof PlayerInventory) {
-                            if($p2->getHolder() instanceof Player) {
+                        } elseif ($p2 instanceof PlayerInventory) {
+                            if ($p2->getHolder() instanceof Player) {
                                 $p2->getHolder()?->playXpLevelUpSound();
                                 $p2->getHolder()->sendMessage(TextFormat::GREEN . "Your item loved this book and accepted it!");
                             }
@@ -708,10 +725,11 @@ class HCFListener implements Listener {
             }
         }
     }
-    
-    public function onPlayerItemConsumeEvent(PlayerItemConsumeEvent $event) : void {
-		$player = $event->getPlayer();
-		$item = $event->getItem();
+
+    public function onPlayerItemConsumeEvent(PlayerItemConsumeEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $item = $event->getItem();
         if ($player instanceof HCFPlayer) {
             if ($item->getId() === ItemIds::APPLEENCHANTED) {
                 $time = (900 - (time() - $player->getCache()->getCountdown('appleenchanted')));
@@ -736,10 +754,11 @@ class HCFListener implements Listener {
                 $player->getCooldown()->add('golden_apple', $countdown);
             }
         }
-	}
-	
-	public function onSignChange(SignChangeEvent $event) : void {
-        if(strtolower($event->getNewText()->getLine(0)) == "[elevator]") {
+    }
+
+    public function onSignChange(SignChangeEvent $event): void
+    {
+        if (strtolower($event->getNewText()->getLine(0)) == "[elevator]") {
             if (strtolower($event->getNewText()->getLine(1)) == "up" || strtolower($event->getNewText()->getLine(1)) == "down") {
                 $event->setNewText(new SignText([
                     0 => TextFormat::RED . "[Elevator]" . TextFormat::RESET,
@@ -751,81 +770,84 @@ class HCFListener implements Listener {
             }
         }
     }
-	
-	public function onSignElevator(PlayerInteractEvent $event) : void {
-		$player = $event->getPlayer();
-		$block = $event->getBlock();
-		$vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
-		$tile = $player->getWorld()->getTile($vec);
-		if($tile instanceof Sign){
-			$line = $tile->getText()->getLines();
-			if($line[0] === TextFormat::RED . "[Elevator]" . TextFormat::RESET){
-				if(!$player->isSneaking()){
-					$event->cancel();
-					if(strtolower($line[1]) == "up"){
-						if(($vector = $this->getSafestUpSignBlock($block)) instanceof Vector3) {
-							$player->teleport($vector);
-						} else {
-							$player->sendMessage(TextFormat::RED . "Remember that there must be 2 non-solid blocks for the elevator to work.!"); 
-						}
-					} elseif(strtolower($line[1]) == "down"){
-						if(($vector = $this->getSafestDownSignBlock($block)) instanceof Vector3) {
-							$player->teleport($vector);
-						} else {
-							$player->sendMessage(TextFormat::RED . "Remember that there must be 2 non-solid blocks for the elevator to work.!"); 
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public function onSignShopChange(SignChangeEvent $event) : void {
-		$player = $event->getPlayer();
-		if(!$player->hasPermission("configurate.shop") && $player->getGamemode() !== GameMode::CREATIVE()) return;
+
+    public function onSignElevator(PlayerInteractEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $block = $event->getBlock();
+        $vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
+        $tile = $player->getWorld()->getTile($vec);
+        if ($tile instanceof Sign) {
+            $line = $tile->getText()->getLines();
+            if ($line[0] === TextFormat::RED . "[Elevator]" . TextFormat::RESET) {
+                if (!$player->isSneaking()) {
+                    $event->cancel();
+                    if (strtolower($line[1]) == "up") {
+                        if (($vector = $this->getSafestUpSignBlock($block)) instanceof Vector3) {
+                            $player->teleport($vector);
+                        } else {
+                            $player->sendMessage(TextFormat::RED . "Remember that there must be 2 non-solid blocks for the elevator to work.!");
+                        }
+                    } elseif (strtolower($line[1]) == "down") {
+                        if (($vector = $this->getSafestDownSignBlock($block)) instanceof Vector3) {
+                            $player->teleport($vector);
+                        } else {
+                            $player->sendMessage(TextFormat::RED . "Remember that there must be 2 non-solid blocks for the elevator to work.!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function onSignShopChange(SignChangeEvent $event): void
+    {
+        $player = $event->getPlayer();
+        if (!$player->hasPermission("configurate.shop") && $player->getGamemode() !== GameMode::CREATIVE()) return;
         if (is_string($event->getSign()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue())) {
             $text = $event->getSign()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue();
-            if(str_starts_with(TextFormat::clean(explode("\n", $text)[1]), "slain")) {
+            if (str_starts_with(TextFormat::clean(explode("\n", $text)[1]), "slain")) {
                 $event->cancel();
                 return;
             }
         }
-		if(strtolower($event->getNewText()->getLine(0)) == "[shop]" && $player->hasPermission("configurate.shop")){
-			if(strtolower($event->getNewText()->getLine(1)) == "buy"){
-				$items = explode(":", $event->getNewText()->getLine(2));
-				if(count($items) === 3){
-					if($items[2] >= 1){ 
-						$item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
-						$name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
+        if (strtolower($event->getNewText()->getLine(0)) == "[shop]" && $player->hasPermission("configurate.shop")) {
+            if (strtolower($event->getNewText()->getLine(1)) == "buy") {
+                $items = explode(":", $event->getNewText()->getLine(2));
+                if (count($items) === 3) {
+                    if ($items[2] >= 1) {
+                        $item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
+                        $name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
                         $event->setNewText(new SignText([
                             0 => TextFormat::GREEN . "~" . strtoupper($event->getNewText()->getLine(1)) . "~" . TextFormat::RESET,
                             1 => str_replace(["Lazuli ", "Stained "], "", $name),
-                            2 => $item->getId() . ":" .$item->getMeta().":".$item->getCount(),
+                            2 => $item->getId() . ":" . $item->getMeta() . ":" . $item->getCount(),
                             3 => "$" . $event->getNewText()->getLine(3)
                         ]));
-					}
-				}
-			} elseif(strtolower($event->getNewText()->getLine(1)) == "sell" && $player->hasPermission("configurate.shop")){
-				$items = explode(":", $event->getNewText()->getLine(2));
-				if(count($items) === 3){
-					if($items[2] >= 1){
-						$item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
-						$name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
+                    }
+                }
+            } elseif (strtolower($event->getNewText()->getLine(1)) == "sell" && $player->hasPermission("configurate.shop")) {
+                $items = explode(":", $event->getNewText()->getLine(2));
+                if (count($items) === 3) {
+                    if ($items[2] >= 1) {
+                        $item = ItemFactory::getInstance()->get((int)$items[0], (int)$items[1], (int)$items[2]);
+                        $name = $item->getName() == "Enchanted Golden Apple" ? "Gapple" : $item->getName();
                         $event->setNewText(new SignText([
                             0 => TextFormat::RED . "~" . strtoupper($event->getNewText()->getLine(1)) . "~" . TextFormat::RESET,
                             1 => str_replace(["Lazuli ", "Stained "], "", $name),
-                            2 => $item->getId() . ":" .$item->getMeta().":".$item->getCount(),
+                            2 => $item->getId() . ":" . $item->getMeta() . ":" . $item->getCount(),
                             3 => "$" . $event->getNewText()->getLine(3)
                         ]));
-					}
-				}
-			}
- 	   }
-	}
-	
-	public function onSign(PlayerInteractEvent $event){
-		$player = $event->getPlayer();
-		$block = $event->getBlock();
+                    }
+                }
+            }
+        }
+    }
+
+    public function onSign(PlayerInteractEvent $event)
+    {
+        $player = $event->getPlayer();
+        $block = $event->getBlock();
         if ($player instanceof HCFPlayer) {
             $vec = new Vector3($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ());
             $tile = $player->getWorld()->getTile($vec);
@@ -839,7 +861,7 @@ class HCFListener implements Listener {
                                 $item = $this->getItem($line->getLine(2));
                                 $player->getInventory()->addItem($item);
                                 $player->sendMessage(TextFormat::GREEN . "Successfully purchased x" . $item->getCount() . " " . $item->getName() . "!");
-                                $this->sendSellText($player, $block, TextFormat::GREEN . "Item bought\n" . TextFormat::GREEN . "for " . $line->getLine(3));
+                                $this->sendSellText($player, $block, TextFormat::GREEN . "Item bought\n" . TextFormat::GREEN . "for " . $line->getLine(3), join("\n", $tile->getText()->getLines()));
                             } else {
                                 $player->sendMessage(TextFormat::RED . "Your inventory is full!");
                             }
@@ -854,7 +876,7 @@ class HCFListener implements Listener {
                             $player->getInventory()->removeItem($item);
                             $player->addBalance($this->getPrice($line->getLine(3)));
                             $player->sendMessage(TextFormat::GREEN . "Sold {$item->getCount()}x " . $item->getName() . " for " . $this->getPrice($line->getLine(3)));
-                            $this->sendSellText($player, $block, TextFormat::GREEN . "Sold {$item->getCount()}\n" . TextFormat::GREEN . "for " . $line->getLine(3));
+                            $this->sendSellText($player, $block, TextFormat::GREEN . "Sold \n{$item->getName()}\n" . TextFormat::GREEN . "for\n" . $line->getLine(3), join("\n", $tile->getText()->getLines()));
                         } else {
                             $player->sendMessage(TextFormat::RED . "You do not have the required items in your inventory.");
                         }
@@ -862,48 +884,48 @@ class HCFListener implements Listener {
                 }
             }
         }
-	}
+    }
 
-    public function handleMov(PlayerMoveEvent $event) : void
+    public function handleMov(PlayerMoveEvent $event): void
     {
 
     }
-	
-	public function onCombatLoggerDamage(EntityDamageEvent $event) : void {
-		$logger = $event->getEntity();
-		if($logger instanceof CombatLogger && $event instanceof EntityDamageByEntityEvent){
-			$attacker = $event->getDamager();
-			if($attacker instanceof HCFPlayer) {
-				if($logger->getFaction() !== null && HCF::getInstance()->getFactionManager()->equalFaction($attacker->getFaction(), $logger->getFaction())) {
-					$event->cancel();
-				} else {
-					$logger->lastDamager = $attacker;
-				}
-			}
-		}
-	}
+
+    public function onCombatLoggerDamage(EntityDamageEvent $event): void
+    {
+        $logger = $event->getEntity();
+        if ($logger instanceof CombatLogger && $event instanceof EntityDamageByEntityEvent) {
+            $attacker = $event->getDamager();
+            if ($attacker instanceof HCFPlayer) {
+                if ($logger->getFaction() !== null && HCF::getInstance()->getFactionManager()->equalFaction($attacker->getFaction(), $logger->getFaction())) {
+                    $event->cancel();
+                } else {
+                    $logger->lastDamager = $attacker;
+                }
+            }
+        }
+    }
 
     /**
      * @priority MONITOR
-     * @ignoreCancelled
      * @param BlockBreakEvent $event
      * @return void
      */
-    public function handleBreak(BlockBreakEvent $event) : void
+    public function handleBreak(BlockBreakEvent $event): void
     {
         if ($event->getBlock() instanceof BaseSign) {
             if (is_string($event->getBlock()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue())) {
                 $text = $event->getBlock()->getPickedItem(true)->getCustomBlockData()?->getTag(Sign::TAG_TEXT_BLOB)?->getValue();
-                if(str_starts_with(TextFormat::clean(explode("\n", $text)[1]), "slain")) {
+                if (str_starts_with(TextFormat::clean(explode("\n", $text)[1]), "slain")) {
                     $event->setDropsVariadic($event->getBlock()->getPickedItem(true)->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . TextFormat::clean(explode("\n", $text)[0]))->setLore([]));
                 }
             }
         }
     }
-	
-	/*public function onInventoryCloseEvent(InventoryCloseEvent $event) : void {
-		$player = $event->getPlayer();
-		$inventory = $event->getInventory();
+
+    /*public function onInventoryCloseEvent(InventoryCloseEvent $event) : void {
+        $player = $event->getPlayer();
+        $inventory = $event->getInventory();
         if ($player instanceof HCFPlayer) {
             if ($inventory instanceof EnderChestInventory) {
                 # This is to remove the chest when the player closes the inventory
@@ -918,65 +940,73 @@ class HCFListener implements Listener {
                 $player->getNetworkSession()->sendDataPacket($pk);
             }
         }
-	}*/
+    }*/
 
-    public function onCraft(CraftItemEvent $event) : void
+    public function onCraft(CraftItemEvent $event): void
     {
         $outputs = $event->getOutputs();
         foreach ($outputs as $output) {
-            if($output->getId() == BlockLegacyIds::BREWING_STAND_BLOCK or $output->getId() == BlockLegacyIds::TNT){
+            if ($output->getId() == BlockLegacyIds::BREWING_STAND_BLOCK or $output->getId() == BlockLegacyIds::TNT) {
                 $event->cancel();
                 $event->getPlayer()->sendMessage(TextFormat::RED . "You cant craft this item");
             }
         }
-	}
-	
-	
-	public function getItem(string $text) : Item{
-		$values = explode(":", $text);
-		return ItemFactory::getInstance()->get($values[0], $values[1], $values[2]);
-	}
-	
-	public function getPrice(string $text) : int{
-		return str_replace("$", "", $text);
-	}
-    
-    public function getSafestUpSignBlock(Block $block) : ? Vector3 {
-        $vector = null;
-        for($i = $block->getPosition()->getFloorY()+1; $i < 256; $i++){
-            if ($block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ()))->getId() == 0 and $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i+1, $block->getPosition()->getZ()))->getId() == 0) {
-                $vector = new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ());
-                break;
-            }
-        }
-        return $vector;
-    }
-    
-    public function getSafestDownSignBlock(Block $block) : ? Vector3 {
-        $vector = null;
-        for($i = $block->getPosition()->getFloorY()-1; $i > 0; $i--){
-            if ($block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ()))->getId() == 0 and $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i+1, $block->getPosition()->getZ()))->getId() == 0) {
-                $vector = new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ());
-                break;
-            }
-        }
-        return $vector;
     }
 
 
-    protected function sendSellText(Player $player, Block $block, string $text) : void
+    public function getItem(string $text): Item
     {
-        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block, $text) extends Task {
+        $values = explode(":", $text);
+        return ItemFactory::getInstance()->get($values[0], $values[1], $values[2]);
+    }
+
+    public function getPrice(string $text): int
+    {
+        return str_replace("$", "", $text);
+    }
+
+    public function getSafestUpSignBlock(Block $block): ?Vector3
+    {
+        $vector = null;
+        for ($i = $block->getPosition()->getFloorY() + 1; $i < 256; $i++) {
+            if ($block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ()))->getId() == 0 and $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i + 1, $block->getPosition()->getZ()))->getId() == 0) {
+                $vector = new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ());
+                break;
+            }
+        }
+        return $vector;
+    }
+
+    public function getSafestDownSignBlock(Block $block): ?Vector3
+    {
+        $vector = null;
+        for ($i = $block->getPosition()->getFloorY() - 1; $i > 0; $i--) {
+            if ($block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ()))->getId() == 0 and $block->getPosition()->getWorld()->getBlock(new Vector3($block->getPosition()->getX(), $i + 1, $block->getPosition()->getZ()))->getId() == 0) {
+                $vector = new Vector3($block->getPosition()->getX(), $i, $block->getPosition()->getZ());
+                break;
+            }
+        }
+        return $vector;
+    }
+
+
+    protected function sendSellText(Player $player, Block $block, string $next_text, string $last_text): void
+    {
+        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block, $next_text) extends Task {
             private HCFPlayer $player;
             private Block $block;
             private string $text;
-            public function __construct(HCFPlayer $player, Block $block, string $text) {
+
+            public function __construct(HCFPlayer $player, Block $block, string $text)
+            {
                 $this->player = $player;
                 $this->block = $block;
                 $this->text = $text;
             }
-            public function onRun() : void {
-                if($this->player->isOnline() === false) {
+
+            public function onRun(): void
+            {
+                if ($this->player->isOnline() === false) {
                     return;
                 }
                 $pk = new BlockActorDataPacket();
@@ -990,33 +1020,33 @@ class HCFListener implements Listener {
                 }
             }
         }, 10);
-        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block) extends Task {
+        HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block, $last_text) extends Task {
             private HCFPlayer $player;
             private Block $block;
-            public function __construct(HCFPlayer $player, Block $block) {
+            private string $text;
+
+            public function __construct(HCFPlayer $player, Block $block, string $text)
+            {
                 $this->player = $player;
                 $this->block = $block;
+                $this->text = $text;
             }
-            public function onRun() : void {
-                if($this->player->isOnline() === false) {
+
+            public function onRun(): void
+            {
+                if ($this->player->isOnline() === false) {
                     return;
                 }
-                $blockRuntimeId = RuntimeBlockMapping::getInstance()->toRuntimeId($this->block->getFullId());
-                $pk = UpdateBlockPacket::create(new BlockPosition($this->block->getPosition()->x, $this->block->getPosition()->y, $this->block->getPosition()->z), $blockRuntimeId, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-                $this->player->getNetworkSession()->sendDataPacket($pk);
+                $pk = new BlockActorDataPacket();
+                $tile = $this->block->getPosition()->getWorld()->getTile($this->block->getPosition());
+                $pk->blockPosition = new BlockPosition($this->block->getPosition()->x, $this->block->getPosition()->getY(), $this->block->getPosition()->z);
+                if ($tile instanceof Sign) {
+                    $nbt = $tile->getSpawnCompound();
+                    $nbt->setTag(Sign::TAG_TEXT_BLOB, new StringTag($this->text));
+                    $pk->nbt = new CacheableNbt($nbt);
+                    $this->player->getNetworkSession()->sendDataPacket($pk);
+                }
             }
         }, 10);
-    }
-
-    private function createCustomSign(string $name, string $killer) : Item
-    {
-        $sing = ItemFactory::getInstance()->get(ItemIds::SIGN, 0);
-        $date = new DateTime();
-        $time = $date->format('D H:i:s');
-        $text = [TextFormat::GREEN . $name, TextFormat::GRAY . "slain by", TextFormat::GREEN . $killer, TextFormat::GRAY . $time];
-        $nbt = CompoundTag::create()->setTag(Sign::TAG_TEXT_BLOB, new StringTag(join(TextFormat::EOL, $text)));
-        $sing->setCustomBlockData($nbt);
-        $sing->setCustomName(TextFormat::DARK_PURPLE . "Death Sing " . $name);
-        return $sing;
     }
 }

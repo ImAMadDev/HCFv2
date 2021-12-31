@@ -22,7 +22,7 @@ class RePot extends InteractionAbility {
 
 	private string $description = "&eWhen used, your entire inventory will be filled with potions.\n&cHas a cooldown of 5 minutes";
 	
-	private int $cooldown = 300;
+	public int $cooldown = 300;
 
     /**
      * @param int $count

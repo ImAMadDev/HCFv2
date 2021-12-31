@@ -25,7 +25,7 @@ class Immobilizer extends DamageOtherAbility {
 
 	private string $description = "&eHit a player 3 times so that he/she cannot move.\n&cHas a cooldown of 3 minutes";
 	
-	private int $cooldown = 180;
+	public int $cooldown = 180;
 
     /**
      * @param int $count

@@ -23,7 +23,7 @@ class ResetPearl extends InteractionAbility {
 
 	private string $description = "&eUsing it will remove the cooldown of the Ender pearl.\n&cHas a cooldown of 2 minutes";
 	
-	private int $cooldown = 180;
+	public int $cooldown = 180;
 
     /**
      * @param int $count

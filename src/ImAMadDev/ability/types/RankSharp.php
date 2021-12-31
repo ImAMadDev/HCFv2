@@ -34,6 +34,7 @@ class RankSharp extends InteractionAbility {
 
 	private string $description;
 	
+    public int $cooldown = 0;
 
 	public function __construct() {
 		$this->description = "§r§fTap this §r§l§6Rank Sharp§r §fon the ground to redeem partner rewards. \n§r§7rewards (5-7)\n§r§eAvailable at §r§6pacmanlife.buycraft.net";

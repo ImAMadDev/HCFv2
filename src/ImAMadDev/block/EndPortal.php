@@ -71,8 +71,12 @@ class EndPortal extends Transparent {
                     $this->player->endQueue = false;
                     return;
                 }
+                if ($this->player->getCooldown()->has("combattag")) {
+                    $this->player->endQueue = false;
+                    return;
+                }
                 $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::END_MAP)->getSpawnLocation();
-                if($this->player->getWorld()->getFolderName() === HCFUtils::END_MAP) {
+                if($this->player->getWorld()->getFolderName() == HCFUtils::END_MAP) {
                     $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)->getSpawnLocation();
                 }
                 $this->player->teleport($position);

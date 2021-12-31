@@ -28,6 +28,8 @@ class PartnerPackages extends InteractionAbility {
 
 	private string $description;
 
+    public int $cooldown = 0;
+
 	public function __construct() {
 		$this->description = wordwrap(TextFormat::colorize("&r&fTap this &r&5&lPartner Package &r &r&fon the ground to redeem partner rewards. &r&7rewards (3-5)"), 40) . "§r§eAvailable at §r§6pacmanlife.buycraft.net";
 	}

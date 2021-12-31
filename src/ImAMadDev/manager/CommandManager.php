@@ -93,7 +93,7 @@ class CommandManager {
         $this->registerCommand(new CapeCommand());
         $this->registerCommand(new RedeemCommand());
         $this->registerCommand(new StaffCommand());
-        $this->registerCommand(new TradeCommand());
+        //$this->registerCommand(new TradeCommand());
 	}
 	
 	public function registerCommand(Command $command): void {

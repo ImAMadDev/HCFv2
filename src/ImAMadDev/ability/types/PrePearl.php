@@ -23,7 +23,7 @@ class PrePearl extends InteractionAbility {
 
 	private string $description = "&eWhen you use it you will have a cooldown of 15 seconds,\n&eat the end of this cooldown you will be\n&ereturned to the position where you used this item.\n&cHas a cooldown of 3 minutes";
 	
-	private int $cooldown = 180;
+	public int $cooldown = 180;
 
     /**
      * @param int $count

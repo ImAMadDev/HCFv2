@@ -22,7 +22,7 @@ class AntiBuild extends DamageOtherAbility {
 
 	private string $description = "&eHit a player 2 times so that all blocks he places are removed within 5 seconds.\n&cHas a cooldown of 5 minutes ";
 	
-	private int $cooldown = 300;
+	public int $cooldown = 300;
 
     /**
      * @param int $count

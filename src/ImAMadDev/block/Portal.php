@@ -11,6 +11,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\VanillaBlocks;
+use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
@@ -84,8 +85,12 @@ class Portal extends Transparent {
                     $this->player->portalQueue = false;
                     return;
                 }
+                if ($this->player->getCooldown()->has("combattag")) {
+                    $this->player->portalQueue = false;
+                    return;
+                }
                 $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::NETHER_MAP)->getSpawnLocation();
-                if($this->player->getWorld()->getFolderName() === HCFUtils::NETHER_MAP) {
+                if($this->player->getWorld()->getFolderName() == HCFUtils::NETHER_MAP) {
                     $position = Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)->getSpawnLocation();
                 }
                 $this->player->teleport($position);

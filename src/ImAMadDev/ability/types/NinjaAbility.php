@@ -26,7 +26,7 @@ class NinjaAbility extends InteractionAbility {
 
 	private string $description = "&eWhen you use it you will be transported to the last player who hit you.\n&cHas a cooldown of 4 minutes";
 	
-	private int $cooldown = 240;
+	public int $cooldown = 240;
 
     /**
      * @param int $count

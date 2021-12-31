@@ -24,7 +24,7 @@ class Switcher extends InteractionAbility {
 
 	private string $description = "&cWhen you hit a player you will swap positions with them.\n&cHas a cooldown of 1 minute";
 	
-	private int $cooldown = 60;
+	public int $cooldown = 60;
 
     /**
      * @param int $count

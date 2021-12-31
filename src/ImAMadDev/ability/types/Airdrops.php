@@ -27,6 +27,8 @@ class Airdrops extends InteractionBlockAbility {
 
 	private string $description;
 
+    public int $cooldown = 0;
+
 	public function __construct() {
 		$this->description = TextFormat::colorize("&dRight Click to open");
 	}

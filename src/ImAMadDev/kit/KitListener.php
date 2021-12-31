@@ -2,12 +2,14 @@
 
 namespace ImAMadDev\kit;
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, KitManager};
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\ability\Ability;
 
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
@@ -88,7 +90,7 @@ class KitListener implements Listener {
 		}
 	}
 	
-	public function onPlayerInteractEventBard(PlayerInteractEvent $event) : void {
+	public function onPlayerInteractEventBard(PlayerItemUseEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
         if ($player instanceof HCFPlayer) {
@@ -398,7 +400,7 @@ class KitListener implements Listener {
         }
 	}
 	
-	public function onPlayerInteractEventMage(PlayerInteractEvent $event) : void {
+	public function onPlayerInteractEventMage(PlayerItemUseEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
         if ($player instanceof HCFPlayer) {
@@ -640,6 +642,68 @@ class KitListener implements Listener {
             }
         }
 	}
+
+    public function handleArcherUse(PlayerItemUseEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        $item = $event->getItem();
+        if ($player instanceof HCFPlayer) {
+            if ($player->isArcher()) {
+                if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() !== ClaimType::SPAWN){
+                    switch ($item->getId()){
+                        case ItemIds::SUGAR:
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::SPEED(), 20 * 10, 3);
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10 );
+                            break;
+                        case ItemIds::FEATHER:
+                            if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
+                                $player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                                return;
+                            }
+                            if ($player->getCooldown()->has('effects_cooldown')) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                                return;
+                            }
+                            if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you're in the spawn");
+                                return;
+                            }
+                            if ($player->getClassEnergy()->getEnergy() < $player->getBardEnergyCost($item->getId())) {
+                                $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . "Archer Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getBardEnergyCost($item->getId()));
+                                return;
+                            }
+                            $effect = new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 10, 3);
+                            $player->applyPotionEffect($effect);
+                            $player->getClassEnergy()->reduce($player->getBardEnergyCost($item->getId()));
+                            $item->setCount($item->getCount() - 1);
+                            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                            $player->getCooldown()->add('effects_cooldown', 10 );
+                            break;
+                    }
+                }
+            }
+        }
+    }
 
     /** @noinspection PhpParamsInspection */
     public function onChat(PlayerChatEvent $event) : void

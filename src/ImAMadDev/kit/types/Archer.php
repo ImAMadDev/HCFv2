@@ -116,9 +116,9 @@ class Archer extends Kit {
 		$steak = ItemFactory::getInstance()->get(ItemIds::BAKED_POTATO, 0, 64);
 		$arrow = ItemFactory::getInstance()->get(ItemIds::ARROW, 0, 1);
 		
-		$speed = AbilityManager::getInstance()->getAbilityByName('Speed_Portable')->get(64);
+		$speed = ItemFactory::getInstance()->get(ItemIds::SUGAR, 0, 64); //AbilityManager::getInstance()->getAbilityByName('Speed_Portable')->get(64);
 		
-		$jump = AbilityManager::getInstance()->getAbilityByName('Jump_Portable')->get(64);
+		$jump = ItemFactory::getInstance()->get(ItemIds::FEATHER, 0, 64); //AbilityManager::getInstance()->getAbilityByName('Jump_Portable')->get(64);
 		
 		$items = [$sword, $bow, $pearl, $steak, $speed, $jump, $arrow];
 		for($i = 0; $i < 28; $i++){

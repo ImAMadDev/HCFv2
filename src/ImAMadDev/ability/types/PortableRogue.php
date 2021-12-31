@@ -24,7 +24,7 @@ class PortableRogue extends DamageOtherAbility {
 
 	private string $description = "&ehits a player to remove 6 hearts.\n&cHas a cooldown of 5 minutes ";
 	
-	private int $cooldown = 300;
+	public int $cooldown = 300;
 
     /**
      * @param int $count
