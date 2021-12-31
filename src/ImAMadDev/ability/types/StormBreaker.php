@@ -15,7 +15,6 @@ use pocketmine\math\Vector3;
 
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\StormBreakerTick;
 
 class StormBreaker extends DamageOtherAbility {

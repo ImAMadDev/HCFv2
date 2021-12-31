@@ -15,7 +15,6 @@ use pocketmine\math\Vector3;
 
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\ImmobilizerTick;
 
 class Immobilizer extends DamageOtherAbility {
@@ -34,8 +33,8 @@ class Immobilizer extends DamageOtherAbility {
      */
 	public function get(int $count = 1, mixed $value = null): Item {
 		$item = ItemFactory::getInstance()->get(ItemIds::BLAZE_ROD, 0, $count);
-        $item->getNamedTag()->setString(self::ABILITY, CompoundTag::create());
-        $item->getNamedTag()->setString(self::DAMAGE_ABILITY, CompoundTag::create());
+        $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
+        $item->getNamedTag()->setTag(self::DAMAGE_ABILITY, CompoundTag::create());
         $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$item->setCustomName($this->getColoredName());
 		$item->setLore([TextFormat::colorize($this->description)]);

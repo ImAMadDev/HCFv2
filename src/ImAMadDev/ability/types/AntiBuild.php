@@ -32,7 +32,7 @@ class AntiBuild extends DamageOtherAbility {
 	public function get(int $count = 1, mixed $value = null): Item {
 		$item = ItemFactory::getInstance()->get(ItemIds::GOLDEN_CARROT, 0, $count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
-        $item->getNamedTag()->setString(self::DAMAGE_ABILITY, CompoundTag::create());
+        $item->getNamedTag()->setTag(self::DAMAGE_ABILITY, CompoundTag::create());
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$item->setCustomName($this->getColoredName());
 		$item->setLore([TextFormat::colorize($this->description)]);

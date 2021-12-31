@@ -98,6 +98,7 @@ class HCF extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new EOTWManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new SOTWManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new ProjectileListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new CrateListener(), $this);
@@ -106,7 +107,6 @@ class HCF extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new ReachModule($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new KitListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new BuggyListener(), $this);
-        $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new ClearLagTick(), 20);
 		$this->getScheduler()->scheduleRepeatingTask(new BroadcastTick($this), 4800);
         GeneratorManager::getInstance()->addGenerator(EndGenerator::class, "ender", fn() => null, true);

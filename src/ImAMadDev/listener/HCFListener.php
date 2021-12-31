@@ -861,7 +861,7 @@ class HCFListener implements Listener
                                 $item = $this->getItem($line->getLine(2));
                                 $player->getInventory()->addItem($item);
                                 $player->sendMessage(TextFormat::GREEN . "Successfully purchased x" . $item->getCount() . " " . $item->getName() . "!");
-                                $this->sendSellText($player, $block, TextFormat::GREEN . "Item bought\n" . TextFormat::GREEN . "for " . $line->getLine(3), join("\n", $tile->getText()->getLines()));
+                                $this->sendSellText($player, $block, TextFormat::GREEN . "Bought\n". $item->getName() . TextFormat::EOL . TextFormat::GREEN . "for\n" . $line->getLine(3), join("\n", $tile->getText()->getLines()));
                             } else {
                                 $player->sendMessage(TextFormat::RED . "Your inventory is full!");
                             }
@@ -1019,7 +1019,7 @@ class HCFListener implements Listener
                     $this->player->getNetworkSession()->sendDataPacket($pk);
                 }
             }
-        }, 10);
+        }, 15);
         HCF::getInstance()->getScheduler()->scheduleDelayedTask(new class($player, $block, $last_text) extends Task {
             private HCFPlayer $player;
             private Block $block;
@@ -1047,6 +1047,6 @@ class HCFListener implements Listener
                     $this->player->getNetworkSession()->sendDataPacket($pk);
                 }
             }
-        }, 10);
+        }, 20);
     }
 }

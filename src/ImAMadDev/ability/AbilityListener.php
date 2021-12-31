@@ -63,11 +63,9 @@ class AbilityListener implements Listener {
 					$ability = AbilityManager::getInstance()->getAbilityByItem($item);
 					if(HCF::getInstance()->getFactionManager()->equalFaction($attacker->getFaction(), $player->getFaction()) === false && $event->isCancelled() === false) {
 						if($ability instanceof DamageOtherAbility) {
-							if($item->getNamedTag()->getTag(Ability::DAMAGE_ABILITY) instanceof CompoundTag && $item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
-								$attacker->addAbilityHits($item);
-								if($attacker->canActivateAbility($item) === true) {
-									$ability->consume($attacker, $player);
-								}
+                            $attacker->addAbilityHits($item);
+                            if($attacker->canActivateAbility($item) === true) {
+                                $ability->consume($attacker, $player);
 							}
 						}
 					}

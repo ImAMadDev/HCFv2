@@ -11,4 +11,9 @@ abstract class DamageOtherAbility extends Ability
 
     abstract public function consume(HCFPlayer|Player $player, HCFPlayer|Player $entity) : void;
 
+    public function getHits() : int
+    {
+        return 0;
+    }
+
 }
