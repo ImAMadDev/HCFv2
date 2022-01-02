@@ -16,12 +16,12 @@ class TopThree extends NPCEntity
 
     public function getName(): string
     {
-        if (isset(HCF::getInstance()->getTopKills()[2])) return "Top #3" . TextFormat::EOL .
-            HCF::getInstance()->getTopKills()[2]["name"] . TextFormat::EOL .
-            "Kills: " . HCF::getInstance()->getTopKills()[2]["kills"] . TextFormat::EOL;
-        return "Top #3" . TextFormat::EOL .
-            "Loading" . TextFormat::EOL .
-            "Kills: Loading" . TextFormat::EOL;
+        if (isset(HCF::getInstance()->getTopKills()[2])) return TextFormat::GOLD . "Top #3" . TextFormat::EOL .
+            TextFormat::AQUA . HCF::getInstance()->getTopKills()[2]["name"] . TextFormat::EOL .
+            TextFormat::RED . "Kills: " . HCF::getInstance()->getTopKills()[2]["kills"] . TextFormat::EOL;
+        return TextFormat::GOLD . "Top #3" . TextFormat::EOL .
+            TextFormat::AQUA . "Loading" . TextFormat::EOL .
+            TextFormat::RED . "Kills: Loading" . TextFormat::EOL;
     }
 
     public function entityBaseTick(int $tickDiff = 1): bool
@@ -31,6 +31,7 @@ class TopThree extends NPCEntity
                 $this->setSkin(HCFUtils::getSkin(HCF::getInstance()->getTopKills()[2]["name"]));
             }
             $this->setNameTag($this->getName());
+            $this->setNameTagVisible(true);
             $this->setNameTagAlwaysVisible(true);
         }
         return parent::entityBaseTick($tickDiff);

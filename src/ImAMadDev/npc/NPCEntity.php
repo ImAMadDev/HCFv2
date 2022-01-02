@@ -28,6 +28,7 @@ abstract class NPCEntity extends Human {
 	public function entityBaseTick(int $tickDiff = 1): bool {
 	    if($this->canUpdateTag) {
             $this->setNameTag($this->getName());
+            $this->setNameTagVisible(true);
             $this->setNameTagAlwaysVisible(true);
         }
 		return parent::entityBaseTick($tickDiff);

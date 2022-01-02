@@ -18,7 +18,7 @@ use muqsit\invmenu\transaction\InvMenuTransaction;
 class BlackMarket extends NPCEntity {
 	
 	public function getName() : string {
-		return TextFormat::RED . "Black Market" . TextFormat::EOL . TextFormat::GRAY . "Attack to open shop";
+		return TextFormat::RED . "Black Market" . TextFormat::EOL . TextFormat::GRAY . "Right Click to open shop";
 	}
 
     public function onInteract(Player $player, Vector3 $clickPos): bool

@@ -12,7 +12,7 @@ use ImAMadDev\manager\FormManager;
 class BlockMarket extends NPCEntity {
 	
 	public function getName() : string {
-		return TextFormat::YELLOW . "Block Market" . TextFormat::EOL . TextFormat::GRAY . "Attack to open shop";
+		return TextFormat::YELLOW . "Block Market" . TextFormat::EOL . TextFormat::GRAY . "Right Click To Open Shop";
 	}
 
     public function onInteract(Player $player, Vector3 $clickPos): bool
