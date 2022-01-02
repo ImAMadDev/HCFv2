@@ -34,8 +34,8 @@ class CreateSubCommand extends SubCommand {
             return;
         }
 		$name = str_replace(" ", "_", $args[1]);
-        if (!in_array(strtolower($args[2]), [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE])){
-            $sender->sendMessage(TextFormat::RED . "This claim type is invalid {$args[2]}: " . join(',', [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE]));
+        if (!in_array(strtolower($args[2]), [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE,ClaimType::ROAD])){
+            $sender->sendMessage(TextFormat::RED . "This claim type is invalid {$args[2]}: " . join(',', [ClaimType::SPAWN, ClaimType::KOTH, ClaimType::WARZONE, ClaimType::ROAD]));
             return;
         }
         $claim_type = strtolower($args[2]);

@@ -12,7 +12,6 @@ abstract class Tile extends PMTile {
     public static function init(){
         try{
            // self::registerTile(Beacon::class);
-           // self::registerTile(ShulkerBox::class);
             //self::registerTile(Hopper::class);
             TileFactory::getInstance()->register(PotionGenerator::class, ["PotionGenerator", "minecraft:potion_generator"]);
             TileFactory::getInstance()->register(MonsterSpawner::class, ["MonsterSpawner", "minecraft:monster_spawner"]);

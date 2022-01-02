@@ -88,9 +88,9 @@ class EnderchestSubCommand extends SubCommand
                     if ($namedTag instanceof CompoundTag) {
                         /** @var CompoundTag[] $items */
                         $items = [];
-                        $slotCount = $inv->getSize();
+                        $slotCount = $inventory->getSize();
                         for ($slot = 0; $slot < $slotCount; ++$slot) {
-                            $item = $inv->getItem($slot);
+                            $item = $inventory->getItem($slot);
                             if (!$item->isNull()) {
                                 $items[] = $item->nbtSerialize($slot);
                             }

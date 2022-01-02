@@ -41,7 +41,8 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\Event;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\{MobArmorEquipmentPacket,
+use pocketmine\network\mcpe\protocol\{CameraShakePacket,
+    MobArmorEquipmentPacket,
     SetActorDataPacket,
     types\BlockPosition,
     types\BoolGameRule,
@@ -854,5 +855,11 @@ class HCFPlayer extends Player {
                 ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air()))
             ));
         }
+    }
+
+    public function cameraShake(): void
+    {
+        $pk = CameraShakePacket::create(2.0, 5, CameraShakePacket::TYPE_ROTATIONAL, CameraShakePacket::ACTION_ADD);
+        $this->getNetworkSession()->sendDataPacket($pk);
     }
 }

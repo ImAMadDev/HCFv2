@@ -2,8 +2,6 @@
 
 namespace ImAMadDev\listener;
 
-use DateTime;
-use Exception;
 use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\HCF;
@@ -13,15 +11,12 @@ use ImAMadDev\ticks\player\Scoreboard;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, SOTWManager};
 use ImAMadDev\entity\CombatLogger;
 use ImAMadDev\faction\Faction;
-use ImAMadDev\tile\PotionGenerator;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\customenchants\CustomEnchantment;
 
 use pocketmine\block\BaseSign;
 use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\utils\SignText;
 use pocketmine\event\block\BlockBreakEvent;
@@ -30,16 +25,12 @@ use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\event\block\BlockSpreadEvent;
 use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\nbt\TreeRoot;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\entity\object\ItemEntity;
@@ -68,27 +59,18 @@ use pocketmine\event\entity\{EntityDamageEvent,
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\event\inventory\{CraftItemEvent,
-    InventoryCloseEvent,
     InventoryTransactionEvent};
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\protocol\{AvailableCommandsPacket,
-    BlockActorDataPacket,
+use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
     ContainerClosePacket,
     InventoryContentPacket,
     InventorySlotPacket,
     InventoryTransactionPacket,
     MobEquipmentPacket,
-    PlayStatusPacket,
-    SetActorDataPacket,
     types\BlockPosition,
     types\CacheableNbt,
-    types\DimensionIds,
-    types\inventory\ItemStackWrapper,
-    types\inventory\UseItemTransactionData,
-    UpdateBlockPacket,
-    LoginPacket};
+    types\inventory\ItemStackWrapper};
 use pocketmine\world\sound\ExplodeSound;
 use pocketmine\world\World;
 
@@ -543,12 +525,12 @@ class HCFListener implements Listener
                 $faction->removeDTR(1);
                 $faction->removePoints(1);
             }
-            $attacker = HCF::getInstance()->getCombatManager()->getTagAttacker($player);
+            $attacker = HCF::$combatManager::getTagAttacker($player);
             if ($attacker !== null) {
                 $killer = Server::getInstance()->getPlayerExact($attacker);
                 if ($killer instanceof HCFPlayer) {
                     $killer->obtainKill($player->getName());
-                    $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()->getTagAttacker($player));
+                    $item = HCFUtils::createDeathSign($player->getName(), HCF::getInstance()->getCombatManager()::getTagAttacker($player));
                     $player->getWorld()->dropItem($player->getPosition(), $item);
                     if (($faction = $killer->getFaction()) instanceof Faction) {
                         $faction->addKill(1);
@@ -593,7 +575,7 @@ class HCFListener implements Listener
         if ($player instanceof HCFPlayer) {
             if (EOTWManager::isEnabled() === false) {
                 if (Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP) instanceof World) {
-                    $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)));
+                    $event->setRespawnPosition(Server::getInstance()->getWorldManager()->getWorldByName(HCFUtils::DEFAULT_MAP)->getSpawnLocation());
                 } else {
                     $event->setRespawnPosition(new Position(0, 100, 0, Server::getInstance()->getWorldManager()->getDefaultWorld()));
                 }
@@ -1047,6 +1029,6 @@ class HCFListener implements Listener
                     $this->player->getNetworkSession()->sendDataPacket($pk);
                 }
             }
-        }, 20);
+        }, 25);
     }
 }

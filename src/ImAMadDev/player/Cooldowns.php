@@ -17,7 +17,7 @@ class Cooldowns {
     public function add(string $name, int $duration = 16) : void {
         if ($this->player instanceof HCFPlayer) {
             if (!$this->has($name)) {
-                $this->player->sendMessage(TextFormat::RED . "You have entered the " . TextFormat::GOLD . $name . TextFormat::RED . " countdown for " . gmdate('i:s', $duration));
+                $this->player->sendMessage(TextFormat::RED . "You have entered the " . TextFormat::GOLD . PlayerUtils::$Names[$name] . TextFormat::RED . " countdown for " . gmdate('i:s', $duration));
             }
         }
 		$this->cooldowns[strtolower($name)] = time();
@@ -32,7 +32,7 @@ class Cooldowns {
 		if(isset($this->cooldowns[strtolower($name)])) unset($this->cooldowns[strtolower($name)]);
 		if(isset($this->defaultTime[strtolower($name)])) unset($this->defaultTime[strtolower($name)]);
         if ($this->player instanceof HCFPlayer) {
-            $this->player->sendMessage(TextFormat::GREEN . "Your " . TextFormat::GOLD . $name . TextFormat::GREEN . " countdown has expired!");
+            $this->player->sendMessage(TextFormat::GREEN . "Your " . TextFormat::GOLD . PlayerUtils::$Names[$name] . TextFormat::GREEN . " countdown has expired!");
         }
 	}
 	

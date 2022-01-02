@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\ticks\player;
 
+use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\faction\FactionRally;
 use ImAMadDev\HCF;
 use ImAMadDev\faction\Faction;
@@ -28,7 +29,7 @@ class Scoreboard extends Task {
 			return;
 		}
 		$player->checkInvisibility();
-		if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false) $player->getHungerManager()->setFood(20);
+		if(ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN) $player->getHungerManager()->setFood(20);
 		$api = HCF::getScoreboard();
 		$scoreboard = [];
 		if(count(array_keys($player->getCooldowns())) >= 1) {
@@ -44,7 +45,7 @@ class Scoreboard extends Task {
 		}
 		if(!empty(EventsManager::getInstance()->getEvents())) {
 			foreach(EventsManager::getInstance()->getEvents() as $event) {
-				$scoreboard[] = TextFormat::DARK_BLUE . $event->getScoreboard() . ": " . gmdate('i:s', $event->getTime());
+				$scoreboard[] = TextFormat::DARK_BLUE . $event->getScoreboard() . ": " . gmdate('H:i:s', $event->getTime());
 			}
 		}
 		if($player->isInvincible()){

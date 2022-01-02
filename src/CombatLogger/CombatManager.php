@@ -9,8 +9,8 @@ use pocketmine\player\Player;
 
 class CombatManager{
 
-	public array $taggedPlayers = [];
-	public array $tagged = [];
+	public static array $taggedPlayers = [];
+	public static array $tagged = [];
 	private HCF $main;
 
 	public function __construct(HCF $main) {
@@ -40,11 +40,11 @@ class CombatManager{
 		if($player instanceof HCFPlayer) $player = $player->getName();
 		if($attacker instanceof HCFPlayer) $attacker = $attacker->getName();
 		if($value) {
-			$this->taggedPlayers[$player] = $time;
-			$this->tagged[$player] = $attacker;
+            self::$taggedPlayers[$player] = $time;
+            self::$tagged[$player] = $attacker;
 		} else {
-			unset($this->taggedPlayers[$player]);
-			unset($this->tagged[$player]);
+			unset(self::$taggedPlayers[$player]);
+			unset(self::$tagged[$player]);
 		}
 	}
 
@@ -53,10 +53,10 @@ class CombatManager{
 	 *
 	 * @return bool
 	 */
-	#[Pure] public function isTagged(Player|string $player): bool
+	#[Pure] public static function isTagged(Player|string $player): bool
     {
 		if($player instanceof HCFPlayer) $player = $player->getName();
-		return isset($this->taggedPlayers[$player]);
+		return isset(self::$taggedPlayers[$player]);
 	}
 
 	/**
@@ -64,10 +64,10 @@ class CombatManager{
 	 *
 	 * @return int
 	 */
-	#[Pure] public function getTagDuration(Player|string $player): int
+	#[Pure] public static function getTagDuration(Player|string $player): int
     {
 		if($player instanceof HCFPlayer) $player = $player->getName();
-		return ($this->isTagged($player) ? $this->taggedPlayers[$player] : 0);
+		return (self::isTagged($player) ? self::$taggedPlayers[$player] : 0);
 	}
 
     /**
@@ -75,10 +75,10 @@ class CombatManager{
      *
      * @return string|null
      */
-	#[Pure] public function getTagAttacker(Player|string $player): ?string
+	#[Pure] public static function getTagAttacker(Player|string $player): ?string
     {
 		if($player instanceof HCFPlayer) $player = $player->getName();
-		return ($this->isTagged($player) ? $this->tagged[$player] : null);
+		return (self::isTagged($player) ? self::$tagged[$player] : null);
 	}
 
 }

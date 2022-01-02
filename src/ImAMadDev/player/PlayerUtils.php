@@ -48,4 +48,27 @@ final class PlayerUtils {
 		'antitrapper_tag' => "&3Anti Trapper Tag: ",
 		'logout' => "&9Logout: ",
 	];
+
+    public static array $Names = [
+        'enderpearl' => "&dEnderPearl",
+        'combattag' => "&cCombatTag",
+        'strength_portable' => "&cStrength Portable",
+        'anti_trapper' => "&2Anti Trapper",
+        'storm_breaker' => "&aStorm Breaker",
+        'home_teleport' => "&cHome",
+        'reset_pearl' => "&5Reset Pearl",
+        'effects_disabler' => "&2Effects Disabler",
+        'effects_cooldown' => "&aEffects Cooldown",
+        'archer_mark' => "&6Archer Mark",
+        'stuck_teleport' => "&dStuck Teleport",
+        'golden_apple' => "&eApple",
+        're_pot' => "&bRe Pot",
+        'backstab' => "&2BackStab",
+        'freezing_portable' => "&bFreezing",
+        'switcher' => "&eSwitcher",
+        'pre_pearl' => "&dPre Pearl",
+        'deleteblock' => "&cAnti Build Tag",
+        'antitrapper_tag' => "&3Anti Trapper Tag",
+        'logout' => "&9Logout",
+    ];
 }

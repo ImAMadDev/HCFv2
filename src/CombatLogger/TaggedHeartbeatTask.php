@@ -10,13 +10,13 @@ class TaggedHeartbeatTask extends Task {
         public CombatManager $manager) {}
 
 	public function onRun() : void {
-		foreach($this->manager->taggedPlayers as $name => $time) {
+        foreach($this->manager::$taggedPlayers as $name => $time) {
 			$time--;
 			if($time <= 0) {
-				$this->manager->setTagged($name, $this->manager->tagged[$name], false);
+				$this->manager->setTagged($name, $this->manager::$tagged[$name], false);
 				return;
 			}
-			$this->manager->taggedPlayers[$name]--;
+			$this->manager::$taggedPlayers[$name]--;
 		}
 	}
 

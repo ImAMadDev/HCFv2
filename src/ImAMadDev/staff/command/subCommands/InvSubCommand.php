@@ -101,9 +101,9 @@ class InvSubCommand extends SubCommand
                     if ($namedTag instanceof CompoundTag) {
                         /** @var CompoundTag[] $items */
                         $items = [];
-                        $slotCount = $sender->getInventory()->getSize();
+                        $slotCount = $inventory->getSize();
                         for ($slot = 0; $slot < $slotCount; ++$slot) {
-                            $item = $inv->getItem($slot);
+                            $item = $inventory->getItem($slot);
                             if (!$item->isNull() and $item->getId() !== ItemIds::BEDROCK) {
                                 $items[] = $item->nbtSerialize($slot);
                             }

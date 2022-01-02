@@ -42,16 +42,16 @@ class KickSubCommand extends SubCommand {
 			return;
 		}
         $player = $this->getServer()->getPlayerByPrefix($name);
+        if($player instanceof HCFPlayer) {
+            if($sender->getFaction()->isInFaction($name)) {
+                $player->setFaction(null);
+            }
+        }
         if($sender->getFaction()->isInFaction($name)) {
             HCF::getInstance()->getCache($name)?->setInData('faction', null);
-            //HCF::getInstance()->getCache($name)?->loadFactionRank();
+            HCF::getInstance()->getCache($name)?->saveData();
         }
-		if($player instanceof HCFPlayer) {
-			if($sender->getFaction()->isInFaction($name)) {
-				$player->setFaction(null);
-			}
-		}
-		$sender->getFaction()->message(TextFormat::GREEN . $name . " has left the faction.");
+		$sender->getFaction()->message(TextFormat::GREEN . $name . " has kicked the faction.");
 		$sender->getFaction()->removeMember($name);
 	}
 }

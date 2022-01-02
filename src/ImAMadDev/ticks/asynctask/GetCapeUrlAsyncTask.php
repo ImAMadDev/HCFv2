@@ -19,7 +19,6 @@ class GetCapeUrlAsyncTask extends AsyncTask
     {
         $url = 'https://api.capes.dev/load/' . $this->user;
         $data = json_decode(Internet::getURL($url)->getBody(), true);
-        var_dump($data);
         if ($data == false) {
             $this->setResult(null);
         } else {

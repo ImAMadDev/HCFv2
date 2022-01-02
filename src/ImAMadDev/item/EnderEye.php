@@ -12,6 +12,6 @@ class EnderEye extends Item {
         parent::__construct(new ItemIdentifier(ItemIds::ENDER_EYE, 0), "Ender Eye");
     }
     public function getMaxStackSize() : int {
-        return 64;
+        return 16;
     }
 }
