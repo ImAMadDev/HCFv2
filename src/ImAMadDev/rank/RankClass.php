@@ -86,14 +86,14 @@ class RankClass {
 
     public function setReclaim(string $reclaim) : void
     {
-        $this->data['reclaim'] = $reclaim;
+        $this->data['reclaim'] = base64_encode($reclaim);
         $this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
     }
 
     public function getReclaim() : array
     {
         $reclaim = $this->data['reclaim'] ?? "";
-        return InventoryUtils::decodeItems($reclaim);
+        return InventoryUtils::decodeItems(base64_decode($reclaim));
     }
 
 	public function updateData(): void {
@@ -121,7 +121,6 @@ class RankClass {
     {
         if (!file_exists(RANKS_DIRECTORY . $this->getName()  . '.yml')) return;
         file_put_contents(RANKS_DIRECTORY . $this->getName() . '.yml', yaml_emit($this->data, YAML_UTF8_ENCODING));
-
     }
 
 }

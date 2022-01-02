@@ -84,7 +84,7 @@ class ClaimListener implements Listener
                 }
             }
             if ($claim instanceof Claim){
-                if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
+                if(!$claim->canEdit($player->getFaction()) && $claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
                     if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
                         $event->cancel();
                         HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
@@ -97,11 +97,9 @@ class ClaimListener implements Listener
                         ), 40);
                     }
                 }
-                if (!$claim->canEdit($player->getFaction()) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-                    if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT)){
-                        if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
-                            $event->cancel();
-                        }
+                if (!$claim->canEdit($player->getFaction()) && $claim->getProperties()->hasFlag(ClaimFlags::INTERACT) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
+                        $event->cancel();
                     }
                 }
             }

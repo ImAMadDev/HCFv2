@@ -22,6 +22,12 @@ abstract class Command extends \pocketmine\command\Command {
 	public function getServer() : Server {
 		return Server::getInstance();
 	}
+
+    public function canExecute(CommandSender $sender) : bool
+    {
+        if ($this->getPermission() == "") return true;
+        return $sender->hasPermission($this->getPermission());
+    }
 	
 	public function addSubCommand(SubCommand $subCommand): void {
 		$this->subCommands[$subCommand->getName()] = $subCommand;

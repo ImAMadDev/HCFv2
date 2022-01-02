@@ -79,7 +79,7 @@ class EnderChestCommand extends Command{
 
     public function sendChest(HCFPlayer $player){
         $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
-        $menu->setName( $player . "'s Enderchest");
+        $menu->setName( $player->getName() . "'s Enderchest");
         $menu->getInventory()->setContents($player->getEnderInventory()->getContents());
         $menu->setListener(function (InvMenuTransaction $transaction) : InvMenuTransactionResult {
             return $transaction->continue();

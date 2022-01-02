@@ -73,7 +73,6 @@ class Events{
 	
 	public function finish() : void {
 		$this->manager->removeEvent($this->getName());
-		$this->task->getHandler()->cancel();
 	}
 	
 	public function onTick(): void{

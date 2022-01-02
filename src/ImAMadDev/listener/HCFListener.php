@@ -258,6 +258,9 @@ class HCFListener implements Listener
         if ($player->canLogout() == true) {
             return;
         }
+        if(SOTWManager::isEnabled()){
+            return;
+        }
         if (!$player->isAlive()) {
             return;
         }

@@ -37,7 +37,9 @@ class EditClaimFlag
     {
         if (empty($this->getBlocks())) return false;
         foreach ($this->getBlocks() as $block_) {
-            if($this->isCancelMovement() == false) if ($block->getPosition()->getWorld()->getTile($block->getPosition()) instanceof Container) return false;
+            if($this->isCancelMovement() == false) {
+                if ($block->getPosition()->getWorld()->getTile($block->getPosition()) instanceof Container) return false;
+            }
             if ($block->getIdInfo()->getBlockId() == $block_ or $block instanceof Trapdoor or $block instanceof Door or $block instanceof FenceGate) return false;
         }
         return true;

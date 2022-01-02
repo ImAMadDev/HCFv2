@@ -63,7 +63,7 @@ class KitCommand extends Command {
 			$kitName = TextFormat::clean($transaction->getItemClicked()->getName());
 			$possibleKitName = TextFormat::clean($transaction->getItemClickedWith()->getName());
 			if(($kit = KitManager::getInstance()->getKitByName($kitName)) instanceof Kit) {
-				if(!$player->hasPermission($kit->getPermission())) {
+				if($kit->getPermission() !== "default.permission" and !$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
 					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));
@@ -76,7 +76,7 @@ class KitCommand extends Command {
                     }
 				}
 			} elseif(($kit = KitManager::getInstance()->getKitByName($possibleKitName)) instanceof Kit) {
-				if(!$player->hasPermission($kit->getPermission())) {
+				if($kit->getPermission() !== "default.permission" and !$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
 					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));
@@ -106,7 +106,7 @@ class KitCommand extends Command {
 				return;
 			}
 			if(($kit = KitManager::getInstance()->getKitByName($data)) instanceof Kit) {
-				if(!$player->hasPermission($kit->getPermission())) {
+				if($kit->getPermission() !== "default.permission" and !$player->hasPermission($kit->getPermission())) {
 					$player->sendMessage(TextFormat::RED . "You don't have permission to do this!");
 				} else {
 					$time = ($kit->getCooldown() - (time() - $player->getCache()->getCountdown($kit->getName())));

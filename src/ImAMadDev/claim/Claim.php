@@ -80,7 +80,7 @@ class Claim {
 				return true;
 			}
 			if($faction instanceof Faction) {
-				return ($faction_claim->getName() === $faction->getName());
+				return ($faction_claim->getName() == $faction->getName());
 			} else {
 				return false;
 			}
