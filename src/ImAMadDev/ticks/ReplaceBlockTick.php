@@ -16,12 +16,13 @@ class ReplaceBlockTick extends Task {
         public HCF $main,
         public Block $block,
         public World $world,
-        public int $replaceId = BlockLegacyIds::AIR
+        public int $replaceId = BlockLegacyIds::AIR,
+        public int $replaceMeta = 0
     ){}
 
 	public function onRun() : void {
 		if($this->world->getBlockAt($this->block->getPosition()->x, $this->block->getPosition()->y, $this->block->getPosition()->z)->getId() === $this->block->getId()) {
-			$this->world->setBlockAt($this->block->getPosition()->x, $this->block->getPosition()->y, $this->block->getPosition()->z, BlockFactory::getInstance()->get($this->replaceId));
+			$this->world->setBlockAt($this->block->getPosition()->x, $this->block->getPosition()->y, $this->block->getPosition()->z, BlockFactory::getInstance()->get($this->replaceId, $this->replaceMeta));
 		}
 	}
 }
