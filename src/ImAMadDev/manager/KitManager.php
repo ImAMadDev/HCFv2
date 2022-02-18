@@ -26,7 +26,7 @@ use ImAMadDev\kit\types\{CustomKit,
     Eternal,
     Cthulhu,
     Sapphire,
-    Anubis,
+    Waffle,
     Mage,
     Diamond,
     Builder,
@@ -135,7 +135,7 @@ class KitManager {
 		$this->addKit(new Sapphire());
 		$this->addKit(new Eternal());
 		$this->addKit(new Cthulhu());
-		$this->addKit(new Anubis());
+		$this->addKit(new Waffle());
 		$this->loadCustomKits();
 		$this->getMain()->getLogger()->info("§aThe kits have been loaded! Number of kits: " . count($this->getKits()));
 	}

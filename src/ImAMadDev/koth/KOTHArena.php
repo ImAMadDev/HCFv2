@@ -106,7 +106,7 @@ class KOTHArena{
 	
 	public function enable(): void{
 		$this->enable = true;
-		$fields = ["_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ KOTH {$this->getName()}", "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Event has been triggered :clock3:", "The player who claims the KOTH gets $this->keys Keys", "To see the coordinates use /koth info {$this->getName()}", "━━━━━━━━ ⇜ ━━━━━━━━", "IP: play.minestalia.com", "SHOP: minestalia.com"];
+		$fields = ["_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ KOTH {$this->getName()}", "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Event has been triggered :clock3:", "The player who claims the KOTH gets $this->keys Keys", "To see the coordinates use /koth info {$this->getName()}", "━━━━━━━━ ⇜ ━━━━━━━━", "IP: nt.waffle.tk", "SHOP: minestalia.com"];
 		DiscordIntegration::sendToDiscord("━━━━━━━━ ⇜ ━━━━━━━━", "<@&911434300841422918>", DiscordIntegration::KOTH_WEBHOOK, "StaliaBot", $fields);
 		$this->getServer()->broadcastMessage("§aA new KOTH event has been triggered: §9".$this->getName());
 	}

@@ -862,4 +862,9 @@ class HCFPlayer extends Player {
         $pk = CameraShakePacket::create(2.0, 5, CameraShakePacket::TYPE_ROTATIONAL, CameraShakePacket::ACTION_ADD);
         $this->getNetworkSession()->sendDataPacket($pk);
     }
+
+    #[Pure] public function getCurrentInputMode() : string
+    {
+        return $this->getPlayerInfo()->getExtraData()['CurrentInputMode'] ?? 'Classic';
+    }
 }

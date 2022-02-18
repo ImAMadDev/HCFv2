@@ -46,7 +46,7 @@ class BlackMarket extends NPCEntity {
 			return $transaction->discard();
 		});
 		$menu->send($player);
-		foreach(array_values(CustomEnchantments::getEnchantments()) as $enchant) {
+		foreach(CustomEnchantments::getEnchantments() as $enchant) {
 			$item = CustomEnchantments::getEnchantedBook($enchant->getName(), rand(1, $enchant->getMaxLevel()));
 			$menu->getInventory()->addItem($item);
 		}

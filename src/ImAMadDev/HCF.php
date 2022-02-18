@@ -82,8 +82,6 @@ class HCF extends PluginBase {
 
     private static RedeemManager $redeemManager;
 
-    public const INV_MENU_TYPE_ENDER_CHEST = "hcf:enderchest";
-
     private static TradeManager $tradeManager;
 
     public function onLoad(): void{
@@ -114,7 +112,7 @@ class HCF extends PluginBase {
 			InvMenuHandler::register($this);
 		}
         CustomEnchantments::init();
-		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&5&l&oMine&fStalia &r&7»"));
+		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&g&lWaffle &4HCF &r&7» &aBETA"));
         if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::NETHER_MAP)){
             $g = WorldCreationOptions::create();
             $g->setGeneratorClass(Nether::class);

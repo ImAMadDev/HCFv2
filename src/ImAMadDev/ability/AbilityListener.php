@@ -80,7 +80,7 @@ class AbilityListener implements Listener {
 		$ability = AbilityManager::getInstance()->getAbilityByItem($item);
 		if($ability instanceof Ability) {
             if ($ability->handCountdown($player) !== ""){
-                $player->sendTip($ability->handCountdown($player));
+                $player->sendTip($ability->handCountdown($player) . "\n\n\n\n\n.");
             }
 		}
 	}

@@ -95,6 +95,12 @@ class PlayerCache
         return ($time - (time() - $this->getCountdown($countdown))) > 0;
     }
 
+    /**
+     *
+     * @param string $countdown
+     * @param integer $time
+     * @return void
+     */
     public function setCountdown(string $countdown, int $time) : void
     {
         $this->setInData($countdown . COUNTDOWN, (time() + $time), true);
@@ -166,7 +172,6 @@ class PlayerCache
                 }
                 if ($faction->isInFaction($this->getName())) {
                     $faction->removeMember($this->getName());
-                    var_dump("jjjjj");
                     return;
                 }
                 $this->getFactionRank()->set(null);

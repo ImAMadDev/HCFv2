@@ -83,11 +83,11 @@ class Scoreboard extends Task {
         	$api->remove($player);
         	return;
         }
-        $api->newScoreboard($player, $player->getName(), TextFormat::BOLD . TextFormat::LIGHT_PURPLE . "MineStalia | HCF  ");
+        $api->newScoreboard($player, $player->getName(), TextFormat::BOLD . TextFormat::MINECOIN_GOLD . "Waffle | HCF  ");
         if($api->getObjectiveName($player) !== null){
             foreach($scoreboard as $line => $key){
                 $api->remove($player);
-                $api->newScoreboard($player, $player->getName(), TextFormat::BOLD . TextFormat::LIGHT_PURPLE . "MineStalia | HCF  ");
+                $api->newScoreboard($player, $player->getName(), TextFormat::BOLD . TextFormat::MINECOIN_GOLD . "Waffle | HCF  ");
             }
         }
         foreach($scoreboard as $line => $key){

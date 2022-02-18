@@ -44,12 +44,14 @@ class KOTH extends Crate {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::KOTH_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
+        $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$helmet->setCustomName(TextFormat::DARK_RED . "KOTH Helmet");
 		$items[3] = $helmet;
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
+        $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$chestplate->setCustomName(TextFormat::DARK_RED . "KOTH Chestplate");
 		$items[4] = $chestplate;
 		
@@ -57,6 +59,7 @@ class KOTH extends Crate {
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::KOTH_PROTECTION));
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
 		$leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS), 1));
+        $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$leggings->setCustomName(TextFormat::DARK_RED . "KOTH Leggings");
 		$items[5] = $leggings;
 		
@@ -65,6 +68,7 @@ class KOTH extends Crate {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FEATHER_FALLING(), 4));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
+        $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$boots->setCustomName(TextFormat::DARK_RED . "KOTH Boots");
 		$items[6] = $boots;
 		
@@ -72,12 +76,14 @@ class KOTH extends Crate {
 		$helmet2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$helmet2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_PROTECTION(), HCFUtils::FREE_PROTECTION));
 		$helmet2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
+        $helmet2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$helmet2->setCustomName(TextFormat::DARK_RED . "KOTH Helmet");
 		$items[12] = $helmet2;
 		
 		$chestplate2 = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::KOTH_PROTECTION));
 		$chestplate2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
+        $chestplate2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$chestplate2->setCustomName(TextFormat::DARK_RED . "KOTH Chestplate");
 		$items[13] = $chestplate2;
 		
@@ -85,6 +91,7 @@ class KOTH extends Crate {
 		$leggings2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$leggings2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
         $leggings2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS), 1));
+        $leggings2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$leggings2->setCustomName(TextFormat::DARK_RED . "KOTH Leggings");
 		$items[14] = $leggings2;
 		
@@ -93,17 +100,20 @@ class KOTH extends Crate {
 		$boots2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
 		$boots2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FEATHER_FALLING(), 5));
         $boots2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
+        $boots2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$boots2->setCustomName(TextFormat::DARK_RED . "KOTH Boots");
 		$items[15] = $boots2;
 		
 		$sword = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS(), HCFUtils::PAID_SHARPNESS));
-		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::FREE_SHARPNESS));
+		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), 3));
+        $sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$sword->setCustomName(TextFormat::DARK_RED . "KOTH Fire");
 		$items[1] = $sword;
 		
 		$sword2 = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
 		$sword2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS(), HCFUtils::KOTH_SHARPNESS));
+        $sword2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$sword2->setCustomName(TextFormat::DARK_RED . "KOTH Sharpness");
 		$items[10] = $sword2;
 		
@@ -112,6 +122,7 @@ class KOTH extends Crate {
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FLAME(), 1));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::INFINITY(), 1));
+        $bow->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$bow->setCustomName(TextFormat::DARK_RED . 'KOTH Bow');
 		$items[23] = $bow;
 		
@@ -119,6 +130,7 @@ class KOTH extends Crate {
 		$fortune->addEnchantment(new EnchantmentInstance(VanillaEnchantments::EFFICIENCY(), 5));
 		$fortune->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
         $fortune->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::FORTUNE), 5));
+        $fortune->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$fortune->setCustomName(TextFormat::DARK_RED . "KOTH Fortune");
 		$items[2] = $fortune; 
 		
@@ -126,6 +138,7 @@ class KOTH extends Crate {
 		$touch->addEnchantment(new EnchantmentInstance(VanillaEnchantments::EFFICIENCY(), 4));
 		$touch->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
 		$touch->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SILK_TOUCH(), 1));
+        $touch->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$touch->setCustomName(TextFormat::DARK_RED . "KOTH Silk Touch");
 		$items[11] = $touch; 
 		

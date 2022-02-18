@@ -16,7 +16,7 @@ use pocketmine\utils\Config;
 use ImAMadDev\HCF;
 use ImAMadDev\crate\Crate;
 
-use ImAMadDev\crate\types\{Basic, CustomCrate, KOTH, Eternal, Sapphire, Anubis, Vote, Cthulhu};
+use ImAMadDev\crate\types\{Basic, CustomCrate, KOTH, Eternal, Sapphire, Waffle, Vote, Cthulhu};
 
 use pocketmine\utils\Filesystem;
 use pocketmine\utils\SingletonTrait;
@@ -87,7 +87,7 @@ class CrateManager {
 		$this->addCrate(new KOTH());
 		$this->addCrate(new Eternal());
 		$this->addCrate(new Sapphire());
-		$this->addCrate(new Anubis());
+		$this->addCrate(new Waffle());
 		$this->addCrate(new Cthulhu());
 		$this->addCrate(new Vote());
 		$this->loadCustomCrates();

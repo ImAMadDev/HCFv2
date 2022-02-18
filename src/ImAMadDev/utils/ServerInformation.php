@@ -44,7 +44,7 @@ class ServerInformation
             'nether_wold' => 'Nether',
             'end_spawn' => '0:80:0',
             'end_world' => 'End',
-            'Donor_rank_name' => 'Anubis',
+            'Donor_rank_name' => 'Waffle',
             'max_protection' => 1,
             'vip_protection' => 2,
             'koth_protection' => 3,

@@ -34,12 +34,12 @@ class ReachModule implements Listener {
 	public function onEntityDamageEvent(EntityDamageEvent $event) : void {
 		$player = $event->getEntity();
 		if($event instanceof EntityDamageByEntityEvent) {
-			$damager = $event->getDamager();
-			if($player instanceof HCFPlayer && $damager instanceof HCFPlayer) {
-				$reach = round($damager->getPosition()->distance($player->getPosition()));
-				if($reach > 6 && $damager->getInventory()->getItemInHand()->getId() !== ItemIds::BOW && !$damager->getInventory()->getItemInHand() instanceof ProjectileItem && $damager->getGamemode() === GameMode::SURVIVAL() && !$damager->getEffects()->has(VanillaEffects::SPEED())) {
-					DiscordIntegration::sendToDiscord("AntiCheat", $damager->getName() . " Suspect using Reach, Reach: " . $reach, DiscordIntegration::ALERT_WEBHOOK, "StaliaBot");
-					$this->sendAlertToStaff($damager, $reach);
+			$attacker = $event->getDamager();
+			if($player instanceof HCFPlayer && $attacker instanceof HCFPlayer) {
+				$reach = round($attacker->getPosition()->distance($player->getPosition()));
+				if($reach > 6 && $attacker->getInventory()->getItemInHand()->getId() !== ItemIds::BOW && !$attacker->getInventory()->getItemInHand() instanceof ProjectileItem && $attacker->getGamemode() === GameMode::SURVIVAL() && !$attacker->getEffects()->has(VanillaEffects::SPEED())) {
+					DiscordIntegration::sendToDiscord("AntiCheat", $attacker->getName() . " Suspect using Reach, Reach: " . $reach, DiscordIntegration::ALERT_WEBHOOK, "StaliaBot");
+					$this->sendAlertToStaff($attacker, $reach);
 				}
 			}
 		}

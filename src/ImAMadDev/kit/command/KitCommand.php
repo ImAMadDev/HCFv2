@@ -47,7 +47,7 @@ class KitCommand extends Command {
 				$sender->sendMessage(TextFormat::RED . "You've died in EOTW! You can't respawn!");
 				return;
 			}
-			if($sender->getPlayerInfo()->getExtraData()['CurrentInputMode'] === "Classic") {
+			if($sender->getCurrentInputMode() === "Classic") {
 				$this->getKits($sender);
 			} else {
 				$this->getKitsAndroid($sender);

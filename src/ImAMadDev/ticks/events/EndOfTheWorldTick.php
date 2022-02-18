@@ -25,7 +25,7 @@ class EndOfTheWorldTick extends Task {
 			}
 			if(EOTWManager::getTime() <= 0) {
 				EOTWManager::set(false);
-				self::$main->getServer()->broadcastMessage(TextFormat::RED . "Start Of The World was ended!");
+				self::$main->getServer()->broadcastMessage(TextFormat::RED . "End Of The World was ended!");
 				$this->getHandler()->cancel();
 			} else {
 				EOTWManager::reduceTime();

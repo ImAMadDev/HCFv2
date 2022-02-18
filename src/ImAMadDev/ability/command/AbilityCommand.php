@@ -3,7 +3,7 @@
 namespace ImAMadDev\ability\command;
 
 use ImAMadDev\command\Command;
-use ImAMadDev\ability\command\subCommands\AllSubCommand;
+use ImAMadDev\ability\command\subCommands\GetAllSubCommand;
 use ImAMadDev\ability\command\subCommands\ListSubCommand;
 use ImAMadDev\HCF;
 use ImAMadDev\manager\AbilityManager;
@@ -17,8 +17,9 @@ class AbilityCommand extends Command {
 	
 	public function __construct() {
 		parent::__construct("ability", "Manage Abilities", "/ability help <1-5>");
-		$this->addSubCommand(new AllSubCommand());
+		$this->addSubCommand(new GetAllSubCommand());
 		$this->addSubCommand(new ListSubCommand());
+        $this->addSubCommand(new GetAllSubCommand());
 	}
 	
 	public function execute(CommandSender $sender, string $commandLabel, array $args): void {

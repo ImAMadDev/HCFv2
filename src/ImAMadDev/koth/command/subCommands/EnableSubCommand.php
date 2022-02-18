@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\koth\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -12,12 +13,12 @@ use ImAMadDev\HCF;
 
 class EnableSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("enable", "/koth enable [string: arena]");
 	}
 	
 	public function execute(CommandSender $sender, string $commandLabel, array $args): void {
-		if($sender->isOp() === false) {
+		if($sender->hasPermission('koth.enable') === false) {
 			$sender->sendMessage(TextFormat::RED . "You don't have permission!");
 			return;
 		}

@@ -16,10 +16,10 @@ use ImAMadDev\kit\Kit;
 use ImAMadDev\manager\CrateManager;
 use ImAMadDev\customenchants\CustomEnchantments;
 
-class Anubis extends Kit {
+class Waffle extends Kit {
 
 	/** @var string */
-	private string $name = 'Anubis';
+	private string $name = 'Waffle';
 
 	/** @var Item */
 	private Item $icon;
@@ -64,21 +64,21 @@ class Anubis extends Kit {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::INVISIBILITY)));
-		$helmet->setCustomName(TextFormat::DARK_PURPLE . "Anubis Helmet");
+		$helmet->setCustomName(TextFormat::DARK_PURPLE . "Waffle Helmet");
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::KOTH_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::BURN_SHIELD)));
-		$chestplate->setCustomName(TextFormat::DARK_PURPLE . "Anubis Chestplate");
+		$chestplate->setCustomName(TextFormat::DARK_PURPLE . "Waffle Chestplate");
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS)));
-		$leggings->setCustomName(TextFormat::DARK_PURPLE . "Anubis Leggings");
+		$leggings->setCustomName(TextFormat::DARK_PURPLE . "Waffle Leggings");
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
@@ -86,7 +86,7 @@ class Anubis extends Kit {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
-        $boots->setCustomName(TextFormat::DARK_PURPLE . "Anubis Boots");
+        $boots->setCustomName(TextFormat::DARK_PURPLE . "Waffle Boots");
 		return [$helmet, $chestplate, $leggings, $boots];
 	}
 
@@ -106,7 +106,7 @@ class Anubis extends Kit {
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::KOTH_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION)));
-		$sword->setCustomName(TextFormat::DARK_PURPLE . "Anubis Sword");
+		$sword->setCustomName(TextFormat::DARK_PURPLE . "Waffle Sword");
 		
 		$pearls = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
 		$pearls2 = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
@@ -116,7 +116,7 @@ class Anubis extends Kit {
 		$apple = ItemFactory::getInstance()->get(ItemIds::GOLDEN_APPLE, 0, 64);
 		$gapple = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_GOLDEN_APPLE, 0, 10);
 		//Combo Ability
-		$keys = CrateManager::getInstance()->getCrateByName('Anubis')->getCrateKey(3);
+		$keys = CrateManager::getInstance()->getCrateByName('Waffle')->getCrateKey(3);
 
 		$items = [$sword, $pearls, $pearls2, $pearls3, $steak, $apple, $gapple, $keys];
 		for($i = 0; $i < 28; $i++){

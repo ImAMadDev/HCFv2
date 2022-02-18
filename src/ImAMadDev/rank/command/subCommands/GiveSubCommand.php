@@ -51,6 +51,7 @@ class GiveSubCommand extends SubCommand {
                 $player->getCache()->setCountdown('rank_' . $rank->getName(), $time);
                 $sender->sendMessage(TextFormat::GREEN . "You've added the rank {$rank->getName()} to the player {$player->getName()}, duration: " . HCFUtils::getTimeString((time() + $time)));
             }
+            $player->sendMessage(TextFormat::colorize("&aYou have received the rank {$rank->getName()}"));
             $player->getCache()->saveData();
         } else {
             $player = HCF::getInstance()->getCache($args[1]);

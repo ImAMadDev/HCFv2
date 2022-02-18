@@ -6,7 +6,7 @@ use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
-use ImAMadDev\player\{HCFPlayer, PlayerUtils, PlayerData};
+use ImAMadDev\player\{HCFPlayer, PlayerCache, PlayerUtils, PlayerData};
 use ImAMadDev\ticks\player\Scoreboard;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, SOTWManager};
 use ImAMadDev\entity\CombatLogger;
@@ -25,6 +25,7 @@ use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\event\block\BlockSpreadEvent;
 use pocketmine\event\block\LeavesDecayEvent;
 use pocketmine\event\server\DataPacketSendEvent;
+use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -68,6 +69,7 @@ use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
     InventorySlotPacket,
     InventoryTransactionPacket,
     MobEquipmentPacket,
+    NetworkChunkPublisherUpdatePacket,
     types\BlockPosition,
     types\CacheableNbt,
     types\inventory\ItemStackWrapper};
@@ -240,8 +242,8 @@ class HCFListener implements Listener
         $player->load();
         if (!$player->hasPlayedBefore()) {
             $player->setInvincible();
-            HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Anubis 3h');
-            $player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Anubis] &r&erank for &c3 hours&e."));
+            HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Waffle 3h');
+            $player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Waffle] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
         }
         $player->setInvincible($player->getCache()->getInData('invincibility_time', true));
@@ -250,43 +252,60 @@ class HCFListener implements Listener
         $player->setJoined(true);
     }
 
+    public function move(PlayerMoveEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $player->getNetworkSession()->syncViewAreaCenterPoint($event->getTo()->asVector3(), 5);
+
+    }
+
+    public function aaaa(DataPacketReceiveEvent $event): void
+    {
+        $packet = $event->getPacket();
+        if ($packet instanceof NetworkChunkPublisherUpdatePacket){
+            HCF::getInstance()->getLogger()->info("Chunk publicitario: " . $packet->radius);
+        }
+    }
+
     public function onQuitEvent(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
         $event->setQuitMessage(TextFormat::GRAY . "[" . TextFormat::RED . "-" . TextFormat::GRAY . "] " . TextFormat::RED . $player->getName());
-        $player->getCache()->saveData();
-        if ($player->canLogout() == true) {
-            return;
+        if ($player->getCache() instanceof PlayerCache) {
+            $player->getCache()->saveData();
+            if ($player->canLogout() == true) {
+                return;
+            }
+            if (SOTWManager::isEnabled()) {
+                return;
+            }
+            if (!$player->isAlive()) {
+                return;
+            }
+            if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
+                return;
+            }
+            if ($event->getQuitReason() === "Server Closed" || $event->getQuitReason() === "Internal server error") {
+                return;
+            }
+            if ($player->getCooldown()->has('combattag')) {
+                $player->kill();
+                return;
+            }
+            $time = $player->hasPermission("vip.combatlogger") === true ? 400 : 500;
+            $faction = $player->getFaction() === null ? "" : $player->getFaction()->getName();
+            $entity = new CombatLogger($player->getLocation());
+            $entity->setFaction($faction);
+            $entity->setPlayer($player->getName());
+            $entity->setNameTag("CombatLogger");
+            $entity->setNameTagAlwaysVisible(true);
+            $entity->setNameTagVisible(true);
+            $entity->load($time);
+            $entity->setCanSaveWithChunk(true);
+            $entity->setHealth(100.0);
+            $entity->setMaxHealth(100);
+            $entity->spawnToAll();
         }
-        if(SOTWManager::isEnabled()){
-            return;
-        }
-        if (!$player->isAlive()) {
-            return;
-        }
-        if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
-            return;
-        }
-        if ($event->getQuitReason() === "Server Closed" || $event->getQuitReason() === "Internal server error") {
-            return;
-        }
-        if ($player->getCooldown()->has('combattag')) {
-            $player->kill();
-            return;
-        }
-        $time = $player->hasPermission("vip.combatlogger") === true ? 400 : 500;
-        $faction = $player->getFaction() === null ? "" : $player->getFaction()->getName();
-        $entity = new CombatLogger($player->getLocation());
-        $entity->setFaction($faction);
-        $entity->setPlayer($player->getName());
-        $entity->setNameTag("CombatLogger");
-        $entity->setNameTagAlwaysVisible(true);
-        $entity->setNameTagVisible(true);
-        $entity->load($time);
-        $entity->setCanSaveWithChunk(true);
-        $entity->setHealth(100.0);
-        $entity->setMaxHealth(100);
-        $entity->spawnToAll();
     }
 
     public function onLevelChangeEvent(EntityTeleportEvent $event): void
