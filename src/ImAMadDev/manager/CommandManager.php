@@ -2,7 +2,10 @@
 
 namespace ImAMadDev\manager;
 
-use ImAMadDev\staff\command\StaffCommand;
+use ImAMadDev\staff\command\{
+	StaffCommand,
+	SudoCommand
+};
 use ImAMadDev\tags\command\TagCommand;
 use ImAMadDev\trade\command\TradeCommand;
 use ImAMadDev\youtubers\redeem\command\RedeemCommand;
@@ -34,6 +37,7 @@ use ImAMadDev\command\defaults\{CapeCommand,
     BalanceCommand,
     EOTWCommand,
     SOTWCommand,
+    PurgeCommand,
     PvPCommand};
 use ImAMadDev\claim\command\ClaimCommand;
 use ImAMadDev\kit\command\KitCommand;
@@ -93,7 +97,8 @@ class CommandManager {
         $this->registerCommand(new CapeCommand());
         $this->registerCommand(new RedeemCommand());
         $this->registerCommand(new StaffCommand());
-        //$this->registerCommand(new TradeCommand());
+        $this->registerCommand(new SudoCommand());
+        $this->registerCommand(new PurgeCommand());
 	}
 	
 	public function registerCommand(Command $command): void {

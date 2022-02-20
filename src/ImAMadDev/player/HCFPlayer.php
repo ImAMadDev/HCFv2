@@ -18,6 +18,7 @@ use ImAMadDev\player\sessions\ClaimSession;
 use ImAMadDev\player\sessions\ClassEnergy;
 use ImAMadDev\player\sessions\PlayerRegion;
 use ImAMadDev\player\sessions\TraderPlayer;
+use ImAMadDev\player\sessions\EnderpearlHistory;
 use ImAMadDev\tags\Tag;
 use ImAMadDev\utils\HCFUtils;
 use JetBrains\PhpStorm\Pure;
@@ -134,6 +135,8 @@ class HCFPlayer extends Player {
     private array $previousBlocks = [];
 
     private TraderPlayer $traderPlayer;
+    
+    private EnderpearlHistory $enderpearlH;
 
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
@@ -144,6 +147,7 @@ class HCFPlayer extends Player {
         $this->energy = new ClassEnergy($this);
         $this->claimView = new ViewClaim($this);
         $this->traderPlayer = new TraderPlayer($this);
+        $this->enderpearlH = new EnderpearlHistory($this);
     }
 
     public function setCanLogout(bool $can = false) : void {
@@ -390,6 +394,10 @@ class HCFPlayer extends Player {
 
 	public function getClassEnergy() : ClassEnergy {
 		return $this->energy;
+	}
+	
+	public function getEnderpearlHistory() : EnderpearlHistory {
+		return $this->enderpearlH;
 	}
 	
 	public function sendCustomTagTo(string $customTag, array $players = []){

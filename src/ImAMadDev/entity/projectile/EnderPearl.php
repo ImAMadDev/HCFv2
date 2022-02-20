@@ -18,6 +18,7 @@ use pocketmine\world\sound\EndermanTeleportSound;
 
 
 use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\utils\NBT;
 use ImAMadDev\manager\ClaimManager;
 
 class EnderPearl extends Throwable {
@@ -37,6 +38,8 @@ class EnderPearl extends Throwable {
     public float $length = 0.35;
     public int|float $height = 0.35;
     
+    
+    protected Location $usageLocation;
 
     /**
      * EnderPearl Constructor.
@@ -48,6 +51,9 @@ class EnderPearl extends Throwable {
         $this->gravity = 0.08;
         $this->drag = 0.01;
         parent::__construct($location, $shootingEntity, $nbt);
+        if($shootingEntity instanceof HCFPlayer) {
+        	$this->usageLocation = NBT::correctLocation($shootingEntity, $location);
+        }
     }
 
     /**
@@ -111,6 +117,7 @@ class EnderPearl extends Throwable {
                     $owning->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
 
                     $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                    $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
                 }
             }
             $this->kill();

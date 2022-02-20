@@ -4,7 +4,10 @@ namespace ImAMadDev\claim;
 
 use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\HCF;
-use ImAMadDev\manager\ClaimManager;
+use ImAMadDev\manager\{
+	ClaimManager,
+	PurgeManager
+};
 use ImAMadDev\player\HCFPlayer;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -80,12 +83,11 @@ class ClaimListener implements Listener
                             }
                         }
                     }
-
                 }
             }
             if ($claim instanceof Claim){
                 if(!$claim->canEdit($player->getFaction()) && $claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
-                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
+                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false and !PurgeManager::isEnabled()) {
                         $event->cancel();
                         HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player): void {
                             $player->cancelMovement(true);
@@ -98,7 +100,7 @@ class ClaimListener implements Listener
                     }
                 }
                 if (!$claim->canEdit($player->getFaction()) && $claim->getProperties()->hasFlag(ClaimFlags::INTERACT) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false) {
+                    if($claim->getProperties()->getFlag(ClaimFlags::INTERACT)->run($block) == false and !PurgeManager::isEnabled()) {
                         $event->cancel();
                     }
                 }

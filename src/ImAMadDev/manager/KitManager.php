@@ -8,7 +8,10 @@ use ImAMadDev\kit\classes\IClass;
 use ImAMadDev\kit\classes\MageClass;
 use ImAMadDev\kit\classes\MinerClass;
 use ImAMadDev\kit\classes\RogueClass;
+use ImAMadDev\kit\classes\CustomClass;
+use ImAMadDev\kit\classes\CustomEnergyClass;
 use ImAMadDev\kit\KitCreatorSession;
+use ImAMadDev\kit\ClassCreatorSession;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\InventoryUtils;
 use JetBrains\PhpStorm\Pure;
@@ -159,7 +162,25 @@ class KitManager {
         $this->addClass(new MinerClass());
         $this->addClass(new MageClass());
         $this->addClass(new RogueClass());
+        $this->loadCustomClasses();
+        $this->getMain()->getLogger()->info("§aThe Classes have been loaded! Number of classes: " . count($this->getClasses()));
     }
+    
+    public function loadCustomClasses() : void
+    {
+        if (!is_dir(self::$main->getDataFolder() . "classes")) @mkdir(self::$main->getDataFolder() . "classes");
+        foreach(glob(self::$main->getDataFolder() . "classes" . DIRECTORY_SEPARATOR . "*.json") as $file){
+            $contents = json_decode(file_get_contents($file), true);
+            $armor = InventoryUtils::decode($contents["Armor"] ?? "", "Armor");
+            $effects = InventoryUtils::parseEffects($contents['Effects'] ?? []);
+            if(isset($contents['Energy'])) {
+            	$class = new CustomEnergyClass(basename($file, '.json'), $armor, $contents['Energy'], $effects);
+            } else {
+            	$class = new CustomClass(basename($file, '.json'), $armor, $effects);
+            }
+            $this->addClass($class);
+        }
+	}
 
     /**
      * @param string $name
@@ -182,6 +203,22 @@ class KitManager {
         $items = InventoryUtils::decode($session->getData()["Inventory"] ?? "");
         $kit = new CustomKit($session->getData()["name"], $session->getData()["permission"] ?? $session->getData()["name"] . ".kit", $armor, $items, $this->getIconFromFile($session->getData()['icon']), $session->getData()["description"] ?? "Example kit", $session->getData()["countdown"] ?? 172800, $session->getData()["customName"] ?? "&6" . $session->getData()["name"], $session->getData()["slot"] ?? 0);
         $this->addKit($kit);
+    }
+    
+    /**
+     * @param ClassCreatorSession $session
+     */
+	public function createCustomClass(ClassCreatorSession $session) : void
+    {
+        Filesystem::safeFilePutContents(self::$main->getDataFolder() . "classes/" . $session->getData()["name"] . ".json", json_encode($session->getData(), JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING));
+        $armor = InventoryUtils::decode($contents["Armor"] ?? "", "Armor");
+        $effects = InventoryUtils::parseEffects($contents['Effects'] ?? []);
+        	if(isset($contents['Energy'])) {
+            	$class = new CustomEnergyClass($contents['name'], $armor, $contents['Energy'], $effects);
+            } else {
+            	$class = new CustomClass($contents['name'], $armor, $effects);
+            }
+        $this->addClass($class);
     }
 
     /**
@@ -266,5 +303,4 @@ class KitManager {
         }
         return null;
     }
-
 }

@@ -15,4 +15,9 @@ class NBT {
         $y = $player->getPosition()->y + $player->getEyeHeight();
         return new Location($player->getPosition()->x, $y, $player->getPosition()->z, $player->getPosition()->getWorld(), $player->getLocation()->getYaw(), $player->getLocation()->getPitch());
 	}
+	
+	public static function correctLocation(Player $player, Location $location) : Location {
+        $y = $location->y - $player->getEyeHeight();
+        return new Location($location->x, $y, $location->z, $location->getWorld(), $location->getYaw(), $location->getPitch());
+	}
 }

@@ -23,6 +23,7 @@ use ImAMadDev\manager\{FactionManager,
     AbilityManager,
     KitManager,
     EOTWManager,
+    PurgeManager,
     BlockManager,
     ItemManager,
     SOTWManager,
@@ -95,6 +96,7 @@ class HCF extends PluginBase {
 		if(!is_dir($this->getDataFolder() . "players/")) @mkdir($this->getDataFolder() . "players/");
 		$this->getServer()->getPluginManager()->registerEvents(new EOTWManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new SOTWManager($this), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new PurgeManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener(), $this);

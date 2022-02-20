@@ -9,6 +9,10 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\{ListTag, CompoundTag};
 use pocketmine\plugin\PluginException;
+use pocketmine\data\bedrock\EffectIdMap;
+use pocketmine\entity\effect\StringToEffectParser;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\utils\Limits;
 
 final class InventoryUtils {
 	
@@ -70,5 +74,21 @@ final class InventoryUtils {
             $content[] = Item::nbtDeserialize($item);
         }
         return $content;
+    }
+    
+    public static function parseEffects(array $data)
+    {
+    	$effects = [];
+        foreach($data as $eff){
+            if(!isset($eff["name"])){
+                continue;
+            }
+            $effect = StringToEffectParser::getInstance()->parse($eff["name"]);
+            if($effect !== null){
+                $instance = new EffectInstance($effect, Limits::INT32_MAX, $eff["amplifier"] ?? 1, $eff["visible"] ?? false);
+                $effects[] = $instance;
+            }
+        }
+        return $effects;
     }
 }
