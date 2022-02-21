@@ -66,6 +66,11 @@ class KitManager {
      */
     private static array $sessions = [];
 
+    /**
+     * @var array ClassCreatorSession[]
+     */
+    private static array $classSessions = [];
+
 	public function __construct(HCF $main) {
 		self::$main = $main;
         self::setInstance($this);
@@ -124,6 +129,59 @@ class KitManager {
     #[Pure] public function hasSession(HCFPlayer $player) : bool
     {
         return in_array($player->getName(), array_keys(self::$sessions));
+    }
+
+    /**
+     * @return array ClassCreatorSession[]
+     */
+    public function getClassSessions(): array
+    {
+        return self::$classSessions;
+    }
+
+    /**
+     * @param HCFPlayer $player
+     * @param string $name
+     */
+    public function openClassSession(HCFPlayer $player, string $name) : void
+    {
+        if($this->hasClassSession($player)) {
+            $player->sendMessage(TextFormat::RED . "Error: you already have an open session");
+            return;
+        }
+        self::$classSessions[$player->getName()] = new ClassCreatorSession($player, $name);
+        $player->sendMessage(TextFormat::GREEN . "You have open a class creator session, class name $name");
+    }
+
+    /**
+     * @param HCFPlayer $player
+     */
+    public function closeClassSession(HCFPlayer $player) : void
+    {
+        if(!$this->hasClassSession($player)) {
+            $player->sendMessage(TextFormat::RED . "Error: you dont have any open session");
+            return;
+        }
+        unset(self::$classSessions[$player->getName()]);
+        $player->sendMessage(TextFormat::GREEN . "You have close your class creator session");
+    }
+
+    /**
+     * @param HCFPlayer $player
+     * @return ClassCreatorSession
+     */
+    #[Pure] public function getClassSession(HCFPlayer $player) : ClassCreatorSession
+    {
+        return self::$classSessions[$player->getName()];
+    }
+
+    /**
+     * @param HCFPlayer $player
+     * @return bool
+     */
+    #[Pure] public function hasClassSession(HCFPlayer $player) : bool
+    {
+        return in_array($player->getName(), array_keys(self::$classSessions));
     }
 
 	public function loadKits() {

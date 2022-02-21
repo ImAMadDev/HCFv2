@@ -76,7 +76,7 @@ final class InventoryUtils {
         return $content;
     }
     
-    public static function parseEffects(array $data)
+    public static function parseEffects(array $data): array
     {
     	$effects = [];
         foreach($data as $eff){

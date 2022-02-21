@@ -807,4 +807,106 @@ class KitListener implements Listener {
         }
 	}
 
+    /** @noinspection PhpParamsInspection */
+    public function handleClassCreator(PlayerChatEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        if (KitManager::getInstance()->hasClassSession($player)){
+            $message = $event->getMessage();
+            $args = explode(" ", $message);
+            if($args[0] == "help"){
+                $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . TextFormat::EOL .
+                    "- energy (int: numero de energia, solo pon esto si quieres una clase con energia)" . TextFormat::EOL .
+                    "- armor [Toda tu armadura sera escogida para esta clase]" . TextFormat::EOL .
+                    "- addeffect (string: formato name:amplifier:visible ejemplo: resistance:2:true)" . TextFormat::EOL .
+                    "- effectlist [el item en tu mano sera el icono del kit]" . TextFormat::EOL .
+                    "- countdown (string: tiempo de refresco del kit) [ejemplo: 1d,2h,30m se lee como 1 dia 2 hora y 30 minutos]" . TextFormat::EOL .
+                    "- slot (int: slot) [esto es para los win10 en que slot del cofre aparecera el icono del kit]" . TextFormat::EOL .
+                    "- customname (string: name) [Aqui podras colocar un nombre customizado para el icono del kit]" . TextFormat::EOL .
+                    "- cancel [cancelar la sesion]" . TextFormat::EOL .
+                    "- save [guardar el kit]"
+                );
+                $event->cancel();
+            }
+            if ($args[0] == "permission"){
+                if (isset($args[1])){
+                    KitManager::getInstance()->getClassSession($player)->setPermission($args[1]);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the kit permission to: $args[1]");
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the permission");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "inventory"){
+                KitManager::getInstance()->getClassSession($player)->copyInventory();
+                $player->sendMessage(TextFormat::GREEN . "You have save the kit contents");
+                $event->cancel();
+            }
+            if ($args[0] == "description"){
+                if (isset($args[1])){
+                    $desc = $args;
+                    array_shift($desc);
+                    $description = implode(" ", $desc);
+                    KitManager::getInstance()->getClassSession($player)->setDescription($description);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the kit description to: $description");
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the description");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "icon"){
+                KitManager::getInstance()->getClassSession($player)->setIcon();
+                $player->sendMessage(TextFormat::GREEN . "You have save the kit icon");
+                $event->cancel();
+            }
+            if ($args[0] == "countdown"){
+                if (isset($args[1])){
+                    if(!preg_match("/(^[1-9][0-9]{0,2}[mhd])(,[1-9][0-9]{0,2}[mhd]){0,2}$/", $args[1])) {
+                        $player->sendMessage(TextFormat::RED . "Unknown countdown type {$args[1]}");
+                        return;
+                    }
+                    $time = HCFUtils::strToSeconds($args[1]);
+                    $timeFormated = (time() + $time);
+                    KitManager::getInstance()->getClassSession($player)->setCountdown((int)$time);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the kit countdown to: " . HCFUtils::getTimeString($timeFormated));
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the permission");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "slot"){
+                if (isset($args[1])){
+                    KitManager::getInstance()->getClassSession($player)->setSlot((int)$args[1]);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the kit slot to: " . (int)$args[1]);
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the slot");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "customname"){
+                if (isset($args[1])){
+                    $name = $args;
+                    array_shift($name);
+                    $name = implode(" ", $name);
+                    KitManager::getInstance()->getClassSession($player)->setCustomName($name);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the kit icon custom name to: " . $name);
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the icon custom name");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "cancel"){
+                KitManager::getInstance()->closeClassSession($player);
+                $player->sendMessage(TextFormat::GREEN . "You have closed your class creator session");
+                $event->cancel();
+            }
+            if($args[0] == "save"){
+                KitManager::getInstance()->getClassSession($player)->save();
+                KitManager::getInstance()->closeClassSession($player);
+                $player->sendMessage(TextFormat::GREEN . "You have save the class");
+                $event->cancel();
+            }
+        }
+    }
+
 }
