@@ -13,7 +13,7 @@ use pocketmine\utils\TextFormat;
 
 class CheckVoteTick extends AsyncTask {
 
-    const API_KEY = "up5wXKqGSoLtsK6witDcNZ6PohKkzULX";
+    const API_KEY = "ZnmsGAcQYE9otpDqZjMoBYKxZ8MEp2XstGR";
 
     const CHECK_URL = "https://minecraftpocket-servers.com/api-vrc/?object=votes&element=claim&key=" . self:: API_KEY . "&username={USERNAME}";
 
@@ -74,7 +74,7 @@ class CheckVoteTick extends AsyncTask {
                 return;
             }
             $player->setVoted();
-            Server::getInstance()->broadcastMessage(TextFormat::colorize("&a&l[VOTE] &r- &e{$player->getName()} &7has voted for our server at &6minestalia.com/vote &7and received &63 Vote Key"));
+            Server::getInstance()->broadcastMessage(TextFormat::colorize("&a&l[VOTE] &r- &e{$player->getName()} &7has voted for our server at &6https://minecraftpocket-servers.com/server/116330/ &7and received &6x3 Vote Key"));
             $keys = CrateManager::getInstance()->getCrateByName('Vote')->getCrateKey(3);
             if($player->getInventory()->canAddItem($keys)) {
 				$player->getInventory()->addItem($keys);
@@ -83,7 +83,7 @@ class CheckVoteTick extends AsyncTask {
 			}
             return;
         }
-        $player->sendMessage(TextFormat::RED . "You have not voted yet! Vote at " . TextFormat::GOLD . "minestalia.com/vote!");
+        $player->sendMessage(TextFormat::RED . "You have not voted yet! Vote at " . TextFormat::GOLD . "https://minecraftpocket-servers.com/server/116330/!");
         $player->setVoted(false);
     }
 }

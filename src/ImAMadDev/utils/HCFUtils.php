@@ -6,6 +6,7 @@ use Closure;
 use DateTime;
 use GdImage;
 use ImAMadDev\HCF;
+use JsonException;
 use pocketmine\block\tile\Sign;
 use pocketmine\entity\Skin;
 use pocketmine\item\Item;
@@ -111,7 +112,7 @@ final class HCFUtils {
     public static function saveSkin(Skin $skin, string $name) : void
     {
         if (!is_dir(HCF::getInstance()->getDataFolder() . "copied_skins")) {
-            @mkdir(HCF::getInstance()->getDataFolder() . "copied_skins", );
+            @mkdir(HCF::getInstance()->getDataFolder() . "copied_skins");
         }
         $img = self::skinDataToImage($skin->getSkinData());
         if ($img == null) {
@@ -175,6 +176,7 @@ final class HCFUtils {
     /**
      * @param string $name
      * @return Skin
+     * @throws JsonException
      */
     public static function getSkin(string $name): Skin
     {

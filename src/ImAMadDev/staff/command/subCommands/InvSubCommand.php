@@ -34,7 +34,7 @@ class InvSubCommand extends SubCommand
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender->hasPermission('staff.inventory.command')){
-            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['{commandName}' => $commandLabel, '{helpCommand}' => 'help']));
+            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['commandName' => $commandLabel, 'helpCommand' => 'help']));
             return;
         }
         if (!isset($args[1])){
@@ -44,7 +44,7 @@ class InvSubCommand extends SubCommand
         if ($sender instanceof HCFPlayer) {
             $this->send($sender, $args[1]);
         } else {
-            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['{commandName}' => $commandLabel, '{helpCommand}' => 'help']));
+            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['commandName' => $commandLabel, 'helpCommand' => 'help']));
         }
     }
 

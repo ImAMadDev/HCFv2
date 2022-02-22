@@ -64,21 +64,21 @@ class Waffle extends Kit {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::INVISIBILITY)));
-		$helmet->setCustomName(TextFormat::DARK_PURPLE . "Waffle Helmet");
+		$helmet->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Helmet");
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::KOTH_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::BURN_SHIELD)));
-		$chestplate->setCustomName(TextFormat::DARK_PURPLE . "Waffle Chestplate");
+		$chestplate->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Chestplate");
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS)));
-		$leggings->setCustomName(TextFormat::DARK_PURPLE . "Waffle Leggings");
+		$leggings->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Leggings");
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
@@ -86,7 +86,7 @@ class Waffle extends Kit {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
-        $boots->setCustomName(TextFormat::DARK_PURPLE . "Waffle Boots");
+        $boots->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Boots");
 		return [$helmet, $chestplate, $leggings, $boots];
 	}
 
@@ -106,7 +106,7 @@ class Waffle extends Kit {
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::KOTH_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 8));
         $sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION)));
-		$sword->setCustomName(TextFormat::DARK_PURPLE . "Waffle Sword");
+		$sword->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Sword");
 		
 		$pearls = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
 		$pearls2 = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
@@ -159,7 +159,7 @@ class Waffle extends Kit {
 				$player->getWorld()->dropItem($player->getPosition()->asVector3(), $item);
 			}
 		}
-		$player->sendMessage(TextFormat::YELLOW . "You have received the Kit: " . TextFormat::DARK_PURPLE . TextFormat::BOLD . $this->getName());
+		$player->sendMessage(TextFormat::YELLOW . "You have received the Kit: " . TextFormat::MINECOIN_GOLD . TextFormat::BOLD . $this->getName());
 	}
 
 }

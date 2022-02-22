@@ -7,6 +7,7 @@ use ImAMadDev\customenchants\CustomEnchantments;
 use ImAMadDev\HCF;
 use ImAMadDev\claim\Claim;
 use ImAMadDev\player\{HCFPlayer, PlayerCache, PlayerUtils, PlayerData};
+use ImAMadDev\ticks\asynctask\SaveSkinAsyncTask;
 use ImAMadDev\ticks\player\Scoreboard;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, SOTWManager};
 use ImAMadDev\entity\CombatLogger;
@@ -243,28 +244,13 @@ class HCFListener implements Listener
         if (!$player->hasPlayedBefore()) {
             $player->setInvincible();
             HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Waffle 3h');
-            $player->sendMessage(TextFormat::colorize("&7Welcome to &gWaffle HCF &c&lBETA 2.0.\n&eYou have received the &5[Waffle] &r&erank for &c3 hours&e."));
+            $player->sendMessage(TextFormat::colorize("&7Welcome to &gWaffleHCF &c&lBETA 2.0.\n&eYou have received the &g[Waffle] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
         }
         $player->setInvincible($player->getCache()->getInData('invincibility_time', true));
         $player->getFaction()?->message(TextFormat::GREEN . "+ Member online: " . TextFormat::RED . $player->getName());
-        HCFUtils::saveSkin($player->getSkin(), $player->getName());
+        $player->getServer()->getAsyncPool()->submitTask(new SaveSkinAsyncTask($player->getName(), $player->getSkin()));
         $player->setJoined(true);
-    }
-
-    public function move(PlayerMoveEvent $event): void
-    {
-        $player = $event->getPlayer();
-        $player->getNetworkSession()->syncViewAreaCenterPoint($event->getTo()->asVector3(), 5);
-
-    }
-
-    public function aaaa(DataPacketReceiveEvent $event): void
-    {
-        $packet = $event->getPacket();
-        if ($packet instanceof NetworkChunkPublisherUpdatePacket){
-            HCF::getInstance()->getLogger()->info("Chunk publicitario: " . $packet->radius);
-        }
     }
 
     public function onQuitEvent(PlayerQuitEvent $event): void
@@ -374,7 +360,7 @@ class HCFListener implements Listener
                     return;
                 }
                 if (abs($player->getPosition()->getX()) <= 500 and abs($player->getPosition()->getZ()) <= 500) {
-                    $player->sendMessage(TextFormat::RED . "You can only claim when you are 300 blocks from spawn!");
+                    $player->sendMessage(TextFormat::RED . "You can only claim when you are 500 blocks from spawn!");
                     return;
                 }
                 if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
@@ -888,11 +874,6 @@ class HCFListener implements Listener
                 }
             }
         }
-    }
-
-    public function handleMov(PlayerMoveEvent $event): void
-    {
-
     }
 
     public function onCombatLoggerDamage(EntityDamageEvent $event): void

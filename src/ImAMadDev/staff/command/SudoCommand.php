@@ -19,15 +19,17 @@ class SudoCommand extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
-        if (!$sender->hasPermission('staff.command')){
-            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['{commandName}' => $commandLabel, '{helpCommand}' => 'help']));
+        if (!$sender->hasPermission('sudo.command')){
+            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['commandName' => $commandLabel, 'helpCommand' => 'help']));
             return;
         }
         if(count($args) >= 2) {
-        	$player = $this->getServer()->getPlayerByPrefix($args[0]);
-       	 if($player instanceof HCFPlayer) {
-       		$player->chat(implode(" ", array_shift($args)));
-       	}
+            $player = $this->getServer()->getPlayerByPrefix($args[0]);
+            if($player instanceof HCFPlayer) {
+               array_shift($args);
+               $player->chat(implode(" ", $args));
+               return;
+       	    }
         }
         $sender->sendMessage(TextFormat::RED . $this->getUsage());
     }

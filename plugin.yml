@@ -98,4 +98,9 @@ permissions:
   staff.inventory.edit:
     default: op
     description: Edit player inventory
+  sudo.command:
+    default: op
+    description: Haz que un jugador haga lo que digas
+  broadcast.command:
+    default: op
 ...

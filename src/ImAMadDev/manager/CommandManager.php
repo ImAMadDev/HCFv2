@@ -94,7 +94,7 @@ class CommandManager {
 		$this->registerCommand(new MapKit());
 		$this->registerCommand(new LFFCommand());
         $this->registerCommand(new TagCommand());
-        $this->registerCommand(new CapeCommand());
+        //$this->registerCommand(new CapeCommand());
         $this->registerCommand(new RedeemCommand());
         $this->registerCommand(new StaffCommand());
         $this->registerCommand(new SudoCommand());

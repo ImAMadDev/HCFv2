@@ -2,12 +2,9 @@
 
 namespace ImAMadDev\kit\classes;
 
-use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\StringToEffectParser;
-use pocketmine\item\ItemIds;
 use pocketmine\item\Item;
-use pocketmine\utils\Limits;
 use pocketmine\item\ItemFactory;
 
 class CustomEnergyClass extends IEnergyClass

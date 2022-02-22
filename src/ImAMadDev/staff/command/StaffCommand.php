@@ -28,7 +28,7 @@ class StaffCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender->hasPermission('staff.command')){
-            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['{commandName}' => $commandLabel, '{helpCommand}' => 'help']));
+            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['commandName' => $commandLabel, 'helpCommand' => 'help']));
             return;
         }
         if(isset($args[0])) {

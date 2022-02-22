@@ -23,7 +23,7 @@ class SetReclaimSubCommand extends SubCommand
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender->hasPermission('rank.setreclaim.command')){
-            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['{commandName}' => $commandLabel, '{helpCommand}' => 'help']));
+            $sender->sendMessage(new Translatable('pocketmine.command.notFound', ['commandName' => $commandLabel, 'helpCommand' => 'help']));
             return;
         }
         if ($sender instanceof HCFPlayer) {
