@@ -12,6 +12,7 @@ use ImAMadDev\ability\types\{PartnerPackages,
     PortableRogue,
     SummerLootbox,
     Switcher,
+    EggPorts,
     PrePearl,
     AntiTrapper,
     StormBreaker,
@@ -25,7 +26,7 @@ use ImAMadDev\ability\types\{PartnerPackages,
     NinjaAbility,
     Immobilizer,
     Airdrops,
-    TimeWarpAbility,
+    TimeWarp,
     RankSharp};
 
 use pocketmine\utils\SingletonTrait;
@@ -57,11 +58,12 @@ class AbilityManager {
 		$this->addAbility(new ResistancePortable());
 		$this->addAbility(new AntiBuild());
 		$this->addAbility(new Switcher());
+		$this->addAbility(new EggPorts());
 		$this->addAbility(new RePot());
 		$this->addAbility(new PrePearl());
 		$this->addAbility(new Immobilizer());
 		$this->addAbility(new NinjaAbility());
-		$this->addAbility(new TimeWarpAbility());
+		$this->addAbility(new TimeWarp());
 		$this->addAbility(new PortableRogue());
 		$this->addAbility(new Airdrops());
 		$this->addAbility(new RankSharp());

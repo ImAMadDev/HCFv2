@@ -45,7 +45,7 @@ class Waffle extends Crate {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
 		$helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$helmet->setCustomName(TextFormat::DARK_BLUE . "Waffle Helmet");
+		$helmet->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Helmet");
 		$items[11] = $helmet;
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
@@ -53,7 +53,7 @@ class Waffle extends Crate {
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::BURN_SHIELD)));
-		$chestplate->setCustomName(TextFormat::DARK_BLUE . "Waffle Chestplate");
+		$chestplate->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Chestplate");
 		$items[12] = $chestplate;
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
@@ -61,7 +61,7 @@ class Waffle extends Crate {
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS)));
-		$leggings->setCustomName(TextFormat::DARK_BLUE . "Waffle Leggings");
+		$leggings->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Leggings");
 		$items[13] = $leggings;
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
@@ -70,7 +70,7 @@ class Waffle extends Crate {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FEATHER_FALLING(), 10));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
-		$boots->setCustomName(TextFormat::DARK_BLUE . "Waffle Boots");
+		$boots->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Boots");
 		$items[14] = $boots;
 		
 		$sword = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
@@ -78,7 +78,7 @@ class Waffle extends Crate {
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::FREE_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION), 3));
-		$sword->setCustomName(TextFormat::DARK_BLUE . "Waffle Sword");
+		$sword->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Sword");
 		$items[10] = $sword;
 		
 		$sword2 = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
@@ -86,7 +86,7 @@ class Waffle extends Crate {
 		$sword2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::PAID_SHARPNESS));
 		$sword2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $sword2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION), 2));
-		$sword2->setCustomName(TextFormat::DARK_BLUE . "Waffle Sword");
+		$sword2->setCustomName(TextFormat::MINECOIN_GOLD . "Waffle Sword");
 		$items[16] = $sword2;
 		
 		$bow = ItemFactory::getInstance()->get(ItemIds::BOW);
@@ -94,7 +94,7 @@ class Waffle extends Crate {
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FLAME(), 2));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::INFINITY(), 2));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
-		$bow->setCustomName(TextFormat::DARK_BLUE . 'Waffle Bow');
+		$bow->setCustomName(TextFormat::MINECOIN_GOLD . 'Waffle Bow');
 		$items[15] = $bow;
 		
 		$gold_block = ItemFactory::getInstance()->get(ItemIds::GOLD_BLOCK, 0, 64);
@@ -162,7 +162,7 @@ class Waffle extends Crate {
         $item->getNamedTag()->setTag(self::KEY_TAG, new CompoundTag());
         $item->getNamedTag()->setTag(self::WAFFLE_KEY, new CompoundTag());
 		$item->setCustomName($this->getColoredName() . " KEY");
-		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::MINECOIN_GOLD . "Waffle Crate", TextFormat::BOLD . TextFormat::DARK_BLUE . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
+		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::MINECOIN_GOLD . "Waffle Crate", TextFormat::BOLD . TextFormat::MINECOIN_GOLD . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		return $item;
 	}

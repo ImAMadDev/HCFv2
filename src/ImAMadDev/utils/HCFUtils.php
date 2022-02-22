@@ -140,12 +140,12 @@ final class HCFUtils {
         $width = self::$skin_wight_map[$size];
         $height = self::$skin_height_map[$size];
         $skinPos = 0;
-        $image = imagecreatetruecolor($width, $height);
+        $image = @imagecreatetruecolor($width, $height);
         if ($image === false) {
             return null;
         }
 
-        imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+        imagefill($image, 0, 0, @imagecolorallocatealpha($image, 0, 0, 0, 127));
         for ($y = 0; $y < $height; $y++) {
             for ($x = 0; $x < $width; $x++) {
                 $r = ord($skinData[$skinPos]);
@@ -156,8 +156,8 @@ final class HCFUtils {
                 $skinPos++;
                 $a = 127 - intdiv(ord($skinData[$skinPos]), 2);
                 $skinPos++;
-                $col = imagecolorallocatealpha($image, $r, $g, $b, $a);
-                imagesetpixel($image, $x, $y, $col);
+                $col = @imagecolorallocatealpha($image, $r, $g, $b, $a);
+                @imagesetpixel($image, $x, $y, $col);
             }
         }
         imagesavealpha($image, true);

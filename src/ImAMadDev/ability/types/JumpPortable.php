@@ -20,7 +20,7 @@ use ImAMadDev\player\HCFPlayer;
 class JumpPortable extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Jump_Portable';
+	private string $name = 'JumpPortable';
 
 	private string $description;
 	
@@ -83,7 +83,7 @@ class JumpPortable extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::FEATHER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::FEATHER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

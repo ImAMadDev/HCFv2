@@ -20,7 +20,7 @@ use ImAMadDev\ability\ticks\EffectDisablerTick;
 class EffectsDisabler extends DamageOtherAbility {
 
 	/** @var string */
-	private string $name = 'Effects_Disabler';
+	private string $name = 'EffectsDisabler';
 
 	private string $description = "&eHit a player 3 times to remove all effects\n&cHas a cooldown of 2 minutes";
 	
@@ -81,7 +81,7 @@ class EffectsDisabler extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::SLIMEBALL && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::SLIMEBALL && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

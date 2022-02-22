@@ -6,7 +6,7 @@ namespace ImAMadDev\ticks\player;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\HCF;
 use ImAMadDev\manager\{ClaimManager, EOTWManager};
-
+use ImAMadDev\kit\classes\CustomEnergyClass;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\ItemIds;
@@ -26,6 +26,21 @@ class BardTick extends Task {
 			return;
 		}
         $player->getClassEnergy()->onTick();
+        if ($player->getClass() instanceof CustomEnergyClass) {
+        	if($player->isInvincible()){
+				return;
+			}
+			if(stripos(ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition()), "Spawn") !== false && !EOTWManager::isEnabled()) {
+				return;
+			}
+			if(empty($player->getClass()->getPassiveItems())) {
+				return;
+			}
+			$item = $player->getInventory()->getItemInHand();
+			if($player->getClass()->isPassiveItem($item)){
+				$player->applyPotionEffect($player->getClass()->getEffectPassiveItem($item));
+			}
+        }
 		if($player->isBard()) {
 			if($player->isInvincible()){
 				return;

@@ -20,10 +20,10 @@ use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\ability\Ability;
 use ImAMadDev\ability\ticks\TimeWarpTick;
 
-class TimeWarpAbility extends InteractionAbility {
+class TimeWarp extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'TimeWarp_Ability';
+	private string $name = 'TimeWarp';
 
 	private string $description = "&eWhen you use it you will be teleported to the last position where you use the last EnderPearl.\n&cHas a cooldown of 1 minute";
 	
@@ -70,7 +70,7 @@ class TimeWarpAbility extends InteractionAbility {
 	}
 	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&gTimeWarp Ability&r");
+		return TextFormat::colorize("&gTimeWarp&r");
 	}
 
     /**
@@ -78,7 +78,7 @@ class TimeWarpAbility extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::FEATHER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::FEATHER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

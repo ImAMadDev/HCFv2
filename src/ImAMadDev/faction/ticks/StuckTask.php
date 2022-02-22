@@ -7,6 +7,7 @@ use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\HCF;
+use ImAMadDev\utils\VectorUtils;
 
 use pocketmine\player\XboxLivePlayerInfo;
 use pocketmine\scheduler\Task;
@@ -42,7 +43,8 @@ class StuckTask extends Task {
 			return;
 		}
 		if($player->getCooldown()->get('stuck_teleport') <= 0){
-			if(($vec = $this->getNearestSafePosition()) instanceof Vector3){
+			//if(($vec = $this->getnearestsafeposition()) instanceof Vector3){
+			if(($vec = VectorUtils::getStuck($player)) instanceof Vector3){
 				$player->getCooldown()->remove('stuck_teleport');
 				$player->teleport($vec);
 				$player->getWorld()->addSound($player->getPosition(), new EndermanTeleportSound());

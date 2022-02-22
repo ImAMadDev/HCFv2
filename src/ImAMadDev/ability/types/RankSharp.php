@@ -101,7 +101,7 @@ class RankSharp extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::EMERALD && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::EMERALD && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

@@ -18,7 +18,7 @@ use ImAMadDev\player\HCFPlayer;
 class AntiBuild extends DamageOtherAbility {
 
 	/** @var string */
-	private string $name = 'Anti_Build';
+	private string $name = 'AntiBuild';
 
 	private string $description = "&eHit a player 2 times so that all blocks he places are removed within 5 seconds.\n&cHas a cooldown of 5 minutes ";
 	
@@ -74,7 +74,7 @@ class AntiBuild extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::GOLDEN_CARROT && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::GOLDEN_CARROT && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

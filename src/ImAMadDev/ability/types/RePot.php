@@ -18,7 +18,7 @@ use ImAMadDev\player\HCFPlayer;
 class RePot extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Re_Pot';
+	private string $name = 'RePot';
 
 	private string $description = "&eWhen used, your entire inventory will be filled with potions.\n&cHas a cooldown of 5 minutes";
 	
@@ -73,7 +73,7 @@ class RePot extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::BREWING_STAND && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::BREWING_STAND && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

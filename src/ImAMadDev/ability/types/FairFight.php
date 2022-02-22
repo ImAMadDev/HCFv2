@@ -22,7 +22,7 @@ class FairFight extends DamageOtherAbility
 {
 
     /** @var string */
-    private string $name = 'Fair_Fight';
+    private string $name = 'FairFight';
 
     private string $description = "&eHit a player 3 times to remove all effects\n&cHas a cooldown of 2 minutes";
 
@@ -79,7 +79,7 @@ class FairFight extends DamageOtherAbility
      * @return bool
      */
     public function isAbility(Item $item): bool {
-        if($item->getId() === BlockLegacyIds::IRON_BARS && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag) {
+        if($item->getId() === BlockLegacyIds::IRON_BARS && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
             return true;
         }
         return false;

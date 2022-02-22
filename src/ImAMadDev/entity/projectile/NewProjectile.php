@@ -3,6 +3,7 @@
 namespace ImAMadDev\entity\projectile;
 
 use pocketmine\entity\Location;
+use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\timings\Timings;
 use pocketmine\math\{Vector3, VoxelRayTrace};
@@ -12,6 +13,8 @@ use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 
 abstract class NewProjectile extends Projectile {
+	
+	protected ?Entity $entityHitResult = null;
 
     /**
      * @param float $dx
@@ -80,6 +83,7 @@ abstract class NewProjectile extends Projectile {
 			$ev = null;
 			if($entityHit !== null){
 				$ev = new ProjectileHitEntityEvent($this, $hitResult, $entityHit);
+				$this->entityHitResult = $entityHit;
 			}elseif($blockHit !== null){
 				$ev = new ProjectileHitBlockEvent($this, $hitResult, $blockHit);
 			}else{

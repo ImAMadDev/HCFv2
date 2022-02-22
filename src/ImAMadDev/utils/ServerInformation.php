@@ -39,7 +39,7 @@ class ServerInformation
     {
         return [
             'default_spawn' => '0:80:0',
-            'default_world' => 'MS',
+            'default_world' => 'world',
             'nether_spawn' => '0:80:0',
             'nether_wold' => 'Nether',
             'end_spawn' => '0:80:0',
@@ -48,7 +48,7 @@ class ServerInformation
             'max_protection' => 1,
             'vip_protection' => 2,
             'koth_protection' => 3,
-            'scoreboard_title' => '&5MineStalia | HCF'
+            'scoreboard_title' => '&gWaffle | HCF'
         ];
     }
 

@@ -12,7 +12,7 @@ use ImAMadDev\manager\{AbilityManager};
 
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\{PlayerInteractEvent, PlayerItemHeldEvent, PlayerItemUseEvent};
+use pocketmine\event\player\{PlayerInteractEvent, PlayerItemConsumeEvent, PlayerItemHeldEvent, PlayerItemUseEvent};
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent};
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -25,6 +25,15 @@ class AbilityListener implements Listener {
         $item = $event->getItem();
         $ability = AbilityManager::getInstance()->getAbilityByItem($item);
         if ($ability !== null and get_parent_class($ability) !== "InteractionBlockAbility"){
+           $event->cancel();
+        }
+    }
+    
+    public function handleItemConsume(PlayerItemConsumeEvent $event): void 
+    {
+    	$item = $event->getItem();
+        $ability = AbilityManager::getInstance()->getAbilityByItem($item);
+        if($ability instanceof Ability) {
            $event->cancel();
         }
     }

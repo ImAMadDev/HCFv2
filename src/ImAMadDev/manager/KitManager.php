@@ -65,9 +65,9 @@ class KitManager {
      * @var array $sessions
      */
     private static array $sessions = [];
-
+    
     /**
-     * @var array ClassCreatorSession[]
+     * @var array $classSessions
      */
     private static array $classSessions = [];
 
@@ -130,9 +130,9 @@ class KitManager {
     {
         return in_array($player->getName(), array_keys(self::$sessions));
     }
-
+    
     /**
-     * @return array ClassCreatorSession[]
+     * @return array
      */
     public function getClassSessions(): array
     {
@@ -229,10 +229,10 @@ class KitManager {
         if (!is_dir(self::$main->getDataFolder() . "classes")) @mkdir(self::$main->getDataFolder() . "classes");
         foreach(glob(self::$main->getDataFolder() . "classes" . DIRECTORY_SEPARATOR . "*.json") as $file){
             $contents = json_decode(file_get_contents($file), true);
-            $armor = InventoryUtils::decode($contents["Armor"] ?? "", "Armor");
+            $armor = [$contents['Armor']['helmet'], $contents['Armor']['chestplate'], $contents['Armor']['leggings'], $contents['Armor']['boots']];
             $effects = InventoryUtils::parseEffects($contents['Effects'] ?? []);
             if(isset($contents['Energy'])) {
-            	$class = new CustomEnergyClass(basename($file, '.json'), $armor, $contents['Energy'], $effects);
+            	$class = new CustomEnergyClass(basename($file, '.json'), $armor, $contents['Items'], $contents['Energy'], $effects);
             } else {
             	$class = new CustomClass(basename($file, '.json'), $armor, $effects);
             }
@@ -269,12 +269,12 @@ class KitManager {
 	public function createCustomClass(ClassCreatorSession $session) : void
     {
         Filesystem::safeFilePutContents(self::$main->getDataFolder() . "classes/" . $session->getData()["name"] . ".json", json_encode($session->getData(), JSON_PRETTY_PRINT | JSON_BIGINT_AS_STRING));
-        $armor = InventoryUtils::decode($contents["Armor"] ?? "", "Armor");
-        $effects = InventoryUtils::parseEffects($contents['Effects'] ?? []);
-        	if(isset($contents['Energy'])) {
-            	$class = new CustomEnergyClass($contents['name'], $armor, $contents['Energy'], $effects);
+        $armor = [$session->getData()['Armor']['helmet'], $session->getData()['Armor']['chestplate'], $session->getData()['Armor']['leggings'], $session->getData()['Armor']['boots']];
+        $effects = InventoryUtils::parseEffects($session->getData()['Effects'] ?? []);
+        	if(isset($session->getData()['Energy'])) {
+            	$class = new CustomEnergyClass($session->getData()['name'], $armor, $session->getData()['Items'], $session->getData()['Energy'], $effects);
             } else {
-            	$class = new CustomClass($contents['name'], $armor, $effects);
+            	$class = new CustomClass($session->getData()['name'], $armor, $effects);
             }
         $this->addClass($class);
     }
@@ -361,4 +361,18 @@ class KitManager {
         }
         return null;
     }
+    
+    /**
+     * @param string $name
+     * @return IClass|null
+     */
+    public function getClassByName(string $name): ?IClass
+    {
+		foreach ($this->getClasses() as $class) {
+			if ($class->isClass($name)) {
+				return $class;
+			}
+		}
+		return null;
+	}
 }

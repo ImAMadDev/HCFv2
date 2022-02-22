@@ -22,7 +22,7 @@ use ImAMadDev\ability\Ability;
 class NinjaAbility extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Ninja_Ability';
+	private string $name = 'NinjaStar';
 
 	private string $description = "&eWhen you use it you will be transported to the last player who hit you.\n&cHas a cooldown of 4 minutes";
 	
@@ -86,7 +86,7 @@ class NinjaAbility extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::NETHERSTAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::NETHERSTAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

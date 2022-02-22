@@ -6,7 +6,9 @@ use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, KitManager};
 use ImAMadDev\utils\HCFUtils;
+use ImAMadDev\kit\classes\CustomEnergyClass;
 use ImAMadDev\ability\Ability;
+use ImAMadDev\kit\ClassCreatorSession;
 
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
@@ -704,6 +706,42 @@ class KitListener implements Listener {
             }
         }
     }
+    
+    public function handleCustomClassUse(PlayerItemUseEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
+        if ($player instanceof HCFPlayer) {
+            if ($player->getClass() instanceof CustomEnergyClass) {
+                if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()->getType() !== ClaimType::SPAWN){
+                	if($player->getClass()->isClickItem($item)) {
+                		if ($item->getNamedTag()->getTag(Ability::ABILITY) instanceof CompoundTag) {
+                			$player->sendMessage(TextFormat::RED . "You can't use this item because is an  ability!");
+                			return;
+                		}
+                		if ($player->getCooldown()->has('effects_cooldown')) {
+                			$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . $player->getClass()->getName() . " Buff" . TextFormat::RED . " because you have a cooldown of " . gmdate('i:s', $player->getCooldown()->get('effects_cooldown')));
+                			return;
+                		}
+                		if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && !EOTWManager::isEnabled()) {
+                			$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . $player->getClass()->getName() . " Buff" . TextFormat::RED . " because you're in the spawn");
+                			return;
+                		}
+                		if ($player->getClassEnergy()->getEnergy() < $player->getClass()->getPriceClickItem($item)) {
+                			$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . $player->getClass()->getName() . " Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getClass()->getPriceClickItem($item));
+                			return;
+                		}
+                		$effect = $player->getClass()->getEffectClickItem($item);
+                        $player->applyPotionEffect($effect);
+                        $player->getClassEnergy()->reduce($player->getClass()->getPriceClickItem($item));
+                        $item->setCount($item->getCount() - 1);
+                        $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                        $player->getCooldown()->add('effects_cooldown', 10);
+                	}
+                }
+            }
+        }
+    }
 
     /** @noinspection PhpParamsInspection */
     public function onChat(PlayerChatEvent $event) : void
@@ -806,9 +844,10 @@ class KitListener implements Listener {
             }
         }
 	}
-
-    /** @noinspection PhpParamsInspection */
-    public function handleClassCreator(PlayerChatEvent $event) : void
+	
+	
+	/** @noinspection PhpParamsInspection */
+    public function handleClass(PlayerChatEvent $event) : void
     {
         $player = $event->getPlayer();
         if (KitManager::getInstance()->hasClassSession($player)){
@@ -816,82 +855,57 @@ class KitListener implements Listener {
             $args = explode(" ", $message);
             if($args[0] == "help"){
                 $player->sendMessage(TextFormat::DARK_AQUA . "Commands: " . TextFormat::EOL .
-                    "- energy (int: numero de energia, solo pon esto si quieres una clase con energia)" . TextFormat::EOL .
+                    "- energy (int: si la clase tendra energia como el bard, configurar esto)" . TextFormat::EOL .
                     "- armor [Toda tu armadura sera escogida para esta clase]" . TextFormat::EOL .
-                    "- addeffect (string: formato name:amplifier:visible ejemplo: resistance:2:true)" . TextFormat::EOL .
-                    "- effectlist [el item en tu mano sera el icono del kit]" . TextFormat::EOL .
-                    "- countdown (string: tiempo de refresco del kit) [ejemplo: 1d,2h,30m se lee como 1 dia 2 hora y 30 minutos]" . TextFormat::EOL .
-                    "- slot (int: slot) [esto es para los win10 en que slot del cofre aparecera el icono del kit]" . TextFormat::EOL .
-                    "- customname (string: name) [Aqui podras colocar un nombre customizado para el icono del kit]" . TextFormat::EOL .
-                    "- cancel [cancelar la sesion]" . TextFormat::EOL .
-                    "- save [guardar el kit]"
+                    "- addeffect (string: agrega un efecto formato: nombreDelEfecto:nivel:visibleOno ejemplo: resistance:1:true)" . TextFormat::EOL .
+                    "- Nota: para el efecto el nivel debe ser 1 menor al que quieres ejemplo si quieres 2 pon 1" . TextFormat::EOL .
+                    "- Nota2: true es si quieres que sea visible y false si no" . TextFormat::EOL .
+                    "- name (string: si quieres cambiar el nombre de la clase)" . TextFormat::EOL .
+                    "- additem [abre una ventana para crear un item, primero debes poner la energia]" . TextFormat::EOL .
+                    "- cancel [cancelar la creación]" . TextFormat::EOL .
+                    "- save [guardar la clase]"
                 );
                 $event->cancel();
             }
-            if ($args[0] == "permission"){
+            if ($args[0] == "name"){
                 if (isset($args[1])){
-                    KitManager::getInstance()->getClassSession($player)->setPermission($args[1]);
-                    $player->sendMessage(TextFormat::GREEN . "You have put the kit permission to: $args[1]");
+                    KitManager::getInstance()->getClassSession($player)->setName($args[1]);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the name of the class to: $args[1]");
                 } else {
-                    $player->sendMessage(TextFormat::RED . "Error: please input the permission");
+                    $player->sendMessage(TextFormat::RED . "Error: please input the name");
                 }
                 $event->cancel();
             }
-            if ($args[0] == "inventory"){
+            if ($args[0] == "energy"){
+                if (isset($args[1]) and is_numeric($args[1])){
+                    KitManager::getInstance()->getClassSession($player)->setEnergy((int)$args[1]);
+                    $player->sendMessage(TextFormat::GREEN . "You have put the energy of the class to: $args[1]");
+                } else {
+                    $player->sendMessage(TextFormat::RED . "Error: please input the name");
+                }
+                $event->cancel();
+            }
+            if ($args[0] == "additem"){
+            	KitManager::getInstance()->getClassSession($player)->createItem();
+                $event->cancel();
+            }
+            if ($args[0] == "armor"){
                 KitManager::getInstance()->getClassSession($player)->copyInventory();
-                $player->sendMessage(TextFormat::GREEN . "You have save the kit contents");
+                $player->sendMessage(TextFormat::GREEN . "You have save the class armor");
                 $event->cancel();
             }
-            if ($args[0] == "description"){
+            if ($args[0] == "addeffect"){
                 if (isset($args[1])){
-                    $desc = $args;
-                    array_shift($desc);
-                    $description = implode(" ", $desc);
-                    KitManager::getInstance()->getClassSession($player)->setDescription($description);
-                    $player->sendMessage(TextFormat::GREEN . "You have put the kit description to: $description");
+                	$effect = ClassCreatorSession::stringToEffect($args[1]);
+                	if($effect == null) { 
+                		$player->sendMessage(TextFormat::RED . "Invalid Effect!");
+                		return;
+					} 
+					$name = is_string($effect->getType()->getName()) ? $effect->getType()->getName() : $effect->getType()->getName()->getText();
+                    KitManager::getInstance()->getClassSession($player)->addEffect($name, $effect->getAmplifier(), $effect->isVisible());
+                    $player->sendMessage(TextFormat::GREEN . "You have added new effect: " . $args[1]);
                 } else {
-                    $player->sendMessage(TextFormat::RED . "Error: please input the description");
-                }
-                $event->cancel();
-            }
-            if ($args[0] == "icon"){
-                KitManager::getInstance()->getClassSession($player)->setIcon();
-                $player->sendMessage(TextFormat::GREEN . "You have save the kit icon");
-                $event->cancel();
-            }
-            if ($args[0] == "countdown"){
-                if (isset($args[1])){
-                    if(!preg_match("/(^[1-9][0-9]{0,2}[mhd])(,[1-9][0-9]{0,2}[mhd]){0,2}$/", $args[1])) {
-                        $player->sendMessage(TextFormat::RED . "Unknown countdown type {$args[1]}");
-                        return;
-                    }
-                    $time = HCFUtils::strToSeconds($args[1]);
-                    $timeFormated = (time() + $time);
-                    KitManager::getInstance()->getClassSession($player)->setCountdown((int)$time);
-                    $player->sendMessage(TextFormat::GREEN . "You have put the kit countdown to: " . HCFUtils::getTimeString($timeFormated));
-                } else {
-                    $player->sendMessage(TextFormat::RED . "Error: please input the permission");
-                }
-                $event->cancel();
-            }
-            if ($args[0] == "slot"){
-                if (isset($args[1])){
-                    KitManager::getInstance()->getClassSession($player)->setSlot((int)$args[1]);
-                    $player->sendMessage(TextFormat::GREEN . "You have put the kit slot to: " . (int)$args[1]);
-                } else {
-                    $player->sendMessage(TextFormat::RED . "Error: please input the slot");
-                }
-                $event->cancel();
-            }
-            if ($args[0] == "customname"){
-                if (isset($args[1])){
-                    $name = $args;
-                    array_shift($name);
-                    $name = implode(" ", $name);
-                    KitManager::getInstance()->getClassSession($player)->setCustomName($name);
-                    $player->sendMessage(TextFormat::GREEN . "You have put the kit icon custom name to: " . $name);
-                } else {
-                    $player->sendMessage(TextFormat::RED . "Error: please input the icon custom name");
+                    $player->sendMessage(TextFormat::RED . "Error: invalid arguments");
                 }
                 $event->cancel();
             }
@@ -907,6 +921,6 @@ class KitListener implements Listener {
                 $event->cancel();
             }
         }
-    }
+	}
 
 }

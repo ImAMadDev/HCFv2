@@ -2,7 +2,8 @@
 
 namespace ImAMadDev\ability\types;
 
-use ImAMadDev\ability\utils\DamageOtherAbility;
+use ImAMadDev\ability\utils\InteractionAbility;
+use ImAMadDev\utils\NBT;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -13,18 +14,17 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 
-use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\ticks\StormBreakerTick;
+use ImAMadDev\entity\projectile\EggPorts as EggPortsEntity;
 
-class StormBreaker extends DamageOtherAbility {
+class EggPorts extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'StormBreaker';
+	private string $name = 'EggPorts';
 
-	private string $description = "&eHit a player 3 times to remove his helmet for 8 seconds\n&cHas a cooldown of 5 minutes";
+	private string $description = "&cWhen you hit a player you will swap positions with them.\n&cHas a cooldown of 1 minute";
 	
-	public int $cooldown = 300;
+	public int $cooldown = 60;
 
     /**
      * @param int $count
@@ -32,28 +32,28 @@ class StormBreaker extends DamageOtherAbility {
      * @return Item
      */
 	public function get(int $count = 1, mixed $value = null): Item {
-		$item = ItemFactory::getInstance()->get(ItemIds::GOLD_NUGGET, 0, $count);
+		$item = ItemFactory::getInstance()->get(ItemIds::EGG, 0, $count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
-        $item->getNamedTag()->setTag(self::DAMAGE_ABILITY, CompoundTag::create());
+        $item->getNamedTag()->setTag(self::INTERACT_ABILITY, CompoundTag::create());
         $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$item->setCustomName($this->getColoredName());
 		$item->setLore([TextFormat::colorize($this->description)]);
 		return $item;
 	}
 	
-	public function consume(HCFPlayer|Player $player, HCFPlayer|Player $entity) : void {
-		$time = (90 - (time() - $player->getCache()->getCountdown($this->getName())));
-		if($time > 0) {
-			$player->sendMessage(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $time));
+	public function consume(HCFPlayer|Player $player) : void {
+		if($player->getCooldown()->has($this->name)) {
+			$player->sendTip(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $player->getCooldown()->get($this->name)));
 			return;
 		}
-        $player->getCache()->setCountdown($this->getName(), 90);
-		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new StormBreakerTick($entity), 20);
-		$item = $player->getInventory()->getItemInHand();
+		$player->getCooldown()->add($this->name, $this->cooldown);
+        $entity = new EggPortsEntity(NBT::createWith($player), $player);
+        $entity->setMotion($player->getDirectionVector()->multiply(2.0));
+        $entity->spawnToAll();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
+		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);
 		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-		$entity->sendMessage(TextFormat::RED . "> " . TextFormat::YELLOW . "You have been hit with " . $this->getColoredName());
 	}
 
 	/**
@@ -63,12 +63,8 @@ class StormBreaker extends DamageOtherAbility {
 		return $this->name;
 	}
 	
-	public function getHits() : int {
-		return 3;
-	}
-	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&eStorm Breaker&r");
+		return TextFormat::colorize("&dEggPorts&r");
 	}
 
     /**
@@ -76,7 +72,7 @@ class StormBreaker extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::GOLD_NUGGET && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
+		if($item->getId() === ItemIds::EGG && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

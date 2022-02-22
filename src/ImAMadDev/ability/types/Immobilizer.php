@@ -20,7 +20,7 @@ use ImAMadDev\ability\ticks\ImmobilizerTick;
 class Immobilizer extends DamageOtherAbility {
 
 	/** @var string */
-	private string $name = 'Freezing_Portable';
+	private string $name = 'FreezingPortable';
 
 	private string $description = "&eHit a player 3 times so that he/she cannot move.\n&cHas a cooldown of 3 minutes";
 	
@@ -75,7 +75,7 @@ class Immobilizer extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::BLAZE_ROD && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::BLAZE_ROD && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

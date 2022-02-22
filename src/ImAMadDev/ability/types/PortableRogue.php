@@ -20,7 +20,7 @@ use ImAMadDev\player\HCFPlayer;
 class PortableRogue extends DamageOtherAbility {
 
 	/** @var string */
-	private string $name = 'Portable_Rogue';
+	private string $name = 'PortableRogue';
 
 	private string $description = "&ehits a player to remove 6 hearts.\n&cHas a cooldown of 5 minutes ";
 	
@@ -77,7 +77,7 @@ class PortableRogue extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::GOLDEN_SWORD && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::GOLDEN_SWORD && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

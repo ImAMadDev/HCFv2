@@ -19,7 +19,7 @@ use ImAMadDev\player\HCFPlayer;
 class ResetPearl extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Reset_Pearl';
+	private string $name = 'ResetPearl';
 
 	private string $description = "&eUsing it will remove the cooldown of the Ender pearl.\n&cHas a cooldown of 2 minutes";
 	
@@ -74,7 +74,7 @@ class ResetPearl extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::GHAST_TEAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::GHAST_TEAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

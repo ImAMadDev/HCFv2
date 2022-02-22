@@ -8,7 +8,7 @@ use pocketmine\data\bedrock\PotionTypeIdMap;
 use pocketmine\data\bedrock\PotionTypeIds;
 
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\entity\projectile\{FishingHook, Switcher, FireworksRocket, SplashPotion, EnderPearl};
+use ImAMadDev\entity\projectile\{FishingHook, Switcher, FireworksRocket, SplashPotion, EnderPearl, EggPorts};
 use ImAMadDev\entity\CombatLogger;
 use ImAMadDev\npc\types\{BlackMarket, BlockMarket, LegendaryMarket, TopOne, TopThree, TopTwo};
 use ImAMadDev\entity\mobs\{Enderman, Cow, Creeper, Blaze};
@@ -75,6 +75,9 @@ class EntityManager {
         $factory->register(Switcher::class, function (World $world, CompoundTag $nbt) : Switcher {
             return new Switcher(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
         }, ['Switcher', 'minecraft:switcher'], EntityLegacyIds::SNOWBALL);
+        $factory->register(EggPorts::class, function (World $world, CompoundTag $nbt) : EggPorts {
+            return new EggPorts(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ['EggPorts', 'minecraft:eggports'], EntityLegacyIds::EGG);
        $factory->register(FireworksRocket::class, function(World $world, CompoundTag $nbt) : FireworksRocket{
             return new FireworksRocket(EntityDataHelper::parseLocation($nbt, $world), ItemFactory::getInstance()->get(ItemIds::FIREWORKS, 0));
         }, ['FireworksRocket', EntityIds::FIREWORKS_ROCKET], EntityLegacyIds::FIREWORKS_ROCKET);

@@ -86,14 +86,6 @@ class TreasureIsland
 	public function isEnabled(): bool{
 		return $this->enable;
 	}
-
-    public function reset(): void
-    {
-        $level = $this->getServer()->getWorldManager()->getWorldByName($this->world);
-        if($level->get){
-
-        }
-    }
 	
 	public function onTick(): void{
 		if($this->isEnabled()){

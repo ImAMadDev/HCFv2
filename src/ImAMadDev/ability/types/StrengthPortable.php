@@ -20,7 +20,7 @@ use ImAMadDev\player\HCFPlayer;
 class StrengthPortable extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Strength_Portable';
+	private string $name = 'StrengthPortable';
 
 	private string $description;
 	
@@ -83,7 +83,7 @@ class StrengthPortable extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::BLAZE_POWDER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::BLAZE_POWDER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

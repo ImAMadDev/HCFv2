@@ -20,7 +20,7 @@ use ImAMadDev\player\HCFPlayer;
 class SpeedPortable extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Speed_Portable';
+	private string $name = 'SpeedPortable';
 
 	private string $description;
 	
@@ -83,7 +83,7 @@ class SpeedPortable extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::SUGAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::SUGAR && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

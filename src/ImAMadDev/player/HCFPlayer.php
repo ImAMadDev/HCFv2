@@ -386,7 +386,7 @@ class HCFPlayer extends Player {
 			if($this->canDeductInvincibilityTime()) {
 				$this->subtractInvincibilityTime();
 				if($this->getInvincibilityTime() == 0) {
-					$this->setInvincible();
+					$this->setInvincible(-1);
 				}
 			}
 		}

@@ -94,12 +94,22 @@ class EnderPearl extends Throwable {
                 $owning->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
             }
             if ($this->getPosition()->y > 0) {
-                $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                /*$this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
 
                 $owning->teleport($this->getPositionPlayer());
                 $owning->attack(new EntityDamageEvent($owning, EntityDamageEvent::CAUSE_FALL, 2));
+                $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
+                
+                $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());*/
+                if ($this->entityHitResult instanceof HCFPlayer) {
+                	$this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
 
-                $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                    $owning->teleport($this->entityHitResult->getPosition());
+                    $owning->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
+
+                    $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+                    $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
+                }
                 if ($this->isPearling()) {
                     $direction = $owning->getDirectionVector()->multiply(3);
                     if ($this->isInHitbox($direction->x, $direction->y + 1, $direction->z)){
@@ -118,7 +128,15 @@ class EnderPearl extends Throwable {
 
                     $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
                     $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
-                }
+                } else {
+            		$this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+
+               	 $owning->teleport($this->getPositionPlayer());
+              	  $owning->attack(new EntityDamageEvent($owning, EntityDamageEvent::CAUSE_FALL, 2));
+            	    $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
+                
+            	    $this->getWorld()->addSound($owning->getPosition(), new EndermanTeleportSound());
+        	    }
             }
             $this->kill();
         }
@@ -157,8 +175,6 @@ class EnderPearl extends Throwable {
 				$block = $this->getWorld()->getBlockAt($x, $this->getPosition()->y, $z);
 				if($block instanceof FenceGate){
 					return true;
-				}else{
-					return false;
 				}
 			}
 		}
@@ -174,8 +190,6 @@ class EnderPearl extends Throwable {
 				$block = $this->getWorld()->getBlockAt($x, $this->getPosition()->y, $z);
 				if($block instanceof Slab){
 					return true;
-				}else{
-					return false;
 				}
 			}
 		}
@@ -203,7 +217,7 @@ class EnderPearl extends Throwable {
     {
         $block = $this->getWorld()->getBlockAt((int) floor($x), (int) floor($y), (int) floor($z));
         return $block->isSolid() and !$block->isTransparent() and $block->collidesWithBB($this->getBoundingBox());
-    }
+    }	
 
     /** 
 	 * @param Int $currentTick

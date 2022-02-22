@@ -81,7 +81,7 @@ class Airdrops extends InteractionBlockAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === BlockLegacyIds::OBSERVER && $item->getNamedTag()->getTag(self::PLACE_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === BlockLegacyIds::OBSERVER && $item->getNamedTag()->getTag(self::PLACE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

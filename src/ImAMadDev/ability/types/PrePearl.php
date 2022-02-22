@@ -19,7 +19,7 @@ use ImAMadDev\ability\ticks\PrePearlTick;
 class PrePearl extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Pre_Pearl';
+	private string $name = 'PrePearl';
 
 	private string $description = "&eWhen you use it you will have a cooldown of 15 seconds,\n&eat the end of this cooldown you will be\n&ereturned to the position where you used this item.\n&cHas a cooldown of 3 minutes";
 	
@@ -70,7 +70,7 @@ class PrePearl extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::SPAWN_EGG && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::SPAWN_EGG && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

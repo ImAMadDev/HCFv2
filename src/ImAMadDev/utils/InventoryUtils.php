@@ -76,7 +76,7 @@ final class InventoryUtils {
         return $content;
     }
     
-    public static function parseEffects(array $data): array
+    public static function parseEffects(array $data)
     {
     	$effects = [];
         foreach($data as $eff){
@@ -91,4 +91,14 @@ final class InventoryUtils {
         }
         return $effects;
     }
+    /*
+    public static function effectToArray(EffectInstance $effect) 
+    {
+    	$ret = [];
+    	foreach($effects as $effect) {
+    		if($effect instanceof EffectInstance) {
+    			$ret[] = ["name" => $effect->getType()->getName(), "amplifier" => $effect->getAmplifier()
+    		}
+    	}
+    }*/
 }

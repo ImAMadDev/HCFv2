@@ -17,7 +17,7 @@ use ImAMadDev\player\HCFPlayer;
 class AntiTrapper extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'Anti_Trapper';
+	private string $name = 'AntiTrapper';
 
 	private string $description = "&eWhen used, all players within a radius of 10 blocks\n&ewill not be able to place or break blocks.\n&cHas a cooldown of 3 minutes";
 	
@@ -77,7 +77,7 @@ class AntiTrapper extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::BONE && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::BONE && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

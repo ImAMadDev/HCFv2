@@ -4,6 +4,7 @@ namespace ImAMadDev\kit\command;
 
 use ImAMadDev\command\Command;
 use ImAMadDev\kit\command\subCommands\CreateKitSubCommand;
+use ImAMadDev\kit\command\subCommands\CreateClassSubCommand;
 use ImAMadDev\kit\command\subCommands\RemoveSubCommand;
 use ImAMadDev\kit\command\subCommands\SeeSubCommand;
 use ImAMadDev\kit\command\subCommands\ResetSubCommand;
@@ -29,6 +30,7 @@ class KitCommand extends Command {
 		$this->addSubCommand(new SeeSubCommand());
         $this->addSubCommand(new ResetSubCommand());
         $this->addSubCommand(new CreateKitSubCommand());
+        $this->addSubCommand(new CreateClassSubCommand());
         $this->addSubCommand(new RemoveSubCommand());
 	}
 	
@@ -53,6 +55,7 @@ class KitCommand extends Command {
 				$this->getKitsAndroid($sender);
 			}
 		}
+		var_dump("Holaaaaa");
 	}
 	
 	public function getKits(HCFPlayer $player) : void {

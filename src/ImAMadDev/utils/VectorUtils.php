@@ -6,6 +6,8 @@ use JetBrains\PhpStorm\Pure;
 use pocketmine\Server;
 use pocketmine\math\{Vector3, AxisAlignedBB};
 use pocketmine\world\Position;
+use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\manager\ClaimManager;
 
 final class VectorUtils {
 	
@@ -31,5 +33,29 @@ final class VectorUtils {
 	
 	#[Pure] public static function stringToVector(string $pos, string $separator = ",") : Vector3 {
 		return new Vector3(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2]);
+	}
+	
+	public static function getStuck(HCFPlayer $player): ?Vector3 
+	{
+		$world = $player->getWorld();
+
+		$origin = $player->getPosition();
+		$minX = $origin->getFloorX() - 100;
+		$minZ = $origin->getFloorZ() - 100;
+
+		$maxX = $minX + 200;
+		$maxZ = $minZ + 200;
+
+		for($attempts = 0; $attempts < 20; ++$attempts){
+			$x = mt_rand($minX, $maxX);
+			$z = mt_rand($minZ, $maxZ);
+			
+			while(ClaimManager::getInstance()->getClaimByPosition(new Position($x, 0, $z, $world)) !== null) {
+				continue;
+			}
+			
+			return new Vector3($x + 0.5, $world->getMaxY(), $z + 0.5);
+		}
+		return null;
 	}
 }

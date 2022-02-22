@@ -160,6 +160,13 @@ class Cthulhu extends Crate {
 		foreach($this->getInventory() as $slot => $item) {
 			$menu->getInventory()->setItem($slot, $item);
 		}
+		for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
+            if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
+                $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
+                $panel->setCustomName(TextFormat::RED . "");
+                $menu->getInventory()->setItem($i, $panel);
+            }
+        }
 	} 
 
 	public function open(HCFPlayer|Player $player, Block $block) : void {

@@ -243,7 +243,7 @@ class HCFListener implements Listener
         if (!$player->hasPlayedBefore()) {
             $player->setInvincible();
             HCF::getInstance()->getServer()->dispatchCommand(new ConsoleCommandSender(Server::getInstance(), Server::getInstance()->getLanguage()), 'rank give "' . $player->getName() . '" Waffle 3h');
-            $player->sendMessage(TextFormat::colorize("&7Welcome to &3MineStalia &c&lBETA 2.0.\n&eYou have received the &5[Waffle] &r&erank for &c3 hours&e."));
+            $player->sendMessage(TextFormat::colorize("&7Welcome to &gWaffle HCF &c&lBETA 2.0.\n&eYou have received the &5[Waffle] &r&erank for &c3 hours&e."));
             HCFUtils::firstJoin($player);
         }
         $player->setInvincible($player->getCache()->getInData('invincibility_time', true));
