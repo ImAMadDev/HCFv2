@@ -13,7 +13,10 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\ClosureTask;
 
+use ImAMadDev\ticks\player\UpdateDataAsyncTask as UpdatePlayerData;
+use ImAMadDev\faction\ticks\UpdateDataAsyncTask as UpdateFactionData;
 use ImAMadDev\manager\{FactionManager,
     TagManager,
     TextsManager,
@@ -32,7 +35,7 @@ use ImAMadDev\manager\{FactionManager,
     RankManager,
     CommandManager,
     TradeManager};
-use ImAMadDev\listener\HCFListener;
+use ImAMadDev\listener\{HCFListener, PlayerListener};
 use ImAMadDev\listener\projectile\ProjectileListener;
 use ImAMadDev\faction\FactionListener;
 use ImAMadDev\listener\anticheat\{BuggyListener, ReachModule, CpsModule};
@@ -48,6 +51,9 @@ use pocketmine\world\generator\hell\Nether;
 use pocketmine\world\WorldCreationOptions;
 use scoreboard\Scoreboard;
 use muqsit\invmenu\InvMenuHandler;
+
+use pocketmine\world\format\io\data\BaseNbtWorldData;
+use pocketmine\world\World;
 
 class HCF extends PluginBase {
 
@@ -98,6 +104,7 @@ class HCF extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new SOTWManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PurgeManager($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new PlayerListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new ClaimListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener(), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new ProjectileListener(), $this);
@@ -134,6 +141,7 @@ class HCF extends PluginBase {
         Server::getInstance()->getWorldManager()->loadWorld(HCFUtils::DEFAULT_MAP);
 		self::$textsManager = new TextsManager($this);
         FactionManager::getInstance()->validateAll();
+        $this->schedulerData();
 	}
 
 	private function loadInstances() : void {
@@ -310,5 +318,11 @@ class HCF extends PluginBase {
     {
         unset(self::$staffs[spl_object_hash($player)]);
     }
-
+    
+    public function schedulerData(): void 
+    {
+    	$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function () {
+    		Server::getInstance()->getAsyncPool()->submitTask(new UpdatePlayerData());
+    	}), 36000);
+    }
 }

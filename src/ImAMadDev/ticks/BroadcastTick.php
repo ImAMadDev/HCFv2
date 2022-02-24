@@ -39,7 +39,7 @@ class BroadcastTick extends Task {
 	
 	public function onRun(): void {
 		$this->main->getServer()->broadcastMessage(TextFormat::EOL . TextFormat::colorize($this->getNextMessage()) . TextFormat::EOL);
-        Server::getInstance()->getAsyncPool()->submitTask(new UpdateDataAsyncTask());
+    //    Server::getInstance()->getAsyncPool()->submitTask(new UpdateDataAsyncTask());
 	}
 	
 	#[Pure] private function getAllVIPPlayers() : string {

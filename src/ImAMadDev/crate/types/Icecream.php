@@ -24,15 +24,15 @@ use muqsit\invmenu\InvMenu;
 use muqsit\invmenu\transaction\InvMenuTransactionResult;
 use muqsit\invmenu\transaction\InvMenuTransaction;
 
-class Cthulhu extends Crate {
+class Icecream extends Crate {
 
 	/** @var string */
-	private string $name = 'Cthulhu';
+	private string $name = 'Icecream';
 
 	/** @var Item[] */
 	private array $contents = [];
 	
-	public const CTHULHU_KEY = "CthulhuKey";
+	public const ICECREAM_KEY = "IcecreamKey";
 
 	/**
 	 * @return array
@@ -42,19 +42,19 @@ class Cthulhu extends Crate {
 		$helmet = ItemFactory::getInstance()->get(ItemIds::DIAMOND_HELMET);
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
-		$helmet->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Helmet");
+		$helmet->setCustomName(TextFormat::AQUA . "Icecream Helmet");
 		$items[11] = $helmet;
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
-		$chestplate->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Chestplate");
+		$chestplate->setCustomName(TextFormat::AQUA . "Icecream Chestplate");
 		$items[12] = $chestplate;
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
-		$leggings->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Leggings");
+		$leggings->setCustomName(TextFormat::AQUA . "Icecream Leggings");
 		$items[13] = $leggings;
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
@@ -62,14 +62,14 @@ class Cthulhu extends Crate {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FEATHER_FALLING(), 5));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED)));
-		$boots->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Boots");
+		$boots->setCustomName(TextFormat::AQUA . "Icecream Boots");
 		$items[14] = $boots;
 		
 		$sword = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS(), HCFUtils::PAID_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::FREE_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 5));
-		$sword->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Sword");
+		$sword->setCustomName(TextFormat::AQUA . "Icecream Sword");
 		$items[15] = $sword;
 		
 		$bow = ItemFactory::getInstance()->get(ItemIds::BOW);
@@ -77,13 +77,13 @@ class Cthulhu extends Crate {
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PUNCH(), 1));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::INFINITY(), 1));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
-		$bow->setCustomName(TextFormat::DARK_AQUA . 'Cthulhu Bow');
+		$bow->setCustomName(TextFormat::AQUA . 'Icecream Bow');
 		$items[3] = $bow;
 		
 		$fortune = ItemFactory::getInstance()->get(ItemIds::DIAMOND_PICKAXE);
 		$fortune->addEnchantment(new EnchantmentInstance(VanillaEnchantments::EFFICIENCY(), 4));
 		$fortune->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
-		$fortune->setCustomName(TextFormat::DARK_AQUA . "Cthulhu Pickaxe");
+		$fortune->setCustomName(TextFormat::AQUA . "Icecream Pickaxe");
 		$items[5] = $fortune; 
 		
 		$gold_block = ItemFactory::getInstance()->get(ItemIds::GOLD_BLOCK, 0, 32);
@@ -98,9 +98,9 @@ class Cthulhu extends Crate {
 		$items[20] = $diamond_block;
 		$items[24] = $emerald_block;
 		
-		$items[2] = ItemFactory::getInstance()->get(ItemIds:: ENCHANTED_GOLDEN_APPLE, 0, 3);
+		$items[2] = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_GOLDEN_APPLE, 0, 3);
 		
-		$items[6] = ItemFactory::getInstance()->get(ItemIds:: GOLDEN_APPLE, 0, 16);
+		$items[6] = ItemFactory::getInstance()->get(ItemIds::GOLDEN_APPLE, 0, 16);
 		
 		return $items;
 	}
@@ -113,7 +113,7 @@ class Cthulhu extends Crate {
 	}
 	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&3CTHULHU CRATE");
+		return TextFormat::colorize("&bICECREAN CRATE");
 	}
 
     /**
@@ -134,18 +134,18 @@ class Cthulhu extends Crate {
 	}
 	
 	public function isCrateKey(Item $item) : bool {
-		if($item->getId() === ItemIds::DYE && $item->getMeta() === 6 && $item->getNamedTag()->getTag(self::CTHULHU_KEY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::DYE && $item->getMeta() === 3 && $item->getNamedTag()->getTag(self::CTHULHU_KEY) instanceof CompoundTag) {
 			return true;
 		}
 		return false;
 	}
 	
 	public function getCrateKey(int $count = 1): Item {
-		$item = ItemFactory::getInstance()->get(ItemIds::DYE, 6, $count);
+		$item = ItemFactory::getInstance()->get(ItemIds::DYE, 3, $count);
 		$item->getNamedTag()->setTag(self::KEY_TAG, new CompoundTag());
-		$item->getNamedTag()->setTag(self::CTHULHU_KEY, new CompoundTag());
+		$item->getNamedTag()->setTag(self::ICECREAM_KEY, new CompoundTag());
 		$item->setCustomName($this->getColoredName() . " KEY");
-		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::DARK_AQUA . "Cthulhu Crate", TextFormat::BOLD . TextFormat::DARK_AQUA . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
+		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::AQUA . "Icecream Crate", TextFormat::BOLD . TextFormat::AQUA . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		return $item;
 	}
@@ -184,7 +184,7 @@ class Cthulhu extends Crate {
 			$item = $player->getInventory()->getItemInHand();
 			$item->setCount($item->getCount() - 1);
 			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::DARK_AQUA . TextFormat::BOLD . $name);
+			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::AQUA . TextFormat::BOLD . $name);
 		}
 	}
 

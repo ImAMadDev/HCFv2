@@ -15,19 +15,20 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\entity\effect\EffectInstance;
 
-use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\ability\Ability;
-use ImAMadDev\ability\ticks\TimeWarpTick;
 
-class TimeWarp extends InteractionAbility {
+class FortuneCookie extends InteractionAbility {
 
 	/** @var string */
-	private string $name = 'TimeWarp';
+	private string $name = 'FortuneCookie';
 
-	private string $description = "&eWhen you use it you will be teleported to the last position where you use the last EnderPearl.\n&cHas a cooldown of 1 minute";
+	private string $description;
 	
-	public int $cooldown = 60;
+	public int $cooldown = 120;
+	
+	public function __construct() {
+		$this->description = TextFormat::colorize("&7Eat this item to have a chance\n&7to receive Nausea or Strength!");
+	}
 
     /**
      * @param int $count
@@ -35,12 +36,12 @@ class TimeWarp extends InteractionAbility {
      * @return Item
      */
 	public function get(int $count = 1, mixed $value = null): Item {
-		$item = ItemFactory::getInstance()->get(ItemIds::FEATHER, 0, $count);
+		$item = ItemFactory::getInstance()->get(ItemIds::COOKIE, 0, $count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
         $item->getNamedTag()->setTag(self::INTERACT_ABILITY, CompoundTag::create());
         $item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$item->setCustomName($this->getColoredName());
-		$item->setLore([TextFormat::colorize($this->description)]);
+		$item->setLore([$this->description]);
 		return $item;
 	}
 	
@@ -49,16 +50,18 @@ class TimeWarp extends InteractionAbility {
 			$player->sendTip(TextFormat::RED . "You can't use " . $this->getColoredName() . TextFormat::RED . " because you have a countdown of " . gmdate('i:s', $player->getCooldown()->get($this->name)));
 			return;
 		}
-		if($player->getEnderpearlHistory()->has() === false) {
-			$player->sendMessage(TextFormat::RED . "You have not used an Enderpearl in the last 10 seconds.");
-			return;
-		}
 		$player->getCooldown()->add($this->name, $this->cooldown);
-		HCF::getInstance()->getScheduler()->scheduleDelayedTask(new TimeWarpTick($player), (5 * 20));
+		if (rand(0, 100) > 50) {
+			$player->sendMessage(TextFormat::colorize("&7&m---------------------------\n &6» &fYou have ate a &6&lFortune Cookie&r\n &6» &fand received &eStrength 2&f!\n&c &r\n &6» &fDuration: &e7 Seconds\n&7&m---------------------------"));
+			$player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), (20 * 7), 1, true));
+		} else {
+			$player->sendMessage(TextFormat::colorize("&7&m---------------------------\n &6» &fYou have ate a &6&lFortune Cookie&r\n &6» &fand received &eNausea 2&f!\n&c &r\n &6» &fDuration: &e7 Seconds\n&7&m---------------------------"));
+			$player->getEffects()->add(new EffectInstance(VanillaEffects::NAUSEA(), (20 * 7), 1, true));
+		}
 		$item = $player->getInventory()->getItemInHand();
+		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 		$item->setCount($item->getCount() - 1);
 		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 	}
 
 	/**
@@ -69,7 +72,7 @@ class TimeWarp extends InteractionAbility {
 	}
 	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&gTimeWarp&r");
+		return TextFormat::colorize("&6Fortune Cookie&r");
 	}
 
     /**
@@ -77,7 +80,7 @@ class TimeWarp extends InteractionAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::FEATHER && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
+		if($item->getId() === ItemIds::COOKIE && $item->getNamedTag()->getTag(self::INTERACT_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;
@@ -88,12 +91,13 @@ class TimeWarp extends InteractionAbility {
 	}
 	
 	public function obtain(HCFPlayer|Player $player, int $count) : void {
-		$status = $player->getInventoryStatus(1);
+		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));
         } else {
 			$player->getInventory()->addItem($this->get($count));
         }
-        $player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::GREEN . TextFormat::BOLD . $this->getColoredName());
+        $player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::GOLD . TextFormat::BOLD . $this->getColoredName());
     }
+
 }

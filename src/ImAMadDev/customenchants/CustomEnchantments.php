@@ -72,6 +72,16 @@ class CustomEnchantments {
         HCF::getInstance()->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
     
+    public static function registerEnchantment(CustomEnchant $enchant): void
+    {
+        EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
+        self::$enchants[$enchant->getId()] = $enchant;
+        StringToEnchantmentParser::getInstance()->register($enchant->name, fn() => $enchant);
+        if ($enchant->name !== $enchant->getDisplayName()) StringToEnchantmentParser::getInstance()->register($enchant->getDisplayName(), fn() => $enchant);
+
+        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' registered with id " . $enchant->getId());
+    }
+    
     public static function getEnchantedBook(string $enchantName, int $level = 1) : ? Item {
     	$item = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_BOOK);
  	    $item->getNamedTag()->setTag(InventoryUtils::CUSTOM_ENCHANTMENT, clone CompoundTag::create());

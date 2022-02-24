@@ -16,7 +16,7 @@ use pocketmine\utils\Config;
 use ImAMadDev\HCF;
 use ImAMadDev\crate\Crate;
 
-use ImAMadDev\crate\types\{Basic, CustomCrate, KOTH, Eternal, Sapphire, Waffle, Vote, Cthulhu};
+use ImAMadDev\crate\types\{Basic, CustomCrate, KOTH, Cupcake, Icecream, Waffle, Vote};
 
 use pocketmine\utils\Filesystem;
 use pocketmine\utils\SingletonTrait;
@@ -85,10 +85,9 @@ class CrateManager {
 	public function loadCrates() {
 		$this->addCrate(new Basic());
 		$this->addCrate(new KOTH());
-		$this->addCrate(new Eternal());
-		$this->addCrate(new Sapphire());
+		$this->addCrate(new Cupcake());
+		$this->addCrate(new Icecream());
 		$this->addCrate(new Waffle());
-		$this->addCrate(new Cthulhu());
 		$this->addCrate(new Vote());
 		$this->loadCustomCrates();
 		$this->getMain()->getLogger()->info("§aThe crate have been loaded! Number of crates: " . count($this->getCrates()));

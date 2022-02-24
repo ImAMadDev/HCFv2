@@ -24,15 +24,15 @@ use muqsit\invmenu\InvMenu;
 use muqsit\invmenu\transaction\InvMenuTransactionResult;
 use muqsit\invmenu\transaction\InvMenuTransaction;
 
-class Sapphire extends Crate {
+class Cupcake extends Crate {
 
 	/** @var string */
-	private string $name = 'Sapphire';
+	private string $name = 'Cupcake';
 
 	/** @var Item[] */
 	private array $contents = [];
 	
-	public const SAPPHIRE_KEY = "SapphireKey";
+	public const CUPCAKE_KEY = "CupcakeKey";
 
 	/**
 	 * @return array
@@ -43,14 +43,14 @@ class Sapphire extends Crate {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$helmet->setCustomName(TextFormat::GREEN . "Sapphire Helmet");
+		$helmet->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Helmet");
 		$items[11] = $helmet;
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::FREE_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
         $chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$chestplate->setCustomName(TextFormat::GREEN . "Sapphire Chestplate");
+		$chestplate->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Chestplate");
 		$items[12] = $chestplate;
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
@@ -59,7 +59,7 @@ class Sapphire extends Crate {
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_PROTECTION(), HCFUtils::PAID_PROTECTION));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS)));
-		$leggings->setCustomName(TextFormat::GREEN . "Sapphire Leggings");
+		$leggings->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Leggings");
 		$items[13] = $leggings;
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
@@ -68,7 +68,7 @@ class Sapphire extends Crate {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FEATHER_FALLING(), 5));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$boots->setCustomName(TextFormat::GREEN . "Sapphire Boots");
+		$boots->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Boots");
 		$items[14] = $boots;
 		
 		$sword = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
@@ -76,7 +76,7 @@ class Sapphire extends Crate {
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::PAID_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION)));
-		$sword->setCustomName(TextFormat::GREEN . "Sapphire Sword");
+		$sword->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Sword");
 		$items[2] = $sword;
 		
 		$sword2 = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
@@ -84,7 +84,7 @@ class Sapphire extends Crate {
 		$sword2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::KOTH_SHARPNESS));
 		$sword2->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 3));
         $sword2->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION), 2));
-		$sword2->setCustomName(TextFormat::GREEN . "Sapphire Sword");
+		$sword2->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Sword");
 		$items[6] = $sword2;
 		
 		$bow = ItemFactory::getInstance()->get(ItemIds::BOW);
@@ -93,7 +93,7 @@ class Sapphire extends Crate {
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FLAME(), 1));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::INFINITY(), 2));
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 4));
-		$bow->setCustomName(TextFormat::GREEN . 'Sapphire Bow');
+		$bow->setCustomName(TextFormat::LIGHT_PURPLE . 'Cupcake Bow');
 		$items[15] = $bow;
 		
 		$gold_block = ItemFactory::getInstance()->get(ItemIds::GOLD_BLOCK, 0, 48);
@@ -125,7 +125,7 @@ class Sapphire extends Crate {
 	}
 	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&aSAPPHIRE CRATE");
+		return TextFormat::colorize("&dCUPCAKE CRATE");
 	}
 
     /**
@@ -146,18 +146,18 @@ class Sapphire extends Crate {
 	}
 	
 	public function isCrateKey(Item $item) : bool {
-		if($item->getId() === ItemIds::DYE  && $item->getMeta() === 14 && $item->getNamedTag()->getTag(self::SAPPHIRE_KEY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::DYE  && $item->getMeta() === 2 && $item->getNamedTag()->getTag(self::SAPPHIRE_KEY) instanceof CompoundTag) {
 			return true;
 		}
 		return false;
 	}
 	
 	public function getCrateKey(int $count = 1): Item {
-		$item = ItemFactory::getInstance()->get(ItemIds::DYE, 14, $count);
+		$item = ItemFactory::getInstance()->get(ItemIds::DYE, 2, $count);
 		$item->getNamedTag()->setTag(self::KEY_TAG, new CompoundTag());
-		$item->getNamedTag()->setTag(self::SAPPHIRE_KEY, new CompoundTag());
+		$item->getNamedTag()->setTag(self::CUPCAKE_KEY, new CompoundTag());
 		$item->setCustomName($this->getColoredName() . " KEY");
-		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::GREEN . "Sapphire Crate", TextFormat::BOLD . TextFormat::GREEN . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
+		$item->setLore([TextFormat::GRAY . "You can redeem this key at " . TextFormat::LIGHT_PURPLE . "Cupcake Crate", TextFormat::BOLD . TextFormat::LIGHT_PURPLE . " * " . TextFormat::RESET . TextFormat::GRAY . "Right-Click Crate with key to redeem!"]);
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		return $item;
 	}
@@ -196,7 +196,7 @@ class Sapphire extends Crate {
 			$item = $player->getInventory()->getItemInHand();
 			$item->setCount($item->getCount() - 1);
 			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
-			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::GREEN . TextFormat::BOLD . $name);
+			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::LIGHT_PURPLE . TextFormat::BOLD . $name);
 		}
 	}
 

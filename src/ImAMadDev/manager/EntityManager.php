@@ -11,7 +11,7 @@ use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\entity\projectile\{FishingHook, Switcher, FireworksRocket, SplashPotion, EnderPearl, EggPorts};
 use ImAMadDev\entity\CombatLogger;
 use ImAMadDev\npc\types\{BlackMarket, BlockMarket, LegendaryMarket, TopOne, TopThree, TopTwo};
-use ImAMadDev\entity\mobs\{Enderman, Cow, Creeper, Blaze};
+use ImAMadDev\entity\mobs\{Enderman, Protector, Cow, Creeper, Blaze};
 use ImAMadDev\HCF;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
@@ -93,6 +93,9 @@ class EntityManager {
         $factory->register(Creeper::class, function (World $world, CompoundTag $nbt) : Creeper {
             return new Creeper(EntityDataHelper::parseLocation($nbt, $world), $nbt);
         }, ['Creeper', EntityIds::CREEPER]);
+        $factory->register(Protector::class, function (World $world, CompoundTag $nbt) : Protector {
+            return new Protector(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['Protector', EntityIds::SILVERFISH]);
 	}
 	
 	public static function spawn(HCFPlayer $player, string $name) : void {

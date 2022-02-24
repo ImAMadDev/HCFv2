@@ -38,6 +38,7 @@ use ImAMadDev\command\defaults\{CapeCommand,
     EOTWCommand,
     SOTWCommand,
     PurgeCommand,
+    ListCommand,
     PvPCommand};
 use ImAMadDev\claim\command\ClaimCommand;
 use ImAMadDev\kit\command\KitCommand;
@@ -60,6 +61,7 @@ class CommandManager {
 		$this->unregisterCommand("me");
 		$this->unregisterCommand("particle");
 		$this->unregisterCommand("title");
+		$this->unregisterCommand("list");
 		$this->registerCommand(new FactionCommand());
 		$this->registerCommand(new ParticleCommand());
 		$this->registerCommand(new LogoutCommand());
@@ -94,7 +96,7 @@ class CommandManager {
 		$this->registerCommand(new MapKit());
 		$this->registerCommand(new LFFCommand());
         $this->registerCommand(new TagCommand());
-        //$this->registerCommand(new CapeCommand());
+        $this->registerCommand(new ListCommand());
         $this->registerCommand(new RedeemCommand());
         $this->registerCommand(new StaffCommand());
         $this->registerCommand(new SudoCommand());

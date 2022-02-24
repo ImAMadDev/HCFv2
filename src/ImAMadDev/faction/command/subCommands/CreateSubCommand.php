@@ -65,6 +65,8 @@ class CreateSubCommand extends SubCommand {
 			'dtr' => FactionUtils::MINIMUM_DTR,
 			'level' => HCFUtils::DEFAULT_MAP,
 			'home' => "0:0:0",
+			'disqualified' => false,
+			'stickes' => 0,
 			'x1' => null,
 			'z1' => null,
 			'x2' => null,

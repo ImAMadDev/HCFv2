@@ -35,13 +35,36 @@ class Faction {
     public function __construct(
         public HCF $main,
         public array $data) {
-		$this->main->getLogger()->info(TextFormat::GREEN."Faction » {$this->getName()} was loaded successfully!");
+		$this->main->getLogger()->info(TextFormat::GREEN."Faction ï¿½ {$this->getName()} was loaded successfully!");
 		if($this->getDTR() < $this->getMaxDTR()) {
 			if(!$this->task instanceof FactionTick) {
 				$this->main->getScheduler()->scheduleRepeatingTask($this->task = new FactionTick($this), 20);
-				$this->main->getLogger()->info(TextFormat::GREEN."Faction » Task loaded!");
+				$this->main->getLogger()->info(TextFormat::GREEN."Faction ï¿½ Task loaded!");
 			}
 		}
+	}
+	
+	public function getStrickes(): int 
+	{
+		return $this->data['strickes'];
+	}
+	
+	public function addStricke(int $stricke = 1): void 
+	{
+		$this->data['strickes'] += $stricke;
+		if($this->data['strickes'] >= 3) {
+			$this->disqualify();
+		}
+	}
+	
+	public function disqualify(): void 
+	{
+		$this->data['disqualified'] = true;
+	}
+	
+	public function isDisqualified(): bool 
+	{
+		return $this->data['disqualified'] ?? false;
 	}
 	
 	public function getName() : string {
@@ -277,8 +300,9 @@ class Faction {
 		}
 		$this->freezeTime = FactionUtils::FREEZE_TIME;
 		$this->message(TextFormat::RED . "- 1 DTR");
-		if($this->getDTR() == 0) {
+		if($this->getDTR() == -0.99) {
 			$this->message(TextFormat::RED . "YOUR FACTION IS NOW RAIDEABLE!");
+			$this->removePoints(3);
 		}
 	}
 	

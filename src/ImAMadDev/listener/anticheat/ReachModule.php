@@ -38,7 +38,7 @@ class ReachModule implements Listener {
 			if($player instanceof HCFPlayer && $attacker instanceof HCFPlayer) {
 				$reach = round($attacker->getPosition()->distance($player->getPosition()));
 				if($reach > 6 && $attacker->getInventory()->getItemInHand()->getId() !== ItemIds::BOW && !$attacker->getInventory()->getItemInHand() instanceof ProjectileItem && $attacker->getGamemode() === GameMode::SURVIVAL() && !$attacker->getEffects()->has(VanillaEffects::SPEED())) {
-					DiscordIntegration::sendToDiscord("AntiCheat", $attacker->getName() . " Suspect using Reach, Reach: " . $reach, DiscordIntegration::ALERT_WEBHOOK, "StaliaBot");
+					DiscordIntegration::sendToDiscord("AntiCheat", $attacker->getName() . " Suspect using Reach, Reach: " . $reach, DiscordIntegration::ALERT_WEBHOOK, "WaffleBot");
 					$this->sendAlertToStaff($attacker, $reach);
 				}
 			}

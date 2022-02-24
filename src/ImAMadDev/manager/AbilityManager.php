@@ -27,6 +27,7 @@ use ImAMadDev\ability\types\{PartnerPackages,
     Immobilizer,
     Airdrops,
     TimeWarp,
+    FortuneCookie,
     RankSharp};
 
 use pocketmine\utils\SingletonTrait;
@@ -60,6 +61,7 @@ class AbilityManager {
 		$this->addAbility(new Switcher());
 		$this->addAbility(new EggPorts());
 		$this->addAbility(new RePot());
+		$this->addAbility(new FortuneCookie());
 		$this->addAbility(new PrePearl());
 		$this->addAbility(new Immobilizer());
 		$this->addAbility(new NinjaAbility());

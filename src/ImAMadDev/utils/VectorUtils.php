@@ -54,7 +54,7 @@ final class VectorUtils {
 				continue;
 			}
 			
-			return new Vector3($x + 0.5, $world->getMaxY(), $z + 0.5);
+			return new Vector3($x + 0.5, $world->getHighestBlockAt($x, $z), $z + 0.5);
 		}
 		return null;
 	}

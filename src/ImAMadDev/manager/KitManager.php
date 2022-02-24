@@ -26,9 +26,8 @@ use ImAMadDev\kit\Kit;
 
 use ImAMadDev\kit\types\{CustomKit,
     Miner,
-    Eternal,
-    Cthulhu,
-    Sapphire,
+    Icecream,
+    Cupcake,
     Waffle,
     Mage,
     Diamond,
@@ -185,17 +184,16 @@ class KitManager {
     }
 
 	public function loadKits() {
-		$this->addKit(new Archer());
+		$this->addKit(new Starter());
 		$this->addKit(new Builder());
 		$this->addKit(new Mage());
 		$this->addKit(new Miner());
 		$this->addKit(new Diamond());
 		$this->addKit(new Bard());
-		$this->addKit(new Starter());
+		$this->addKit(new Archer());
 		$this->addKit(new Rogue());
-		$this->addKit(new Sapphire());
-		$this->addKit(new Eternal());
-		$this->addKit(new Cthulhu());
+		$this->addKit(new Icecream());
+		$this->addKit(new Cupcake());
 		$this->addKit(new Waffle());
 		$this->loadCustomKits();
 		$this->getMain()->getLogger()->info("§aThe kits have been loaded! Number of kits: " . count($this->getKits()));

@@ -106,7 +106,7 @@ class KOTH extends Crate {
 		
 		$sword = ItemFactory::getInstance()->get(ItemIds::DIAMOND_SWORD);
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::SHARPNESS(), HCFUtils::PAID_SHARPNESS));
-		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), 3));
+		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::KOTH_SHARPNESS));
         $sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::UNREPAIRABLE), 1));
 		$sword->setCustomName(TextFormat::DARK_RED . "KOTH Fire");
 		$items[1] = $sword;

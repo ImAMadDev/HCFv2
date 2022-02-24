@@ -15,10 +15,10 @@ use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\kit\Kit;
 use ImAMadDev\customenchants\CustomEnchantments;
 
-class Sapphire extends Kit {
+class Cupcake extends Kit {
 
 	/** @var string */
-	private string $name = 'Sapphire';
+	private string $name = 'Cupcake';
 
 	/** @var Item */
 	private Item $icon;
@@ -30,14 +30,14 @@ class Sapphire extends Kit {
 	private array $items = [];
 	
 	/** @var string */
-	private string $permission = 'sapphire.kit';
+	private string $permission = 'cupcake.kit';
 	
 	/** @var array */
 	private string $description = "";
 	
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::EMERALD);
-		$bow->setCustomName(TextFormat::DARK_GREEN . $this->getName());
+		$bow->setCustomName(TextFormat::LIGHT_PURPLE . $this->getName());
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$this->icon = $bow;
 		$this->description = TextFormat::colorize("&r&7A very strong kit, I am &a80% sure&7 you will win any PVP with this.") . "\n" .  TextFormat::colorize("&r&eAvailable for purchase at: &cminestalia.ml");
@@ -63,19 +63,19 @@ class Sapphire extends Kit {
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::FREE_PROTECTION));
 		$helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
 		$helmet->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$helmet->setCustomName(TextFormat::DARK_GREEN . "Sapphire Helmet");
+		$helmet->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Helmet");
 		
 		$chestplate = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
 		$chestplate->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
-		$chestplate->setCustomName(TextFormat::DARK_GREEN . "Sapphire Chestplate");
+		$chestplate->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Chestplate");
 		
 		$leggings = ItemFactory::getInstance()->get(ItemIds::DIAMOND_LEGGINGS);
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
 		$leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $leggings->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::IMPLANTS)));
-		$leggings->setCustomName(TextFormat::DARK_GREEN . "Sapphire Leggings");
+		$leggings->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Leggings");
 		
 		$boots = ItemFactory::getInstance()->get(ItemIds::DIAMOND_BOOTS);
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), HCFUtils::PAID_PROTECTION));
@@ -83,7 +83,7 @@ class Sapphire extends Kit {
 		$boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::HELL_FORGET)));
         $boots->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::SPEED), 2));
-		$boots->setCustomName(TextFormat::DARK_GREEN . "Sapphire Boots");
+		$boots->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Boots");
 		return [$helmet, $chestplate, $leggings, $boots];
 	}
 
@@ -103,7 +103,7 @@ class Sapphire extends Kit {
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::FIRE_ASPECT(), HCFUtils::PAID_SHARPNESS));
 		$sword->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 6));
 		$sword->addEnchantment(new EnchantmentInstance(CustomEnchantments::getEnchantmentByName(CustomEnchantment::NUTRITION), 2));
-		$sword->setCustomName(TextFormat::DARK_GREEN . "Sapphire Sword");
+		$sword->setCustomName(TextFormat::LIGHT_PURPLE . "Cupcake Sword");
 		
 		$pearls = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
 		$pearls2 = ItemFactory::getInstance()->get(ItemIds::ENDER_PEARL, 0, 16);
@@ -154,7 +154,7 @@ class Sapphire extends Kit {
 				$player->getWorld()->dropItem($player->getPosition()->asVector3(), $item);
 			}
 		}
-		$player->sendMessage(TextFormat::YELLOW . "You have received the Kit: " . TextFormat::DARK_GREEN . TextFormat::BOLD . $this->getName());
+		$player->sendMessage(TextFormat::YELLOW . "You have received the Kit: " . TextFormat::LIGHT_PURPLE . TextFormat::BOLD . $this->getName());
 	}
 
 }

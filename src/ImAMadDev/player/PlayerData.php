@@ -17,7 +17,8 @@ class PlayerData {
 		if(!file_exists(HCF::getInstance()->getDataFolder()."players/{$playerName}.js")){
 			$config = new Config(HCF::getInstance()->getDataFolder()."players/{$playerName}.js", Config::JSON);
 			$config->setAll(["kills" => 0,
-                "invincibility_time" => 3600,
+				"deaths" => 0,
+				"invincibility_time" => 3600,
                 "lives" => 5,
                 "lives_claimed" => false,
                 "reclaim" => null,

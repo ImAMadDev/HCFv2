@@ -36,7 +36,7 @@ class Scoreboard extends Task {
 			foreach(array_keys($player->getCooldowns()) as $name) {
 				if($player->getCooldown()->has($name)) {
 					$tag = PlayerUtils::$cooldownsNames[$name] ?? $name;
-					$scoreboard[] = TextFormat::colorize($tag) . gmdate('i:s', $player->getCooldown()->get($name));
+					$scoreboard[] = TextFormat::colorize($tag) ."§f" .  gmdate('i:s', $player->getCooldown()->get($name));
 				}
 			}
 		}

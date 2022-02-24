@@ -30,8 +30,8 @@ class PlayerRegion
         $last = $this->name;
         $this->name = $name;
         $this->getPlayer()->getClaimView()->update();
-        $this->getPlayer()->sendMessage(TextFormat::RED . "Now leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $last . "), " . $this->getSafety($last));
-        $this->getPlayer()->sendMessage(TextFormat::RED . "Now entering " . TextFormat::RESET . TextFormat::GRAY . "(" . $name . "), " . $this->getSafety($name));
+        $this->getPlayer()->sendMessage(TextFormat::RED . "Leaving: " . TextFormat::RESET . TextFormat::GRAY . "(" . $last . "), " . $this->getSafety($last));
+        $this->getPlayer()->sendMessage(TextFormat::RED . "Entering: " . TextFormat::RESET . TextFormat::GRAY . "(" . $name . "), " . $this->getSafety($name));
     }
 
     private function getSafety(string $claim_name) : string

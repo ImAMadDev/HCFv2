@@ -21,6 +21,7 @@ use ImAMadDev\player\sessions\TraderPlayer;
 use ImAMadDev\player\sessions\EnderpearlHistory;
 use ImAMadDev\tags\Tag;
 use ImAMadDev\utils\HCFUtils;
+use ImAMadDev\ticks\player\Scoreboard;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
@@ -244,6 +245,9 @@ class HCFPlayer extends Player {
 	
 	public function load() : void {
 		$this->cooldown = new Cooldowns($this);
+		$this->showCoordinates();
+		$this->doImmediateRespawn();
+		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new Scoreboard($this), 20);
 		new BardTick($this);
 	}
 	
@@ -307,11 +311,11 @@ class HCFPlayer extends Player {
 	}
 	
 	public function getChatFormat() : string {
-		$format = $this->getFaction() === null ? "" : TextFormat::YELLOW . "[" . TextFormat::RED . $this->getFaction()->getName() . TextFormat::YELLOW . "] ";
+		$format = $this->getFaction() === null ? "" : TextFormat::MINECOIN_GOLD . "[" . TextFormat::RED . $this->getFaction()->getName() . TextFormat::MINECOIN_GOLD . "] ";
 		foreach($this->getRanks() as $rank) {
 			$format .= TextFormat::colorize($rank->getFormat() . "&r") . " ";
 		}
-		return $format . TextFormat::YELLOW;
+		return $format . TextFormat::GRAY;
 	}
 
     public function getCurrentTagFormat() : string
@@ -334,6 +338,13 @@ class HCFPlayer extends Player {
 		$packet = GameRulesChangedPacket::create(["showcoordinates" => $c]);
 		$this->getNetworkSession()->sendDataPacket($packet);
 		$this->sendMessage(TextFormat::GREEN . "Your coords settings changed.");
+	}
+	
+	public function doImmediateRespawn() : void {
+        $c = new BoolGameRule(true, true);
+		$packet = GameRulesChangedPacket::create(["doImmediateRespawn" => $c]);
+		$this->getNetworkSession()->sendDataPacket($packet);
+		$this->sendMessage(TextFormat::GREEN . "Your doImmediateRespawn settings changed.");
 	}
 	
 	public function getRegion() : PlayerRegion {
@@ -875,4 +886,8 @@ class HCFPlayer extends Player {
     {
         return $this->getPlayerInfo()->getExtraData()['CurrentInputMode'] ?? 'Classic';
     }
+    
+    public function getXZDistance(Vector3 $pos1, Vector3 $pos2) : int {
+    	return sqrt((($pos1->x - $pos2->x) ** 2)  + (($pos1->z - $pos2->z) ** 2));
+	}
 }

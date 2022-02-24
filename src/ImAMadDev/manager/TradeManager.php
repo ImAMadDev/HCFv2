@@ -20,7 +20,7 @@ class TradeManager {
 	public function __construct(HCF $main) {
 		self::$main = $main;
         self::setInstance($this);
-		$main->getScheduler()->scheduleRepeatingTask(new TradeHeartbeatTask($this), 20);
+		//$main->getScheduler()->scheduleRepeatingTask(new TradeHeartbeatTask($this), 20);
 	}
 
     /**

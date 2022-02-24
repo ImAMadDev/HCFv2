@@ -68,7 +68,7 @@ class FactionManager {
                 $claim->getProperties()->addFlag(ClaimFlags::BREAK, new EditClaimFlag());
                 $claim->getProperties()->addFlag(ClaimFlags::PLACE, new EditClaimFlag());
 			    ClaimManager::getInstance()->addClaim($claim);
-			    self::$main->getLogger()->info(TextFormat::GREEN."Claim » {$claim->getProperties()->getName()} was loaded successfully!");
+			    self::$main->getLogger()->info(TextFormat::GREEN."Claim Â» {$claim->getProperties()->getName()} was loaded successfully!");
 			}
 		}
 	}
@@ -112,6 +112,7 @@ class FactionManager {
 	public function getTopPower(): string{
 		$points = [];
 		foreach(self::$factions as $faction) {
+			if($faction->isDisqualified()) continue;
 			$points[$faction->getName()] = $faction->getPoints();
 		}
 		arsort($points);
