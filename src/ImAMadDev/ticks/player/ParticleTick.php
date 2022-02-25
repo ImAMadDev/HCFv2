@@ -27,7 +27,7 @@ class ParticleTick extends Task {
 			$this->getHandler()->cancel();
 			return;
 		}
-		if(!$player->hasPermission('anubis.particle')){
+		if(!$player->hasPermission('vip.particle')){
 			$player->particleTick = null;
             $this->getHandler()->cancel();
 			return;

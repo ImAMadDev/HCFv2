@@ -29,17 +29,19 @@ class NearCommand extends Command {
 		$sender->sendMessage(TextFormat::GRAY . "Nearby players: " . implode(', ', $players));
 	}
 	
-	public function getNearbyPlayers(HCFPlayer $sender) : array {
+	public function getNearbyPlayers(HCFPlayer $sender): array
+    {
 		$players = [];
-        foreach($sender->getWorld()->getNearbyEntities(new AxisAlignedBB($sender->getPosition()->getFloorX() - 200, $sender->getPosition()->getFloorY() - 200, $sender->getPosition()->getFloorZ() - 200, $sender->getPosition()->getFloorX() + 200, $sender->getPosition()->getFloorY() + 200, $sender->getPosition()->getFloorZ() + 200)) as $e){
-            if (!$e instanceof Player){
-                continue;
+        foreach ($sender->getWorld()->getPlayers() as $player) {
+            if ($player instanceof HCFPlayer) {
+                if ($player->getXZDistance($sender->getPosition())){
+                    if($player->getName() == $sender->getName()) {
+                        continue;
+                    }
+                    $distance = round($sender->getPosition()->distance($player->getPosition()));
+                    $players[] = TextFormat::colorize("&c" . $player->getName() . " &8[&6{$distance}&8]");
+                }
             }
-            if($e->getName() == $sender->getName()) {
-                continue;
-            }
-            $distance = round($sender->getPosition()->distance($e->getPosition()));
-            $players[] = TextFormat::colorize("&c" . $e->getName() . " &8[&6{$distance}&8]");
         }
 		return $players;
 	}

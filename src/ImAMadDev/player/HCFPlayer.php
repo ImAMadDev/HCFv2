@@ -599,17 +599,18 @@ class HCFPlayer extends Player {
 	
 	public function getNearbyPlayers(int $distance, int $up) : array {
 		$players = [];
-		foreach($this->getWorld()->getNearbyEntities(new AxisAlignedBB($this->getPosition()->getFloorX() - $distance, $this->getPosition()->getFloorY() - $up, $this->getPosition()->getFloorZ() - $distance, $this->getPosition()->getFloorX() + $distance, $this->getPosition()->getFloorY() + $up, $this->getPosition()->getFloorZ() + $distance)) as $e){
-            if(!$e instanceof Player){
-                continue;
+        foreach ($this->getWorld()->getPlayers() as $player) {
+            if ($player instanceof HCFPlayer) {
+                if ($this->getXZDistance($player->getPosition()) <= $distance) {
+                    if (ClaimManager::getInstance()->getClaimByPosition($player->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && $player->isInvincible()) {
+                        continue;
+                    }
+                    if ($player->getName() === $this->getName()) {
+                        continue;
+                    }
+                    $players[] = $player;
+                }
             }
-            if($e->getName() === $this->getName()) {
-                continue;
-            }
-            if(ClaimManager::getInstance()->getClaimByPosition($e->getPosition())?->getClaimType()?->getType() == ClaimType::SPAWN && $e->isInvincible()) {
-                continue;
-            }
-            $players[] = $e;
         }
 		return $players;
 	}
@@ -887,7 +888,7 @@ class HCFPlayer extends Player {
         return $this->getPlayerInfo()->getExtraData()['CurrentInputMode'] ?? 'Classic';
     }
     
-    public function getXZDistance(Vector3 $pos1, Vector3 $pos2) : int {
-    	return sqrt((($pos1->x - $pos2->x) ** 2)  + (($pos1->z - $pos2->z) ** 2));
+    public function getXZDistance(Vector3 $vector) : int {
+    	return sqrt((($this->getPosition()->x - $vector->x) ** 2)  + (($this->getPosition()->z - $vector->z) ** 2));
 	}
 }
