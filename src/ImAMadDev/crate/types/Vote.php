@@ -45,9 +45,9 @@ class Vote extends Crate {
 		$items[14] = AbilityManager::getInstance()->getAbilityByName('Strength_Portable')?->get(rand(1, 2));
 		$items[12] = AbilityManager::getInstance()->getAbilityByName('Resistance_Portable')?->get(rand(1, 2));
 		
-		$items[3] = CrateManager::getInstance()->getCrateByName('Eternal')?->getCrateKey(1);
-		$items[5] = CrateManager::getInstance()->getCrateByName('Sapphire')?->getCrateKey(1);
-		$items[22] = CrateManager::getInstance()->getCrateByName('Cthulhu')?->getCrateKey(1);
+		$items[3] = CrateManager::getInstance()->getCrateByName('Cupcacke')?->getCrateKey(1);
+		$items[5] = CrateManager::getInstance()->getCrateByName('Icecream')?->getCrateKey(1);
+		$items[22] = CrateManager::getInstance()->getCrateByName('Basic')?->getCrateKey(rand(1, 3));
 		
 		$items[11] = $iron_block;
 		$items[13] = $emerald_block;

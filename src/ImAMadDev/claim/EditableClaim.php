@@ -23,88 +23,14 @@ use ImAMadDev\koth\KOTHArena;
 use ImAMadDev\manager\EOTWManager;
 use ImAMadDev\faction\Faction;
 
-class Claim {
-	
-	public HCF $main;
-
-    private ClaimType $claimType;
-
-    private ClaimProperties $properties;
+class EditableClaim extends Claim {
 	
 	public function __construct(HCF $main, array $data) {
-		$this->main = $main;
-        $this->claimType = new ClaimType($data['claim_type'] ?? ClaimType::FACTION);
-        $this->properties = new ClaimProperties($data);
+		parent::__construct($main, $data);
 	}
 	
-	public function getWorldName() : string {
-		return $this->getProperties()->getWorld()->getFolderName();
-	}
-	
-	public function isInside(Position $position): bool {
-		$world = $position->getWorld();
-		$minX = min($this->getProperties()->getPosition1()->getX(), $this->getProperties()->getPosition2()->getX());
-		$maxX = max($this->getProperties()->getPosition1()->getX(), $this->getProperties()->getPosition2()->getX());
-		$minY = 0;
-		$maxY = World::Y_MAX;
-		$minZ = min($this->getProperties()->getPosition1()->getZ(), $this->getProperties()->getPosition2()->getZ());
-		$maxZ = max($this->getProperties()->getPosition1()->getZ(), $this->getProperties()->getPosition2()->getZ());
-		return $minX <= $position->getX() and $maxX >= $position->getFloorX() and $minY <= $position->getY() and
-			$maxY >= $position->getY() and $minZ <= $position->getZ() and $maxZ >= $position->getFloorZ() and
-            $world->getFolderName() === $this->getWorldName();
-	}
-	
-	#[Pure] public function intersectsWith(Position $firstPosition, Position $secondPosition, float $epsilon = 0.00001) : bool{
-		$minX = min($this->getProperties()->getPosition1()->getFloorX(), $this->getProperties()->getPosition2()->getFloorX());
-		$maxX = max($this->getProperties()->getPosition1()->getFloorX(), $this->getProperties()->getPosition2()->getFloorX());
-		$minY = 0;
-		$maxY = World::Y_MAX;
-		$minZ = min($this->getProperties()->getPosition1()->getFloorZ(), $this->getProperties()->getPosition2()->getFloorZ());
-		$maxZ = max($this->getProperties()->getPosition1()->getFloorZ(), $this->getProperties()->getPosition2()->getFloorZ());
-		if(max($firstPosition->getFloorX(), $secondPosition->getFloorX()) - $minX > $epsilon and $maxX - min($firstPosition->getFloorX(), $secondPosition->getFloorX()) > $epsilon){
-			if(max($firstPosition->getFloorY(), $secondPosition->getFloorY()) - $minY > $epsilon and $maxY - min($firstPosition->getFloorY(), $secondPosition->getFloorY()) > $epsilon){
-				return max($firstPosition->getFloorZ(), $secondPosition->getFloorZ()) - $minZ > $epsilon and $maxZ - min($firstPosition->getFloorZ(), $secondPosition->getFloorZ()) > $epsilon;
-			}
-		}
-		return false;
-	}
-	/*
-	protected function getClaimsIntersected(Position $pos1, Position $pos2, float $inset) : \Generator{
-		$minX = (int) floor($pos1->minX + $inset);
-		$minZ = (int) floor($pos1->minZ + $inset);
-		$maxX = (int) floor($os2->maxX - $inset);
-		$maxZ = (int) floor($pos2->maxZ - $inset);
-
-		$world = $pos->getWorld();
-		
-		for($z = $minZ; $z <= $maxZ; ++$z){
-			for($x = $minX; $x <= $maxX; ++$x){
-					yield ClaimManager::getInstance()->getClaimAt($x, $y, $z);
-				}
-			}
-		}
-	}
-	
-	protected function getBlocksAroundWithEntityInsideActions() : array{
-		if($this->blocksAround === null){
-			$this->blocksAround = [];
-
-			$inset = 0.001; //Offset against floating-point errors
-			foreach($this->getBlocksIntersected($inset) as $block){
-				if($block->hasEntityCollision()){
-					$this->blocksAround[] = $block;
-				}
-			}
-		}
-
-		return $this->blocksAround;
-	}*/
-	
-	public function getFaction() : ? Faction {
-		return (HCF::getFactionManager()->getFaction($this->getProperties()->getName()));
-	}
-	
-	public function canEdit(?Faction $faction) : bool {
+	public function canEdit(?Faction $faction): bool 
+	{
 		if($this->getClaimType()->getType() == ClaimType::FACTION) {
 			$faction_claim = HCF::getFactionManager()->getFaction($this->getProperties()->getName());
 			if($faction_claim->getDTR() <= 0) {
@@ -228,21 +154,5 @@ class Claim {
     {
         $pk = AdventureSettingsPacket::create(AdventureSettingsPacket::DOORS_AND_SWITCHES, AdventureSettingsPacket::PERMISSION_NORMAL, -1, PlayerPermissions::VISITOR, 0, $player->getId());;
         $player->getNetworkSession()->sendDataPacket($pk);
-    }
-
-    /**
-     * @return ClaimType
-     */
-    public function getClaimType(): ClaimType
-    {
-        return $this->claimType;
-    }
-
-    /**
-     * @return ClaimProperties
-     */
-    public function getProperties(): ClaimProperties
-    {
-        return $this->properties;
     }
 }

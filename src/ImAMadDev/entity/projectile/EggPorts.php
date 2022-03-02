@@ -37,7 +37,6 @@ class EggPorts extends Throwable {
 					$claim2 = ClaimManager::getInstance()->getClaimNameByPosition($player->getPosition());
 					if(stripos($claim2, "Spawn") === false && round($sender->getPosition()->distance($player->getPosition())) <= 30){
 						$position = clone $player->getPosition();
-						$player->teleport($sender->getPosition());
 						$sender->teleport($position);
 					}
 				}

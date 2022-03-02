@@ -68,32 +68,22 @@ use ImAMadDev\crate\Crate;
 use ImAMadDev\ticks\player\{ParticleTick, BardTick};
 use ImAMadDev\ability\Ability;
 
-class HCFPlayer extends Player {
+class HCFPlayer extends Player
+{
+	use SessionsManager;
 	
 	private array $rank = [];
 	
 	private ?Faction $faction = null;
-
-	private PlayerRegion $region;
-
-	private ChatMode $chatMode;
 	
 	private ?int $invincibilityTime = null;
-	
-	private ?ClaimSession $claimSession = null;
 
 	private string $device = 'Unknown';
 	
 	private string $inputMode = 'Unknown';
 	
 	private string $uiMode = 'Classic';
-	
-	private ClassEnergy $energy;
-	
-	public ArcherMark $archerMark;
-	
-	private ?Cooldowns $cooldown = null;
-	
+
 	private bool $effectsActivate = true;
 	
 	private bool $movement = false;
@@ -107,12 +97,6 @@ class HCFPlayer extends Player {
 	public array $abilityHits = [];
 	
 	public array $abilityLastHit = [];
-	
-	public ?Focus $focus = null;
-	
-	private bool $checkingForVote = false;
-	
-	private bool $vote = false;
 	
 	private int $replaceableBlock = 0;
 
@@ -131,24 +115,12 @@ class HCFPlayer extends Player {
 
     public ?IClass $class = null;
 
-    public ViewClaim $claimView;
-
     private array $previousBlocks = [];
-
-    private TraderPlayer $traderPlayer;
-    
-    private EnderpearlHistory $enderpearlH;
 
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
         parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
-        $this->chatMode = new ChatMode(PlayerUtils::PUBLIC);
-        $this->region = new PlayerRegion($this);
-        $this->archerMark = new ArcherMark($this);
-        $this->energy = new ClassEnergy($this);
-        $this->claimView = new ViewClaim($this);
-        $this->traderPlayer = new TraderPlayer($this);
-        $this->enderpearlH = new EnderpearlHistory($this);
+        $this->setup();
     }
 
     public function setCanLogout(bool $can = false) : void {
@@ -255,32 +227,6 @@ class HCFPlayer extends Player {
 		return $this->cooldown->getAll();
 	}
 	
-	public function getCooldown() : Cooldowns {
-		if($this->cooldown === null) $this->cooldown = new Cooldowns($this);
-		return $this->cooldown;
-	}
-	
-	public function getFocus() : ?Focus {
-		if($this->focus == null) return null;
-		return $this->focus;
-	}
-	
-	public function setFocus(?Faction $faction = null) : void {
-		if($faction === null) {
-			$this->focus = null;
-			return;
-		}
-		$this->focus = new Focus($faction);
-	}
-	
-	public function setClaimSession(?ClaimSession $session = null) : void {
-		$this->claimSession = $session;
-	}
-
-	public function getClaimSession() : ?ClaimSession {
-		return $this->claimSession;
-	}
-	
 	public function setRank(RankClass $rank){
 		$this->rank[$rank->getName()] = $rank;
 		$rank->givePermissions($this);
@@ -347,14 +293,6 @@ class HCFPlayer extends Player {
 		$this->sendMessage(TextFormat::GREEN . "Your doImmediateRespawn settings changed.");
 	}
 	
-	public function getRegion() : PlayerRegion {
-		return $this->region;
-	}
-	
-	public function getChatMode() : ChatMode {
-		return $this->chatMode;
-	}
-	
 	public function getFaction(): ?Faction {
 		return $this->faction;
 	}
@@ -401,14 +339,6 @@ class HCFPlayer extends Player {
 				}
 			}
 		}
-	}
-
-	public function getClassEnergy() : ClassEnergy {
-		return $this->energy;
-	}
-	
-	public function getEnderpearlHistory() : EnderpearlHistory {
-		return $this->enderpearlH;
 	}
 	
 	public function sendCustomTagTo(string $customTag, array $players = []){
@@ -615,10 +545,6 @@ class HCFPlayer extends Player {
 		return $players;
 	}
 	
-	public function getArcherMark() : ArcherMark {
-		return $this->archerMark;
-	}
-	
 	public function activateEffects(bool $activate) : void {
 		$this->effectsActivate = $activate;
 	}
@@ -689,22 +615,6 @@ class HCFPlayer extends Player {
 		else return TextFormat::RED . "?";
 	}
 	
-	public function isCheckingForVote() : bool {
-		return $this->checkingForVote;
-	}
-	
-	public function hasVoted() : bool {
-		return $this->vote;
-	}
-	
-	public function setCheckingForVote(bool $checking = true) : void {
-		$this->checkingForVote = $checking;
-	}
-	
-	public function setVoted(bool $vote = true) : void {
-		$this->vote = $vote;
-	}
-	
 	public function setReplaceableBlock(int $runtimeId) : void {
 		$this->replaceableBlock = $runtimeId;
 	}
@@ -770,14 +680,6 @@ class HCFPlayer extends Player {
     {
         if ($this->class == null) return false;
         return $this->class->name === 'Miner';
-    }
-
-    /**
-     * @return ViewClaim
-     */
-    public function getClaimView(): ViewClaim
-    {
-        return $this->claimView;
     }
 
     public function checkWall(): void{
@@ -853,14 +755,6 @@ class HCFPlayer extends Player {
                 }
             }
         }
-    }
-
-    /**
-     * @return TraderPlayer
-     */
-    public function getTraderPlayer(): TraderPlayer
-    {
-        return $this->traderPlayer;
     }
 
     public function sendFullInvis() : void

@@ -35,7 +35,7 @@ class ClaimManager {
                 $claim->getProperties()->addFlag(ClaimFlags::BREAK, new EditClaimFlag());
                 $claim->getProperties()->addFlag(ClaimFlags::PLACE, new EditClaimFlag());
 				$this->addClaim($claim);
-				self::$main->getLogger()->info(TextFormat::GREEN."Claim » {$claim->getProperties()->getName()} was loaded successfully!");
+				self::$main->getLogger()->info(TextFormat::GREEN."Claim ï¿½ {$claim->getProperties()->getName()} was loaded successfully!");
 			}
 		}
 	}
@@ -134,6 +134,7 @@ class ClaimManager {
 		}
 		return "Wilderness";
 	}
+	
 	/*
 	public function getClaimNameByPosition(Position $pos) : string {
 		foreach(self::$claims as $claim) {

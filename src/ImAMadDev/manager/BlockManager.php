@@ -17,6 +17,7 @@ use ImAMadDev\block\{EndPortal,
     Flower,
     DoublePlant,
     MonsterSpawner,
+    Lever,
     PotionGenerator,
     Observer,
     Dirt,
@@ -63,6 +64,7 @@ class BlockManager {
         $bf->register(new Obsidian(), true);
         $bf->register(new PotionGenerator(), true);
         $bf->register(new MonsterSpawner(), true);
+        $bf->register(new Lever(), true);
         $weightedPressurePlateBreakInfo = new BlockBreakInfo(0.5, BlockToolType::PICKAXE, ToolTier::WOOD()->getHarvestLevel());
         $bf->register(new PressurePlate(new BID(Ids::STONE_PRESSURE_PLATE, 0), "Stone Pressure Plate", $weightedPressurePlateBreakInfo), true);
         $bf->register(new PressurePlate(new BID(Ids::WOODEN_PRESSURE_PLATE, 0), "Wooden Pressure Plate", $weightedPressurePlateBreakInfo), true);

@@ -66,14 +66,14 @@ class CheckVoteTick extends AsyncTask {
             $player->sendMessage(TextFormat::RED . "An error had occurred in this process!");
             return;
         }
-        $player->setCheckingForVote(false);
+        $player->getVote()->setCheckingForVote(false);
         if($result[self::VOTED] === true) {
             if($result[self::CLAIMED] === true) {
-                $player->setVoted();
+                $player->getVote()->setVoted();
                 $player->sendMessage(TextFormat::RED . "You have already claimed your vote!");
                 return;
             }
-            $player->setVoted();
+            $player->getVote()->setVoted();
             Server::getInstance()->broadcastMessage(TextFormat::colorize("&a&l[VOTE] &r- &e{$player->getName()} &7has voted for our server at &6https://minecraftpocket-servers.com/server/116330/ &7and received &6x3 Vote Key"));
             $keys = CrateManager::getInstance()->getCrateByName('Vote')->getCrateKey(3);
             if($player->getInventory()->canAddItem($keys)) {
@@ -84,6 +84,6 @@ class CheckVoteTick extends AsyncTask {
             return;
         }
         $player->sendMessage(TextFormat::RED . "You have not voted yet! Vote at " . TextFormat::GOLD . "https://minecraftpocket-servers.com/server/116330/!");
-        $player->setVoted(false);
+        $player->getVote()->setVoted(false);
     }
 }

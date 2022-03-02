@@ -19,14 +19,15 @@ class VoteCommand extends Command {
             $sender->sendMessage(TextFormat::RED . "You don't have permission to do this action!");
             return;
         }
-        if($sender->hasVoted()) {
+        if($sender->getVote()->hasVoted()) {
             $sender->sendMessage(TextFormat::RED . "You have already claimed your vote!");
             return;
         }
-        if($sender->isCheckingForVote()) {
+        if($sender->getVote()->isCheckingForVote()) {
             $sender->sendMessage(TextFormat::RED . "You already have a processing vote check!");
             return;
         }
+        $sender->getVote()->setCheckingForVote(true);
         $this->getServer()->getAsyncPool()->submitTaskToWorker(new CheckVoteTick($sender->getName()), 1);
     }
 }

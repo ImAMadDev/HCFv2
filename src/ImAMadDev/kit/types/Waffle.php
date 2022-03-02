@@ -31,13 +31,13 @@ class Waffle extends Kit {
 	private array $items = [];
 	
 	/** @var string */
-	private string $permission = 'anubis.kit';
+	private string $permission = 'waffle.kit';
 
     private string $description;
 
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::NETHERSTAR);
-		$bow->setCustomName(TextFormat::DARK_PURPLE . $this->getName());
+		$bow->setCustomName(TextFormat::MINECOIN_GOLD . $this->getName());
 		$bow->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
 		$this->icon = $bow;
 		$this->description = wordwrap(TextFormat::colorize("&r&7This kit is worthy for those who send death to their enemy, with this no one will be your rival."), 40) . "\n " . TextFormat::colorize("&r&eAvailable for purchase at: &cminestalia.ml");
@@ -116,7 +116,7 @@ class Waffle extends Kit {
 		$apple = ItemFactory::getInstance()->get(ItemIds::GOLDEN_APPLE, 0, 64);
 		$gapple = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_GOLDEN_APPLE, 0, 10);
 		//Combo Ability
-		$keys = CrateManager::getInstance()->getCrateByName('Waffle')->getCrateKey(3);
+		$keys = CrateManager::getInstance()->getCrateByName('Waffle')->getCrateKey(1);
 
 		$items = [$sword, $pearls, $pearls2, $pearls3, $steak, $apple, $gapple, $keys];
 		for($i = 0; $i < 28; $i++){

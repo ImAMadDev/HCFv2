@@ -111,7 +111,7 @@ class EnderPearl extends Throwable {
                     $owning->getEnderpearlHistory()->setUsageLocation($this->usageLocation);
                 }
                 if ($this->isPearling()) {
-                    $direction = $owning->getDirectionVector()->multiply(3);
+                    $direction = $owning->getDirectionVector()->multiply(2);
                     if ($this->isInHitbox($direction->x, $direction->y + 1, $direction->z)){
                         $this->kill();
                         if ($owning->getCooldown()->has('enderpearl')) {
