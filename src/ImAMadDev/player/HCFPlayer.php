@@ -19,6 +19,7 @@ use ImAMadDev\player\sessions\ClassEnergy;
 use ImAMadDev\player\sessions\PlayerRegion;
 use ImAMadDev\player\sessions\TraderPlayer;
 use ImAMadDev\player\sessions\EnderpearlHistory;
+use ImAMadDev\player\traits\RanksTrait;
 use ImAMadDev\tags\Tag;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\ticks\player\Scoreboard;
@@ -29,6 +30,8 @@ use pocketmine\block\Thin;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\EffectIds;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\inventory\CallbackInventoryListener;
+use pocketmine\inventory\Inventory;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
@@ -36,6 +39,7 @@ use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\player\PlayerInfo;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\Limits;
 use pocketmine\world\Position;
@@ -65,15 +69,14 @@ use ImAMadDev\customenchants\CustomEnchantment;
 use ImAMadDev\manager\{AbilityManager, CrateManager, ClaimManager, FactionManager, KitManager};
 use ImAMadDev\utils\InventoryUtils;
 use ImAMadDev\crate\Crate;
-use ImAMadDev\ticks\player\{ParticleTick, BardTick};
+use ImAMadDev\ticks\player\{CheckRanksAsyncTask, ParticleTick, BardTick};
 use ImAMadDev\ability\Ability;
 
 class HCFPlayer extends Player
 {
 	use SessionsManager;
-	
-	private array $rank = [];
-	
+    use RanksTrait;
+
 	private ?Faction $faction = null;
 	
 	private ?int $invincibilityTime = null;
@@ -88,7 +91,7 @@ class HCFPlayer extends Player
 	
 	private bool $movement = false;
 	
-	private ? Position $lastPosition = null;
+	private ?Position $lastPosition = null;
 	
 	public bool $portalQueue = false;
 
@@ -111,8 +114,6 @@ class HCFPlayer extends Player
      */
     private bool $joined = false;
 
-    public ?string $tag = null;
-
     public ?IClass $class = null;
 
     private array $previousBlocks = [];
@@ -121,6 +122,16 @@ class HCFPlayer extends Player
     {
         parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
         $this->setup();
+    }
+
+    protected function initEntity(CompoundTag $nbt): void
+    {
+        parent::initEntity($nbt);
+        $this->armorInventory->getListeners()->add(CallbackInventoryListener::onAnyChange(
+            function(Inventory $unused) : void{
+                $this->checkSets();
+            }
+        ));
     }
 
     public function setCanLogout(bool $can = false) : void {
@@ -138,11 +149,6 @@ class HCFPlayer extends Player
 	public function hasParticle() : bool {
 		return $this->particle;
 	}
-
-    public function setCurrentTag(string|null $tag) : void
-    {
-        $this->tag = $tag;
-    }
 	
 	public function canActivateAbility(Item $item) : bool {
         $ability = AbilityManager::getInstance()->getAbilityByItem($item);
@@ -189,23 +195,6 @@ class HCFPlayer extends Player
 		}
 	}
 	
-	public function checkRank() : void {
-		foreach($this->getRanks() as $rank) {
-			if($rank->getName() === "User") {
-                continue;
-            }
-            if ($this->getCache()->getCountdown('rank_' . $rank->getName()) == 0) {
-                continue;
-            }
-            if(($this->getCache()->getCountdown('rank_' . $rank->getName()) - time()) <= 0) {
-                $this->removeRank($rank->getName());
-                $this->getCache()->removeInArray('ranks', $rank->getName());
-                $this->getCache()->removeInData('rank_'. $rank->getName() . '_countdown', true);
-                $this->sendMessage(TextFormat::RED . "Your rank {$rank->getName()} has expired!");
-			}
-		}
-	}
-	
 	public function correctMovement() : void {
 		if($this->lastPosition === null) return;
 		$this->teleport($this->lastPosition);
@@ -220,54 +209,15 @@ class HCFPlayer extends Player
 		$this->showCoordinates();
 		$this->doImmediateRespawn();
 		HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new Scoreboard($this), 20);
+        HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (){
+            Server::getInstance()->getAsyncPool()->submitTask(new CheckRanksAsyncTask($this->getName()));
+        }), 4800);
 		new BardTick($this);
 	}
 	
 	#[Pure] public function getCooldowns() : array {
 		return $this->cooldown->getAll();
 	}
-	
-	public function setRank(RankClass $rank){
-		$this->rank[$rank->getName()] = $rank;
-		$rank->givePermissions($this);
-		//$this->sendMessage(TextFormat::GREEN . "Your rank {$rank->getName()} has been loaded successfully!");
-	}
-	
-	public function removeRank(string $rank) {
-		if(isset($this->rank[$rank])) {
-			unset($this->rank[$rank]);
-		}
-	}
-	
-	public function getRanks() : array {
-		return $this->rank;
-	}
-
-    /**
-     * @return Tag|null
-     */
-    public function getCurrentTag(): ?Tag
-    {
-        return HCF::getTagManager()->getTag($this->tag) ?? null;
-    }
-
-    public function hasRank(string $name) : bool
-    {
-        return in_array($name, array_keys($this->rank));
-	}
-	
-	public function getChatFormat() : string {
-		$format = $this->getFaction() === null ? "" : TextFormat::MINECOIN_GOLD . "[" . TextFormat::RED . $this->getFaction()->getName() . TextFormat::MINECOIN_GOLD . "] ";
-		foreach($this->getRanks() as $rank) {
-			$format .= TextFormat::colorize($rank->getFormat() . "&r") . " ";
-		}
-		return $format . TextFormat::GRAY;
-	}
-
-    public function getCurrentTagFormat() : string
-    {
-        return $this->getCurrentTag() == null ? "" : " " . $this->getCurrentTag()->getFormat();
-    }
 	
 	public function sendFakeBlock(?Position $position = null): void {
 		$blocks = [BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0), BlockFactory::getInstance()->get(BlockLegacyIds::DIAMOND_BLOCK, 0)];
@@ -397,7 +347,7 @@ class HCFPlayer extends Player
             $this->checkAbilityLastHit();
             $this->loadInvisibility();
             $this->updateNameTag();
-            $this->checkRank();
+            //$this->checkRank();
         }
         return parent::onUpdate($currentTick);
     }
