@@ -23,9 +23,11 @@ use ImAMadDev\koth\KOTHArena;
 use ImAMadDev\manager\EOTWManager;
 use ImAMadDev\faction\Faction;
 
-class EditableClaim extends Claim {
+class NonEditableClaim extends Claim {
 	
 	public function __construct(HCF $main, array $data) {
 		parent::__construct($main, $data);
 	}
+	
+	public function canEdit(?Faction $faction): bool { return false; }
 }

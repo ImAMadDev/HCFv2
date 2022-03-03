@@ -4,6 +4,7 @@ namespace ImAMadDev\manager;
 
 use pocketmine\utils\{Config, Filesystem, SingletonTrait, TextFormat};
 
+use ImAMadDev\claim\EditableClaim;
 use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\claim\utils\EditClaimFlag;
@@ -61,7 +62,7 @@ class FactionManager {
             $content = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
 			self::$factions[basename($file, ".yml")] = new Faction(self::$main, $content);
 			$data = ["name" => basename($file, ".yml"), "x1" => $content['x1'], "z1" => $content["z1"], "x2" => $content["x2"], "z2" => $content["z2"], "level" => $content["level"], 'claim_type' => ClaimType::FACTION];
-			$claim = new Claim(HCF::getInstance(), $data);
+			$claim = new EditableClaim(HCF::getInstance(), $data);
 			if($data['x1'] && $data['x2'] !== null) {
                 $claim->getProperties()->addFlag(ClaimFlags::INTERACT_CANCEL, new EditClaimFlag([330, 324, 71, 64, 93, 94, 95, 96, 97, 107, 183, 184, 185, 186, 187, 167], true));
                 $claim->getProperties()->addFlag(ClaimFlags::INTERACT, new EditClaimFlag([3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154]));

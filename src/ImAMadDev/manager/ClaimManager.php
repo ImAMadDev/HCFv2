@@ -4,6 +4,7 @@ namespace ImAMadDev\manager;
 
 use pocketmine\utils\{Config, Filesystem, SingletonTrait, TextFormat};
 use ImAMadDev\claim\ClaimListener;
+use ImAMadDev\claim\NonEditableClaim;
 use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\claim\utils\EditClaimFlag;
 use pocketmine\block\BlockLegacyIds;
@@ -29,13 +30,13 @@ class ClaimManager {
 		if(!is_dir(self::$main->getDataFolder() . "opClaims/")) @mkdir(self::$main->getDataFolder() . "opClaims/");
 		foreach(glob(self::$main->getDataFolder() . "opClaims/" . "*.yml") as $file) {
             $contents = yaml_parse(Config::fixYAMLIndexes(file_get_contents($file)));
-			$claim = new Claim(HCF::getInstance(), $contents);
+			$claim = new NonEditableClaim(HCF::getInstance(), $contents);
 			if($contents['x1'] && $contents['x2'] !== null) {
                 $claim->getProperties()->addFlag(ClaimFlags::INTERACT, new EditClaimFlag([3, 58, 61, 62, 54, 205, 218, 145, 146, 116, 130, 154, BlockLegacyIds::ACACIA_DOOR_BLOCK, BlockLegacyIds::DARK_OAK_DOOR_BLOCK, BlockLegacyIds::ACACIA_TRAPDOOR]));
                 $claim->getProperties()->addFlag(ClaimFlags::BREAK, new EditClaimFlag());
                 $claim->getProperties()->addFlag(ClaimFlags::PLACE, new EditClaimFlag());
 				$this->addClaim($claim);
-				self::$main->getLogger()->info(TextFormat::GREEN."Claim � {$claim->getProperties()->getName()} was loaded successfully!");
+				self::$main->getLogger()->info(TextFormat::GREEN."Claim > {$claim->getProperties()->getName()} was loaded successfully!");
 			}
 		}
 	}

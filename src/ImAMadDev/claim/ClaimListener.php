@@ -61,7 +61,11 @@ class ClaimListener implements Listener
         if ($player instanceof HCFPlayer) {
             if ($player->getCooldown()->has('antitrapper_tag')) {
                 if ($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-                    if ($claim instanceof Claim){
+                    if ($claim instanceof NonEditableClaim){
+                        $event->cancel();
+                        return;
+                    }
+                    if ($claim instanceof EditableClaim){
                         if($claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL)){
                             if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false) {
                                 $event->cancel();
@@ -85,7 +89,7 @@ class ClaimListener implements Listener
                     }
                 }
             }
-            if ($claim instanceof Claim){
+            if ($claim instanceof EditableClaim){
                 if(!$claim->canEdit($player->getFaction()) && $claim->getProperties()->hasFlag(ClaimFlags::INTERACT_CANCEL) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
                     if($claim->getProperties()->getFlag(ClaimFlags::INTERACT_CANCEL)->run($block) == false and !PurgeManager::isEnabled()) {
                         $event->cancel();
@@ -118,7 +122,10 @@ class ClaimListener implements Listener
                 $event->cancel();
                 return;
             }
-            if ($claim !== null) {
+            if ($claim instanceof NonEditableClaim){
+                $event->cancel();
+            }
+            if ($claim instanceof EditableClaim) {
                 if (!$claim->canEdit($player->getFaction())) {
                     if($claim->getProperties()->hasFlag(ClaimFlags::BREAK)){
                         if($claim->getProperties()->getFlag(ClaimFlags::BREAK)->run($block) == false) {
@@ -143,7 +150,11 @@ class ClaimListener implements Listener
                 $event->cancel();
                 return;
             }
-            if ($claim !== null) {
+            if ($claim instanceof NonEditableClaim){
+                $event->cancel();
+                return;
+            }
+            if ($claim instanceof EditableClaim) {
                 if (!$claim->canEdit($player->getFaction())) {
                     if($claim->getProperties()->hasFlag(ClaimFlags::PLACE)){
                         if($claim->getProperties()->getFlag(ClaimFlags::PLACE)->run($block) == false) {

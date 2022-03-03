@@ -49,6 +49,7 @@ final class PlayerUtils {
 		'deleteblock' => "&cAnti Build Tag: ",
 		'antitrapper_tag' => "&3Anti Trapper Tag: ",
 		'logout' => "&9Logout: ",
+        'fortunecookie' => "&6Fortune Cookie: "
 	];
 
     public static array $Names = [
@@ -74,5 +75,6 @@ final class PlayerUtils {
         'deleteblock' => "&cAnti Build Tag",
         'antitrapper_tag' => "&3Anti Trapper Tag",
         'logout' => "&9Logout",
+        'fortunecookie' => "&6Fortune Cookie"
     ];
 }
