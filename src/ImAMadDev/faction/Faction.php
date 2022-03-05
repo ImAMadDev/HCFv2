@@ -61,7 +61,12 @@ class Faction {
 	{
 		$this->data['disqualified'] = true;
 	}
-	
+
+    public function unDisqualify(): void
+    {
+        $this->data['disqualified'] = false;
+    }
+
 	public function isDisqualified(): bool 
 	{
 		return $this->data['disqualified'] ?? false;
