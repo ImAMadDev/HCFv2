@@ -21,7 +21,7 @@ class AntiDropDown extends DamageOtherAbility {
 	/** @var string */
 	private string $name = 'AntiDropDown';
 
-	private string $description = "&eHit a player 2 times so that all blocks he places are removed within 3 seconds.\n&cHas a cooldown of 5 minutes ";
+	private string $description = "&eHit a player 2 times so that he cannot throw himself on drop-downs.\n&cHas a cooldown of 5 minutes ";
 	
 	public int $cooldown = 300;
 
@@ -31,7 +31,7 @@ class AntiDropDown extends DamageOtherAbility {
      * @return Item
      */
 	public function get(int $count = 1, mixed $value = null): Item {
-		$item = VanillaItems::RED_DYE ()->setCount($count);
+		$item = VanillaItems::RED_DYE()->setCount($count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
         $item->getNamedTag()->setTag(self::DAMAGE_ABILITY, CompoundTag::create());
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
@@ -75,7 +75,7 @@ class AntiDropDown extends DamageOtherAbility {
      * @return bool
      */
 	public function isAbility(Item $item): bool {
-		if($item->getId() === ItemIds::GOLDEN_CARROT && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
+		if($item->getId() == ItemIds::DYE and $item->getMeta() == 1 && $item->getNamedTag()->getTag(self::DAMAGE_ABILITY) instanceof CompoundTag and $item->getCustomName() == $this->getColoredName()) {
 			return true;
 		}
 		return false;

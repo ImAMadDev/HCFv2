@@ -5,7 +5,7 @@ namespace ImAMadDev\claim;
 use ImAMadDev\claim\utils\ClaimType;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
-use pocketmine\block\{BlockFactory, BlockLegacyIds, utils\DyeColor, VanillaBlocks, Air};
+use pocketmine\block\{Block, BlockFactory, BlockLegacyIds, utils\DyeColor, VanillaBlocks, Air};
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
@@ -27,42 +27,39 @@ class FactionClaim extends EditableClaim {
 	public function __construct(HCF $main, array $data) {
 		parent::__construct($main, $data);
 	}
-	
-	public function createBase(HCFPlayer $player) : void
+
+    public function createBase(HCFPlayer $player)
     {
-    	$world = $player->getPosition()->getWorld();
-    	$size = $this->getSize() / 2;
-    	$x = $this->getCenter()->x;
-        $y = $this->getCenter()->y;
-        $z = $this->getCenter()->z;
-        for ($i = 1; $i <= $size; $i++){
-        	for ($k = 1; $k <= $size; $k++){
-         	   for ($j = 1; $j <= 4; $j++) {
-              	  if ($j == 1 or $j == 4){
-                 	   $world->setBlockAt(($x+$i), ($j+$y), ($z+$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
-                		 $world->setBlockAt(($x-$i), ($j+$y), ($z-$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
-                 	  // $world->setBlockAt($x, $y, 45, VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
-             	   } else {
-                 	   $world->setBlockAt(($x+$i), ($j+$y), ($z+$k), VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
-                  	  //$world->setBlockAt($x, $y, 45, VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
-               	 }
-       	     }
-            }
-        }
-        for ($z = 35; $z < 45; $z++) {
-            for ($y = 100; $y < 103; $y++) {
-                if ($y == 100 or $y == 104){
-                    $world->setBlockAt(14, $y, $z, VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
-                    $world->setBlockAt(3, $y, $z, VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
-                } else {
-                    $world->setBlockAt(14, $y, $z, VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
-                    $world->setBlockAt(3, $y, $z, VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
+        $world = $player->getPosition()->getWorld();
+        $size = $this->getSize();
+        $middle = $size / 2;
+        $x = round($this->getCenter()->getFloorX());
+        $y = round($this->getCenter()->getFloorY());
+        $z = round($this->getCenter()->getFloorZ());
+        for ($i = 0; $i <= $size; $i++){
+            for ($k = 0; $k <= $size; $k++){
+                for ($j = -1; $j <= 4; $j++) {
+                    if ($j == -1 or $j == 4){
+                        $world->setBlockAt(($x+$i), ($j+$y), ($z+$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                        $world->setBlockAt(($x-$i), ($j+$y), ($z-$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                        $world->setBlockAt(($x+$i), ($j+$y), ($z-$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                        $world->setBlockAt(($x-$i), ($j+$y), ($z+$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                    } else {
+                        if($i == $size or $k == $size) {
+                            if ($j == 0 or $j == 2 or $j == 3){
+                                $world->setBlockAt(($x+$i), ($j+$y), ($z+$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x-$i), ($j+$y), ($z-$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x+$i), ($j+$y), ($z-$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x-$i), ($j+$y), ($z+$k), VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
+                            } else {
+                                $world->setBlockAt(($x+$i), ($j+$y), ($z+$k), VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x-$i), ($j+$y), ($z-$k), VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x+$i), ($j+$y), ($z-$k), VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
+                                $world->setBlockAt(($x-$i), ($j+$y), ($z+$k), VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::GREEN()));
+                            }
+                 		}
+                    }
                 }
-            }
-        }
-        for ($x = 3; $x < 15; $x++){
-            for ($z = 35; $z < 45; $z++){
-                $world->setBlockAt($x, 103, $z, VanillaBlocks::WOOL()->setColor(DyeColor::GREEN()));
             }
         }
     }
