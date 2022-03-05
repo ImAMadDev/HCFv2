@@ -38,4 +38,3 @@ class EventsCreator{
 		return TextFormat::GREEN . "Has puesto el formato de la Scoreboard a: " . $scoreboard;
 	}
 }
-?>

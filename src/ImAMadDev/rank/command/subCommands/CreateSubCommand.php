@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\rank\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -11,7 +12,7 @@ use ImAMadDev\HCF;
 
 class CreateSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("create", "/rank create (string: name) (string: tag fornat) (string: chat format)");
 	}
 	

@@ -13,6 +13,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
@@ -53,7 +54,7 @@ class FairFight extends DamageOtherAbility
         HCF::getInstance()->getScheduler()->scheduleRepeatingTask(new EffectDisablerTick($entity), 20);
         $item = $player->getInventory()->getItemInHand();
         $item->setCount($item->getCount() - 1);
-        $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+        $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
         $entity->sendMessage(TextFormat::RED . "> " . TextFormat::YELLOW . "You have been hit with " . $this->getColoredName());
         $player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
     }

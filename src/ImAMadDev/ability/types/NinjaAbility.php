@@ -9,6 +9,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -63,7 +64,7 @@ class NinjaAbility extends InteractionAbility {
 				$player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), (20 * 4), 1, true));
 				$item = $player->getInventory()->getItemInHand();
 				$item->setCount($item->getCount() - 1);
-				$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+				$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 				$taggerPlayer->sendMessage(TextFormat::RED . $player->getName() . TextFormat::YELLOW . " has teleported to your location using " . $this->getColoredName());
 				$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 			}
@@ -97,7 +98,7 @@ class NinjaAbility extends InteractionAbility {
 	}
 	
 	public function obtain(HCFPlayer|Player $player, int $count) : void {
-		$status = $player->getInventoryStatus(1);
+		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));
         } else {

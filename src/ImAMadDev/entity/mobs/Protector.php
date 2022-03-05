@@ -4,6 +4,7 @@ namespace ImAMadDev\entity\mobs;
 
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use pocketmine\block\{Block,BlockFactory,FenceGate,Fence,Liquid,Stair,Slab};
+use JetBrains\PhpStorm\Pure;
 use pocketmine\math\{Math,Vector2,Vector3,VoxelRayTrace};
 use pocketmine\entity\Living;
 use pocketmine\nbt\tag\CompoundTag;
@@ -23,7 +24,7 @@ class Protector extends Living {
     public static function getNetworkTypeId() : string{ return EntityIds::SILVERFISH; }
     public const TARGET_MAX_DISTANCE = 30;
 
-    protected function getInitialSizeInfo() : EntitySizeInfo{
+    #[Pure] protected function getInitialSizeInfo() : EntitySizeInfo{
         return new EntitySizeInfo(0.5, 0.5); //TODO: eye height ??
     }
 
@@ -163,10 +164,10 @@ class Protector extends Living {
         $bb = $this->boundingBox;
 
         $minX = (int) floor($bb->minX - 0.5);
-        $minY = (int) floor($bb->minY - 0);
+        $minY = (int) floor($bb->minY);
         $minZ = (int) floor($bb->minZ - 0.5);
         $maxX = (int) floor($bb->maxX + 0.5);
-        $maxY = (int) floor($bb->maxY + 0);
+        $maxY = (int) floor($bb->maxY);
         $maxZ = (int) floor($bb->maxZ + 0.5);
 
         for($z = $minZ; $z <= $maxZ; ++$z){
@@ -205,7 +206,7 @@ class Protector extends Living {
                 $this->motion->y = 0;
             }elseif($this->motion->y > -$this->gravity * 4){
                 if(!($this->getWorld()->getBlock(new Vector3(Math::floorFloat($this->x), (int) ($this->y + 0.8), Math::floorFloat($this->z))) instanceof Liquid)){
-                    $this->motion->y -= $this->gravity * 1;
+                    $this->motion->y -= $this->gravity;
                 }
             }else{
                 $this->motion->y -= $this->gravity * $tickDiff;
@@ -269,7 +270,7 @@ class Protector extends Living {
     private function updateNametag(): void{
         $bar = "§6Protector §r§b" . $this->deadtime . "s";
         $tag = "\n§r§f{$this->getHealth()}";
-        $this->setNameTag("" . $bar . "" . $tag . "");
+        $this->setNameTag($bar . "" . $tag);
     }
 
     private function changeTarget(): void{

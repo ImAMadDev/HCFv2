@@ -22,6 +22,7 @@ use pocketmine\item\ItemIds;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\world\World;
+use UnexpectedValueException;
 
 class EntityManager {
 	
@@ -44,7 +45,7 @@ class EntityManager {
         $factory->register(SplashPotion::class, function(World $world, CompoundTag $nbt) : SplashPotion{
             $potionType = PotionTypeIdMap::getInstance()->fromId($nbt->getShort("PotionId", PotionTypeIds::WATER));
             if($potionType === null){
-                throw new \UnexpectedValueException("No such potion type");
+                throw new UnexpectedValueException("No such potion type");
             }
             return new SplashPotion(EntityDataHelper::parseLocation($nbt, $world), null, $potionType, $nbt);
         }, ['ThrownPotion', EntityIds::SPLASH_POTION, 'thrownpotion'], EntityLegacyIds::SPLASH_POTION);

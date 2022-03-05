@@ -116,7 +116,7 @@ class Waffle extends Kit {
 		$apple = ItemFactory::getInstance()->get(ItemIds::GOLDEN_APPLE, 0, 64);
 		$gapple = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_GOLDEN_APPLE, 0, 10);
 		//Combo Ability
-		$keys = CrateManager::getInstance()->getCrateByName('Waffle')->getCrateKey(1);
+		$keys = CrateManager::getInstance()->getCrateByName('Waffle')->getCrateKey();
 
 		$items = [$sword, $pearls, $pearls2, $pearls3, $steak, $apple, $gapple, $keys];
 		for($i = 0; $i < 28; $i++){

@@ -12,6 +12,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\Server;
@@ -82,7 +83,7 @@ class RankSharp extends InteractionAbility {
         }
         $this->spawnFirework($player->getPosition());
         $item->setCount($item->getCount() - 1);
-        $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+        $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 	}
 
 	/**

@@ -3,14 +3,13 @@
 namespace ImAMadDev\rank\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
-use ImAMadDev\rank\RankClass;
-use ImAMadDev\HCFPlayer;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 class AddPermissionSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("addpermission", "/rank addpermission (string: rank) (string: permission)", ["addperm"]);
 	}
 	

@@ -9,12 +9,10 @@ use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\utils\TextFormat;
-use pocketmine\math\Vector3;
 
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\kit\Kit;
-use ImAMadDev\manager\AbilityManager;
 
 class Archer extends Kit {
 
@@ -34,7 +32,7 @@ class Archer extends Kit {
 	private string $permission = 'archer.kit';
 	
 	/** @var string */
-	private string $description = "";
+	private string $description;
 
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::BOW);

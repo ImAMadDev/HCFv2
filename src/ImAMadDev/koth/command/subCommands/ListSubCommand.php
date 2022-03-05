@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\koth\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -9,7 +10,7 @@ use ImAMadDev\command\SubCommand;
 
 class ListSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("list", "/koth list");
 	}
 	

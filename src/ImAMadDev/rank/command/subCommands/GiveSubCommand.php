@@ -61,7 +61,7 @@ class GiveSubCommand extends SubCommand {
                     return;
                 }
                 $rank = $this->getMain()->getRankManager()->getRank($args[2]);
-                if ($player->hasDataInArray($rank->getName(), 'ranks')) {
+                if ($player->hasDataInArray($rank->getName())) {
                     $sender->sendMessage(TextFormat::RED . "This player already have this rank!");
                     return;
                 }

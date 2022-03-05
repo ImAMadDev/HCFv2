@@ -9,6 +9,7 @@ use pocketmine\item\Item;
 use pocketmine\block\Block;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\math\Facing;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
@@ -62,7 +63,7 @@ class Airdrops extends InteractionBlockAbility {
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName());
 		$item->setCount($item->getCount() - 1);
-		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 	}
 
 	/**

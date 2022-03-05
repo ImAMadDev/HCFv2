@@ -6,6 +6,7 @@ use ImAMadDev\player\HCFPlayer;
 
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\scheduler\Task;
 use pocketmine\item\Item;
 use pocketmine\utils\TextFormat;
@@ -21,7 +22,7 @@ class StormBreakerTick extends Task {
 	public function __construct(HCFPlayer $player){
 		$this->player = $player;
 		$this->item = clone $player->getArmorInventory()->getHelmet();
-		$player->getArmorInventory()->setHelmet(ItemFactory::air());
+		$player->getArmorInventory()->setHelmet(VanillaItems::AIR());
 	}
 	
 	public function onRun() : void {

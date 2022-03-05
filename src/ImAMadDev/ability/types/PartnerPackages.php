@@ -11,6 +11,7 @@ use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -53,7 +54,7 @@ class PartnerPackages extends InteractionAbility {
 		$item = $player->getInventory()->getItemInHand();
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName());
 		$item->setCount($item->getCount() - 1);
-		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		$this->spawnFirework($player->getPosition());
 		foreach($this->getContents(rand(3, 5)) as $price) {
 			if($player->getInventory()->canAddItem($price)) {

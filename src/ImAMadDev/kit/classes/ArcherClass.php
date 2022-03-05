@@ -7,11 +7,7 @@ use pocketmine\player\Player;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
-use pocketmine\item\{
-	Item,
-	ItemIds,
-	ItemFactory
-};
+use pocketmine\item\{Item, ItemIds, ItemFactory, VanillaItems};
 use pocketmine\utils\{
 	TextFormat,
 	Limits
@@ -88,7 +84,7 @@ class ArcherClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
         	    $player->sendMessage(TextFormat::colorize("&eYou have consumed &bSpeed"));
         		return true;
@@ -98,7 +94,7 @@ class ArcherClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &aJump Boost"));
           		return true;

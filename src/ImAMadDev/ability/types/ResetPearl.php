@@ -9,6 +9,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
@@ -55,7 +56,7 @@ class ResetPearl extends InteractionAbility {
 		$player->getCooldown()->remove('enderpearl');
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 		$item->setCount($item->getCount() - 1);
-		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 	}
 
 	/**

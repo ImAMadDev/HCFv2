@@ -50,7 +50,7 @@ class AntiDropDown extends DamageOtherAbility {
 		$entity->getCooldown()->add('antidropdowntag', 20);
 		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);
-		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		$entity->sendMessage(TextFormat::RED . "> " . TextFormat::YELLOW . "You have been hit with " . $this->getColoredName());
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 	}

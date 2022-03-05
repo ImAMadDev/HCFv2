@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\events\command\subCommands;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
@@ -11,7 +12,7 @@ use ImAMadDev\HCF;
 
 class DisableSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("disable", "/event disable (string: event)");
 	}
 	

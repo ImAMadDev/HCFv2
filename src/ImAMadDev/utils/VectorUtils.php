@@ -35,8 +35,9 @@ final class VectorUtils {
 	#[Pure] public static function stringToVector(string $pos, string $separator = ",") : Vector3 {
 		return new Vector3(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2]);
 	}
-	
-	public static function getStuck(HCFPlayer $player, Position $usagePos): ?Vector3 
+
+    /** @noinspection PhpUnnecessaryStopStatementInspection */
+    public static function getStuck(HCFPlayer $player, Position $usagePos): ?Vector3
 	{
 		$claimSize = ClaimManager::getInstance()->getClaimByPosition($usagePos) instanceof Claim ? (ClaimManager::getInstance()->getClaimByPosition($usagePos)?->getSize() + 2) : 200;
 		$world = $usagePos->getWorld();

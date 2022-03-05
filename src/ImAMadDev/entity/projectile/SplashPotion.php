@@ -3,6 +3,7 @@
 namespace ImAMadDev\entity\projectile;
 
 use ImAMadDev\player\HCFPlayer;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\data\bedrock\PotionTypeIdMap;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Location;
@@ -118,7 +119,7 @@ class SplashPotion extends Throwable {
     //parent::onHitEntity($entityHit, $hitResult);
     }
 
-    protected function getInitialSizeInfo(): EntitySizeInfo
+    #[Pure] protected function getInitialSizeInfo(): EntitySizeInfo
     {
         return new EntitySizeInfo($this->height, $this->width);
     }

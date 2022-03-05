@@ -4,8 +4,8 @@ namespace ImAMadDev\ability\ticks;
 
 use ImAMadDev\player\HCFPlayer;
 
-use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemIds;
+use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\scheduler\Task;
 use pocketmine\item\Item;
 use pocketmine\utils\TextFormat;
@@ -28,7 +28,10 @@ class FairFightTick extends Task {
 		$chestplate = clone $player->getArmorInventory()->getChestplate();
 		$leggings = clone $player->getArmorInventory()->getLeggings();
 		$boots = clone $player->getArmorInventory()->getBoots();
-		$player->getArmorInventory()->setHelmet($helmet->addEnchantment(new );
+		$player->getArmorInventory()->setHelmet($helmet->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 1)));
+		$player->getArmorInventory()->setChestplate($chestplate->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 1)));
+		$player->getArmorInventory()->setLeggings($leggings->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 1)));
+		$player->getArmorInventory()->setBoots($boots->addEnchantment(new EnchantmentInstance(VanillaEnchantments::PROTECTION(), 1)));
 	}
 	
 	public function onRun() : void {
@@ -42,10 +45,13 @@ class FairFightTick extends Task {
 			return;
 		}
 		if($this->time-- <= 0) {
-			$player->getArmorInventory()->setHelmet($this->item);
+			$player->getArmorInventory()->setHelmet($this->helmet);
+			$player->getArmorInventory()->setChestplate($this->chestplate);
+			$player->getArmorInventory()->setLeggings($this->leggings);
+			$player->getArmorInventory()->setBoots($this->boots);
 			$this->getHandler()->cancel();
 		} else {
-			$player->sendTip(TextFormat::RED . 'Returning helmet in: ' . $this->time);
+			$player->sendTip(TextFormat::RED . 'Returning you armor in: ' . $this->time);
 		}
 	}
 }

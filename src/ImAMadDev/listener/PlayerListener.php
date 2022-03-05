@@ -30,6 +30,7 @@ use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\player\GameMode;
 use pocketmine\player\Player;
@@ -306,8 +307,7 @@ class PlayerListener implements Listener
     	if (abs($to->getX()) >= 1500 and abs($to->getZ()) >= 1500) {
     		$event->cancel();
     		$player->sendMessage(TextFormat::RED . "Border reached!");
-    		return;
-    	}
+        }
     }
     
     public function handleBorderTeleport(EntityTeleportEvent $event): void 
@@ -318,8 +318,7 @@ class PlayerListener implements Listener
     	if (abs($to->getX()) >= 1500 and abs($to->getZ()) >= 1500) {
     		$event->cancel();
     		$player->sendMessage(TextFormat::RED . "Border reached!");
-    		return;
-    	}
+        }
     }
 
     public function onPlayerInteractEvent(PlayerInteractEvent $event): void
@@ -602,7 +601,7 @@ class PlayerListener implements Listener
                     }
                     if ($enchantmentSuccessful) {
                         $event->cancel();
-                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), VanillaItems::AIR());
                         $p = $action->getInventory();
                         $p2 = $action->getInventory();
                         if ($p instanceof PlayerInventory) {

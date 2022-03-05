@@ -36,7 +36,7 @@ class Icecream extends Kit {
 	private string $permission = 'icecream.kit';
 	
 	/** @var string */
-	private string $description = "";
+	private string $description;
 	
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::PRISMARINE);

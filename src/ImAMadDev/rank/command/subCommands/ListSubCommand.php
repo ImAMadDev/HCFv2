@@ -3,12 +3,13 @@
 namespace ImAMadDev\rank\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 class ListSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("list", "/rank list [page]");
 	}
 	
@@ -39,4 +40,3 @@ class ListSubCommand extends SubCommand {
 		}
 	}
 }
-?>

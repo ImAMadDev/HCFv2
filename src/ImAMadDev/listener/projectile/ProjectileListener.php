@@ -12,6 +12,7 @@ use ImAMadDev\utils\NBT;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\utils\TextFormat;
 use pocketmine\event\player\PlayerInteractEvent;
 
@@ -39,7 +40,7 @@ class ProjectileListener implements Listener {
             $entity->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
             $entity->spawnToAll();
             $item->setCount($item->getCount() - 1);
-            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		}
 		if($item instanceof PearlItem){
 			if($player->getCooldown()->has('enderpearl')){
@@ -52,7 +53,7 @@ class ProjectileListener implements Listener {
 			$entity->spawnToAll();
 			$player->getCooldown()->add('enderpearl', 16);
 			$item->setCount($item->getCount() - 1);
-			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		}
         /*
 		if($item instanceof PearlItem && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
@@ -68,7 +69,7 @@ class ProjectileListener implements Listener {
                 $entity->spawnToAll();
 				$player->getCooldown()->add('enderpearl', 16);
 				$item->setCount($item->getCount() - 1);
-				$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+				$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 			}
 		}*/
 	}

@@ -3,6 +3,7 @@
 namespace ImAMadDev\youtubers\redeem;
 
 use ImAMadDev\HCF;
+use JsonException;
 use pocketmine\utils\Config;
 
 class RedeemCreator
@@ -31,7 +32,7 @@ class RedeemCreator
 
     /**
      * @param int $claims
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function addClaim(int $claims): void
     {

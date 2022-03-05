@@ -117,7 +117,7 @@ class AbilityManager {
 	public function getAllAbilityItems(): array {
 		$items = [];
 		foreach ($this->getAbilities() as $ability) {
-			$items[] = $ability->get(1);
+			$items[] = $ability->get();
 		}
 		return $items;
 	}

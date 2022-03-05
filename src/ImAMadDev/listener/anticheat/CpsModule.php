@@ -99,9 +99,7 @@ class CpsModule implements Listener {
         if($check === true and $this->getCps($event->getOrigin()->getPlayer()) >= 20) {
         	$this->sendAlertToStaff($event->getOrigin()->getPlayer());
 			DiscordIntegration::sendToDiscord("AntiCheat", $event->getOrigin()->getDisplayName() . " Suspect using AutoClick, CPS: " .$this->getCps($event->getOrigin()->getPlayer()), DiscordIntegration::ALERT_WEBHOOK, "WaffleBot");
-			if($check === true and $this->getCps($event->getOrigin()->getPlayer()) >= 20) {
-        		$event->getOrigin()->getPlayer()->close("Too much CPS");
-			}
+            $event->getOrigin()->getPlayer()->kick("Too much CPS");
 		}
     }
     

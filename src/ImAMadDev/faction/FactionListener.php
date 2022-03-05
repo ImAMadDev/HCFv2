@@ -2,30 +2,19 @@
 
 namespace ImAMadDev\faction;
 
-use ImAMadDev\claim\Claim;
-use ImAMadDev\claim\utils\ClaimFlags;
 use ImAMadDev\HCF;
 use ImAMadDev\player\HCFPlayer;
-use ImAMadDev\manager\ClaimManager;
 use ImAMadDev\ticks\ReplaceBlockTick;
 
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\Listener;
-use pocketmine\item\ItemIds;
 use pocketmine\player\GameMode;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
-use pocketmine\event\player\{PlayerMoveEvent, PlayerInteractEvent};
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\event\entity\{EntityDamageByEntityEvent, EntityDamageEvent};
-use pocketmine\scheduler\ClosureTask;
 
 class FactionListener implements Listener {
-	
-	public function __construct(){
-		
-	}
-	
+
 	public function onEntityDamageEvent(EntityDamageEvent $event) : void {
 		$player = $event->getEntity();
 		if($player instanceof HCFPlayer) {

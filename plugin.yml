@@ -103,4 +103,6 @@ permissions:
     description: Haz que un jugador haga lo que digas
   broadcast.command:
     default: op
+  koth.manager:
+    default: op
 ...

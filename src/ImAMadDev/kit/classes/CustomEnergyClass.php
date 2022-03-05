@@ -7,6 +7,7 @@ use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\utils\{
 	TextFormat,
 	Limits
@@ -19,7 +20,7 @@ class CustomEnergyClass extends IEnergyClass
 	
 	private int | float $energy;
 	
-	private array $effects = [];
+	private array $effects;
 	
 	private array $items = [];
 	
@@ -125,7 +126,7 @@ class CustomEnergyClass extends IEnergyClass
               $player->applyPotionEffect($effect);
               $player->getClassEnergy()->reduce($this->getEnergyCost($item));
               $item->setCount($item->getCount() - 1);
-              $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+              $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
               $player->getCooldown()->add('effects_cooldown', 10);
               return true;
            }

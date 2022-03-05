@@ -26,7 +26,7 @@ class CustomCrate extends Crate
     private string $name;
 
     /** @var Item[] */
-    private array $contents = [];
+    private array $contents;
 
     /**
      * @var string
@@ -144,7 +144,7 @@ class CustomCrate extends Crate
         for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
             if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
                 $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
-                $panel->setCustomName(TextFormat::RED . "");
+                $panel->setCustomName(TextFormat::RED);
                 $menu->getInventory()->setItem($i, $panel);
             }
         }

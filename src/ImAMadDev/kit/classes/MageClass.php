@@ -9,11 +9,7 @@ use pocketmine\data\bedrock\EffectIds;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\player\Player;
-use pocketmine\item\{
-	ItemIds,
-	ItemFactory,
-	Item
-};
+use pocketmine\item\{ItemIds, ItemFactory, Item, VanillaItems};
 use pocketmine\utils\{
 	TextFormat,
 	Limits
@@ -92,7 +88,7 @@ class MageClass extends IEnergyClass
         		$this->applyNearbyEnemys($player, $effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-        		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+        		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
         		$player->getCooldown()->add('effects_cooldown', 10);
         		$player->getCooldown()->add('combattag', 30);
         	    $player->sendMessage(TextFormat::colorize("&eYou have consumed &7Waekness 1"));
@@ -103,7 +99,7 @@ class MageClass extends IEnergyClass
         		$this->applyNearbyEnemys($player, $effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
          	   $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &aHunger 1"));
@@ -114,7 +110,7 @@ class MageClass extends IEnergyClass
         		$this->applyNearbyEnemys($player, $effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &7Slowness 2"));
@@ -125,7 +121,7 @@ class MageClass extends IEnergyClass
             	$this->applyNearbyEnemys($player, $effect);
             	$player->getClassEnergy()->reduce($this->getEnergyCost($item));
                 $item->setCount($item->getCount() - 1);
-                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
                 $player->getCooldown()->add('effects_cooldown', 10);
                 $player->getCooldown()->add('combattag', 30);
                 $player->sendMessage(TextFormat::colorize("&eYou have consumed &2Poison 1"));
@@ -135,7 +131,7 @@ class MageClass extends IEnergyClass
         		$this->applyNearbyEnemys($player, $effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &2Nausea 1"));
@@ -146,7 +142,7 @@ class MageClass extends IEnergyClass
         		$this->applyNearbyEnemys($player, $effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &9Wither 2"));

@@ -9,6 +9,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -49,7 +50,7 @@ class PortableRogue extends DamageOtherAbility {
 		}
         $player->getCache()->setCountdown($this->getName(), 150);
 		$entity->setHealth($entity->getHealth() / 2);
-		$player->getInventory()->setItemInHand(ItemFactory::air());
+		$player->getInventory()->setItemInHand(VanillaItems::AIR());
 		$player->getEffects()->add(new EffectInstance(VanillaEffects::SLOWNESS(), 5 * 20, 3));
 		$player->getEffects()->add(new EffectInstance(VanillaEffects::BLINDNESS(), 5 * 20, 3));
 		$entity->sendTitle(TextFormat::RED . TextFormat::BOLD . "Backstabbed!");

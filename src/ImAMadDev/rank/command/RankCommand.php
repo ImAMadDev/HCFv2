@@ -43,6 +43,5 @@ class RankCommand extends Command {
 			return;
 		}
 		$sender->sendMessage("/rank help <1-5>");
-		return;
-	}
+    }
 }

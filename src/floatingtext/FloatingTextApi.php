@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace floatingtext;
 
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\types\entity\FloatMetadataProperty;
@@ -42,7 +43,7 @@ class FloatingTextApi {
         $pk->position = $pos->add(0.5, 0, 0.5);
         $pk->platformChatId = "";
         $pk->headYaw = 0;
-        $pk->item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(ItemFactory::air()));
+        $pk->item = ItemStackWrapper::legacy(TypeConverter::getInstance()->coreItemStackToNet(VanillaItems::AIR()));
         $flags =
             1 << EntityMetadataFlags::CAN_SHOW_NAMETAG |
             1 << EntityMetadataFlags::ALWAYS_SHOW_NAMETAG |

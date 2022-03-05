@@ -28,7 +28,7 @@ class Smelting extends CustomEnchantment implements Actionable {
      * SmeltingEnchantment Constructor.
      */
     #[Pure] public function __construct(){
-        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::DIG, ItemFlags::PICKAXE, 1);
+        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::DIG, ItemFlags::PICKAXE);
     }
 
     /**

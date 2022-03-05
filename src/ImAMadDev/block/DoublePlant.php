@@ -12,6 +12,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\block\Block;
+use pocketmine\player\Player;
 use pocketmine\world\BlockTransaction;
 
 class DoublePlant extends DoublePlantPMMP
@@ -21,7 +22,7 @@ class DoublePlant extends DoublePlantPMMP
 		return false;
 	}
 
-    public function place(BlockTransaction $tx, Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, ?\pocketmine\player\Player $player = null) : bool{
+    public function place(BlockTransaction $tx, Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
         return false;
     }
 

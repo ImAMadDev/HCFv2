@@ -24,7 +24,7 @@ class StuckTask extends Task {
 
 	private HCFPlayer $player;
 	
-	private int $claimSize = 200;
+	private int $claimSize;
 
 	public function __construct(HCFPlayer $player) {
 		$this->player = $player;

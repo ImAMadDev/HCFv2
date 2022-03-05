@@ -75,7 +75,7 @@ class AirDropTick extends Task {
 		foreach(CrateManager::getInstance()->getCrates() as $crate) {
 			$list[] = $crate->getCrateKey(rand(1, 3));
 		}
-		foreach(array_values(CustomEnchantments::getEnchantments()) as $enchant) {
+		foreach(CustomEnchantments::getEnchantments() as $enchant) {
 			if($enchant->getName() === CustomEnchantment::STRENGTH || $enchant->getName() === CustomEnchantment::OVERLOAD) {
 				continue;
 			}

@@ -41,7 +41,5 @@ class EventCommand extends Command {
 			return;
 		}
 		$sender->sendMessage("/event help <1-5>");
-		return;
-	}
+    }
 }
-?>

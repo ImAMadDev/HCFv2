@@ -3,12 +3,13 @@
 namespace ImAMadDev\rank\command\subCommands;
 
 use ImAMadDev\command\SubCommand;
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 class InfoSubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("info", "/rank info (string: rank)");
 	}
 	
@@ -29,4 +30,3 @@ class InfoSubCommand extends SubCommand {
 		$sender->sendMessage(TextFormat::LIGHT_PURPLE . TextFormat::BOLD . "Permissions: ". implode(", ", $rank->getPermissions()));
 	}
 }
-?>

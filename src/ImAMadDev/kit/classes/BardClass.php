@@ -8,11 +8,7 @@ use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\EffectIds;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
-use pocketmine\item\{
-	Item,
-	ItemIds,
-	ItemFactory
-};
+use pocketmine\item\{Item, ItemIds, ItemFactory, VanillaItems};
 use pocketmine\utils\{
 	TextFormat,
 	Limits
@@ -84,19 +80,14 @@ class BardClass extends IEnergyClass
     
     public function getEffectPassiveItem(Item $item): ?EffectInstance 
     {
-    	switch($item->getId()) {
-    		case ItemIds::SUGAR:
-    			return new EffectInstance(VanillaEffects::SPEED(), 20 * 5, 1, true);
-			case ItemIds::FEATHER:
-				return new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 5, 2, true);
-			case ItemIds::IRON_INGOT:
-				return new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 5, 0, true);
-			case ItemIds::GHAST_TEAR:
-				return new EffectInstance(VanillaEffects::REGENERATION(), 20 * 5, 0, true);
-			case ItemIds::BLAZE_POWDER:
-				return new EffectInstance(VanillaEffects::STRENGTH(), 20 * 5, 0, true);
-		}
-		return null;
+        return match ($item->getId()) {
+            ItemIds::SUGAR => new EffectInstance(VanillaEffects::SPEED(), 20 * 5, 1, true),
+            ItemIds::FEATHER => new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 5, 2, true),
+            ItemIds::IRON_INGOT => new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 5, 0, true),
+            ItemIds::GHAST_TEAR => new EffectInstance(VanillaEffects::REGENERATION(), 20 * 5, 0, true),
+            ItemIds::BLAZE_POWDER => new EffectInstance(VanillaEffects::STRENGTH(), 20 * 5, 0, true),
+            default => null,
+        };
     }
     
     public function itemConsumed(HCFPlayer $player, Item $item): bool
@@ -108,7 +99,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-        		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+        		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
         		$player->getCooldown()->add('effects_cooldown', 10);
         		$player->getCooldown()->add('combattag', 30);
         	    $player->sendMessage(TextFormat::colorize("&eYou have consumed &bSpeed 3"));
@@ -120,7 +111,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
          	   $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &aJump Boost 7"));
@@ -132,7 +123,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &cRegeneration 3"));
@@ -144,7 +135,7 @@ class BardClass extends IEnergyClass
             	$player->applyPotionEffect($effect);
             	$player->getClassEnergy()->reduce($this->getEnergyCost($item));
                 $item->setCount($item->getCount() - 1);
-                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
                 $player->getCooldown()->add('effects_cooldown', 10);
                 $player->getCooldown()->add('combattag', 30);
                 $player->sendMessage(TextFormat::colorize("&eYou have consumed &fInvisibility 1"));
@@ -155,7 +146,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &6Strength 2"));
@@ -167,7 +158,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &7Resistance 3"));
@@ -179,7 +170,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &9Wither 2"));
@@ -191,7 +182,7 @@ class BardClass extends IEnergyClass
         		$player->applyPotionEffect($effect);
         		$player->getClassEnergy()->reduce($this->getEnergyCost($item));
         		$item->setCount($item->getCount() - 1);
-            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+            	$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
             	$player->getCooldown()->add('effects_cooldown', 10 );
            	 $player->getCooldown()->add('combattag', 30);
           	  $player->sendMessage(TextFormat::colorize("&eYou have consumed &4Fire Resistance 2"));

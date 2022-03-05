@@ -59,7 +59,7 @@ class LifeSteal extends CustomEnchantment implements Actionable {
     	if($event instanceof EntityDamageByEntityEvent) {
     		$chance = (100 / $level);
     		if(rand(0, $chance) <= 10) {
-    			$player->setHealth($player->getHealth() + 2 + $level * 1 > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + 2 + $level * 1);
+    			$player->setHealth(($player->getHealth() + 2 + $level) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + 2 + $level);
     		}
     	}
    }

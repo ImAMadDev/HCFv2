@@ -33,7 +33,7 @@ class Cupcake extends Kit {
 	private string $permission = 'cupcake.kit';
 	
 	/** @var array */
-	private string $description = "";
+	private string $description;
 	
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::EMERALD);

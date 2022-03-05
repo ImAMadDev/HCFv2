@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+<?php
 
 namespace ImAMadDev\claim;
 
@@ -43,7 +43,7 @@ class Claim {
 		return $this->getProperties()->getWorld()->getFolderName();
 	}
 	
-	public function getSize(): int 
+	#[Pure] public function getSize(): int
 	{
 		/*$firstX = $this->getProperties()->getPosition1()->getX();
 		$secondX = $this->getProperties()->getPosition2()->getX();
@@ -248,9 +248,9 @@ class Claim {
         }
     }
 
-    private function setEdit(HCFPlayer $player, bool $edit = false) : void
+    private function setEdit(HCFPlayer $player) : void
     {
-        $pk = AdventureSettingsPacket::create(AdventureSettingsPacket::DOORS_AND_SWITCHES, AdventureSettingsPacket::PERMISSION_NORMAL, -1, PlayerPermissions::VISITOR, 0, $player->getId());;
+        $pk = AdventureSettingsPacket::create(AdventureSettingsPacket::DOORS_AND_SWITCHES, AdventureSettingsPacket::PERMISSION_NORMAL, -1, PlayerPermissions::VISITOR, 0, $player->getId());
         $player->getNetworkSession()->sendDataPacket($pk);
     }
 

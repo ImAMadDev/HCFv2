@@ -19,6 +19,7 @@ use ImAMadDev\player\sessions\ClassEnergy;
 use ImAMadDev\player\sessions\PlayerRegion;
 use ImAMadDev\player\sessions\TraderPlayer;
 use ImAMadDev\player\sessions\EnderpearlHistory;
+use pocketmine\item\VanillaItems;
 use ImAMadDev\player\traits\{
 	RanksTrait,
 	AbilityTrait
@@ -353,12 +354,15 @@ class HCFPlayer extends Player
         }
         return parent::onUpdate($currentTick);
     }
-	
-	public function applyPotionEffect(EffectInstance $effect) {
+
+    /** @noinspection PhpUnnecessaryStopStatementInspection */
+    public function applyPotionEffect(EffectInstance $effect) {
 		if(count($this->getEffects()->all()) > 0) {
 			foreach($this->getEffects()->all() as $playerEffect){
 				if($playerEffect->getType()->getName() == $effect->getType()->getName()) {
-					if($playerEffect->getAmplifier() > $effect->getAmplifier()) continue;
+					if($playerEffect->getAmplifier() > $effect->getAmplifier()) {
+                        continue;
+                    }
 				}
 			}
 		}
@@ -727,10 +731,10 @@ class HCFPlayer extends Player
         foreach ($this->getViewers() as $viewer) {
             $viewer->getNetworkSession()->sendDataPacket(MobArmorEquipmentPacket::create(
                 $this->getId(),
-                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
-                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
-                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air())),
-                ItemStackWrapper::legacy($converter->coreItemStackToNet(ItemFactory::air()))
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(VanillaItems::AIR())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(VanillaItems::AIR())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(VanillaItems::AIR())),
+                ItemStackWrapper::legacy($converter->coreItemStackToNet(VanillaItems::AIR()))
             ));
         }
     }

@@ -18,7 +18,7 @@ use pocketmine\entity\effect\EffectInstance;
 class BurnShield extends CustomEnchantment implements Tickable {
 	
     #[Pure] public function __construct(){
-            parent::__construct($this->getName(), Rarity::COMMON, ItemFlags::ARMOR, ItemFlags::NONE, 1);
+            parent::__construct($this->getName(), Rarity::COMMON, ItemFlags::ARMOR, ItemFlags::NONE);
     }
     
     

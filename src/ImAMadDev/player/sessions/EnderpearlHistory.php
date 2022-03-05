@@ -42,7 +42,7 @@ class EnderpearlHistory
         return $this->player;
     }
 
-    #[Pure] public function has() : bool
+    public function has() : bool
     {
         if ($this->usageTime === 0) return false;
         if ($this->getUsageLocation() === null) return false;

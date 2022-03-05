@@ -20,7 +20,7 @@ class Unrepairable extends CustomEnchantment
      * UnrepairableEnchantment Constructor.
      */
     #[Pure] public function __construct(){
-        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ALL, ItemFlags::NONE, 1);
+        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ALL, ItemFlags::NONE);
     }
 
     /**

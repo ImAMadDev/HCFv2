@@ -364,7 +364,7 @@ class KitManager {
      * @param string $name
      * @return IClass|null
      */
-    public function getClassByName(string $name): ?IClass
+    #[Pure] public function getClassByName(string $name): ?IClass
     {
 		foreach ($this->getClasses() as $class) {
 			if ($class->isClass($name)) {

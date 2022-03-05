@@ -10,6 +10,7 @@ use pocketmine\block\Block;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
@@ -45,8 +46,8 @@ class Vote extends Crate {
 		$items[14] = AbilityManager::getInstance()->getAbilityByName('Strength_Portable')?->get(rand(1, 2));
 		$items[12] = AbilityManager::getInstance()->getAbilityByName('Resistance_Portable')?->get(rand(1, 2));
 		
-		$items[3] = CrateManager::getInstance()->getCrateByName('Cupcacke')?->getCrateKey(1);
-		$items[5] = CrateManager::getInstance()->getCrateByName('Icecream')?->getCrateKey(1);
+		$items[3] = CrateManager::getInstance()->getCrateByName('Cupcacke')?->getCrateKey();
+		$items[5] = CrateManager::getInstance()->getCrateByName('Icecream')?->getCrateKey();
 		$items[22] = CrateManager::getInstance()->getCrateByName('Basic')?->getCrateKey(rand(1, 3));
 		
 		$items[11] = $iron_block;
@@ -118,7 +119,7 @@ class Vote extends Crate {
         for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
             if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
                 $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
-                $panel->setCustomName(TextFormat::RED . "");
+                $panel->setCustomName(TextFormat::RED . " ");
                 $menu->getInventory()->setItem($i, $panel);
             }
         }
@@ -138,7 +139,7 @@ class Vote extends Crate {
 			$player->getInventory()->addItem($win);
 			$item = $player->getInventory()->getItemInHand();
 			$item->setCount($item->getCount() - 1);
-			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::GRAY . TextFormat::BOLD . $name);
 		}
 	}

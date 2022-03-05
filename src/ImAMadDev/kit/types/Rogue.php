@@ -33,7 +33,7 @@ class Rogue extends Kit {
 	private string $permission = 'rogue.kit';
 	
 	/** @var string */
-	private string $description = "";
+	private string $description;
 
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::CHAINMAIL_HELMET);

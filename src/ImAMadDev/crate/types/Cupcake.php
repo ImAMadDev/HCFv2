@@ -12,6 +12,7 @@ use pocketmine\block\Block;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\nbt\tag\CompoundTag;
@@ -146,7 +147,7 @@ class Cupcake extends Crate {
 	}
 	
 	public function isCrateKey(Item $item) : bool {
-		if($item->getId() === ItemIds::DYE  && $item->getMeta() === 2 && $item->getNamedTag()->getTag(self::SAPPHIRE_KEY) instanceof CompoundTag) {
+		if($item->getId() === ItemIds::DYE  && $item->getMeta() === 2 && $item->getNamedTag()->getTag(self::CUPCAKE_KEY) instanceof CompoundTag) {
 			return true;
 		}
 		return false;
@@ -175,7 +176,7 @@ class Cupcake extends Crate {
         for ($i = 0; $i < $menu->getInventory()->getSize(); $i++){
             if ($menu->getInventory()->getItem($i)->getId() == BlockLegacyIds::AIR){
                 $panel = ItemFactory::getInstance()->get(BlockLegacyIds::STAINED_GLASS_PANE, 14);
-                $panel->setCustomName(TextFormat::RED . "");
+                $panel->setCustomName(TextFormat::RED);
                 $menu->getInventory()->setItem($i, $panel);
             }
         }
@@ -195,7 +196,7 @@ class Cupcake extends Crate {
 			$player->getInventory()->addItem($win);
 			$item = $player->getInventory()->getItemInHand();
 			$item->setCount($item->getCount() - 1);
-			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 			$player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::LIGHT_PURPLE . TextFormat::BOLD . $name);
 		}
 	}

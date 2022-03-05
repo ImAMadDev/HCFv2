@@ -1,6 +1,6 @@
 <?php
 
-namespace DaPigGuy\PiggyCustomEnchants\blocks;
+namespace ImAMadDev\block;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockBreakInfo;
@@ -10,7 +10,7 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class PiggyObsidian extends Block
+class AntiTrapperObsidian extends Block
 {
     private int $age = 0;
 
@@ -43,7 +43,7 @@ class PiggyObsidian extends Block
     {
         $i = 0;
         foreach ($this->getAllSides() as $block) {
-            if ($block instanceof PiggyObsidian) {
+            if ($block instanceof AntiTrapperObsidian) {
                 $i++;
                 if ($i >= 4) return $i;
             }
@@ -60,19 +60,11 @@ class PiggyObsidian extends Block
             $this->getPosition()->getWorld()->useBreakOn($this->getPosition());
             if ($meltNeighbors) {
                 foreach ($this->getAllSides() as $block) {
-                    if ($block instanceof PiggyObsidian) {
+                    if ($block instanceof AntiTrapperObsidian) {
                         $block->slightlyMelt(false);
                     }
                 }
             }
-        }
-    }
-    
-    public function onScheduledUpdate(): void
-    {
-        $tile = $this->position->getWorld()->getTile($this->position);
-        if($tile instanceof PotionGeneratorClass and $tile->onUpdate()){
-            $this->updateBlock();
         }
     }
 }

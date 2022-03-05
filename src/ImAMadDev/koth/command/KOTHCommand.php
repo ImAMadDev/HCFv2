@@ -45,7 +45,5 @@ class KOTHCommand extends Command {
 			return;
 		}
 		$sender->sendMessage("/koth help <1-5>");
-		return;
-	}
+    }
 }
-?>

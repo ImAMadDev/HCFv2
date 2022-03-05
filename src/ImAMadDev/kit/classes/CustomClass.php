@@ -13,7 +13,7 @@ use pocketmine\utils\Limits;
 class CustomClass extends IClass
 {
 	
-	private array $effects = [];
+	private array $effects;
 
     #[Pure] public function __construct(string $className, array $armor, array $effects =[])
     {

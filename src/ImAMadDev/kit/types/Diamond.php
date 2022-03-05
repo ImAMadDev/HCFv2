@@ -2,6 +2,7 @@
 
 namespace ImAMadDev\kit\types;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -31,7 +32,7 @@ class Diamond extends Kit {
 	private string $permission = 'default.permission';
 	
 	/** @var string */
-	private string $description = "";
+	private string $description;
 
 	public function __construct() {
 		$bow = ItemFactory::getInstance()->get(ItemIds::DIAMOND_CHESTPLATE);
@@ -126,7 +127,7 @@ class Diamond extends Kit {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function isKit(string $name): bool {
+	#[Pure] public function isKit(string $name): bool {
 		return strtolower($this->getName()) == strtolower($name);
 	}
 	

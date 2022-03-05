@@ -107,7 +107,8 @@ class WorldUtils {
 		Server::getInstance()->getWorldManager()->unloadWorld($newWorld); // reloading the world
 		WorldUtils::lazyLoadWorld($newName);
 	}
-	
+
+    /*
 	public static function renameGenerator(string $worldName, string $generatorName): void {
 		WorldUtils::lazyLoadWorld($newName);
 		$newWorld = Server::getInstance()->getWorldManager()->getWorldByName($worldName);
@@ -134,7 +135,6 @@ class WorldUtils {
 		mkdir(Server::getInstance()->getDataPath() . "/worlds/$duplicateName");
 
 		$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(Server::getInstance()->getDataPath() . "/worlds/$worldName", FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
-		/** @var SplFileInfo $fileInfo */
 		foreach($files as $fileInfo) {
 			if($filePath = $fileInfo->getRealPath()) {
 				if($fileInfo->isFile()) {
@@ -144,7 +144,7 @@ class WorldUtils {
 				}
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * @return bool Returns if the world was unloaded with the function.

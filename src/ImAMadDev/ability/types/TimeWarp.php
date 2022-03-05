@@ -9,6 +9,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -57,7 +58,7 @@ class TimeWarp extends InteractionAbility {
 		HCF::getInstance()->getScheduler()->scheduleDelayedTask(new TimeWarpTick($player), (5 * 20));
 		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);
-		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		$player->sendMessage(TextFormat::YELLOW . "You have consumed " . $this->getColoredName() . TextFormat::YELLOW . ", Now You have a countdown of " . TextFormat::BOLD . TextFormat::RED . gmdate('i:s', $this->cooldown));
 	}
 
@@ -88,7 +89,7 @@ class TimeWarp extends InteractionAbility {
 	}
 	
 	public function obtain(HCFPlayer|Player $player, int $count) : void {
-		$status = $player->getInventoryStatus(1);
+		$status = $player->getInventoryStatus();
 		if($status === "FULL") {
 			$player->getWorld()->dropItem($player->getPosition()->asVector3(), $this->get($count), new Vector3(0, 0, 0));
         } else {

@@ -6,12 +6,13 @@ use ImAMadDev\command\SubCommand;
 use ImAMadDev\faction\{FactionUtils, Faction};
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\{EOTWManager, ClaimManager};
+use JetBrains\PhpStorm\Pure;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
 class AllySubCommand extends SubCommand {
 	
-	public function __construct() {
+	#[Pure] public function __construct() {
 		parent::__construct("ally", "/faction ally (string: faction)");
 	}
 	
@@ -70,4 +71,3 @@ class AllySubCommand extends SubCommand {
 		}
 	}
 }
-?>

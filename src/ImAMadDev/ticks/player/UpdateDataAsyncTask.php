@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 
 class UpdateDataAsyncTask extends AsyncTask {
 
-    private int $time = 0;
+    private int $time;
 
 	public function __construct(){
         $this->time = microtime(true);

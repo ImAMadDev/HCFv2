@@ -18,7 +18,7 @@ use pocketmine\item\Item;
 class Overload extends CustomEnchantment implements Tickable {
 	
     #[Pure] public function __construct(){
-        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ARMOR, ItemFlags::NONE, 1);
+        parent::__construct($this->getName(), Rarity::MYTHIC, ItemFlags::ARMOR, ItemFlags::NONE);
     }
     
     
