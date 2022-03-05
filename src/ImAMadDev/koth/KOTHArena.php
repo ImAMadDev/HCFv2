@@ -121,7 +121,7 @@ class KOTHArena{
 	
 	public function getPlayersInCorner(): array{
 		$players = [];
-		foreach($this->getServer()->getOnlinePlayers() as $p){
+		foreach($this->getPos("one")->getWorld()->getPlayers() as $p){
 			if($p->getGamemode() === GameMode::SURVIVAL() && !$p->isInvincible() && $p->isAlive()){
 				if($this->isOnCorner($p->getPosition()) && $p->getFaction() !== null){
 					$players[] = $p;

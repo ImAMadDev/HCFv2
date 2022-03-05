@@ -6,7 +6,7 @@ use ImAMadDev\claim\utils\ClaimType;
 use ImAMadDev\player\HCFPlayer;
 use ImAMadDev\manager\{EOTWManager, ClaimManager, KitManager};
 use ImAMadDev\utils\HCFUtils;
-use ImAMadDev\kit\classes\CustomEnergyClass;
+use ImAMadDev\kit\classes\IEnergyClass;
 use ImAMadDev\ability\Ability;
 use ImAMadDev\kit\ClassCreatorSession;
 
@@ -91,7 +91,7 @@ class KitListener implements Listener {
 			}
 		}
 	}
-	
+	/*
 	public function onPlayerInteractEventBard(PlayerItemUseEvent $event) : void {
 		$player = $event->getPlayer();
 		$item = $player->getInventory()->getItemInHand();
@@ -727,7 +727,7 @@ class KitListener implements Listener {
                 			$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . $player->getClass()->getName() . " Buff" . TextFormat::RED . " because you're in the spawn");
                 			return;
                 		}
-                		if ($player->getClassEnergy()->getEnergy() < $player->getClass()->getPriceClickItem($item)) {
+                		if ($player->getClassEnergy()->getEnergy() < $player->getClass()->getEnergyCost($item)) {
                 			$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::GOLD . $player->getClass()->getName() . " Buff" . TextFormat::RED . " because you don't have enough energy, you need: " . $player->getClass()->getPriceClickItem($item));
                 			return;
                 		}
@@ -739,6 +739,19 @@ class KitListener implements Listener {
                         $player->getCooldown()->add('effects_cooldown', 10);
                 	}
                 }
+            }
+        }
+    }*/
+    
+    public function handleCustomClassUse(PlayerItemUseEvent $event) : void
+    {
+        $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
+        if ($player instanceof HCFPlayer) {
+            if ($player->getClass() instanceof IEnergyClass) {
+            	if($player->getClass()->isClickItem($item)) {
+            		$player->getClass()->itemConsumed($player, $item);
+            	}
             }
         }
     }

@@ -289,7 +289,7 @@ class Faction {
 	public function addDTR(float $dtr) : void {
 		$this->data['dtr'] += $dtr;
 		$this->main->getServer()->getAsyncPool()->submitTask(new UpdateDataAsyncTask($this->getName()));
-		$this->message("+ " . FactionUtils::DTR_TO_ADD . " DTR");
+		$this->message(TextFormat::GREEN . "+ " . FactionUtils::DTR_TO_ADD . " DTR");
 	}
 	
 	public function removeDTR(float $dtr) : void {

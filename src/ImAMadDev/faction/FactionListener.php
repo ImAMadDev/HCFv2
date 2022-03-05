@@ -156,7 +156,7 @@ class FactionListener implements Listener {
 			HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ReplaceBlockTick(HCF::getInstance(), $block, $block->getPosition()->getWorld()), (20 * 20));
 		}
 		if($player->getCooldown()->has('deleteblock')) {
-			HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ReplaceBlockTick(HCF::getInstance(), $block, $block->getPosition()->getWorld()), (20 * 5));
+			HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ReplaceBlockTick(HCF::getInstance(), $block, $block->getPosition()->getWorld()), (20 * 3));
 		}
 	}
 

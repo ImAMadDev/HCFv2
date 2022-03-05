@@ -8,7 +8,10 @@ use pocketmine\data\bedrock\EffectIds;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\ItemIds;
-use pocketmine\utils\Limits;
+use pocketmine\utils\{
+	TextFormat,
+	Limits
+};
 
 class MinerClass extends IClass
 {

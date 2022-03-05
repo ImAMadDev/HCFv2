@@ -5,6 +5,7 @@ namespace ImAMadDev\claim;
 use ImAMadDev\claim\utils\ClaimType;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
+use pocketmine\block\Air;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
@@ -35,10 +36,25 @@ class Claim {
 		$this->main = $main;
         $this->claimType = new ClaimType($data['claim_type'] ?? ClaimType::FACTION);
         $this->properties = new ClaimProperties($data);
+        var_dump($this->getSize());
 	}
 	
 	public function getWorldName() : string {
 		return $this->getProperties()->getWorld()->getFolderName();
+	}
+	
+	public function getSize(): int 
+	{
+		/*$firstX = $this->getProperties()->getPosition1()->getX();
+		$secondX = $this->getProperties()->getPosition2()->getX();
+		$firstZ = $this->getProperties()->getPosition1()->getZ();
+		$secondZ = $this->getProperties()->getPosition2()->getZ();
+		$length = max($firstX, $secondX) - min($firstX, $secondX);
+		$width = max($firstZ, $secondZ) - min($firstZ, $secondZ);
+		return $length * $width;*/
+		$first = $this->getProperties()->getPosition1();
+		$second = $this->getProperties()->getPosition2();
+		return sqrt((($first->x - $second->x) ** 2)  + (($first->z - $second->z) ** 2));
 	}
 	
 	public function isInside(Position $position): bool {
@@ -168,28 +184,36 @@ class Claim {
 		$position3 = new Vector3($this->getProperties()->getPosition1()->getFloorX(), $player->getPosition()->getFloorY(), $this->getProperties()->getPosition2()->getFloorZ());
 		$position4 = new Vector3($this->getProperties()->getPosition2()->getFloorX(), $player->getPosition()->getFloorY(), $this->getProperties()->getPosition1()->getFloorZ());
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
-            $pos = new BlockPosition($position1->getFloorX(), $i, $position1->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
-            $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-			$player->getNetworkSession()->sendDataPacket($pk);
+			if($player->getPosition()->getWorld()->getBlock(new Vector3($position1->getFloorX(), $i, $position1->getFloorZ())) instanceof Air) {
+            	$pos = new BlockPosition($position1->getFloorX(), $i, $position1->getFloorZ());
+            	$block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
+            	$pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+				$player->getNetworkSession()->sendDataPacket($pk);
+			}
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
-            $pos = new BlockPosition($position2->getFloorX(), $i, $position2->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
-            $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-            $player->getNetworkSession()->sendDataPacket($pk);
+			if($player->getPosition()->getWorld()->getBlock(new Vector3($position1->getFloorX(), $i, $position1->getFloorZ())) instanceof Air) {
+        	    $pos = new BlockPosition($position2->getFloorX(), $i, $position2->getFloorZ());
+          	  $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
+            	$pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+           	 $player->getNetworkSession()->sendDataPacket($pk);
+           }
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
-            $pos = new BlockPosition($position3->getFloorX(), $i, $position3->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
-            $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-            $player->getNetworkSession()->sendDataPacket($pk);
+			if($player->getPosition()->getWorld()->getBlock(new Vector3($position1->getFloorX(), $i, $position1->getFloorZ())) instanceof Air) {
+           	 $pos = new BlockPosition($position3->getFloorX(), $i, $position3->getFloorZ());
+         	   $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
+           	 $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+           	 $player->getNetworkSession()->sendDataPacket($pk);
+           }
 		}
 		for($i = $player->getPosition()->getFloorY(); $i < $player->getPosition()->getFloorY() + 40; $i++){
-            $pos = new BlockPosition($position4->getFloorX(), $i, $position4->getFloorZ());
-            $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
-            $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
-            $player->getNetworkSession()->sendDataPacket($pk);
+			if($player->getPosition()->getWorld()->getBlock(new Vector3($position1->getFloorX(), $i, $position1->getFloorZ())) instanceof Air) {
+        	    $pos = new BlockPosition($position4->getFloorX(), $i, $position4->getFloorZ());
+           	 $block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks[array_rand($blocks)]->getFullId());
+            	$pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+            	$player->getNetworkSession()->sendDataPacket($pk);
+            }
 		}
 	}
 

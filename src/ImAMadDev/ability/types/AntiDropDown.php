@@ -6,6 +6,7 @@ use ImAMadDev\ability\utils\DamageOtherAbility;
 use JetBrains\PhpStorm\Pure;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\item\ItemIds;
 use pocketmine\item\enchantment\{EnchantmentInstance, VanillaEnchantments};
 use pocketmine\nbt\tag\CompoundTag;
@@ -15,10 +16,10 @@ use pocketmine\math\Vector3;
 
 use ImAMadDev\player\HCFPlayer;
 
-class AntiBuild extends DamageOtherAbility {
+class AntiDropDown extends DamageOtherAbility {
 
 	/** @var string */
-	private string $name = 'AntiBuild';
+	private string $name = 'AntiDropDown';
 
 	private string $description = "&eHit a player 2 times so that all blocks he places are removed within 3 seconds.\n&cHas a cooldown of 5 minutes ";
 	
@@ -30,7 +31,7 @@ class AntiBuild extends DamageOtherAbility {
      * @return Item
      */
 	public function get(int $count = 1, mixed $value = null): Item {
-		$item = ItemFactory::getInstance()->get(ItemIds::GOLDEN_CARROT, 0, $count);
+		$item = VanillaItems::RED_DYE ()->setCount($count);
         $item->getNamedTag()->setTag(self::ABILITY, CompoundTag::create());
         $item->getNamedTag()->setTag(self::DAMAGE_ABILITY, CompoundTag::create());
 		$item->addEnchantment(new EnchantmentInstance(VanillaEnchantments::UNBREAKING(), 1));
@@ -46,7 +47,7 @@ class AntiBuild extends DamageOtherAbility {
 			return;
 		}
         $player->getCache()->setCountdown($this->name, 150);
-		$entity->getCooldown()->add('deleteblock', 20);
+		$entity->getCooldown()->add('antidropdowntag', 20);
 		$item = $player->getInventory()->getItemInHand();
 		$item->setCount($item->getCount() - 1);
 		$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
@@ -62,7 +63,7 @@ class AntiBuild extends DamageOtherAbility {
 	}
 	
 	public function getColoredName() : string {
-		return TextFormat::colorize("&5Anti Build&r");
+		return TextFormat::colorize("&cAntiDropDown&r");
 	}
 	
 	public function getHits() : int {
@@ -91,7 +92,7 @@ class AntiBuild extends DamageOtherAbility {
         } else {
 			$player->getInventory()->addItem($this->get($count));
         }
-        $player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::GREEN . TextFormat::BOLD . $this->getColoredName());
+        $player->sendMessage(TextFormat::YELLOW . "You have received: " . TextFormat::RED . TextFormat::BOLD . $this->getColoredName());
     }
 
 }

@@ -19,14 +19,19 @@ use ImAMadDev\player\sessions\ClassEnergy;
 use ImAMadDev\player\sessions\PlayerRegion;
 use ImAMadDev\player\sessions\TraderPlayer;
 use ImAMadDev\player\sessions\EnderpearlHistory;
-use ImAMadDev\player\traits\RanksTrait;
+use ImAMadDev\player\traits\{
+	RanksTrait,
+	AbilityTrait
+};
 use ImAMadDev\tags\Tag;
 use ImAMadDev\utils\HCFUtils;
 use ImAMadDev\ticks\player\Scoreboard;
 use JetBrains\PhpStorm\Pure;
+use pocketmine\block\Air;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\utils\DyeColor;
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\block\Thin;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\EffectIds;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -76,6 +81,7 @@ class HCFPlayer extends Player
 {
 	use SessionsManager;
     use RanksTrait;
+    use AbilityTrait;
 
 	private ?Faction $faction = null;
 	
@@ -96,10 +102,6 @@ class HCFPlayer extends Player
 	public bool $portalQueue = false;
 
     public bool $endQueue = false;
-	
-	public array $abilityHits = [];
-	
-	public array $abilityLastHit = [];
 	
 	private int $replaceableBlock = 0;
 
@@ -150,40 +152,6 @@ class HCFPlayer extends Player
 		return $this->particle;
 	}
 	
-	public function canActivateAbility(Item $item) : bool {
-        $ability = AbilityManager::getInstance()->getAbilityByItem($item);
-		if($ability instanceof DamageOtherAbility) {
-			if($ability->getHits() === 0) return true;
-			$currentHits = isset($this->abilityHits[$ability->getName()]) ? $this->abilityHits[$ability->getName()] : 0;
-			if($currentHits >= $ability->getHits()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public function addAbilityHits(Item $item) : void {
-        $ability = AbilityManager::getInstance()->getAbilityByItem($item);
-		if($ability instanceof DamageOtherAbility) {
-			if(isset($this->abilityHits[$ability->getName()])) {
-				$this->abilityHits[$ability->getName()] += 1;
-			} else {
-				$this->abilityHits[$ability->getName()] = 1;
-			}
-			$this->abilityLastHit[$ability->getName()] = (time() + 1);
-		}
-	}
-	
-	public function checkAbilityLastHit() : void {
-		foreach(array_keys($this->abilityHits) as $abi) {
-			$remaining = (2 - (time() - $this->abilityLastHit[$abi]));
-			if($remaining < 0) {
-				$this->abilityHits[$abi] = 0;
-				$this->abilityLastHit[$abi] = 0;
-			}
-		}
-	}
-	
 	public function cancelMovement(bool $cancel = false) : void {
 		$this->movement = $cancel;
 		if($cancel === true) {
@@ -213,6 +181,7 @@ class HCFPlayer extends Player
             Server::getInstance()->getAsyncPool()->submitTask(new CheckRanksAsyncTask($this->getName()));
         }), 4800);
 		new BardTick($this);
+		$this->checkSets(false);
 	}
 	
 	#[Pure] public function getCooldowns() : array {
@@ -294,20 +263,53 @@ class HCFPlayer extends Player
 	public function sendCustomTagTo(string $customTag, array $players = []){
 		$this->sendData($players, [EntityMetadataProperties::NAMETAG =>  new StringMetadataProperty($customTag)]);
     }
-
+    
+    public function spawnTo(Player $player) : void{
+		if($this->isAlive() && $player->isAlive() && $player->canSee($this) && !$this->isSpectator()){
+			$this->loadInvisibility();
+			parent::spawnTo($player);
+		}
+	}
+	
+	public function handleMovement(Vector3 $newPos): void 
+	{
+		$oldPos = $this->getLocation();
+		if($newPos->getY() < $oldPos->getY() and $this->getCooldown()->has('antidropdowntag')) {
+			if($this->getPosition()->getWorld()->getBlock($newPos) instanceof Air) {
+				$blocks = VanillaBlocks::STAINED_GLASS()->setColor(DyeColor::RED());
+				$pos = new BlockPosition($newPos->getFloorX(), $newPos->getFloorY(), $newPos->getFloorZ());
+            	$block = RuntimeBlockMapping::getInstance()->toRuntimeId($blocks->getFullId());
+				$pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+				$this->getNetworkSession()->sendDataPacket($pk);
+				$newPos = $oldPos;
+			}
+		}
+		if($this->hasCancelledMovement()) {
+			$newPos = $this->lastPosition ?? $oldPos;
+		}
+		parent::handleMovement($newPos);
+	}
 	
 	public function updateNameTag() : void {
 		if($this->getFaction() === null) {
 			if($this->isInvincible()) {
 				$name = TextFormat::YELLOW . $this->getName();
 			} else {
-				$name = TextFormat::RED . $this->getName();
+				if($this->getArcherMark()->getDamage() > 0){
+					$name = TextFormat::LIGHT_PURPLE . $this->getName();
+				} else {
+					$name = TextFormat::RED . $this->getName(); 
+				}
 			}
 		} else {
 			if($this->isInvincible()) {
 				$name = TextFormat::YELLOW . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::YELLOW . " ] " . TextFormat::EOL . TextFormat::YELLOW . $this->getName();
 			} else {
-				$name = TextFormat::RED . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::RED . " ] " . TextFormat::EOL . TextFormat::RED . $this->getName();
+				if($this->getArcherMark()->getDamage() > 0){
+					$name = TextFormat::LIGHT_PURPLE . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::LIGHT_PURPLE . " ] " . TextFormat::EOL . TextFormat::LIGHT_PURPLE . $this->getName();
+				} else {
+					$name = TextFormat::RED . "[ " . $this->getFaction()->getName() . " | ". $this->getFaction()->getDTRColored() . TextFormat::RED . " ] " . TextFormat::EOL . TextFormat::RED . $this->getName();
+				}
 			}
 		}
 		$this->sendCustomTagTo($name, $this->getViewers());
@@ -343,7 +345,7 @@ class HCFPlayer extends Player
                     }
                 }
             }
-            $this->checkSets();
+            //$this->checkSets();
             $this->checkAbilityLastHit();
             $this->loadInvisibility();
             $this->updateNameTag();
@@ -356,7 +358,7 @@ class HCFPlayer extends Player
 		if(count($this->getEffects()->all()) > 0) {
 			foreach($this->getEffects()->all() as $playerEffect){
 				if($playerEffect->getType()->getName() == $effect->getType()->getName()) {
-					if($playerEffect->getAmplifier() > $effect->getAmplifier()) return;
+					if($playerEffect->getAmplifier() > $effect->getAmplifier()) continue;
 				}
 			}
 		}
@@ -380,7 +382,8 @@ class HCFPlayer extends Player
 		}
 	}
 	
-	public function checkSets() {
+	public function checkSets(bool $joined = true) {
+		if(!$this->isConnected()) return;
         $class = KitManager::getInstance()->getClassByInventory($this->getArmorInventory());
         if ($class == null and $this->class !== null) $this->sendMessage(TextFormat::GRAY . 'Your ' . TextFormat::YELLOW . $this->class->name . TextFormat::GRAY . ' class has been disabled!');
         if ($class !== null and $this->class == null) $this->sendMessage(TextFormat::GRAY . 'Your ' . TextFormat::YELLOW . $class->name . TextFormat::GRAY . ' class has been enabled!');
@@ -397,7 +400,7 @@ class HCFPlayer extends Player
             }
             return;
         }
-        if ($class === null){
+        if ($class === null and $joined == true){
             if(count($this->getEffects()->all()) > 0) {
                 foreach ($this->getEffects()->all() as $effect) {
                     if($effect->getDuration() >= 2000*20) {
@@ -408,6 +411,17 @@ class HCFPlayer extends Player
         }
 	}
 	
+	public function checkClassEffects(EffectInstance $effect): void 
+	{
+		if($this->hasEffectsActivate() and $this->class instanceof IClass){
+            foreach ($this->class->getEffects() as $effectClass) {
+            	if($effectClass->getType() === $effect->getType()) {
+                    $this->applyPotionEffect($effectClass);
+            	}
+            }
+        }
+    }
+    
 	public function getInventoryStatus(int $val = 1): string{
 		$empty = 0;
 		if($this->getInventory()->canAddItem(ItemFactory::getInstance()->get(BlockLegacyIds::TALL_GRASS))) {
@@ -502,7 +516,7 @@ class HCFPlayer extends Player
 	public function hasEffectsActivate() : bool {
 		return $this->effectsActivate;
 	}
-	
+	/*
 	public function getMageEnergyCost(int $itemId = null) : int {
         return match ($itemId) {
             ItemIds::DYE => 45,
@@ -523,7 +537,7 @@ class HCFPlayer extends Player
             ItemIds::MAGMA_CREAM => 25,
             default => 0,
         };
-	}
+	}*/
 	
 	public function saveInventory(): void{
 		$this->getSaveData()->setString("SavedInventory", InventoryUtils::encode($this->getInventory()));
@@ -562,7 +576,7 @@ class HCFPlayer extends Player
 		elseif (247.5 <= $direction && $direction < 292.5) return TextFormat::RED . "W";
 		elseif (292.5 <= $direction && $direction < 337.5) return TextFormat::RED . "NW";
 		elseif (337.5 <= $direction && $direction < 360.0) return TextFormat::RED . "N";
-		else return TextFormat::RED . "?";
+		else return TextFormat::RED . "N/D";
 	}
 	
 	public function setReplaceableBlock(int $runtimeId) : void {
@@ -629,7 +643,7 @@ class HCFPlayer extends Player
     public function isMiner() : bool
     {
         if ($this->class == null) return false;
-        return $this->class->name === 'Miner';
+        return $this->class?->name === 'Miner';
     }
 
     public function checkWall(): void{

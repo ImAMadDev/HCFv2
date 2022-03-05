@@ -7,6 +7,7 @@ use pocketmine\Server;
 use pocketmine\math\{Vector3, AxisAlignedBB};
 use pocketmine\world\Position;
 use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\claim\Claim;
 use ImAMadDev\manager\ClaimManager;
 
 final class VectorUtils {
@@ -35,16 +36,16 @@ final class VectorUtils {
 		return new Vector3(explode($separator, $pos)[0], explode($separator, $pos)[1], explode($separator, $pos)[2]);
 	}
 	
-	public static function getStuck(HCFPlayer $player): ?Vector3 
+	public static function getStuck(HCFPlayer $player, Position $usagePos): ?Vector3 
 	{
-		$world = $player->getWorld();
+		$claimSize = ClaimManager::getInstance()->getClaimByPosition($usagePos) instanceof Claim ? (ClaimManager::getInstance()->getClaimByPosition($usagePos)?->getSize() + 2) : 200;
+		$world = $usagePos->getWorld();
 
-		$origin = $player->getPosition();
-		$minX = $origin->getFloorX() - 100;
-		$minZ = $origin->getFloorZ() - 100;
+		$minX = $usagePos->getFloorX() - ($claimSize / 50);
+		$minZ = $usagePos->getFloorZ() - ($claimSize / 50);
 
-		$maxX = $minX + 200;
-		$maxZ = $minZ + 200;
+		$maxX = $minX + $claimSize;
+		$maxZ = $minZ + $claimSize;
 
 		for($attempts = 0; $attempts < 20; ++$attempts){
 			$x = mt_rand($minX, $maxX);

@@ -24,6 +24,7 @@ use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\event\block\BlockSpreadEvent;
 use pocketmine\event\block\LeavesDecayEvent;
+use pocketmine\event\entity\EntityEffectRemoveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\item\enchantment\EnchantmentInstance;
@@ -69,12 +70,14 @@ use pocketmine\network\mcpe\protocol\{BlockActorDataPacket,
     InventorySlotPacket,
     InventoryTransactionPacket,
     MobEquipmentPacket,
+    MobEffectPacket,
     NetworkChunkPublisherUpdatePacket,
     types\BlockPosition,
     types\CacheableNbt,
     types\inventory\ItemStackWrapper};
 use pocketmine\world\sound\ExplodeSound;
 use pocketmine\world\World;
+use pocketmine\scheduler\ClosureTask;
 
 class PlayerListener implements Listener
 {
@@ -93,6 +96,17 @@ class PlayerListener implements Listener
             if ($this->cancel_send && $packet instanceof ContainerClosePacket) {
                 $event->cancel();
             }
+        }
+    }
+    
+    public function onEntityEffectRemoveEvent(EntityEffectRemoveEvent $event): void
+    {
+    	$player = $event->getEntity();
+    	$effect = $event->getEffect();
+    	if ($player instanceof HCFPlayer) {
+    		HCF::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function ()use($player, $effect){
+         	   $player->checkClassEffects($effect);
+    	    }), (2*20));
         }
     }
 

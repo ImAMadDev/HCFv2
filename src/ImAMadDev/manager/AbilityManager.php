@@ -28,6 +28,7 @@ use ImAMadDev\ability\types\{PartnerPackages,
     Airdrops,
     TimeWarp,
     FortuneCookie,
+    AntiDropDown,
     RankSharp};
 
 use pocketmine\utils\SingletonTrait;
@@ -51,6 +52,7 @@ class AbilityManager {
 	public function loadAbilities() {
 		$this->addAbility(new StrengthPortable());
 		$this->addAbility(new AntiTrapper());
+		$this->addAbility(new AntiDropDown());
 		$this->addAbility(new StormBreaker());
 		$this->addAbility(new ResetPearl());
 		$this->addAbility(new EffectsDisabler());

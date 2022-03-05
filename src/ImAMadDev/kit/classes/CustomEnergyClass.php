@@ -2,10 +2,17 @@
 
 namespace ImAMadDev\kit\classes;
 
+use ImAMadDev\player\HCFPlayer;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\utils\{
+	TextFormat,
+	Limits
+};
+use pocketmine\player\Player;
+use ImAMadDev\manager\ClaimManager;
 
 class CustomEnergyClass extends IEnergyClass
 {
@@ -58,13 +65,7 @@ class CustomEnergyClass extends IEnergyClass
     	return true;
     }
     
-    public function getPriceClickItem(Item $item): int 
-    {
-    	if(!isset($this->energy_items[$item->getId().':'.$item->getMeta()])) return 0;
-    	return $this->energy_items[$item->getId().':'.$item->getMeta()];
-    }
-    
-    public function getPricePassiveItem(Item $item): int 
+    public function getEnergyCost(Item $item): int | float
     {
     	if(!isset($this->energy_items[$item->getId().':'.$item->getMeta()])) return 0;
     	return $this->energy_items[$item->getId().':'.$item->getMeta()];
@@ -114,5 +115,21 @@ class CustomEnergyClass extends IEnergyClass
     public function getItems(): array
     {
         return $this->items;
+    }
+    
+    public function itemConsumed(HCFPlayer $player, Item $item): bool
+    {
+    	if(parent::itemConsumed($player, $item)) {
+           $effect = $this->getEffectClickItem($item);
+           if($effect instanceof EffectInstance) {
+              $player->applyPotionEffect($effect);
+              $player->getClassEnergy()->reduce($this->getEnergyCost($item));
+              $item->setCount($item->getCount() - 1);
+              $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : ItemFactory::air());
+              $player->getCooldown()->add('effects_cooldown', 10);
+              return true;
+           }
+    	}
+       return false;
     }
 }

@@ -23,10 +23,13 @@ class StuckTask extends Task {
 	private Position $lastPos;
 
 	private HCFPlayer $player;
+	
+	private int $claimSize = 200;
 
 	public function __construct(HCFPlayer $player) {
 		$this->player = $player;
 		$this->lastPos = clone $player->getPosition();
+		$this->claimSize = ClaimManager::getInstance()->getClaimByPosition($this->lastPos) instanceof Claim ? ClaimManager::getInstance()->getClaimByPosition($this->lastPos)?->getSize() : 200;
 		HCF::getInstance()->getScheduler()->scheduleRepeatingTask($this, 20);
 	}
 
@@ -44,7 +47,7 @@ class StuckTask extends Task {
 		}
 		if($player->getCooldown()->get('stuck_teleport') <= 0){
 			//if(($vec = $this->getnearestsafeposition()) instanceof Vector3){
-			if(($vec = VectorUtils::getStuck($player)) instanceof Vector3){
+			if(($vec = VectorUtils::getStuck($player, $this->lastPos)) instanceof Vector3){
 				$player->getCooldown()->remove('stuck_teleport');
 				$player->teleport($vec);
 				$player->getWorld()->addSound($player->getPosition(), new EndermanTeleportSound());
@@ -123,10 +126,11 @@ class StuckTask extends Task {
     }*/
 	
 	public function getNearestSafePosition():? Vector3{
-        $minimumX = $this->lastPos->getFloorX() - 200;
-        $minimumZ = $this->lastPos->getFloorZ() - 200;
-        $maximumX = $this->lastPos->getFloorX() + 200;
-        $maximumZ = $this->lastPos->getFloorZ() + 200;
+		$size = $this->claimSize + 1;
+        $minimumX = $this->lastPos->getFloorX() - $size;
+        $minimumZ = $this->lastPos->getFloorZ() - $size;
+        $maximumX = $this->lastPos->getFloorX() + $size;
+        $maximumZ = $this->lastPos->getFloorZ() + $size;
 		for($x_ = $this->lastPos->getFloorX(); $x_ <= $maximumX; $x_++){
 			for($z_ = $this->lastPos->getFloorZ(); $z_ <= $maximumZ; $z_++){
 				if($this->checkClaim(new Position($z_, 0, $z_, $this->lastPos->getWorld()))) {
