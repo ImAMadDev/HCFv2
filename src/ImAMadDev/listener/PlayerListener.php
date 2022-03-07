@@ -590,6 +590,7 @@ class PlayerListener implements Listener
                         $enchantmentType = $enchantment->getType();
                         if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
                             if ($existingEnchant->getLevel() > $currentLevel) continue;
+                            if ($enchantmentType->getMaxLevel() <= $currentLevel) continue;
                             $currentLevel = $existingEnchant->getLevel() === $currentLevel ? $currentLevel + 1 : $currentLevel;
                         }
                         if ($enchantmentType instanceof CustomEnchantment) {
