@@ -98,6 +98,7 @@ class HCF extends PluginBase {
 	public function onEnable(): void{
 		date_default_timezone_set('America/Guayaquil'); 
 		Tile::init();
+        CustomEnchantments::init();
 		if (!is_dir($this->getDataFolder() . "copied_skins/")) @mkdir($this->getDataFolder() . "copied_skins/");
 		if(!is_dir($this->getDataFolder() . "players/")) @mkdir($this->getDataFolder() . "players/");
 		$this->getServer()->getPluginManager()->registerEvents(new EOTWManager($this), $this);
@@ -120,7 +121,6 @@ class HCF extends PluginBase {
 		if(!InvMenuHandler::isRegistered()){
 			InvMenuHandler::register($this);
 		}
-        CustomEnchantments::init();
 		$this->getServer()->getNetwork()->setName(TextFormat::colorize("&g&lWaffle &4HCF &r&7» &aBETA"));
         if (!$this->getServer()->getWorldManager()->isWorldGenerated(HCFUtils::NETHER_MAP)){
             $g = WorldCreationOptions::create();

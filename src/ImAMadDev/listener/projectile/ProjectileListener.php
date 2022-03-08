@@ -42,7 +42,7 @@ class ProjectileListener implements Listener {
             $item->setCount($item->getCount() - 1);
             $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		}
-		if($item instanceof PearlItem){
+		/*if($item instanceof PearlItem){
 			if($player->getCooldown()->has('enderpearl')){
 				$player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::LIGHT_PURPLE . "enderpearl " . TextFormat::RED . "because you have a cooldown of " .$player->getCooldown()->get('enderpearl'));
 				$event->cancel();
@@ -55,7 +55,6 @@ class ProjectileListener implements Listener {
 			$item->setCount($item->getCount() - 1);
 			$player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 		}
-        /*
 		if($item instanceof PearlItem && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
 			if($block instanceof Fence||$block instanceof FenceGate){
 				$event->cancel();

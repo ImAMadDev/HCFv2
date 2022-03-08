@@ -3,8 +3,10 @@
 namespace ImAMadDev\item;
 
 use ImAMadDev\player\HCFPlayer;
+use ImAMadDev\utils\NBT;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Throwable;
+use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
 use pocketmine\item\ItemUseResult;
@@ -13,6 +15,7 @@ use pocketmine\item\ProjectileItem;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use pocketmine\world\sound\ThrowSound;
 
 class EnderPearl extends ProjectileItem {
 	
@@ -24,13 +27,47 @@ class EnderPearl extends ProjectileItem {
         if($player instanceof HCFPlayer) {
             if ($player->getCooldown()->has('enderpearl')) {
                 $player->getCooldown()->add('enderpearl', 16);
-                return parent::onClickAir($player, $directionVector);
+                $location = $player->getLocation();
+
+                $projectile = new EnderPearlEntity(NBT::createWith($player), $player);
+                $projectile->setMotion($directionVector->multiply($this->getThrowForce()));
+
+                $projectileEv = new ProjectileLaunchEvent($projectile);
+                $projectileEv->call();
+                if($projectileEv->isCancelled()){
+                    $projectile->flagForDespawn();
+                    return ItemUseResult::FAIL();
+                }
+
+                $projectile->spawnToAll();
+
+                $player->getLocation()->getWorld()->addSound($player->getLocation(), new ThrowSound());
+
+                $this->pop();
+
+                return ItemUseResult::SUCCESS();
             } else {
                 $player->sendMessage(TextFormat::RED . "You can't use " . TextFormat::LIGHT_PURPLE . "enderpearl " . TextFormat::RED . "because you have a cooldown of " . $player->getCooldown()->get('enderpearl'));
                 return ItemUseResult::FAIL();
             }
         } else {
-            return parent::onClickAir($player, $directionVector);
+            $projectile = new EnderPearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
+            $projectile->setMotion($directionVector->multiply($this->getThrowForce()));
+
+            $projectileEv = new ProjectileLaunchEvent($projectile);
+            $projectileEv->call();
+            if($projectileEv->isCancelled()){
+                $projectile->flagForDespawn();
+                return ItemUseResult::FAIL();
+            }
+
+            $projectile->spawnToAll();
+
+            $player->getLocation()->getWorld()->addSound($player->getLocation(), new ThrowSound());
+
+            $this->pop();
+
+            return ItemUseResult::SUCCESS();
         }
 	}
 	
@@ -44,6 +81,6 @@ class EnderPearl extends ProjectileItem {
 
     protected function createEntity(Location $location, Player $thrower): Throwable
     {
-        return new EnderPearlEntity($location, $thrower);
+        return new \pocketmine\entity\projectile\EnderPearl($location, $thrower);
     }
 }

@@ -315,11 +315,12 @@ class PlayerListener implements Listener
 	    $to = $event->getTo();
 		$player = $event->getEntity();
         if (!$player instanceof HCFPlayer) return;
-    	if (abs($to->getX()) >= 1000 or abs($to->getZ()) >= 1000) {
+        if (-1000 < $to->getFloorX() && $to->getFloorX() < 1000 && -1000 < $to->getFloorZ() && $to->getFloorZ() < 1000) return;
+    	//if (abs($to->getX()) >= 1000 and abs($to->getZ()) >= 1000) {
     		$event->cancel();
             $event->setTo($event->getFrom());
     		$player->sendMessage(TextFormat::RED . "Border reached!");
-        }
+        //}
     }
 
     public function onPlayerInteractEvent(PlayerInteractEvent $event): void
