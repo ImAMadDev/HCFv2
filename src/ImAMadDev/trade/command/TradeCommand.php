@@ -35,7 +35,6 @@ class TradeCommand extends Command {
                         $sender_ = Server::getInstance()->getPlayerByPrefix($args[1]);
                         foreach (TradeManager::getInstance()->getRequests() as $request) {
                             if ($request->isSender($sender_) and $request->isReceiver($sender)){
-                                var_dump("Holaaa");
                                 $request->continue();
                                 return;
                             }

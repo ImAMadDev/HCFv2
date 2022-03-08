@@ -110,9 +110,9 @@ class Waffle extends Crate {
 		$items[6] = $diamond_block;
 		$items[5] = $emerald_block;
 		
-		$items[21] = AbilityManager::getInstance()->getAbilityByName('Strength_Portable')->get(3);
+		$items[21] = AbilityManager::getInstance()->getAbilityByName('StrengthPortable')->get(3);
 		
-		$items[22] = AbilityManager::getInstance()->getAbilityByName('Storm_Breaker')->get(3);
+		$items[22] = AbilityManager::getInstance()->getAbilityByName('StormBreaker')->get(3);
 		
 		$items[20] = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_GOLDEN_APPLE, 0, 10);
 		

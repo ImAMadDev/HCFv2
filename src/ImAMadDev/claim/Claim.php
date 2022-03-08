@@ -36,7 +36,6 @@ class Claim {
 		$this->main = $main;
         $this->claimType = new ClaimType($data['claim_type'] ?? ClaimType::FACTION);
         $this->properties = new ClaimProperties($data);
-        var_dump($this->getSize());
 	}
 	
 	public function getWorldName() : string {

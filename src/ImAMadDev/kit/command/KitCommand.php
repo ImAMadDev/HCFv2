@@ -55,7 +55,6 @@ class KitCommand extends Command {
 				$this->getKitsAndroid($sender);
 			}
 		}
-		var_dump("Holaaaaa");
 	}
 	
 	public function getKits(HCFPlayer $player) : void {

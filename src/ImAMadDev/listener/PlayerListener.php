@@ -315,8 +315,9 @@ class PlayerListener implements Listener
 	    $to = $event->getTo();
 		$player = $event->getEntity();
         if (!$player instanceof HCFPlayer) return;
-    	if (abs($to->getX()) >= 1500 and abs($to->getZ()) >= 1500) {
+    	if (abs($to->getX()) >= 1000 or abs($to->getZ()) >= 1000) {
     		$event->cancel();
+            $event->setTo($event->getFrom());
     		$player->sendMessage(TextFormat::RED . "Border reached!");
         }
     }
