@@ -328,15 +328,15 @@ class PlayerListener implements Listener
         if ($player instanceof HCFPlayer) {
             if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim() == false) {
-                if ($item->getId() !== ItemIds::WOODEN_AXE) {
+                if ($item->getId() !== ItemIds::GOLDEN_AXE) {
                     return;
                 }
                 if ($player->getFaction() === null or !$player->getFaction()->isLeader($player->getName())) {
                     $player->setClaimSession();
-                    $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                    $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::GOLDEN_AXE));
                     return;
                 }
-                if (abs($player->getPosition()->getX()) <= 500 and abs($player->getPosition()->getZ()) <= 500) {
+                if (abs($player->getPosition()->getX()) <= 550 and abs($player->getPosition()->getZ()) <= 550) {
                     $player->sendMessage(TextFormat::RED . "You can only claim when you are 500 blocks from spawn!");
                     return;
                 }
@@ -372,7 +372,7 @@ class PlayerListener implements Listener
         if ($player instanceof HCFPlayer) {
             if ($player->getClaimSession() === null) return;
             if ($player->getClaimSession()->isOpClaim() == false) {
-                if ($item->getId() !== ItemIds::WOODEN_AXE) {
+                if ($item->getId() !== ItemIds::GOLDEN_AXE) {
                     return;
                 }
                 if ($player->getClaimSession()->getPosition1() !== null and $player->getClaimSession()->getPosition2() !== null) {
@@ -387,7 +387,7 @@ class PlayerListener implements Listener
                     if ($length <= 5 or $width <= 5) {
                         $player->sendMessage(TextFormat::RED . "The claim you selected must be more than 5x5!");
                         $player->setClaimSession();
-                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::GOLDEN_AXE));
                         return;
                     }
                     $amount = $length * $width;
@@ -397,7 +397,7 @@ class PlayerListener implements Listener
                         $claim = new Claim(HCF::getInstance(), $data);
                         if (ClaimManager::getInstance()->getClaimIntersectsWith($firstPosition, $secondPosition) !== null) {
                             $player->setClaimSession();
-                            $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                            $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::GOLDEN_AXE));
                             $player->sendMessage(TextFormat::RED . "You can't override a claim!");
                             return;
                         }
@@ -411,7 +411,7 @@ class PlayerListener implements Listener
                             $player->sendMessage(TextFormat::GREEN . "You've successfully claimed this part of land!");
                         }
                         $player->setClaimSession();
-                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE));
+                        $player->getInventory()->remove(ItemFactory::getInstance()->get(ItemIds::GOLDEN_AXE));
                     } else {
                         $player->sendMessage(TextFormat::GRAY . "You've selected " . TextFormat::GREEN . $amount . TextFormat::GRAY . " blocks. Your price is " . TextFormat::YELLOW . $price . TextFormat::GRAY . ". Sneak and tap anywhere to confirm purchase of claim.");
                     }

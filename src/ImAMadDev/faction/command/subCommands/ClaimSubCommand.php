@@ -44,7 +44,7 @@ class ClaimSubCommand extends SubCommand {
 			$sender->sendMessage(TextFormat::RED . "You already have an existing claim! You must unclaim your current claim!");
 			return;
 		}
-		$item = ItemFactory::getInstance()->get(ItemIds::WOODEN_AXE, 0, 1);
+		$item = ItemFactory::getInstance()->get(ItemIds::GOLDEN_AXE, 0, 1);
 		$item->setCustomName(TextFormat::RESET . TextFormat::GOLD . TextFormat::BOLD . "Claiming Axe");
 		$item->setLore([
 			"",
