@@ -49,8 +49,9 @@ final class PlayerUtils {
 		'deleteblock' => "&cAnti Build Tag: ",
 		'antitrapper_tag' => "&3Anti Trapper Tag: ",
 		'logout' => "&9Logout: ",
-        'fortunecookie' => "&6Fortune Cookie: ",
-        'antidropdowntag' => "&cAntiDropDown Tag: "
+        'fortunecookie' => "&6Fortune Cookie: &f",
+        'antidropdowntag' => "&cAntiDropDown Tag: &f",
+        'prepearl' => "&dPre Pearl: &f"
 	];
 
     public static array $Names = [
@@ -77,6 +78,7 @@ final class PlayerUtils {
         'antitrapper_tag' => "&3Anti Trapper Tag",
         'logout' => "&9Logout",
         'antidropdowntag' => "&cAntiDropDown Tag",
-        'fortunecookie' => "&6Fortune Cookie"
+        'fortunecookie' => "&6Fortune Cookie",
+        'prepearl' => "&dPre Pearl"
     ];
 }

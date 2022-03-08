@@ -192,8 +192,8 @@ class KitManager {
 		$this->addKit(new Bard());
 		$this->addKit(new Archer());
 		$this->addKit(new Rogue());
-		$this->addKit(new Icecream());
-		$this->addKit(new Cupcake());
+		//$this->addKit(new Icecream());
+		//$this->addKit(new Cupcake());
 		$this->addKit(new Waffle());
 		$this->loadCustomKits();
 		$this->getMain()->getLogger()->info("§aThe kits have been loaded! Number of kits: " . count($this->getKits()));

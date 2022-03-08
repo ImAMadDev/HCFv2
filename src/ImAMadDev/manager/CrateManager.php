@@ -85,8 +85,8 @@ class CrateManager {
 	public function loadCrates() {
 		$this->addCrate(new Basic());
 		$this->addCrate(new KOTH());
-		$this->addCrate(new Cupcake());
-		$this->addCrate(new Icecream());
+		//$this->addCrate(new Cupcake());
+		//$this->addCrate(new Icecream());
 		$this->addCrate(new Waffle());
 		$this->addCrate(new Vote());
 		$this->loadCustomCrates();
