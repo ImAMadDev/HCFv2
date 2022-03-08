@@ -56,7 +56,7 @@ class NinjaAbility extends InteractionAbility {
 			return;
 		}
 		if(($taggerPlayer = HCF::getInstance()->getServer()->getPlayerByPrefix($tagger)) instanceof HCFPlayer) {
-			if(round($taggerPlayer->getPosition()->distance($player->getDirectionVector())) > 30) {
+			if(round($taggerPlayer->getPosition()->distance($player->getPosition())) > 30) {
 				$player->sendMessage(TextFormat::RED . "You're too far from the player who hits you last!");
 			} else {
                 $player->getCache()->setCountdown($this->getName(), 120);

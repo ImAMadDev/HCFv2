@@ -12,6 +12,7 @@ use pocketmine\item\ItemIds;
 use pocketmine\item\ItemUseResult;
 use ImAMadDev\entity\projectile\EnderPearl as EnderPearlEntity;
 use pocketmine\item\ProjectileItem;
+use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -25,7 +26,7 @@ class EnderPearl extends ProjectileItem {
 	
 	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult {
         if($player instanceof HCFPlayer) {
-            if ($player->getCooldown()->has('enderpearl')) {
+            if (!$player->getCooldown()->has('enderpearl')) {
                 $player->getCooldown()->add('enderpearl', 16);
                 $location = $player->getLocation();
 
@@ -43,7 +44,9 @@ class EnderPearl extends ProjectileItem {
 
                 $player->getLocation()->getWorld()->addSound($player->getLocation(), new ThrowSound());
 
-                $this->pop();
+                $item = $player->getInventory()->getItemInHand();
+                $item->setCount($item->getCount() - 1);
+                $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 
                 return ItemUseResult::SUCCESS();
             } else {
@@ -65,7 +68,9 @@ class EnderPearl extends ProjectileItem {
 
             $player->getLocation()->getWorld()->addSound($player->getLocation(), new ThrowSound());
 
-            $this->pop();
+            $item = $player->getInventory()->getItemInHand();
+            $item->setCount($item->getCount() - 1);
+            $player->getInventory()->setItemInHand($item->getCount() > 0 ? $item : VanillaItems::AIR());
 
             return ItemUseResult::SUCCESS();
         }

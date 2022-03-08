@@ -91,14 +91,16 @@ class HCF extends PluginBase {
 
     private static TradeManager $tradeManager;
 
-    public function onLoad(): void{
+    public function onLoad(): void
+    {
+        self::$instance = $this;
+        Tile::init();
+        CustomEnchantments::init();
 		$this->loadInstances();
 	}
 	
 	public function onEnable(): void{
-		date_default_timezone_set('America/Guayaquil'); 
-		Tile::init();
-        CustomEnchantments::init();
+		date_default_timezone_set('America/Guayaquil');
 		if (!is_dir($this->getDataFolder() . "copied_skins/")) @mkdir($this->getDataFolder() . "copied_skins/");
 		if(!is_dir($this->getDataFolder() . "players/")) @mkdir($this->getDataFolder() . "players/");
 		$this->getServer()->getPluginManager()->registerEvents(new EOTWManager($this), $this);
@@ -145,7 +147,6 @@ class HCF extends PluginBase {
 	}
 
 	private function loadInstances() : void {
-		self::$instance = $this;
         self::$KOTHManager = new KOTHManager($this);
 		self::$claimManager = new ClaimManager($this);
 		self::$factionManager = new FactionManager($this);

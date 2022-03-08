@@ -304,10 +304,9 @@ class PlayerListener implements Listener
     {
     	$player = $event->getPlayer();
 	    $to = $event->getTo();
-    	if (abs($to->getX()) >= 1500 and abs($to->getZ()) >= 1500) {
-    		$event->cancel();
-    		$player->sendMessage(TextFormat::RED . "Border reached!");
-        }
+        if (-1000 < $to->getFloorX() && $to->getFloorX() < 1000 && -1000 < $to->getFloorZ() && $to->getFloorZ() < 1000) return;
+        $event->cancel();
+        $player->sendMessage(TextFormat::RED . "Border reached!");
     }
     
     public function handleBorderTeleport(EntityTeleportEvent $event): void 
@@ -316,11 +315,9 @@ class PlayerListener implements Listener
 		$player = $event->getEntity();
         if (!$player instanceof HCFPlayer) return;
         if (-1000 < $to->getFloorX() && $to->getFloorX() < 1000 && -1000 < $to->getFloorZ() && $to->getFloorZ() < 1000) return;
-    	//if (abs($to->getX()) >= 1000 and abs($to->getZ()) >= 1000) {
-    		$event->cancel();
-            $event->setTo($event->getFrom());
-    		$player->sendMessage(TextFormat::RED . "Border reached!");
-        //}
+        $event->cancel();
+        $event->setTo($event->getFrom());
+        $player->sendMessage(TextFormat::RED . "Border reached!");
     }
 
     public function onPlayerInteractEvent(PlayerInteractEvent $event): void
