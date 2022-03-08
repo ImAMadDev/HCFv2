@@ -90,7 +90,7 @@ final class HCFUtils {
 		if($hours >= 1) $remaining .= $hours . " hour(s), ";
 		if($minutes >= 1) $remaining .= $minutes . " minute(s), ";
 		if($seconds >= 1) $remaining .= $seconds . " seconds";
-		if($time === 0 or $time < $now) return "§aNo countdown";
+		if($time === 0 or $time < $now) return "§cN/D";
 		return $remaining;
 	}
 
